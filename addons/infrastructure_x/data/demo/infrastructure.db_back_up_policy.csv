@@ -1,0 +1,7 @@
+id,name,prefix,automatic_drop,automatic_drop_days,protect_db,automatic_deactivation,auto_deactivation_days,color,db_back_up_policy_ids/id
+inf_db_typ_upgr,Upgrade Test,upgr,False,,False,False,,,
+inf_db_typ_train,Training,train,False,,False,False,,,
+inf_db_typ_prod,Production,prod,False,,True,False,,,"infrastructure_x.bd_backup_policy_daily,infrastructure_x.bd_backup_policy_weekly,infrastructure_x.bd_backup_policy_monthly"
+inf_db_typ_migr,Migration,migr,False,,True,False,,,infrastructure_x.bd_backup_policy_daily
+inf_db_typ_trou,Troubleshooting,trou,True,7,False,False,,,
+inf_db_typ_trial,Trial,trial,False,,True,True,30,,infrastructure_x.bd_backup_policy_daily

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+<!--         <record id="view_infrastructure_server_repository_filter" model="ir.ui.view">
+            <field name="name">infrastructure.server_repository.select</field>
+            <field name="model">infrastructure.server_repository</field>
+            <field name="arch" type="xml">
+                <search string="server_repository" version="7.0">
+                    <group string="By Attribute">
+                    <field name="repository_id" string="Repository"
+                            />
+                    <field name="path" string="Path"
+                            />
+                    </group>
+                    <group string="By object">
+                    </group>
+                </search>
+            </field>
+        </record> -->
+
+        <!-- FORMVIEW -->
+<!--         <record id="view_infrastructure_server_repository_form" model="ir.ui.view">
+            <field name="name">infrastructure.server_repository.form</field>
+            <field name="model">infrastructure.server_repository</field>
+            <field name="arch" type="xml">
+                <form string="server_repository" version="7.0">
+                    <header>
+                    </header>
+                    <sheet string="server_repository">
+                     <group>
+                        <field name="repository_id"
+                            />
+                        <field name="path"
+                            />
+                     </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record> -->
+
+        <!-- TREEVIEW -->
+
+        <record id="view_infrastructure_server_repository_tree" model="ir.ui.view">
+            <field name="name">infrastructure.server_repository.tree</field>
+            <field name="model">infrastructure.server_repository</field>
+            <field name="inherit_id" ref="infrastructure.view_infrastructure_server_repository_tree"/>
+            <field name="arch" type="xml">
+                <tree>
+                    <button string="Get/Update Repository" icon="gtk-go-down" type="object" name="get_update_repository" help="Execute Command"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->

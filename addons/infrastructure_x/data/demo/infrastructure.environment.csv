@@ -1,0 +1,5 @@
+id,server_id/id,name,number,partner_id/id,environment_version_id/id,path,sources_path,type
+inv_env_logos-61,inf_server_minotauro,logos-61,20,inf_partner_logos,inf_env_version_1,/opt/oerpenv/logos-61,/opt/oerpenv/logos-61/sources,virtualenv
+inv_env_cedent-61,inf_server_minotauro,cedent-61,21,inf_partner_cedent,inf_env_version_1,/opt/oerpenv/cedent-61,/opt/oerpenv/cedent-61/sources,virtualenv
+inv_env_ing-adhoc-70,inf_server_pegaso,ing-adhoc-70,20,base.partner_root,inf_env_version_2,/opt/oerpenv/ingadhoc-61,/opt/oerpenv/ingadhoc-61/sources,virtualenv
+inv_env_saasadhoc-80,inf_server_pegaso,saasadhoc-80,21,base.partner_root,inf_env_version_7,/opt/oerpenv/saasadhoc-80,/opt/oerpenv/saasadhoc-80/sources,virtualenv

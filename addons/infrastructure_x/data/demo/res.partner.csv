@@ -1,0 +1,7 @@
+id,name,supplier
+base.partner_root,Ingenieria ADHOC,True
+inf_partner_server4,Server4You,True
+inf_partner_nx,Nx Hosting,True
+inf_partner_nubenet,Nubenet,True
+inf_partner_cedent,Mi Codent,False
+inf_partner_logos,El Logos,False

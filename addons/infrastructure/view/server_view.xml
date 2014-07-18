@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#
+#    Infrastructure
+#    Copyright (C) 2014 Ingenieria ADHOC
+#    No email
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+-->
+<!-- infrastructure.server -->
+<!-- infrastructure.server -->
+<!-- infrastructure.server -->
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_infrastructure_server_filter" model="ir.ui.view">
+            <field name="name">infrastructure.server.select</field>
+            <field name="model">infrastructure.server</field>
+            <field name="arch" type="xml">
+                <search string="server" version="7.0">
+                    <group string="By Attribute">
+                    <field name="name" string="Name"
+                            />
+                    <field name="ip_address" string="IP Address"
+                            />
+                    <field name="holder_id" string="Holder"
+                            />
+                    <field name="owner_id" string="Owner"
+                            />
+                    <field name="user_id" string="Used By"
+                            />
+                    </group>
+                    <group string="By object">
+                    <field name="server_configuration_id" string="Server Config."
+                            />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- FORMVIEW -->
+        <record id="view_infrastructure_server_form" model="ir.ui.view">
+            <field name="name">infrastructure.server.form</field>
+            <field name="model">infrastructure.server</field>
+            <field name="arch" type="xml">
+                <form string="server" version="7.0">
+                    <header>
+                        <button name="sgn_to_active"
+                            states="draft"
+                            string="to Active"
+                            class="oe_highlight"
+                            />
+                        <button name="action_wfk_set_draft"
+                            type="object"
+                            states="cancel"
+                            string="to Draft"
+                            />
+                        <button name="sgn_cancel"
+                            states="active"
+                            string="Cancel"
+                            />
+                        <field name="state" widget="statusbar"
+                            statusbar_colors='{}'
+                            />
+                    </header>
+                    <sheet string="server">
+                     <group>
+                        <field name="name"
+                            />
+                        <field name="ip_address"
+                            />
+                        <field name="ssh_port"
+                            />
+                        <field name="main_hostname"
+                            />
+                        <field name="user_name"
+                            />
+                        <field name="password"
+                            />
+                        <field name="holder_id"
+                            />
+                        <field name="owner_id"
+                            />
+                        <field name="user_id"
+                            />
+                        <field name="software_data"
+                            />
+                        <field name="hardware_data"
+                            />
+                        <field name="contract_data"
+                            />
+                        <field name="note"
+                            />
+                        <field name="base_path"
+                            />
+                        <field name="sources_folder"
+                            />
+                        <field name="service_folder"
+                            />
+                        <field name="instance_user_group"
+                            />
+                        <field name="nginx_log_folder"
+                            />
+                        <field name="nginx_sites_path"
+                            />
+                        <field name="gdrive_account"
+                            />
+                        <field name="gdrive_passw"
+                            />
+                        <field name="gdrive_space"
+                            />
+                        <field name="open_ports"
+                            />
+                        <field name="requires_vpn"
+                            />
+                    <field name="server_repository_ids"
+                            />
+                    <field name="hostname_ids"
+                            />
+                    <field name="change_ids"
+                            />
+                    <field name="environment_ids"
+                            />
+                    <field name="server_configuration_id"
+                            />
+                     </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- TREEVIEW -->
+
+        <record id="view_infrastructure_server_tree" model="ir.ui.view">
+            <field name="name">infrastructure.server.tree</field>
+            <field name="model">infrastructure.server</field>
+            <field name="arch" type="xml">
+                <tree string="server"
+                    fonts="bold:message_unread==True"
+                    colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
+                    >
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name"
+                        />
+                    <field name="ip_address"
+                        />
+                    <field name="holder_id"
+                        />
+                    <field name="owner_id"
+                        />
+                    <field name="user_id"
+                        />
+                    <field name="server_configuration_id"
+                        />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->

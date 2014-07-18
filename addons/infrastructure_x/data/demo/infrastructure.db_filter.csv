@@ -1,0 +1,4 @@
+id,name,rule
+inf_db_filter_exact,"Exact Subdomain (por ahora no funciona, con el subdomain contain se puede reemplazar func)",^\\b%d\\b$
+inf_db_filter_sub,Subdomain Contains,%d.*$
+inf_db_filter_no_filter,No filter,^.*$

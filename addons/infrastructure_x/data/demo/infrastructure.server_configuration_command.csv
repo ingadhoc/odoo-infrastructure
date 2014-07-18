@@ -1,0 +1,7 @@
+id,server_configuration_id/id,sequence,name,command
+inc_comm_install_user_odoo,server_conf_14_04_server,10,Crear usuario odoo,sudo('adduser --system --group odoo')
+inc_comm_create_dir,server_conf_14_04_server,20,Crear path para odoo,sudo('mkdir -p -m g=rwx ' + server.base_path)
+inc_comm_change_own,server_conf_14_04_server,30,Hacer a odoo dueño de directorio odoo,sudo('chown odoo.odoo -R ' + server.base_path)
+inc_comm_install_postgres,server_conf_14_04_server,40,Instalar Postgres,sudo('apt-get install postgresql')
+inc_comm_install_dependencies,server_conf_14_04_server,50,Instalar otras dependencias,sudo('apt-get install -i python-pip python-dev build-essential libpq-dev poppler-utils antiword libldap2-dev libsasl2-dev libssl-dev git python-dateutil python-feedparser python-gdata python-ldap python-lxml python-mako python-openid python-psycopg2 python-pychart python-pydot python-pyparsing python-reportlab python-tz python-vatnumber python-vobject python-webdav python-xlwt python-yaml python-zsi python-docutils wget python-unittest2 python-mock python-jinja2 libevent-dev bzr subversion python-svn libxslt1-dev libfreetype6-dev libjpeg8-dev python-werkzeug wkhtmltopdf libjpeg-dev git')
+inc_comm_install_virtuaenv,server_conf_14_04_server,60,Instalar Virtualenv,sudo('pip install --upgrade virtualenv')

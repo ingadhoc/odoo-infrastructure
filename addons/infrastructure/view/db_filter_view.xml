@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#
+#    Infrastructure
+#    Copyright (C) 2014 Ingenieria ADHOC
+#    No email
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+-->
+<!-- infrastructure.db_filter -->
+<!-- infrastructure.db_filter -->
+<!-- infrastructure.db_filter -->
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_infrastructure_db_filter_filter" model="ir.ui.view">
+            <field name="name">infrastructure.db_filter.select</field>
+            <field name="model">infrastructure.db_filter</field>
+            <field name="arch" type="xml">
+                <search string="db_filter" version="7.0">
+                    <group string="By Attribute">
+                    <field name="name" string="Name"
+                            />
+                    <field name="rule" string="Rule"
+                            />
+                    </group>
+                    <group string="By object">
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- FORMVIEW -->
+        <record id="view_infrastructure_db_filter_form" model="ir.ui.view">
+            <field name="name">infrastructure.db_filter.form</field>
+            <field name="model">infrastructure.db_filter</field>
+            <field name="arch" type="xml">
+                <form string="db_filter" version="7.0">
+                    <header>
+                    </header>
+                    <sheet string="db_filter">
+                     <group>
+                        <field name="name"
+                            />
+                        <field name="rule"
+                            />
+                     </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <!-- TREEVIEW -->
+
+        <record id="view_infrastructure_db_filter_tree" model="ir.ui.view">
+            <field name="name">infrastructure.db_filter.tree</field>
+            <field name="model">infrastructure.db_filter</field>
+            <field name="arch" type="xml">
+                <tree string="db_filter"
+                    >
+                    <field name="name"
+                        />
+                    <field name="rule"
+                        />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->
