@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#
+#    Infrastructure
+#    Copyright (C) 2014 Ingenieria ADHOC
+#    No email
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+-->
+<!-- infrastructure.environment -->
+<!-- infrastructure.environment -->
+<!-- infrastructure.environment -->
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_infrastructure_environment_filter" model="ir.ui.view">
+            <field name="name">infrastructure.environment.select</field>
+            <field name="model">infrastructure.environment</field>
+            <field name="arch" type="xml">
+                <search string="environment" version="7.0">
+                    <group string="By Attribute">
+                    <field name="number" string="Number"
+                            />
+                    <field name="name" string="Name"
+                            />
+                    <field name="type" string="Type"
+                            />
+                    <field name="description" string="Description"
+                            />
+                    <field name="partner_id" string="Partner"
+                            />
+                    <field name="environment_version_id" string="Version"
+                            />
+                    </group>
+                    <group string="By object">
+                    <field name="server_id" string="Server"
+                            />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- FORMVIEW -->
+        <record id="view_infrastructure_environment_form" model="ir.ui.view">
+            <field name="name">infrastructure.environment.form</field>
+            <field name="model">infrastructure.environment</field>
+            <field name="arch" type="xml">
+                <form string="environment" version="7.0">
+                    <header>
+                        <button name="sgn_to_active"
+                            states="draft"
+                            string="to Active"
+                            class="oe_highlight"
+                            />
+                        <button name="action_wfk_set_draft"
+                            type="object"
+                            states="cancel"
+                            string="to Draft"
+                            />
+                        <button name="sgn_cancel"
+                            states="active"
+                            string="Cancel"
+                            />
+                        <field name="state" widget="statusbar"
+                            statusbar_colors='{}'
+                            />
+                    </header>
+                    <sheet string="environment">
+                     <group>
+                        <field name="number"
+                            />
+                        <field name="name"
+                            />
+                        <field name="type"
+                            />
+                        <field name="description"
+                            />
+                        <field name="partner_id"
+                            />
+                        <field name="environment_version_id"
+                            />
+                        <field name="note"
+                            />
+                        <field name="path"
+                            />
+                        <field name="sources_path"
+                            />
+                        <field name="install_server_command"
+                            />
+                    <field name="environment_repository_ids"
+                            />
+                    <field name="instance_ids"
+                            />
+                     </group>
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- TREEVIEW -->
+
+        <record id="view_infrastructure_environment_tree" model="ir.ui.view">
+            <field name="name">infrastructure.environment.tree</field>
+            <field name="model">infrastructure.environment</field>
+            <field name="arch" type="xml">
+                <tree string="environment"
+                    fonts="bold:message_unread==True"
+                    colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
+                    >
+                    <field name="message_unread" invisible="1"/>
+                    <field name="number"
+                        />
+                    <field name="name"
+                        />
+                    <field name="type"
+                        />
+                    <field name="description"
+                        />
+                    <field name="partner_id"
+                        />
+                    <field name="environment_version_id"
+                        />
+                    <field name="server_id"
+                        />
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->

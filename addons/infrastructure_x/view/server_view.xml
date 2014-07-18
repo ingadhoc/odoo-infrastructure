@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+<!--         <record id="view_infrastructure_server_filter" model="ir.ui.view">
+            <field name="name">infrastructure.server.select</field>
+            <field name="model">infrastructure.server</field>
+            <field name="arch" type="xml">
+                <search string="server" version="7.0">
+                    <group string="By Attribute">
+                    <field name="name" string="Name"
+                            />
+                    <field name="ip_address" string="IP Address"
+                            />
+                    <field name="supplier_id" string="Supplier"
+                            />
+                    <field name="owner_id" string="Owner"
+                            />
+                    </group>
+                    <group string="By object">
+                    </group>
+                </search>
+            </field>
+        </record> -->
+
+        <!-- FORMVIEW -->
+        <record id="view_infrastructure_server_form" model="ir.ui.view">
+            <field name="name">infrastructure.server.form</field>
+            <field name="model">infrastructure.server</field>
+            <field name="inherit_id" ref="infrastructure.view_infrastructure_server_form"/>
+            <field name="arch" type="xml">
+                <sheet position="replace">
+                    <sheet string="server">
+                        <div class="col-md-6">
+                            <h1>
+                                <field name="name" placeholder="Name..."/>
+                            </h1>
+                            <h2>
+                                <field name="main_hostname" widget="url" placeholder="Main Hostname..."/>
+                                <field name="server_configuration_id" placeholder="Server Configuration..."/>
+                            </h2>
+                        </div>
+                        <div class="oe_right oe_button_box" name="buttons">
+                            <button name="%(infrastructure.action_infrastructure_environment_environments)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': active_id}">
+                                <field name="environment_count" widget="statinfo"/>
+                            </button>
+                            <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server"/>
+                            <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx"/>
+                            <button name="restart_postgres" icon="fa-refresh" string="Restart Postgres" class="oe_stat_button" help="Restart Nginx"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="ip_address"/>
+                                <field name="ssh_port"/>
+                                <field name="requires_vpn"/>
+                                <field name="user_name"/>
+                                <field name="password" password="True"/>
+                            </group>
+                            <group>
+                                <field name="base_path"/>
+                                <field name="instance_user_group"/>
+                                <field name="holder_id"/>
+                                <field name="owner_id"/>
+                                <field name="user_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="More Info">
+                                <group>
+                                    <group>
+                                        <field name="sources_folder"/>
+                                        <field name="service_folder"/>
+                                        <field name="nginx_sites_path"/>
+                                        <field name="nginx_log_folder"/>
+                                    </group>
+                                    <group>
+                                        <field name="open_ports"/>
+                                        <field name="gdrive_account"/>
+                                        <field name="gdrive_passw"/>
+                                        <field name="gdrive_space"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Repositories">
+                               <field name="server_repository_ids"/>
+                               <!-- <field name="repository_ids" context="{'server_id':id}"/> -->
+                            </page>
+                            <page string="Changes">
+                               <field name="change_ids"/>
+                            </page>
+                            <page string="Hostnames">
+                               <field name="hostname_ids"/>
+                            </page>
+                            <page string="Data">
+                                <group col="1">
+                                   <field name="software_data"/>
+                                   <field name="hardware_data"/>
+                                   <field name="contract_data"/>
+                                   <field name="note"/>
+                               </group>
+                           </page>
+                            <page string="Installation">
+                                <group col="1">
+                                    <!-- TODO remover esta clase si no la vamos a usar -->
+                                    <!-- <field name="maint_command_ids" context="{'server_id':id}"/> -->
+                                    <field name="install_command_ids" context="{'server_id':id}"/>
+                                </group>
+                            </page>                           
+                       </notebook>
+                    </sheet>
+                </sheet>
+            </field>
+        </record>
+
+        <!-- TREEVIEW -->
+
+<!--         <record id="view_infrastructure_server_tree" model="ir.ui.view">
+            <field name="name">infrastructure.server.tree</field>
+            <field name="model">infrastructure.server</field>
+            <field name="arch" type="xml">
+                <tree string="server"
+                    fonts="bold:message_unread==True"
+                    >
+                    <field name="message_unread" invisible="1"/>
+                    <field name="name"
+                        />
+                    <field name="ip_address"
+                        />
+                    <field name="supplier_id"
+                        />
+                    <field name="owner_id"
+                        />
+                </tree>
+            </field>
+        </record> -->
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->

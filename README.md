@@ -1,4 +1,4 @@
 odoo-infrastructure
 ===================
 
-odoo Infrastructure Management
+Server and general infrastructure management for odoo

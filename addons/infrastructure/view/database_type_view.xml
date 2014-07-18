@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#
+#    Infrastructure
+#    Copyright (C) 2014 Ingenieria ADHOC
+#    No email
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+-->
+<!-- infrastructure.database_type -->
+<!-- infrastructure.database_type -->
+<!-- infrastructure.database_type -->
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_infrastructure_database_type_filter" model="ir.ui.view">
+            <field name="name">infrastructure.database_type.select</field>
+            <field name="model">infrastructure.database_type</field>
+            <field name="arch" type="xml">
+                <search string="database_type" version="7.0">
+                    <group string="By Attribute">
+                    <field name="name" string="Name"
+                            />
+                    <field name="prefix" string="Prefix"
+                            />
+                    </group>
+                    <group string="By object">
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- FORMVIEW -->
+        <record id="view_infrastructure_database_type_form" model="ir.ui.view">
+            <field name="name">infrastructure.database_type.form</field>
+            <field name="model">infrastructure.database_type</field>
+            <field name="arch" type="xml">
+                <form string="database_type" version="7.0">
+                    <header>
+                    </header>
+                    <sheet string="database_type">
+                     <group>
+                        <field name="name"
+                            />
+                        <field name="prefix"
+                            />
+                        <field name="url_prefix"
+                            />
+                        <field name="automatic_drop"
+                            />
+                        <field name="automatic_drop_days"
+                            attrs="{'invisible':[('automatic_drop','!=',True)],'required':[('automatic_drop','=',True)]}"
+                            />
+                        <field name="protect_db"
+                            />
+                        <field name="automatic_deactivation"
+                            />
+                        <field name="auto_deactivation_days"
+                            attrs="{'invisible':[('automatic_deactivation','!=',True)],'required':[('automatic_deactivation','=',True)]}"
+                            />
+                        <field name="url_example"
+                            />
+                        <field name="bd_name_example"
+                            />
+                    <field name="db_back_up_policy_ids"
+                            widget="many2many_tags"
+                            />
+                     </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <!-- TREEVIEW -->
+
+        <record id="view_infrastructure_database_type_tree" model="ir.ui.view">
+            <field name="name">infrastructure.database_type.tree</field>
+            <field name="model">infrastructure.database_type</field>
+            <field name="arch" type="xml">
+                <tree string="database_type"
+                    >
+                    <field name="name"
+                        />
+                    <field name="prefix"
+                        />
+                    <field name="url_prefix"
+                        />
+                    <field name="automatic_drop"
+                        />
+                    <field name="protect_db"
+                        />
+                    <field name="automatic_deactivation"
+                        />
+                    <field name="auto_deactivation_days"
+                        />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->
