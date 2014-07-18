@@ -5,8 +5,8 @@ import openerplib
 import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-# from fabric.api import local, settings, abort, run, cd, env, sudo
-# import os
+from fabric.api import local, settings, abort, run, cd, env, sudo
+import os
 class database(models.Model):
     """"""
     # TODO agregar campos calculados
