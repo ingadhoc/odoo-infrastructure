@@ -90,7 +90,7 @@ class database(models.Model):
     def kill_db_connection(self):
         self.server_id.get_env()
         psql_command = "/SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '" 
-        psql_command += seld.name + " AND procpid <> pg_backend_pid();"
+        psql_command += self.name + " AND procpid <> pg_backend_pid();"
         sudo('psql -U postgres -c ' + psql_command)
 
     @api.one
