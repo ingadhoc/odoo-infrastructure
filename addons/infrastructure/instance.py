@@ -68,7 +68,7 @@ class instance(osv.osv):
         'admin_pass': fields.char(string='Admin Password', required=True),
         'unaccent': fields.boolean(string='Enable Unaccent'),
         'module_load': fields.char(string='Load default modules'),
-        'service_file': fields.char(string='Service File Name', readonly=True, required=True, states={'draft': [('readonly', False)]}),
+        'service_file': fields.char(string='Service/Nginx File Name', readonly=True, required=True, states={'draft': [('readonly', False)]}),
         'main_hostname': fields.char(string='Main Hostname', required=True),
         'state': fields.selection(_states_, "State"),
         'instance_host_ids': fields.one2many('infrastructure.instance_host', 'instance_id', string='Hosts'), 

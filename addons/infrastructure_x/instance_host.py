@@ -8,7 +8,7 @@ class instance_host(models.Model):
     _inherit = 'infrastructure.instance_host'
 
     #TODO name should be readonly but it does not save the value, for now we keep it writable
-    name = fields.Char('Name', compute='_get_name', store=True, readonly=False,)
+    name = fields.Char('Name', compute='_get_name', store=True, readonly=False, required=True)
     server_id = fields.Many2one('infrastructure.server', string='Server', related='instance_id.environment_id.server_id', store=True, readonly=True,)
     wildcard = fields.Boolean(string='Wildcard', related='server_hostname_id.wildcard',)
 

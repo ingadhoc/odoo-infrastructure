@@ -278,8 +278,12 @@ class instance(models.Model):
         acces_log = os.path.join(self.environment_id.server_id.nginx_log_folder, 'access_' + re.sub('[-]','_',self.service_file))
         error_log = os.path.join(self.environment_id.server_id.nginx_log_folder, 'error_' + re.sub('[-]','_',self.service_file))
         xmlrpc_port = self.xml_rpc_port
-        longpolling_port = int(self.longpolling_port)
-        nginx_site_file = nginx_site_template %(listen_port, server_names, acces_log, error_log, xmlrpc_port, longpolling_port)
+
+        nginx_long_polling = ''
+        if self.longpolling_port:
+            nginx_long_polling = nginx_long_polling_template % (self.longpolling_port)
+        
+        nginx_site_file = nginx_site_template %(listen_port, server_names, acces_log, error_log, xmlrpc_port, nginx_long_polling)
         
         # Check nginx site folder exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
@@ -299,6 +303,11 @@ class instance(models.Model):
         self.environment_id.server_id.restart_nginx()
 
 # TODO llevar esto a un archivo y leerlo de alli
+nginx_long_polling_template = """
+    location /longpolling {
+        proxy_pass   http://127.0.0.1:%i;
+    }
+"""
 nginx_site_template = """
 server {
         listen %i;
@@ -310,10 +319,8 @@ server {
                 proxy_pass                      http://127.0.0.1:%i;
                 proxy_set_header        X-Forwarded-Host $host;
         }
-
-    location /longpolling {
-        proxy_pass   http://127.0.0.1:%i;
-    }
+    
+    %s
 
 }
 """
