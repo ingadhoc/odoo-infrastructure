@@ -1,0 +1,29 @@
+id,name,supplier,parent_id/id
+res_partner_dist1,Distribuidor 1,True,grupo_logos
+,,,
+,,,
+,,,
+,,,
+,,,
+product.attribute,,,
+id,name,,
+,Color,,
+,Material,,
+,,,
+product.attribute.value,,,
+id,attribute_id,value,
+,Color,Rojo,
+,Color,Verde,
+,Material,Metal,
+,,,
+product.template,,,
+id,name,default_code,
+,Piedra SKI,ACB0001,
+,,,
+,,,
+,,,
+,,,
+product.attribute.line,,,
+id,product_tmpl_id,attribute_id/id,value_ids
+,Piedra SKI,Color,"Rojo,Verde"
+,Piedra SKI,Material,Metal

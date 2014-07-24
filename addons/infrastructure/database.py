@@ -53,7 +53,7 @@ class database(osv.osv):
     _columns = {
         'database_type_id': fields.many2one('infrastructure.database_type', string='Type', readonly=True, required=True, states={'draft': [('readonly', False)]}),
         'name': fields.char(string='Name', readonly=True, required=True, states={'draft': [('readonly', False)]}),
-        'partner_id': fields.many2one('res.partner', string='Partner', required=True),
+        'partner_id': fields.many2one('res.partner', string='Partner'),
         'demo_data': fields.boolean(string='Demo Data?', readonly=True, states={'draft': [('readonly', False)]}),
         'note': fields.html(string='note'),
         'color': fields.integer(string='Color Index'),

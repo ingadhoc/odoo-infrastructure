@@ -76,7 +76,7 @@
 			</model>
 		</userDefined>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Jul 15 14:20:08 ART 2014'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Jul 15 22:39:05 ART 2014'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -13791,7 +13791,7 @@
     </group>
   </group>
   <group name="Fig55"
-       description="org.argouml.uml.diagram.static_structure.ui.FigClass[1488, 336, 376, 213]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
+       description="org.argouml.uml.diagram.static_structure.ui.FigClass[1480, 336, 376, 213]pathVisible=false;stereotypeView=0;operationsVisible=true;attributesVisible=true;"
        href="127-0-1-1--46f4f3b9:1470431f7fa:-8000:00000000000015B8"
        fill="1"
        fillcolor="white"
@@ -13802,7 +13802,7 @@
     </private>
     
     <rectangle name="Fig55.0"
-      x="1488"
+      x="1480"
       y="336"
       width="376"
       height="213"
@@ -13812,7 +13812,7 @@
       strokecolor="black"
     />
     <text name="Fig55.1"
-      x="1489"
+      x="1481"
       y="337"
       width="374"
       height="22"
@@ -13828,7 +13828,7 @@
       justification="Center"
     >repository</text>
     <group name="Fig55.2"
-         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[1489, 337, 359, 0]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[1481, 337, 359, 0]"
          href="127-0-1-1--46f4f3b9:1470431f7fa:-8000:00000000000015B8"
          fill="0"
          fillcolor="white"
@@ -13840,7 +13840,7 @@
       </private>
       
       <rectangle name="Fig55.2.0"
-        x="1489"
+        x="1481"
         y="337"
         width="359"
         height="0"
@@ -13851,7 +13851,7 @@
       />
     </group>
     <rectangle name="Fig55.3"
-      x="1488"
+      x="1480"
       y="359"
       width="376"
       height="1"
@@ -13861,7 +13861,7 @@
       strokecolor="black"
     />
     <group name="Fig55.4"
-         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[1489, 360, 374, 159]"
+         description="org.argouml.uml.diagram.ui.FigAttributesCompartment[1481, 360, 374, 159]"
          href="127-0-1-1--46f4f3b9:1470431f7fa:-8000:00000000000015B8"
          fill="0"
          fillcolor="white"
@@ -13872,7 +13872,7 @@
       </private>
       
       <rectangle name="Fig55.4.0"
-        x="1489"
+        x="1481"
         y="360"
         width="374"
         height="159"
@@ -13882,7 +13882,7 @@
         strokecolor="black"
       />
       <text name="Fig55.4.1"
-        x="1489"
+        x="1481"
         y="360"
         width="374"
         height="16"
@@ -13898,7 +13898,7 @@
         justification="Left"
       >&lt;&lt;tree&gt;&gt; sequence : Integer</text>
       <text name="Fig55.4.2"
-        x="1489"
+        x="1481"
         y="376"
         width="374"
         height="16"
@@ -13914,7 +13914,7 @@
         justification="Left"
       >&lt;&lt;form, tree, search, required&gt;&gt; name : Char</text>
       <text name="Fig55.4.3"
-        x="1489"
+        x="1481"
         y="392"
         width="374"
         height="16"
@@ -13930,7 +13930,7 @@
         justification="Left"
       >&lt;&lt;form, tree, search, required&gt;&gt; folder : Char</text>
       <text name="Fig55.4.4"
-        x="1489"
+        x="1481"
         y="408"
         width="374"
         height="16"
@@ -13946,7 +13946,7 @@
         justification="Left"
       >&lt;&lt;form, tree, search, required&gt;&gt; type : repository_type</text>
       <text name="Fig55.4.5"
-        x="1489"
+        x="1481"
         y="424"
         width="374"
         height="16"
@@ -13962,7 +13962,7 @@
         justification="Left"
       >&lt;&lt;form&gt;&gt; addons_subfolder : Char</text>
       <text name="Fig55.4.6"
-        x="1489"
+        x="1481"
         y="440"
         width="374"
         height="16"
@@ -13978,7 +13978,7 @@
         justification="Left"
       >&lt;&lt;form, tree, required&gt;&gt; url : Char</text>
       <text name="Fig55.4.7"
-        x="1489"
+        x="1481"
         y="456"
         width="374"
         height="16"
@@ -13994,7 +13994,7 @@
         justification="Left"
       >&lt;&lt;form, tree, search&gt;&gt; pip_packages : Char</text>
       <text name="Fig55.4.8"
-        x="1489"
+        x="1481"
         y="472"
         width="374"
         height="16"
@@ -14010,7 +14010,7 @@
         justification="Left"
       >&lt;&lt;form, tree&gt;&gt; is_server : Boolean</text>
       <text name="Fig55.4.9"
-        x="1489"
+        x="1481"
         y="488"
         width="374"
         height="22"
@@ -14027,7 +14027,7 @@
       >&lt;&lt;form&gt;&gt; install_server_command : Char</text>
     </group>
     <rectangle name="Fig55.5"
-      x="1488"
+      x="1480"
       y="519"
       width="376"
       height="1"
@@ -14037,7 +14037,7 @@
       strokecolor="black"
     />
     <group name="Fig55.6"
-         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1489, 520, 374, 28]"
+         description="org.argouml.uml.diagram.ui.FigOperationsCompartment[1481, 520, 374, 28]"
          href="127-0-1-1--46f4f3b9:1470431f7fa:-8000:00000000000015B8"
          fill="0"
          fillcolor="white"
@@ -14048,7 +14048,7 @@
       </private>
       
       <rectangle name="Fig55.6.0"
-        x="1489"
+        x="1481"
         y="520"
         width="374"
         height="28"
@@ -14853,9 +14853,9 @@
       stroke="1"
       strokecolor="51 51 153"
     >
-      <moveto x="1890"
-              y="327" />
-      <lineto x="1863"
+      <moveto x="1889"
+              y="326" />
+      <lineto x="1855"
               y="336" />
     </path>
   </group>
@@ -16218,7 +16218,7 @@
       stroke="1"
       strokecolor="51 51 153"
     >
-      <moveto x="1863"
+      <moveto x="1855"
               y="448" />
       <lineto x="2184"
               y="448" />

@@ -76,13 +76,15 @@
 			</model>
 		</userDefined>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Tue Jul 15 22:39:05 ART 2014'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Thu Jul 24 11:31:13 ART 2014'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
     </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.4"/></XMI.header>
   <XMI.content>
+    <UML:CallAction xmi.id = '-64--88-56-1--3fdd37c2:13bde2231b0:-8000:0000000000002F93'
+      isSpecification = 'false' isAsynchronous = 'false'/>
     <UML:Model xmi.id = '127-0-1-1--17588d67:13b392fe554:-8000:0000000000000ACF'
       name = 'infrastructure' isSpecification = 'false' isRoot = 'false' isLeaf = 'false'
       isAbstract = 'false'>
@@ -855,7 +857,6 @@
                     <UML:Stereotype href = 'http://argouml.org/user-profiles/OpenObjectStadardElements.xmi#127-0-1-1--66344949:13b09938a14:-8000:00000000000011E5'/>
                     <UML:Stereotype href = 'http://argouml.org/user-profiles/OpenObjectStadardElements.xmi#127-0-1-1--66344949:13b09938a14:-8000:00000000000011E6'/>
                     <UML:Stereotype href = 'http://argouml.org/user-profiles/OpenObjectStadardElements.xmi#127-0-1-1--7f493fcf:13b6d9e307b:-8000:0000000000000F56'/>
-                    <UML:Stereotype href = 'http://argouml.org/user-profiles/OpenObjectStadardElements.xmi#127-0-1-1--66344949:13b09938a14:-8000:0000000000000BA2'/>
                   </UML:ModelElement.stereotype>
                   <UML:ModelElement.taggedValue>
                     <UML:TaggedValue xmi.id = '127-0-1-1--1b2125e:1468663c90f:-8000:00000000000014FD'
@@ -7230,8 +7231,6 @@
         </UML:Association>
       </UML:Namespace.ownedElement>
     </UML:Model>
-    <UML:CallAction xmi.id = '-64--88-56-1--3fdd37c2:13bde2231b0:-8000:0000000000002F93'
-      isSpecification = 'false' isAsynchronous = 'false'/>
   </XMI.content>
 </XMI>
 <pgml description="org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram|127-0-1-1--17588d67:13b392fe554:-8000:0000000000000ACF"
@@ -11296,7 +11295,7 @@
         bold="false"
         textsize="12"
         justification="Left"
-      >&lt;&lt;form, tree, search, required&gt;&gt; partner_id : partner</text>
+      >&lt;&lt;form, tree, search&gt;&gt; partner_id : partner</text>
       <text name="Fig30.4.4"
         x="289"
         y="1784"
