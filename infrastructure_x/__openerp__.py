@@ -1,24 +1,22 @@
 # -*- coding: utf-8 -*-
+
 {
     'name': 'Infrastructure Management',
     'version': '1.0',
-    'category': 'Accounting',
+    'category': '',
     'sequence': 14,
     'summary': '',
     'description': """
-Infrastructure Management
-=========================
-Require:
-+ pip install openerp-client-lib
-+ pip install fabric
+        Infrastructure Management
+        =========================
+        Require:
+        + pip install openerp-client-lib
+        + pip install Fabric
     """,
     'author':  'Ingenieria ADHOC',
     'website': 'www.ingadhoc.com',
-    'images': [
-    ],
-    'depends': [
-        'infrastructure'
-    ],
+    'images': [],
+    'depends': ['infrastructure'],
     'data': [
         'wizard/duplicate_db_wizard_view.xml',
         'view/server_view.xml',
@@ -49,10 +47,8 @@ Require:
         'data/demo/infrastructure.instance_host.csv',
         'data/demo/infrastructure.server_configuration_command.csv',
     ],
-    'test': [
-    ],
+    'test': [],
     'installable': True,
     'auto_install': False,
     'application': True,
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
