@@ -85,7 +85,8 @@ class database(models.Model):
     attachment_loc_type = fields.Selection(
         [(u'filesystem', 'filesystem'), (u'database', 'database')],
         string='Attachment Location Type',
-        default='filesystem'),
+        default='filesystem'
+    )
 
     attachment_location = fields.Char(
         string='Attachment Location'

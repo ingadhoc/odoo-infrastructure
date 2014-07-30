@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp.osv import osv, fields
 from openerp import models, fields
+
 
 class command(models.Model):
     """"""
