@@ -146,7 +146,7 @@ class environment_repository(models.Model):
                 pip_packages_install_command = 'pip install --upgrade ' + pip_packages
                 sudo (activate_environment_command + pip_packages_install_command)
         else:
-            raise Warning(_("Type '%s' not implemented yet.") %(self.type))
+            raise Warning(_("Type '%s' not implemented yet.") %(self.environment_id.type))
 
 
 environment_repository()
