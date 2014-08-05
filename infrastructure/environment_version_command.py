@@ -1,53 +1,69 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
 
+from openerp import models, fields
+from .non_safe_eval import safe_eval as eval
+import time
+import os
+import errno
+from fabric.api import run, cd, env, sudo
 
-import re
-from openerp import netsvc
-from openerp.osv import osv, fields
-
-class environment_version_command(osv.osv):
+class environment_version_command(models.Model):
     """"""
-    
+
     _name = 'infrastructure.environment_version_command'
     _description = 'environment_version_command'
-    _inherits = {  }
     _inherit = [ 'infrastructure.command' ]
 
-    _columns = {
-        'environment_version_id': fields.many2one('infrastructure.environment_version', string='Environment Version', ondelete='cascade', required=True), 
-    }
 
-    _defaults = {
-    }
+    environment_version_id = fields.Many2one(
+        'infrastructure.environment_version',
+        string='Environment Version',
+        ondelete='cascade',
+        required=True
+    )
 
     _order = "sequence"
 
-    _constraints = [
-    ]
-
-
+    # def execute_command(self, cr, uid, ids, context=None):
+    #     if context is None:
+    #         context = {}
+    #     user = self.pool.get('res.users').browse(cr, uid, uid)
+    #     result = []
+    #     environment_id = context.get('environment_id',False)
+    #     if not environment_id:
+    #         # TODO raise error
+    #         print 'no environment_id on context'
+    #         return False
+    #     environment = self.pool['infrastructure.environment'].browse(cr, uid, environment_id, context=context)
+    #     for command in self.browse(cr, uid, ids, context=context):
+    #         command_result = False
+    #         env.user=environment.server_id.user_name
+    #         env.password=environment.server_id.password
+    #         env.host_string=environment.server_id.main_hostname
+    #         env.port=environment.server_id.ssh_port
+    #         cxt = {
+    #             'self': self,
+    #             'os': os,
+    #             'errno': errno,
+    #             'command': command,
+    #             'run': run,
+    #             'sudo': sudo,
+    #             'environment': environment,
+    #             'pool': self.pool,
+    #             'cd': cd,
+    #             'time': time,
+    #             'cr': cr,
+    #             'context': dict(context), # copy context to prevent side-effects of eval
+    #             'uid': uid,
+    #             'user': user,
+    #         }
+    #         print 'command.command', command.command
+    #         print 'command.command.strip()', command.command.strip()
+    #         eval(command.command.strip(), cxt, mode="exec") # nocopy allows to return 'action'
+    #         if 'result' in cxt['context']:
+    #             command_result = cxt['context'].get('result')
+    #         result.append(command_result)
+    #     return result
 
 
 environment_version_command()
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
