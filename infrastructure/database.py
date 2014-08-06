@@ -301,4 +301,3 @@ class database(models.Model):
     # def action_wfk_set_draft(self):
 
 database()
-
