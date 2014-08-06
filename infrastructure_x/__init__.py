@@ -9,5 +9,4 @@ import server_repository
 import server_configuration_command
 import environment_repository
 import instance
-import instance_host
 import server_hostname
