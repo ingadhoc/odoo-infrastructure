@@ -1,55 +1,86 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+
+from openerp import models, fields, api
 
 
-import re
-from openerp import netsvc
-from openerp.osv import osv, fields
-
-class instance_host(osv.osv):
+class instance_host(models.Model):
     """"""
-    
+    #TODO name should be readonly but it does not save the value, for now we keep it writable
+
     _name = 'infrastructure.instance_host'
     _description = 'instance_host'
 
-    _columns = {
-        'server_hostname_id': fields.many2one('infrastructure.server_hostname', string='Server Hostname', required=True),
-        'subdomain': fields.char(string='Subdomain'),
-        'database_type_id': fields.many2one('infrastructure.database_type', string='Database Type'),
-        'wildcard': fields.boolean(string='wildcard'),
-        'server_id': fields.many2one('infrastructure.server', string='server_id'),
-        'instance_id': fields.many2one('infrastructure.instance', string='instance_id', ondelete='cascade', required=True), 
-    }
 
-    _defaults = {
-    }
+    server_hostname_id = fields.Many2one(
+        'infrastructure.server_hostname',
+        string='Server Hostname',
+        required=True
+    )
 
+    subdomain = fields.Char(
+        string='Subdomain'
+    )
 
-    _constraints = [
+    database_type_id = fields.Many2one(
+        'infrastructure.database_type',
+        string='Database Type'
+    )
+
+    wildcard = fields.Boolean(
+        string='wildcard'
+    )
+
+    server_id = fields.Many2one(
+        'infrastructure.server',
+        string='server_id'
+    )
+
+    instance_id = fields.Many2one(
+        'infrastructure.instance',
+        string='instance_id',
+        ondelete='cascade',
+        required=True
+    )
+
+    name = fields.Char(
+        'Name',
+        compute='_get_name',
+        store=True,
+        readonly=False,
+        required=True
+    )
+
+    server_id = fields.Many2one(
+        'infrastructure.server',
+        string='Server',
+        related='instance_id.environment_id.server_id',
+        store=True,
+        readonly=True
+    )
+
+    wildcard = fields.Boolean(
+        string='Wildcard',
+        related='server_hostname_id.wildcard'
+    )
+
+    _sql_constraints = [
+        ('name_uniq', 'unique(name, server_id)',
+            'Name must be unique per server!'),
     ]
 
-
+    @api.one
+    @api.depends('server_hostname_id', 'subdomain', 'database_type_id')
+    def _get_name(self):
+        if self.server_hostname_id.wildcard:
+            if self.subdomain:
+                name = self.subdomain + '.' + self.server_hostname_id.name
+            else:
+                name = '*' + '.' + self.server_hostname_id.name
+        else:
+            name = self.server_hostname_id.name
+        if self.database_type_id.url_prefix:
+            name = self.database_type_id.url_prefix + '.' + name
+        self.name = name
 
 
 instance_host()
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
