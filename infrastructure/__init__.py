@@ -22,7 +22,6 @@ import database_type
 import database
 import server
 import command
-import environment_version_command
 import server_configuration_command
 import wizard
 import report

@@ -27,14 +27,13 @@ from openerp.osv import osv, fields
 
 class environment_version(osv.osv):
     """"""
-    
+
     _name = 'infrastructure.environment_version'
     _description = 'environment_version'
 
     _columns = {
         'name': fields.char(string='Name', required=True),
         'default_branch_id': fields.many2one('infrastructure.repository_branch', string='Default Branch', required=True),
-        'command_ids': fields.one2many('infrastructure.environment_version_command', 'environment_version_id', string='Commands'), 
     }
 
     _defaults = {

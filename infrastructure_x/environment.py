@@ -5,7 +5,7 @@ from openerp.osv import fields as fields_old
 from fabric.api import local, settings, abort, run, cd, env, sudo
 from fabric.contrib.files import exists, append, sed
 import os
-   
+
 class environment(models.Model):
     """"""
     # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder volver si no existe el path ni el source path y si no existen ambienets activos
@@ -20,15 +20,13 @@ class environment(models.Model):
             'Sources Path must be unique per server!'),
         ('sources_number', 'unique(number, server_id)',
             'Number must be unique per server!'),
-    ]    
+    ]
 
-    command_ids = fields.One2many('infrastructure.environment_version_command', string='Commands', 
-        related='environment_version_id.command_ids', required=True)
     sources_path = fields.Char(string='Sources Path', compute='_get_sources_path', store=True, 
         readonly=True, required=True, states={'draft': [('readonly', False)]})
     path = fields.Char(string='Path', compute='_get_path', store=True, readonly=True, required=True, states={'draft': [('readonly', False)]})
     instance_count = fields.Integer(string='# Instances', compute='_get_instances',)
-    
+
     @api.one
     @api.depends('instance_ids')
     def _get_instances(self):
@@ -61,27 +59,27 @@ class environment(models.Model):
         if self.path:
             sources_path = os.path.join(self.path, 'sources')
         self.sources_path = sources_path
-                
+
     @api.one
     def make_environment(self):
         if self.type == 'virtualenv':
-            self.server_id.get_env()        
+            self.server_id.get_env()
             if exists(self.path, use_sudo=True):
-                raise Warning(_("It seams that the environment already exists because there is a folder '%s'") %(self.path))            
+                raise Warning(_("It seams that the environment already exists because there is a folder '%s'") %(self.path))
             sudo('virtualenv ' + self.path)
         else:
-            raise Warning(_("Type '%s' not implemented yet.") %(self.type))        
-    
+            raise Warning(_("Type '%s' not implemented yet.") %(self.type))
+
     @api.one
     def make_sources_path(self):
         self.server_id.get_env()
         if exists(self.sources_path, use_sudo=True):
-            raise Warning(_("Folder '%s' already exists") %(self.sources_path))            
+            raise Warning(_("Folder '%s' already exists") %(self.sources_path))
         sudo('mkdir -p ' + self.sources_path)
-    
+
     @api.one
     @api.returns('infrastructure.environment_repository')
-    def check_repositories(self):    
+    def check_repositories(self):
         self.server_id.get_env()
         environment_repository = False
         for repository in self.environment_repository_ids:
@@ -97,7 +95,7 @@ class environment(models.Model):
     def install_odoo(self):
         # TODO agregar que si ya existe openerp tal vez haya que borrar y volver a crearlo
         if self.type == 'virtualenv':
-            self.server_id.get_env()        
+            self.server_id.get_env()
             environment_repository = self.check_repositories()
             with cd(environment_repository.path):
                 sudo('source ' + os.path.join(self.path, 'bin/activate') + ' && ' + environment_repository.server_repository_id.repository_id.install_server_command)

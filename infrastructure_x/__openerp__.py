@@ -23,7 +23,6 @@
         'view/command_view.xml',
         'view/environment_view.xml',
         'view/server_configuration_command_view.xml',
-        'view/environment_version_command_view.xml',
         'view/server_repository_view.xml',
         'view/environment_repository_view.xml',
         'view/instance_view.xml',

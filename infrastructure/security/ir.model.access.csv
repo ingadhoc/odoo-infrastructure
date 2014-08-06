@@ -9,8 +9,6 @@
 "access_infrastructure_environment_user","infrastructure.environment.user","model_infrastructure_environment","group_user",1,1,1,1
 "access_infrastructure_environment_version_manager","infrastructure.environment_version.manager","model_infrastructure_environment_version","group_manager",1,1,1,1
 "access_infrastructure_environment_version_user","infrastructure.environment_version.user","model_infrastructure_environment_version","group_user",1,1,1,1
-"access_infrastructure_environment_version_command_manager","infrastructure.environment_version_command.manager","model_infrastructure_environment_version_command","group_manager",1,1,1,1
-"access_infrastructure_environment_version_command_user","infrastructure.environment_version_command.user","model_infrastructure_environment_version_command","group_user",1,1,1,1
 "access_infrastructure_server_hostname_manager","infrastructure.server_hostname.manager","model_infrastructure_server_hostname","group_manager",1,1,1,1
 "access_infrastructure_server_hostname_user","infrastructure.server_hostname.user","model_infrastructure_server_hostname","group_user",1,1,1,1
 "access_infrastructure_instance_manager","infrastructure.instance.manager","model_infrastructure_instance","group_manager",1,1,1,1
