@@ -84,10 +84,10 @@
         u'data/server_track.xml',
         u'data/command_track.xml',
         u'data/server_configuration_command_track.xml',
-        u'workflow/database_workflow.xml',
-        u'workflow/environment_workflow.xml',
-        u'workflow/instance_workflow.xml',
-        u'workflow/server_workflow.xml',
+        # u'workflow/database_workflow.xml',
+        # u'workflow/environment_workflow.xml',
+        # u'workflow/instance_workflow.xml',
+        # u'workflow/server_workflow.xml',
         u'security/ir.model.access.csv'
         ],
     }
