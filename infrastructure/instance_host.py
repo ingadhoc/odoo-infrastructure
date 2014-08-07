@@ -5,11 +5,11 @@ from openerp import models, fields, api
 
 class instance_host(models.Model):
     """"""
-    #TODO name should be readonly but it does not save the value, for now we keep it writable
+    # TODO name should be readonly but it does not save the value
+    # , for now we keep it writable
 
     _name = 'infrastructure.instance_host'
     _description = 'instance_host'
-
 
     server_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
