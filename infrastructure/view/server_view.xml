@@ -114,7 +114,7 @@
                             />
                         <field name="instance_user_group"
                             />
-                        <field name="nginx_log_folder"
+                        <field name="nginx_log_dir"
                             />
                         <field name="nginx_sites_path"
                             />

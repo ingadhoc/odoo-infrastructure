@@ -72,7 +72,7 @@
                                         <field name="sources_folder"/>
                                         <field name="service_folder"/>
                                         <field name="nginx_sites_path"/>
-                                        <field name="nginx_log_folder"/>
+                                        <field name="nginx_log_dir"/>
                                     </group>
                                     <group>
                                         <field name="open_ports"/>
@@ -106,7 +106,7 @@
                                     <!-- <field name="maint_command_ids" context="{'server_id':id}"/> -->
                                     <field name="install_command_ids" context="{'server_id':id}"/>
                                 </group>
-                            </page>                           
+                            </page>
                        </notebook>
                     </sheet>
                 </sheet>

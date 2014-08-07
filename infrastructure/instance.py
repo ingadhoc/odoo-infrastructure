@@ -560,10 +560,10 @@ class instance(models.Model):
             raise Warning(_('You Must set at least one instance host!'))
 
         acces_log = os.path.join(
-            self.environment_id.server_id.nginx_log_folder,
+            self.environment_id.server_id.nginx_log_dir,
             'access_' + re.sub('[-]', '_', self.service_file))
         error_log = os.path.join(
-            self.environment_id.server_id.nginx_log_folder,
+            self.environment_id.server_id.nginx_log_dir,
             'error_' + re.sub('[-]', '_', self.service_file))
         xmlrpc_port = self.xml_rpc_port
 
