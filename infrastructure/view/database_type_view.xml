@@ -75,7 +75,7 @@
                             />
                         <field name="url_example"
                             />
-                        <field name="bd_name_example"
+                        <field name="db_name_example"
                             />
                     <field name="db_back_up_policy_ids"
                             widget="many2many_tags"
