@@ -104,16 +104,16 @@ class server(models.Model):
         string='Color Index'
     )
 
-    sources_folder = fields.Char(
-        string='Sources Folder',
+    sources_dir = fields.Char(
+        string='Sources Directory',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/sources'
     )
 
-    service_folder = fields.Char(
-        string='Service Folder',
+    service_dir = fields.Char(
+        string='Service Directory',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -129,7 +129,7 @@ class server(models.Model):
     )
 
     nginx_log_dir = fields.Char(
-        string='Nginx Log Folder',
+        string='Nginx Log Directory',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
