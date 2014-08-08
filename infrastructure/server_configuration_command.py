@@ -1,53 +1,70 @@
 # -*- coding: utf-8 -*-
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+
+from openerp import models, fields
+from openerp.tools.safe_eval import safe_eval as eval
+from fabric.api import run, cd, env, sudo
+import errno
+import time
+import os
 
 
-import re
-from openerp import netsvc
-from openerp.osv import osv, fields
-
-class server_configuration_command(osv.osv):
+class server_configuration_command(models.Model):
     """"""
-    
+
     _name = 'infrastructure.server_configuration_command'
     _description = 'server_configuration_command'
-    _inherits = {  }
-    _inherit = [ 'infrastructure.command' ]
+    _inherit = ['infrastructure.command']
 
-    _columns = {
-        'server_configuration_id': fields.many2one('infrastructure.server_configuration', string='server_configuration_id', ondelete='cascade', required=True), 
-    }
-
-    _defaults = {
-    }
+    server_configuration_id = fields.Many2one(
+        'infrastructure.server_configuration',
+        string='server_configuration_id',
+        ondelete='cascade',
+        required=True
+    )
 
     _order = "sequence"
 
-    _constraints = [
-    ]
-
-
+    def execute_command(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        user = self.pool.get('res.users').browse(cr, uid, uid)
+        result = []
+        server_id = context.get('server_id', False)
+        if not server_id:
+            # TODO raise error
+            print 'no server_id on context'
+            return False
+        server = self.pool['infrastructure.server'].browse(
+            cr, uid, server_id, context=context)
+        for command in self.browse(cr, uid, ids, context=context):
+            command_result = False
+            env.user = server.user_name
+            env.password = server.password
+            env.host_string = server.main_hostname
+            env.port = server.ssh_port
+            cxt = {
+                'self': self,
+                'os': os,
+                'errno': errno,
+                'command': command,
+                'run': run,
+                'sudo': sudo,
+                'server': server,
+                'cd': cd,
+                'pool': self.pool,
+                'time': time,
+                'cr': cr,
+                'context': dict(context), # copy context to prevent side-effects of eval
+                'uid': uid,
+                'user': user,
+            }
+            print 'command.command', command.command
+            print 'command.command.strip()', command.command.strip()
+            eval(command.command.strip(), cxt, mode="exec") # nocopy allows to return 'action'
+            if 'result' in cxt['context']:
+                command_result = cxt['context'].get('result')
+            result.append(command_result)
+        return result
 
 
 server_configuration_command()
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
