@@ -72,15 +72,13 @@
             <field name="name">infrastructure.server_configuration_command.tree</field>
             <field name="model">infrastructure.server_configuration_command</field>
             <field name="arch" type="xml">
-                <tree string="server_configuration_command"
-                    >
+                <tree string="server_configuration_command">
                     <field name="sequence"
                             widget="handle"
                         />
-                    <field name="name"
-                        />
-                    <field name="command"
-                        />
+                    <field name="name"/>
+                    <field name="command"/>
+                    <button string="Execute" icon="gtk-execute" type="object" name="execute_command" help="Execute Command"/>
                 </tree>
             </field>
         </record>

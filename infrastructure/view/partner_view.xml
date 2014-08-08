@@ -37,7 +37,7 @@
                 </search>
             </field>
         </record>
- 
+
         <!-- INHERITED FORM -->
         <record id="view_infrastructure_partner_form" model="ir.ui.view">
             <field name="name">infrastructure.partner.form</field>
@@ -60,6 +60,24 @@
             </field>
         </record>
 
+    <record id="action_infrastructure_partner_partners" model="ir.actions.act_window">
+        <field name="name">Partners</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_infrastructure_partner_tree"/>
+        <field name="search_view_id" ref="view_infrastructure_partner_filter"/>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem
+        name="Partners"
+        id="menu_partners"
+        sequence="10"
+        action="action_infrastructure_partner_partners"
+        parent="menu_data"
+        groups="group_user"
+        />
 
     </data>
 </openerp>

@@ -1,98 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
--->
-<!-- infrastructure.instance_host -->
-<!-- infrastructure.instance_host -->
 <!-- infrastructure.instance_host -->
 <openerp>
-    <data>
+<data>
 
-        <!-- SEARCH VIEW -->
-        <record id="view_infrastructure_instance_host_filter" model="ir.ui.view">
-            <field name="name">infrastructure.instance_host.select</field>
-            <field name="model">infrastructure.instance_host</field>
-            <field name="arch" type="xml">
-                <search string="instance_host" version="7.0">
-                    <group string="By Attribute">
-                    <field name="server_hostname_id" string="Server Hostname"
-                            />
-                    <field name="subdomain" string="Subdomain"
-                            />
-                    </group>
-                    <group string="By object">
-                    </group>
-                </search>
-            </field>
-        </record>
+    <!-- SEARCH VIEW -->
+    <record id="view_infrastructure_instance_host_filter" model="ir.ui.view">
+        <field name="name">infrastructure.instance_host.select</field>
+        <field name="model">infrastructure.instance_host</field>
+        <field name="arch" type="xml">
+            <search string="instance_host" version="7.0">
+                <group string="By Attribute">
+                    <field name="server_hostname_id" string="Server Hostname"/>
+                    <field name="subdomain" string="Subdomain"/>
+                </group>
+                <group string="By object">
+                </group>
+            </search>
+        </field>
+    </record>
 
-        <!-- FORMVIEW -->
-        <record id="view_infrastructure_instance_host_form" model="ir.ui.view">
-            <field name="name">infrastructure.instance_host.form</field>
-            <field name="model">infrastructure.instance_host</field>
-            <field name="arch" type="xml">
-                <form string="instance_host" version="7.0">
-                    <header>
-                    </header>
-                    <sheet string="instance_host">
-                     <group>
-                        <field name="server_hostname_id"
-                            domain="[('server_id','=',server_id)]"
-                            />
-                        <field name="subdomain"
-                            attrs="{'invisible':[('wildcard','!=',True)]}"
-                            />
-                        <field name="database_type_id"
-                            />
-                        <field name="wildcard"
-                            invisible="True"
-                            />
-                        <field name="server_id"
-                            invisible="True"
-                            />
-                     </group>
-                    </sheet>
-
-                </form>
-            </field>
-        </record>
-
-        <!-- TREEVIEW -->
-
-        <record id="view_infrastructure_instance_host_tree" model="ir.ui.view">
-            <field name="name">infrastructure.instance_host.tree</field>
-            <field name="model">infrastructure.instance_host</field>
-            <field name="arch" type="xml">
-                <tree string="instance_host"
-                    >
+    <!-- FORMVIEW -->
+    <record id="view_infrastructure_instance_host_form" model="ir.ui.view">
+        <field name="name">infrastructure.instance_host.form</field>
+        <field name="model">infrastructure.instance_host</field>
+        <field name="arch" type="xml">
+            <form string="instance_host" version="7.0">
+                <header>
+                </header>
+                <sheet string="instance_host">
+                 <group>
                     <field name="server_hostname_id"
+                        domain="[('server_id','=',server_id)]"
                         />
                     <field name="subdomain"
+                        attrs="{'invisible':[('wildcard','!=',True)]}"
                         />
-                </tree>
-            </field>
-        </record>
+                    <field name="database_type_id"/>
+                    <field name="wildcard"
+                        invisible="True"
+                        />
+                    <field name="server_id"
+                        invisible="True"
+                        />
+                    <field name="name"/>
+                 </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-    </data>
+    <!-- TREEVIEW -->
+    <record id="view_infrastructure_instance_host_tree" model="ir.ui.view">
+        <field name="name">infrastructure.instance_host.tree</field>
+        <field name="model">infrastructure.instance_host</field>
+        <field name="arch" type="xml">
+            <tree string="instance_host">
+                <field name="server_hostname_id"/>
+                <field name="subdomain"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+</data>
 </openerp>
-<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
-     -->

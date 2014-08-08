@@ -78,6 +78,25 @@
             </field>
         </record>
 
+    <record id="action_infrastructure_server_configuration_server_configurations" model="ir.actions.act_window">
+        <field name="name">Server Configurations</field>
+        <field name="res_model">infrastructure.server_configuration</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_infrastructure_server_configuration_tree"/>
+        <field name="search_view_id" ref="view_infrastructure_server_configuration_filter"/>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem
+        name="Server Configurations"
+        id="menu_server_configurations"
+        sequence="10"
+        action="action_infrastructure_server_configuration_server_configurations"
+        parent="menu_serv__env_and_inst"
+        groups="group_manager"
+        />
+
     </data>
 </openerp>
 <!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4

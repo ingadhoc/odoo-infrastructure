@@ -1,173 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
--->
-<!-- infrastructure.instance -->
-<!-- infrastructure.instance -->
 <!-- infrastructure.instance -->
 <openerp>
-    <data>
+<data>
 
-        <!-- SEARCH VIEW -->
-        <record id="view_infrastructure_instance_filter" model="ir.ui.view">
-            <field name="name">infrastructure.instance.select</field>
-            <field name="model">infrastructure.instance</field>
-            <field name="arch" type="xml">
-                <search string="instance" version="7.0">
-                    <group string="By Attribute">
-                    <field name="number" string="Number"
-                            />
-                    <field name="name" string="Name"
-                            />
-                    <field name="type" string="Instance Type"
-                            />
-                    <field name="xml_rpc_port" string="xml rpc Port"
-                            />
-                    <field name="db_filter" string="Db filter"
-                            />
-                    <field name="user" string="User / Service File"
-                            />
-                    </group>
-                    <group string="By object">
-                    <field name="environment_id" string="Environment"
-                            />
-                    </group>
-                </search>
-            </field>
-        </record>
+    <!-- SEARCH VIEW -->
+    <record id="view_infrastructure_instance_filter" model="ir.ui.view">
+        <field name="name">infrastructure.instance.select</field>
+        <field name="model">infrastructure.instance</field>
+        <field name="arch" type="xml">
+            <search string="instance" version="7.0">
+                <group string="By Attribute">
+                <field name="number" string="Number"/>
+                <field name="name" string="Name"/>
+                <field name="type" string="Instance Type"/>
+                <field name="xml_rpc_port" string="XML-RPC Port"/>
+                <field name="db_filter" string="DB filter"/>
+                <field name="user" string="User / Service File"/>
+                </group>
+                <group string="By object">
+                <field name="environment_id" string="Environment"/>
+                </group>
+            </search>
+        </field>
+    </record>
 
-        <!-- FORMVIEW -->
-        <record id="view_infrastructure_instance_form" model="ir.ui.view">
-            <field name="name">infrastructure.instance.form</field>
-            <field name="model">infrastructure.instance</field>
-            <field name="arch" type="xml">
-                <form string="instance" version="7.0">
-                    <header>
-                        <button name="sgn_to_active"
-                            states="draft"
-                            string="to Active"
-                            class="oe_highlight"
-                            />
-                        <button name="action_wfk_set_draft"
-                            type="object"
-                            states="cancel"
-                            string="to Draft"
-                            />
-                        <button name="sgn_cancel"
-                            states="active"
-                            string="Cancel"
-                            />
-                        <field name="state" widget="statusbar"
-                            statusbar_colors='{}'
-                            />
-                    </header>
-                    <sheet string="instance">
-                     <group>
-                        <field name="number"
-                            />
-                        <field name="name"
-                            />
-                        <field name="type"
-                            />
-                        <field name="xml_rpc_port"
-                            />
-                        <field name="xml_rpcs_port"
-                            />
-                        <field name="longpolling_port"
-                            />
-                        <field name="db_filter"
-                            />
-                        <field name="user"
-                            />
-                        <field name="note"
-                            />
-                        <field name="addons_path"
-                            />
-                        <field name="conf_file_path"
-                            />
-                        <field name="run_server_command"
-                            />
-                        <field name="proxy_mode"
-                            />
-                        <field name="logfile"
-                            />
-                        <field name="log_level"
-                            />
-                        <field name="workers"
-                            />
-                        <field name="data_dir"
-                            />
-                        <field name="admin_pass"
-                            />
-                        <field name="unaccent"
-                            />
-                        <field name="module_load"
-                            />
-                        <field name="service_file"
-                            />
-                        <field name="main_hostname"
-                            />
-                     </group>
-                    </sheet>
-
-                    <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers"/>
-                        <field name="message_ids" widget="mail_thread"/>
-                    </div>
-                </form>
-            </field>
-        </record>
-
-        <!-- TREEVIEW -->
-
-        <record id="view_infrastructure_instance_tree" model="ir.ui.view">
-            <field name="name">infrastructure.instance.tree</field>
-            <field name="model">infrastructure.instance</field>
-            <field name="arch" type="xml">
-                <tree string="instance"
-                    fonts="bold:message_unread==True"
-                    colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
-                    >
-                    <field name="message_unread" invisible="1"/>
-                    <field name="number"
+    <!-- FORMVIEW -->
+    <record id="view_infrastructure_instance_form" model="ir.ui.view">
+        <field name="name">infrastructure.instance.form</field>
+        <field name="model">infrastructure.instance</field>
+        <field name="arch" type="xml">
+            <form string="instance" version="7.0">
+                <header>
+                    <button name="sgn_to_active"
+                        states="draft"
+                        string="to Active"
+                        class="oe_highlight"
                         />
-                    <field name="name"
+                    <button name="action_wfk_set_draft"
+                        type="object"
+                        states="cancel"
+                        string="to Draft"
                         />
-                    <field name="type"
+                    <button name="sgn_cancel"
+                        states="active"
+                        string="Cancel"
                         />
-                    <field name="xml_rpc_port"
+                    <field name="state" widget="statusbar"
+                        statusbar_colors='{}'
                         />
+                </header>
+                <sheet string="instance">
+                 <group>
+                    <field name="number"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="xml_rpc_port"/>
+                    <field name="xml_rpcs_port"/>
+                    <field name="longpolling_port"/>
                     <field name="db_filter"
                         />
                     <field name="user"
                         />
-                    <field name="environment_id"
+                    <field name="note"
                         />
-                    <field name="state" />
-                </tree>
-            </field>
-        </record>
+                    <field name="addons_path"
+                        />
+                    <field name="conf_file_path"
+                        />
+                    <field name="run_server_command"
+                        />
+                    <field name="proxy_mode"
+                        />
+                    <field name="logfile"
+                        />
+                    <field name="log_level"
+                        />
+                    <field name="workers"
+                        />
+                    <field name="data_dir"
+                        />
+                    <field name="admin_pass"
+                        />
+                    <field name="unaccent"
+                        />
+                    <field name="module_load"
+                        />
+                    <field name="service_file"
+                        />
+                    <field name="main_hostname"
+                        />
+                 </group>
+                </sheet>
 
-    </data>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- TREEVIEW -->
+
+    <record id="view_infrastructure_instance_tree" model="ir.ui.view">
+        <field name="name">infrastructure.instance.tree</field>
+        <field name="model">infrastructure.instance</field>
+        <field name="arch" type="xml">
+            <tree string="instance"
+                fonts="bold:message_unread==True"
+                colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
+                >
+                <field name="message_unread" invisible="1"/>
+                <field name="number"
+                    />
+                <field name="name"
+                    />
+                <field name="type"
+                    />
+                <field name="xml_rpc_port"
+                    />
+                <field name="db_filter"
+                    />
+                <field name="user"
+                    />
+                <field name="environment_id"
+                    />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_infrastructure_instance_instances" model="ir.actions.act_window">
+        <field name="name">Instances</field>
+        <field name="res_model">infrastructure.instance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_infrastructure_instance_tree"/>
+        <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem
+        name="Instances"
+        id="menu_instances"
+        sequence="30"
+        action="action_infrastructure_instance_instances"
+        parent="menu_infra_main"
+        groups="group_user"
+        />
+
+</data>
 </openerp>
-<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
-     -->

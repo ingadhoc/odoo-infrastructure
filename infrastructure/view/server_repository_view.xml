@@ -78,6 +78,7 @@
                         />
                     <field name="path"
                         />
+                    <button string="Get/Update Repository" icon="gtk-go-down" type="object" name="get_update_repository" help="Execute Command"/>
                 </tree>
             </field>
         </record>
