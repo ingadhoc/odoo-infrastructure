@@ -2,4 +2,3 @@
 
 import wizard
 import server_repository
-import server_hostname
