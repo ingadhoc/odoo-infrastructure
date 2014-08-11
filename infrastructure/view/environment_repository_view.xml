@@ -51,11 +51,17 @@
         <field name="name">infrastructure.environment_repository.tree</field>
         <field name="model">infrastructure.environment_repository</field>
         <field name="arch" type="xml">
-            <tree string="environment_repository">
-                <field name="server_repository_id"/>
-                <field name="branch_id"/>
+            <tree string="environment_repository" editable="top">
+                <field name="server_repository_id" domain="[('server_id','=',server_id)]"/>
+                <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
                 <field name="path"/>
                 <field name="addons_paths"/>
+                <field name="branch_ids" invisible="1"/>
+                <field name="server_id" invisible="1"/>
+                <button string="Pull, Clone to Env. and Checkout"
+                    icon="gtk-go-down"
+                    type="object"
+                    name="repository_pull_clone_and_checkout"/>
             </tree>
         </field>
     </record>
