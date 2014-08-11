@@ -85,6 +85,8 @@
         u'data/server_track.xml',
         u'data/command_track.xml',
         u'data/server_configuration_command_track.xml',
+        u'data/cron.xml',
+        u'data/db_back_up_policy.xml',
         # u'workflow/database_workflow.xml',
         # u'workflow/environment_workflow.xml',
         # u'workflow/instance_workflow.xml',
