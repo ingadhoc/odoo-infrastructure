@@ -89,6 +89,19 @@
         # u'workflow/environment_workflow.xml',
         # u'workflow/instance_workflow.xml',
         # u'workflow/server_workflow.xml',
-        u'security/ir.model.access.csv'
+        u'security/ir.model.access.csv',
+        u'data/demo/res.partner.csv',
+        u'data/demo/infrastructure.repository_branch.csv',
+        u'data/demo/infrastructure.repository.csv',
+        u'data/demo/infrastructure.server_configuration.csv',
+        u'data/demo/infrastructure.server.csv',
+        u'data/demo/infrastructure.server_hostname.csv',
+        u'data/demo/infrastructure.environment_version.csv',
+        u'data/demo/infrastructure.environment.csv',
+        u'data/demo/infrastructure.db_filter.csv',
+        u'data/demo/infrastructure.server_repository.csv',
+        u'data/demo/infrastructure.instance.csv',
+        u'data/demo/infrastructure.instance_host.csv',
+        u'data/demo/infrastructure.server_configuration_command.csv'
         ],
     }
