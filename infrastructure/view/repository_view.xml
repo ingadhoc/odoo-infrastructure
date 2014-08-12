@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+##############################################################################
+#
+#    Infrastructure
+#    Copyright (C) 2014 Ingenieria ADHOC
+#    No email
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+-->
+<!-- infrastructure.repository -->
+<!-- infrastructure.repository -->
+<!-- infrastructure.repository -->
+<openerp>
+    <data>
+
+        <!-- SEARCH VIEW -->
+        <record id="view_infrastructure_repository_filter" model="ir.ui.view">
+            <field name="name">infrastructure.repository.select</field>
+            <field name="model">infrastructure.repository</field>
+            <field name="arch" type="xml">
+                <search string="repository" version="7.0">
+                    <group string="By Attribute">
+                    <field name="name" string="Name"
+                            />
+                    <field name="folder" string="Folder"
+                            />
+                    <field name="type" string="Type"
+                            />
+                    <field name="pip_packages" string="PIP Packages"
+                            />
+                    </group>
+                    <group string="By object">
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- FORMVIEW -->
+        <record id="view_infrastructure_repository_form" model="ir.ui.view">
+            <field name="name">infrastructure.repository.form</field>
+            <field name="model">infrastructure.repository</field>
+            <field name="arch" type="xml">
+                <form string="repository" version="7.0">
+                    <header>
+                    </header>
+                    <sheet string="repository">
+                     <group>
+                        <field name="name"
+                            />
+                        <field name="folder"
+                            />
+                        <field name="type"
+                            />
+                        <field name="addons_subfolder"
+                            />
+                        <field name="url"
+                            />
+                        <field name="pip_packages"
+                            />
+                        <field name="is_server"
+                            />
+                        <field name="install_server_command"
+                            attrs="{'required':[('is_server','=',True)],'invisible':[('is_server','!=',True)]}"
+                            />
+                    <field name="branch_ids"
+                            widget="many2many_tags"
+                            />
+                     </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <!-- TREEVIEW -->
+
+        <record id="view_infrastructure_repository_tree" model="ir.ui.view">
+            <field name="name">infrastructure.repository.tree</field>
+            <field name="model">infrastructure.repository</field>
+            <field name="arch" type="xml">
+                <tree string="repository"
+                    >
+                    <field name="sequence"
+                            widget="handle"
+                        />
+                    <field name="name"
+                        />
+                    <field name="folder"
+                        />
+                    <field name="type"
+                        />
+                    <field name="url"
+                        />
+                    <field name="pip_packages"
+                        />
+                    <field name="is_server"
+                        />
+                </tree>
+            </field>
+        </record>
+
+    <record id="action_infrastructure_repository_respositories" model="ir.actions.act_window">
+        <field name="name">Respositories</field>
+        <field name="res_model">infrastructure.repository</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_infrastructure_repository_tree"/>
+        <field name="search_view_id" ref="view_infrastructure_repository_filter"/>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem
+        name="Respositories"
+        id="menu_respositories"
+        sequence="100"
+        action="action_infrastructure_repository_respositories"
+        parent="menu_repositories_conf"
+        groups="group_manager"
+        />
+
+    </data>
+</openerp>
+<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
+     -->

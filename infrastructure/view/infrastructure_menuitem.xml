@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+    <menuitem
+        name="Infrastructure"
+        id="menu_infrastructure"
+        sequence="20"
+        groups="group_user"
+        />
+
+    <menuitem
+        name="Configuration"
+        id="menu_configuration"
+        sequence="500"
+        parent="menu_infrastructure"
+        groups="group_manager"
+        />
+
+    <menuitem
+        name="Data"
+        id="menu_data"
+        sequence="20"
+        parent="menu_infrastructure"
+        groups="group_user"
+        />
+
+    <menuitem
+        name="Main"
+        id="menu_infra_main"
+        sequence="10"
+        parent="menu_infrastructure"
+        groups="group_user"
+        />
+
+
+
+
+
+
+
+    <menuitem
+        name="Miscellaneous"
+        id="menu_miscellaneous"
+        sequence="40"
+        parent="menu_configuration"
+        groups="group_manager"
+        />
+
+
+
+    <menuitem
+        name="Repositories"
+        id="menu_repositories_conf"
+        sequence="10"
+        parent="menu_configuration"
+        groups="group_manager"
+        />
+
+    <menuitem
+        name="Serv. Env and Inst"
+        id="menu_serv__env_and_inst"
+        sequence="20"
+        parent="menu_configuration"
+        groups="group_manager"
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</data>
+</openerp>

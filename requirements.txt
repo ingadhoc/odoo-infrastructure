@@ -1,0 +1,2 @@
+Fabric==1.9.0
+openerp-client-lib==1.1.2

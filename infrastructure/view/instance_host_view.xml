@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- infrastructure.instance_host -->
+<openerp>
+<data>
+
+    <!-- SEARCH VIEW -->
+    <record id="view_infrastructure_instance_host_filter" model="ir.ui.view">
+        <field name="name">infrastructure.instance_host.select</field>
+        <field name="model">infrastructure.instance_host</field>
+        <field name="arch" type="xml">
+            <search string="instance_host" version="7.0">
+                <group string="By Attribute">
+                    <field name="server_hostname_id" string="Server Hostname"/>
+                    <field name="subdomain" string="Subdomain"/>
+                </group>
+                <group string="By object">
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- FORMVIEW -->
+    <record id="view_infrastructure_instance_host_form" model="ir.ui.view">
+        <field name="name">infrastructure.instance_host.form</field>
+        <field name="model">infrastructure.instance_host</field>
+        <field name="arch" type="xml">
+            <form string="instance_host" version="7.0">
+                <header>
+                </header>
+                <sheet string="instance_host">
+                 <group>
+                    <field name="server_hostname_id"
+                        domain="[('server_id','=',server_id)]"
+                        />
+                    <field name="subdomain"
+                        attrs="{'invisible':[('wildcard','!=',True)]}"
+                        />
+                    <field name="database_type_id"/>
+                    <field name="wildcard"
+                        invisible="True"
+                        />
+                    <field name="server_id"
+                        invisible="True"
+                        />
+                    <field name="name"/>
+                 </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- TREEVIEW -->
+    <record id="view_infrastructure_instance_host_tree" model="ir.ui.view">
+        <field name="name">infrastructure.instance_host.tree</field>
+        <field name="model">infrastructure.instance_host</field>
+        <field name="arch" type="xml">
+            <tree string="instance_host">
+                <field name="server_hostname_id"/>
+                <field name="subdomain"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+</data>
+</openerp>

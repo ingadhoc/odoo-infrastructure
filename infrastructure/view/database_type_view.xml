@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- infrastructure.database_type -->
+<openerp>
+<data>
+
+    <!-- SEARCH VIEW -->
+    <record id="view_infrastructure_database_type_filter" model="ir.ui.view">
+        <field name="name">infrastructure.database_type.select</field>
+        <field name="model">infrastructure.database_type</field>
+        <field name="arch" type="xml">
+            <search string="database_type" version="7.0">
+                <group string="By Attribute">
+                    <field name="name" string="Name"/>
+                    <field name="prefix" string="Prefix"/>
+                </group>
+                    <group string="By object">
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- FORMVIEW -->
+    <record id="view_infrastructure_database_type_form" model="ir.ui.view">
+        <field name="name">infrastructure.database_type.form</field>
+        <field name="model">infrastructure.database_type</field>
+        <field name="arch" type="xml">
+            <form string="database_type" version="7.0">
+                <header>
+                </header>
+                <sheet string="database_type">
+                 <group>
+                    <field name="name"/>
+                    <field name="prefix"/>
+                    <field name="url_prefix"/>
+                    <field name="automatic_drop"/>
+                    <field name="automatic_drop_days"
+                        attrs="{'invisible':[('automatic_drop','!=',True)],'required':[('automatic_drop','=',True)]}"
+                        />
+                    <field name="protect_db"/>
+                    <field name="automatic_deactivation"/>
+                    <field name="auto_deactivation_days"
+                        attrs="{'invisible':[('automatic_deactivation','!=',True)],'required':[('automatic_deactivation','=',True)]}"
+                        />
+                    <field name="url_example"/>
+                    <field name="db_name_example"/>
+                <field name="db_back_up_policy_ids"
+                        widget="many2many_tags"
+                        />
+                 </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- TREEVIEW -->
+    <record id="view_infrastructure_database_type_tree" model="ir.ui.view">
+        <field name="name">infrastructure.database_type.tree</field>
+        <field name="model">infrastructure.database_type</field>
+        <field name="arch" type="xml">
+            <tree string="database_type">
+                <field name="name"/>
+                <field name="prefix"/>
+                <field name="url_prefix"/>
+                <field name="automatic_drop"/>
+                <field name="protect_db"/>
+                <field name="automatic_deactivation"/>
+                <field name="auto_deactivation_days"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_infrastructure_database_type_database_types" model="ir.actions.act_window">
+        <field name="name">Database Types</field>
+        <field name="res_model">infrastructure.database_type</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_infrastructure_database_type_tree"/>
+        <field name="search_view_id" ref="view_infrastructure_database_type_filter"/>
+        <field name="domain">[]</field>
+    </record>
+
+    <menuitem
+        name="Database Types"
+        id="menu_database_types"
+        sequence="100"
+        action="action_infrastructure_database_type_database_types"
+        parent="menu_databases_conf"
+        groups="group_manager"
+        />
+
+</data>
+</openerp>
