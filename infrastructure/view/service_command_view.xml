@@ -1,88 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
--->
-<!-- infrastructure.service_command -->
-<!-- infrastructure.service_command -->
 <!-- infrastructure.service_command -->
 <openerp>
-    <data>
+<data>
 
-        <!-- SEARCH VIEW -->
-        <record id="view_infrastructure_service_command_filter" model="ir.ui.view">
-            <field name="name">infrastructure.service_command.select</field>
-            <field name="model">infrastructure.service_command</field>
-            <field name="arch" type="xml">
-                <search string="service_command" version="7.0">
-                    <group string="By Attribute">
-                    <field name="name" string="name"
-                            />
-                    <field name="command" string="command"
-                            />
-                    </group>
-                    <group string="By object">
-                    </group>
-                </search>
-            </field>
-        </record>
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_service_command_filter" model="ir.ui.view">
+    <field name="name">infrastructure.service_command.select</field>
+    <field name="model">infrastructure.service_command</field>
+    <field name="arch" type="xml">
+        <search string="service_command" version="7.0">
+            <group string="By Attribute">
+                <field name="name" string="name"/>
+                <field name="command" string="command"/>
+            </group>
+            <group string="By object">
+            </group>
+        </search>
+    </field>
+</record>
 
-        <!-- FORMVIEW -->
-        <record id="view_infrastructure_service_command_form" model="ir.ui.view">
-            <field name="name">infrastructure.service_command.form</field>
-            <field name="model">infrastructure.service_command</field>
-            <field name="arch" type="xml">
-                <form string="service_command" version="7.0">
-                    <header>
-                    </header>
-                    <sheet string="service_command">
-                     <group>
-                        <field name="name"
-                            />
-                        <field name="command"
-                            />
-                     </group>
-                    </sheet>
+<!-- FORMVIEW -->
+<record id="view_infrastructure_service_command_form" model="ir.ui.view">
+    <field name="name">infrastructure.service_command.form</field>
+    <field name="model">infrastructure.service_command</field>
+    <field name="arch" type="xml">
+        <form string="service_command" version="7.0">
+            <header>
+            </header>
+            <sheet string="service_command">
+             <group>
+                <field name="name"/>
+                <field name="command"/>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
 
-                </form>
-            </field>
-        </record>
+<!-- TREEVIEW -->
+<record id="view_infrastructure_service_command_tree" model="ir.ui.view">
+    <field name="name">infrastructure.service_command.tree</field>
+    <field name="model">infrastructure.service_command</field>
+    <field name="arch" type="xml">
+        <tree string="service_command">
+            <field name="name"/>
+            <field name="command"/>
+        </tree>
+    </field>
+</record>
 
-        <!-- TREEVIEW -->
-
-        <record id="view_infrastructure_service_command_tree" model="ir.ui.view">
-            <field name="name">infrastructure.service_command.tree</field>
-            <field name="model">infrastructure.service_command</field>
-            <field name="arch" type="xml">
-                <tree string="service_command"
-                    >
-                    <field name="name"
-                        />
-                    <field name="command"
-                        />
-                </tree>
-            </field>
-        </record>
-
-    </data>
+</data>
 </openerp>
-<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
-     -->

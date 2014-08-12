@@ -1,89 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
--->
-<!-- infrastructure.server_repository -->
-<!-- infrastructure.server_repository -->
 <!-- infrastructure.server_repository -->
 <openerp>
-    <data>
+<data>
 
-        <!-- SEARCH VIEW -->
-        <record id="view_infrastructure_server_repository_filter" model="ir.ui.view">
-            <field name="name">infrastructure.server_repository.select</field>
-            <field name="model">infrastructure.server_repository</field>
-            <field name="arch" type="xml">
-                <search string="server_repository" version="7.0">
-                    <group string="By Attribute">
-                    <field name="repository_id" string="Repository"
-                            />
-                    <field name="path" string="Path"
-                            />
-                    </group>
-                    <group string="By object">
-                    </group>
-                </search>
-            </field>
-        </record>
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_server_repository_filter" model="ir.ui.view">
+    <field name="name">infrastructure.server_repository.select</field>
+    <field name="model">infrastructure.server_repository</field>
+    <field name="arch" type="xml">
+        <search string="server_repository" version="7.0">
+            <group string="By Attribute">
+                <field name="repository_id" string="Repository"/>
+                <field name="path" string="Path"/>
+            </group>
+            <group string="By object">
+            </group>
+        </search>
+    </field>
+</record>
 
-        <!-- FORMVIEW -->
-        <record id="view_infrastructure_server_repository_form" model="ir.ui.view">
-            <field name="name">infrastructure.server_repository.form</field>
-            <field name="model">infrastructure.server_repository</field>
-            <field name="arch" type="xml">
-                <form string="server_repository" version="7.0">
-                    <header>
-                    </header>
-                    <sheet string="server_repository">
-                     <group>
-                        <field name="repository_id"
-                            />
-                        <field name="path"
-                            />
-                     </group>
-                    </sheet>
+<!-- FORMVIEW -->
+<record id="view_infrastructure_server_repository_form" model="ir.ui.view">
+    <field name="name">infrastructure.server_repository.form</field>
+    <field name="model">infrastructure.server_repository</field>
+    <field name="arch" type="xml">
+        <form string="server_repository" version="7.0">
+            <header>
+            </header>
+            <sheet string="server_repository">
+             <group>
+                <field name="repository_id"/>
+                <field name="path"/>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
 
-                </form>
-            </field>
-        </record>
+<!-- TREEVIEW -->
+<record id="view_infrastructure_server_repository_tree" model="ir.ui.view">
+    <field name="name">infrastructure.server_repository.tree</field>
+    <field name="model">infrastructure.server_repository</field>
+    <field name="arch" type="xml">
+        <tree string="server_repository">
+            <field name="repository_id"/>
+            <field name="path"/>
+            <button string="Get/Update Repository" icon="gtk-go-down" type="object" name="get_update_repository" help="Execute Command"/>
+        </tree>
+    </field>
+</record>
 
-        <!-- TREEVIEW -->
-
-        <record id="view_infrastructure_server_repository_tree" model="ir.ui.view">
-            <field name="name">infrastructure.server_repository.tree</field>
-            <field name="model">infrastructure.server_repository</field>
-            <field name="arch" type="xml">
-                <tree string="server_repository"
-                    >
-                    <field name="repository_id"
-                        />
-                    <field name="path"
-                        />
-                    <button string="Get/Update Repository" icon="gtk-go-down" type="object" name="get_update_repository" help="Execute Command"/>
-                </tree>
-            </field>
-        </record>
-
-    </data>
+</data>
 </openerp>
-<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
-     -->

@@ -3,177 +3,167 @@
 <openerp>
 <data>
 
-    <!-- SEARCH VIEW -->
-    <record id="view_infrastructure_instance_filter" model="ir.ui.view">
-        <field name="name">infrastructure.instance.select</field>
-        <field name="model">infrastructure.instance</field>
-        <field name="arch" type="xml">
-            <search string="instance" version="7.0">
-                <group string="By Attribute">
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_instance_filter" model="ir.ui.view">
+    <field name="name">infrastructure.instance.select</field>
+    <field name="model">infrastructure.instance</field>
+    <field name="arch" type="xml">
+        <search string="instance" version="7.0">
+            <group string="By Attribute">
                 <field name="number" string="Number"/>
                 <field name="name" string="Name"/>
                 <field name="type" string="Instance Type"/>
                 <field name="xml_rpc_port" string="XML-RPC Port"/>
                 <field name="db_filter" string="DB filter"/>
                 <field name="user" string="User / Service File"/>
-                </group>
-                <group string="By object">
+            </group>
+            <group string="By Object">
                 <field name="environment_id" string="Environment"/>
-                </group>
-            </search>
-        </field>
-    </record>
+            </group>
+        </search>
+    </field>
+</record>
 
-    <!-- FORMVIEW -->
-    <record id="view_infrastructure_instance_form" model="ir.ui.view">
-        <field name="name">infrastructure.instance.form</field>
-        <field name="model">infrastructure.instance</field>
-        <field name="arch" type="xml">
-            <form string="instance" version="7.0">
-                <header>
-                    <button name="sgn_to_active"
-                        states="draft"
-                        string="to Active"
-                        class="oe_highlight"
-                        />
-                    <button name="action_wfk_set_draft"
-                        type="object"
-                        states="cancel"
-                        string="to Draft"
-                        />
-                    <button name="sgn_cancel"
-                        states="active"
-                        string="Cancel"
-                        />
-                    <field name="state" widget="statusbar"
-                        statusbar_colors='{}'
-                        />
-                </header>
-                <field name="server_id" invisible="1"/>
-                <sheet>
-                    <div class="col-md-6">
-                        <h1>
-                            <field name="name" placeholder="Name..."/>
-                        </h1>
-                        <h2>
-                            <field name="number" placeholder="Number... (1 digits)"/>
-                        </h2>
-                    </div>
-                    <div class="oe_right oe_button_box" name="buttons">
-                        <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_instance_id': active_id}">
-                            <field name="database_count" widget="statinfo"/>
-                        </button>
-                        <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_service" attrs="{'invisible':[('state','!=','active')]}"/>
-                        <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_service" attrs="{'invisible':[('state','!=','active')]}"/>
-                        <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_service" attrs="{'invisible':[('state','!=','active')]}"/>
-                    </div>
-                    <group>
-                        <group>
-                            <field name="user"/>
-                            <field name="admin_pass"/>
-                            <field name="db_filter"/>
-                            <field name="main_hostname" widget="url"/>
-                        </group>
-                        <group>
-                            <field name="type"/>
-                            <field name="xml_rpc_port"/>
-                            <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
-                            <field name="longpolling_port"/>
-                        </group>
-                    </group>
-                    <notebook>
-                        <page string="Configuration">
-                            <button icon="fa-sun-o" type="object" string="Create Instance" class="oe_stat_button" help="Create User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" attrs="{'invisible':[('state','!=','draft')]}"/>
-                            <button icon="fa-refresh" type="object" string="Update Conf" class="oe_stat_button" name="update_conf_file" attrs="{'invisible':[('state','!=','active')]}"/>
-                            <button icon="fa-refresh" type="object" string="Up. Nginx Site" class="oe_stat_button" name="update_nginx_site" attrs="{'invisible':[('state','!=','active')]}"/>
-                            <button icon="fa-refresh" type="object" string="Update Service" class="oe_stat_button" name="update_service_file" attrs="{'invisible':[('state','!=','active')]}"/>
-                            <button icon="fa-play" type="object" string="Run On Start" class="oe_stat_button" name="run_on_start" attrs="{'invisible':[('state','!=','active')]}"/>
-                            <button icon="fa-stop" type="object" string="Stop On Start" class="oe_stat_button" name="stop_run_on_start" attrs="{'invisible':[('state','!=','active')]}"/>
-                            <group>
-                                <group>
-                                    <field name="module_load"/>
-                                    <field name="run_server_command"/>
-                                    <field name="unaccent"/>
-                                    <field name="proxy_mode"/>
-                                    <field name="workers"/>
-                                </group>
-                                <group>
-                                    <field name="conf_file_path"/>
-                                    <field name="logfile"/>
-                                    <field name="data_dir"/>
-                                    <field name="service_file"/>
-                                    <!-- <field name="log_level"/> -->
-                                </group>
-                            </group>
-                            <label for="addons_path"/>
-                            <field name="addons_path"/>
-                            <!-- con este widget no funciona bien de una -->
-                            <!-- <field name="instance_host_ids" widget="many2many_tags"/> -->
-                            <label for="instance_host_ids"/>
-                            <field name="instance_host_ids" context="{'default_server_id':server_id}"/>
-                        </page>
-                        <page string="Notes">
-                            <field name="note"/>
-                        </page>
-                    </notebook>
-                </sheet>
-
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers"/>
-                    <field name="message_ids" widget="mail_thread"/>
+<!-- FORMVIEW -->
+<record id="view_infrastructure_instance_form" model="ir.ui.view">
+    <field name="name">infrastructure.instance.form</field>
+    <field name="model">infrastructure.instance</field>
+    <field name="arch" type="xml">
+        <form string="instance" version="7.0">
+            <header>
+                <button name="sgn_to_active"
+                    states="draft"
+                    string="to Active"
+                    class="oe_highlight"
+                    />
+                <button name="action_wfk_set_draft"
+                    type="object"
+                    states="cancel"
+                    string="to Draft"
+                    />
+                <button name="sgn_cancel"
+                    states="active"
+                    string="Cancel"
+                    />
+                <field name="state" widget="statusbar"
+                    statusbar_colors='{}'
+                    />
+            </header>
+            <field name="server_id" invisible="1"/>
+            <sheet>
+                <div class="col-md-6">
+                    <h1>
+                        <field name="name" placeholder="Name..."/>
+                    </h1>
+                    <h2>
+                        <field name="number" placeholder="Number... (1 digits)"/>
+                    </h2>
                 </div>
-            </form>
-        </field>
-    </record>
+                <div class="oe_right oe_button_box" name="buttons">
+                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_instance_id': active_id}">
+                        <field name="database_count" widget="statinfo"/>
+                    </button>
+                    <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_service" attrs="{'invisible':[('state','!=','active')]}"/>
+                    <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_service" attrs="{'invisible':[('state','!=','active')]}"/>
+                    <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_service" attrs="{'invisible':[('state','!=','active')]}"/>
+                </div>
+                <group>
+                    <group>
+                        <field name="user"/>
+                        <field name="admin_pass"/>
+                        <field name="db_filter"/>
+                        <field name="main_hostname" widget="url"/>
+                    </group>
+                    <group>
+                        <field name="type"/>
+                        <field name="xml_rpc_port"/>
+                        <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
+                        <field name="longpolling_port"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Configuration">
+                        <button icon="fa-sun-o" type="object" string="Create Instance" class="oe_stat_button" help="Create User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" attrs="{'invisible':[('state','!=','draft')]}"/>
+                        <button icon="fa-refresh" type="object" string="Update Conf" class="oe_stat_button" name="update_conf_file" attrs="{'invisible':[('state','!=','active')]}"/>
+                        <button icon="fa-refresh" type="object" string="Up. Nginx Site" class="oe_stat_button" name="update_nginx_site" attrs="{'invisible':[('state','!=','active')]}"/>
+                        <button icon="fa-refresh" type="object" string="Update Service" class="oe_stat_button" name="update_service_file" attrs="{'invisible':[('state','!=','active')]}"/>
+                        <button icon="fa-play" type="object" string="Run On Start" class="oe_stat_button" name="run_on_start" attrs="{'invisible':[('state','!=','active')]}"/>
+                        <button icon="fa-stop" type="object" string="Stop On Start" class="oe_stat_button" name="stop_run_on_start" attrs="{'invisible':[('state','!=','active')]}"/>
+                        <group>
+                            <group>
+                                <field name="module_load"/>
+                                <field name="run_server_command"/>
+                                <field name="unaccent"/>
+                                <field name="proxy_mode"/>
+                                <field name="workers"/>
+                            </group>
+                            <group>
+                                <field name="conf_file_path"/>
+                                <field name="logfile"/>
+                                <field name="data_dir"/>
+                                <field name="service_file"/>
+                            </group>
+                        </group>
+                        <label for="addons_path"/>
+                        <field name="addons_path"/>
+                        <!-- con este widget no funciona bien de una -->
+                        <!-- <field name="instance_host_ids" widget="many2many_tags"/> -->
+                        <label for="instance_host_ids"/>
+                        <field name="instance_host_ids" context="{'default_server_id':server_id}"/>
+                    </page>
+                    <page string="Notes">
+                        <field name="note"/>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+</record>
 
-    <!-- TREEVIEW -->
+<!-- TREEVIEW -->
+<record id="view_infrastructure_instance_tree" model="ir.ui.view">
+    <field name="name">infrastructure.instance.tree</field>
+    <field name="model">infrastructure.instance</field>
+    <field name="arch" type="xml">
+        <tree string="instance"
+            fonts="bold:message_unread==True"
+            colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
+            >
+            <field name="message_unread" invisible="1"/>
+            <field name="number"/>
+            <field name="name"/>
+            <field name="type"/>
+            <field name="xml_rpc_port"/>
+            <field name="db_filter"/>
+            <field name="user"/>
+            <field name="environment_id"/>
+            <field name="state" />
+        </tree>
+    </field>
+</record>
 
-    <record id="view_infrastructure_instance_tree" model="ir.ui.view">
-        <field name="name">infrastructure.instance.tree</field>
-        <field name="model">infrastructure.instance</field>
-        <field name="arch" type="xml">
-            <tree string="instance"
-                fonts="bold:message_unread==True"
-                colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
-                >
-                <field name="message_unread" invisible="1"/>
-                <field name="number"
-                    />
-                <field name="name"
-                    />
-                <field name="type"
-                    />
-                <field name="xml_rpc_port"
-                    />
-                <field name="db_filter"
-                    />
-                <field name="user"
-                    />
-                <field name="environment_id"
-                    />
-                <field name="state" />
-            </tree>
-        </field>
-    </record>
+<record id="action_infrastructure_instance_instances" model="ir.actions.act_window">
+    <field name="name">Instances</field>
+    <field name="res_model">infrastructure.instance</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_infrastructure_instance_tree"/>
+    <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
+    <field name="domain">[]</field>
+</record>
 
-    <record id="action_infrastructure_instance_instances" model="ir.actions.act_window">
-        <field name="name">Instances</field>
-        <field name="res_model">infrastructure.instance</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_infrastructure_instance_tree"/>
-        <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
-        <field name="domain">[]</field>
-    </record>
-
-    <menuitem
-        name="Instances"
-        id="menu_instances"
-        sequence="30"
-        action="action_infrastructure_instance_instances"
-        parent="menu_infra_main"
-        groups="group_user"
-        />
+<menuitem
+    name="Instances"
+    id="menu_instances"
+    sequence="30"
+    action="action_infrastructure_instance_instances"
+    parent="menu_infra_main"
+    groups="group_user"
+    />
 
 </data>
 </openerp>

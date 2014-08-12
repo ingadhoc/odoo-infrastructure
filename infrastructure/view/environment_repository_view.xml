@@ -3,68 +3,68 @@
 <openerp>
 <data>
 
-    <!-- SEARCH VIEW -->
-    <record id="view_infrastructure_environment_repository_filter" model="ir.ui.view">
-        <field name="name">infrastructure.environment_repository.select</field>
-        <field name="model">infrastructure.environment_repository</field>
-        <field name="arch" type="xml">
-            <search string="environment_repository" version="7.0">
-                <group string="By Attribute">
-                    <field name="server_repository_id" string="Server Repository"/>
-                    <field name="branch_id" string="Specific Branch"/>
-                    <field name="path" string="Path"/>
-                    <field name="addons_paths" string="Addons Path"/>
-                </group>
-                <group string="By object">
-                </group>
-            </search>
-        </field>
-    </record>
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_environment_repository_filter" model="ir.ui.view">
+    <field name="name">infrastructure.environment_repository.select</field>
+    <field name="model">infrastructure.environment_repository</field>
+    <field name="arch" type="xml">
+        <search string="environment_repository" version="7.0">
+            <group string="By Attribute">
+                <field name="server_repository_id" string="Server Repository"/>
+                <field name="branch_id" string="Specific Branch"/>
+                <field name="path" string="Path"/>
+                <field name="addons_paths" string="Addons Path"/>
+            </group>
+            <group string="By object">
+            </group>
+        </search>
+    </field>
+</record>
 
-    <!-- FORMVIEW -->
-    <record id="view_infrastructure_environment_repository_form" model="ir.ui.view">
-        <field name="name">infrastructure.environment_repository.form</field>
-        <field name="model">infrastructure.environment_repository</field>
-        <field name="arch" type="xml">
-            <form string="environment_repository" version="7.0">
-                <header>
-                </header>
-                <sheet string="environment_repository">
-                 <group>
-                    <field name="server_repository_id"/>
-                    <field name="branch_id"
-                        domain="[('id','in',branch_ids[0][2])]"
-                        />
-                    <field name="path"/>
-                    <field name="addons_paths"/>
-                    <field name="branch_ids"
-                        invisible="True"
-                        />
-                 </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <!-- TREEVIEW -->
-    <record id="view_infrastructure_environment_repository_tree" model="ir.ui.view">
-        <field name="name">infrastructure.environment_repository.tree</field>
-        <field name="model">infrastructure.environment_repository</field>
-        <field name="arch" type="xml">
-            <tree string="environment_repository" editable="top">
-                <field name="server_repository_id" domain="[('server_id','=',server_id)]"/>
-                <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
+<!-- FORMVIEW -->
+<record id="view_infrastructure_environment_repository_form" model="ir.ui.view">
+    <field name="name">infrastructure.environment_repository.form</field>
+    <field name="model">infrastructure.environment_repository</field>
+    <field name="arch" type="xml">
+        <form string="environment_repository" version="7.0">
+            <header>
+            </header>
+            <sheet string="environment_repository">
+             <group>
+                <field name="server_repository_id"/>
+                <field name="branch_id"
+                    domain="[('id','in',branch_ids[0][2])]"
+                    />
                 <field name="path"/>
                 <field name="addons_paths"/>
-                <field name="branch_ids" invisible="1"/>
-                <field name="server_id" invisible="1"/>
-                <button string="Pull, Clone to Env. and Checkout"
-                    icon="gtk-go-down"
-                    type="object"
-                    name="repository_pull_clone_and_checkout"/>
-            </tree>
-        </field>
-    </record>
+                <field name="branch_ids"
+                    invisible="True"
+                    />
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_environment_repository_tree" model="ir.ui.view">
+    <field name="name">infrastructure.environment_repository.tree</field>
+    <field name="model">infrastructure.environment_repository</field>
+    <field name="arch" type="xml">
+        <tree string="environment_repository" editable="top">
+            <field name="server_repository_id" domain="[('server_id','=',server_id)]"/>
+            <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
+            <field name="path"/>
+            <field name="addons_paths"/>
+            <field name="branch_ids" invisible="1"/>
+            <field name="server_id" invisible="1"/>
+            <button string="Pull, Clone to Env. and Checkout"
+                icon="gtk-go-down"
+                type="object"
+                name="repository_pull_clone_and_checkout"/>
+        </tree>
+    </field>
+</record>
 
 </data>
 </openerp>
