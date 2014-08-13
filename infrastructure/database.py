@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, _
-from openerp.osv import netsvc
+from openerp import models, fields, api, netsvc, _
 import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
