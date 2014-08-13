@@ -1,31 +1,26 @@
 # -*- coding: utf-8 -*-
+
 {
     'name': 'Infrastructure Issue - Project',
     'version': '1.0',
-    'category': 'Accounting',
-    'sequence': 14,
-    'summary': '',
-    'description': """
-Infrastructure Issue
-====================
-    """,
-    'author':  'Ingenieria ADHOC',
+    'description': u'Infrastructure Issue',
+    'category': u'base.module_category_knowledge_management',
+    'author': u'Ingeniería Adhoc',
     'website': 'www.ingadhoc.com',
-    'images': [
-    ],
+    'license': 'AGPL-3',
     'depends': [
-        'infrastructure_x',
+        'infrastructure',
         'project_issue',
     ],
-    'data': [
-        'project_issue_view.xml',
-    ],
-    'demo': [
-    ],
-    'test': [
-    ],
+    'sequence': 14,
+    'summary': '',
     'installable': True,
     'auto_install': False,
     'application': True,
+    'images': [],
+    'data': [
+        'project_issue_view.xml',
+    ],
+    'demo': [],
+    'test': [],
 }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

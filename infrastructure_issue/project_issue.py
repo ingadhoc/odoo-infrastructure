@@ -1,11 +1,16 @@
  #-*- coding: utf-8 -*-
-from openerp.osv import fields, osv, orm
-from openerp.tools.translate import _
 
-class project_issue(osv.Model):
+from openerp import models, fields
+
+
+class project_issue(models.Model):
+
     _inherit = "project.issue"
-    
-    _columns = {
-        'database_id': fields.many2one('infrastructure.database', string="Database"),
-    }
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+    database_id = fields.Many2one(
+        'infrastructure.database',
+        string='Database'
+    )
+
+
+project_issue()
