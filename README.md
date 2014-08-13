@@ -21,10 +21,7 @@ If you don't have Pip, find it here: http://pypi.python.org/pypi/pip
 
 ## Credits
 
-**Ingeniería Adhoc**
-Argentina
-www.ingadhoc.com
-info@ingadhoc.com
+**Ingeniería Adhoc** (www.ingadhoc.com)
 
 ## License
 
