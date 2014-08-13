@@ -4,6 +4,7 @@ from openerp import models, fields
 
 
 class command(models.Model):
+
     """"""
 
     _name = 'infrastructure.command'

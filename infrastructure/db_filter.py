@@ -2,6 +2,7 @@
 
 from openerp import models, fields
 
+
 class db_filter(models.Model):
     """"""
 

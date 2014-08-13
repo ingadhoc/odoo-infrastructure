@@ -10,6 +10,7 @@ from ast import literal_eval
 
 
 class environment_repository(models.Model):
+
     """"""
 
     _name = 'infrastructure.environment_repository'
@@ -73,11 +74,14 @@ class environment_repository(models.Model):
 
         if not exists(self.environment_id.sources_path, use_sudo=True):
             raise except_orm(_('No Sources Folder!'),
-                _("Sources folder '%s' does not exists. Please create the environment first!") % (self.environment_id.sources_path))
+                             _("Sources folder '%s' does not exists. \
+                                Please create the environment first!")
+                             % (self.environment_id.sources_path))
         command += ' ' + self.environment_id.sources_path
 
-        sudo (command)
-        folder = os.path.basename(os.path.normpath(self.server_repository_id.path))
+        sudo(command)
+        folder = os.path.basename(
+            os.path.normpath(self.server_repository_id.path))
         self.path = os.path.join(self.environment_id.sources_path, folder)
 
     @api.one
@@ -88,21 +92,26 @@ class environment_repository(models.Model):
             path = self.path
         if not exists(path, use_sudo=True):
             raise except_orm(_('No Repository Folder!'),
-                _("Please check that the setted path exists or empty it in order to donwload for first time '%s'!") % (path,))
+                             _("Please check that the setted path exists \
+                                or empty it in order to donwload for \
+                                first time '%s'!") % (path,))
 
         with cd(path):
             try:
-                sudo ('git pull')
+                sudo('git pull')
             except:
                 raise except_orm(_('Error Making git pull!'),
-                    _("Error making git pull on '%s'!") % (path))
+                                 _("Error making git pull on '%s'!") % (path))
 
     @api.multi
     def check_for_addons_paths(self):
         if self.server_repository_id.repository_id.is_server:
-            res = [os.path.join(self.path,'addons'), os.path.join(self.path,'openerp/addons')]
+            res = [os.path.join(self.path, 'addons'), os.path.join(
+                self.path, 'openerp/addons')]
         elif self.server_repository_id.repository_id.addons_subfolder:
-            res = [os.path.join(self.path,self.server_repository_id.repository_id.addons_subfolder)]
+            res = [os.path.join(
+                self.path,
+                self.server_repository_id.repository_id.addons_subfolder)]
         else:
             res = [self.path]
         return res
@@ -114,8 +123,11 @@ class environment_repository(models.Model):
         # Create if not path defined
         if not self.path:
             # See if there folder for future repository exists
-            path = os.path.join(self.environment_id.sources_path,
-                os.path.basename(os.path.normpath(self.server_repository_id.path)))
+            path = os.path.join(
+                self.environment_id.sources_path,
+                os.path.basename(
+                    os.path.normpath(self.server_repository_id.path))
+                )
             if exists(path, use_sudo=True):
                 self.update_repository(path)
                 self.path = path
@@ -128,7 +140,7 @@ class environment_repository(models.Model):
 
         # make checkout
         with cd(self.path):
-            sudo ('git checkout ' + self.branch_id.name)
+            sudo('git checkout ' + self.branch_id.name)
 
         if not literal_eval(self.addons_paths):
             self.addons_paths = self.check_for_addons_paths()
@@ -142,11 +154,17 @@ class environment_repository(models.Model):
         if self.environment_id.type == 'virtualenv':
             if self.server_repository_id.repository_id.pip_packages:
                 pip_packages = self.server_repository_id.repository_id.pip_packages
-                activate_environment_command = ' source ' + os.path.join(self.environment_id.path, 'bin/activate') + ' && '
-                pip_packages_install_command = 'pip install --upgrade ' + pip_packages
-                sudo (activate_environment_command + pip_packages_install_command)
+                activate_environment_command = ' source ' + \
+                    os.path.join(
+                        self.environment_id.path, 'bin/activate') + ' && '
+                pip_packages_install_command = 'pip install --upgrade ' + \
+                    pip_packages
+                sudo(
+                    activate_environment_command + pip_packages_install_command
+                )
         else:
-            raise Warning(_("Type '%s' not implemented yet.") %(self.environment_id.type))
+            raise Warning(_("Type '%s' not implemented yet.") %
+                          (self.environment_id.type))
 
 
 environment_repository()

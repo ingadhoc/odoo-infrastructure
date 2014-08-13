@@ -3,70 +3,70 @@
 <openerp>
 <data>
 
-    <!-- SEARCH VIEW -->
-    <record id="view_infrastructure_db_filter_filter" model="ir.ui.view">
-        <field name="name">infrastructure.db_filter.select</field>
-        <field name="model">infrastructure.db_filter</field>
-        <field name="arch" type="xml">
-            <search string="db_filter" version="7.0">
-                <group string="By Attribute">
-                    <field name="name" string="Name"/>
-                    <field name="rule" string="Rule"/>
-                </group>
-                <group string="By object">
-                </group>
-            </search>
-        </field>
-    </record>
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_db_filter_filter" model="ir.ui.view">
+    <field name="name">infrastructure.db_filter.select</field>
+    <field name="model">infrastructure.db_filter</field>
+    <field name="arch" type="xml">
+        <search string="db_filter" version="7.0">
+            <group string="By Attribute">
+                <field name="name" string="Name"/>
+                <field name="rule" string="Rule"/>
+            </group>
+            <group string="By object">
+            </group>
+        </search>
+    </field>
+</record>
 
-    <!-- FORMVIEW -->
-    <record id="view_infrastructure_db_filter_form" model="ir.ui.view">
-        <field name="name">infrastructure.db_filter.form</field>
-        <field name="model">infrastructure.db_filter</field>
-        <field name="arch" type="xml">
-            <form string="db_filter" version="7.0">
-                <header>
-                </header>
-                <sheet string="db_filter">
-                 <group>
-                    <field name="name"/>
-                    <field name="rule"/>
-                 </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <!-- TREEVIEW -->
-    <record id="view_infrastructure_db_filter_tree" model="ir.ui.view">
-        <field name="name">infrastructure.db_filter.tree</field>
-        <field name="model">infrastructure.db_filter</field>
-        <field name="arch" type="xml">
-            <tree string="db_filter">
+<!-- FORMVIEW -->
+<record id="view_infrastructure_db_filter_form" model="ir.ui.view">
+    <field name="name">infrastructure.db_filter.form</field>
+    <field name="model">infrastructure.db_filter</field>
+    <field name="arch" type="xml">
+        <form string="db_filter" version="7.0">
+            <header>
+            </header>
+            <sheet string="db_filter">
+             <group>
                 <field name="name"/>
                 <field name="rule"/>
-            </tree>
-        </field>
-    </record>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
 
-    <record id="action_infrastructure_db_filter_db_filters" model="ir.actions.act_window">
-        <field name="name">Db Filters</field>
-        <field name="res_model">infrastructure.db_filter</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_infrastructure_db_filter_tree"/>
-        <field name="search_view_id" ref="view_infrastructure_db_filter_filter"/>
-        <field name="domain">[]</field>
-    </record>
+<!-- TREEVIEW -->
+<record id="view_infrastructure_db_filter_tree" model="ir.ui.view">
+    <field name="name">infrastructure.db_filter.tree</field>
+    <field name="model">infrastructure.db_filter</field>
+    <field name="arch" type="xml">
+        <tree string="db_filter">
+            <field name="name"/>
+            <field name="rule"/>
+        </tree>
+    </field>
+</record>
 
-    <menuitem
-        name="Db Filters"
-        id="menu_db_filters"
-        sequence="100"
-        action="action_infrastructure_db_filter_db_filters"
-        parent="menu_databases_conf"
-        groups="group_manager"
-        />
+<record id="action_infrastructure_db_filter_db_filters" model="ir.actions.act_window">
+    <field name="name">Db Filters</field>
+    <field name="res_model">infrastructure.db_filter</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_infrastructure_db_filter_tree"/>
+    <field name="search_view_id" ref="view_infrastructure_db_filter_filter"/>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    name="Db Filters"
+    id="menu_db_filters"
+    sequence="100"
+    action="action_infrastructure_db_filter_db_filters"
+    parent="menu_databases_conf"
+    groups="group_manager"
+    />
 
 </data>
 </openerp>

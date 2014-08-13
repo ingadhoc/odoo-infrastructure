@@ -8,6 +8,7 @@ from fabric.contrib.files import exists
 
 
 class repository(models.Model):
+
     """"""
 
     _name = 'infrastructure.repository'

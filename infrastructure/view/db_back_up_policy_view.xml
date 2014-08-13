@@ -3,70 +3,70 @@
 <openerp>
 <data>
 
-    <!-- SEARCH VIEW -->
-    <record id="view_infrastructure_db_back_up_policy_filter" model="ir.ui.view">
-        <field name="name">infrastructure.db_back_up_policy.select</field>
-        <field name="model">infrastructure.db_back_up_policy</field>
-        <field name="arch" type="xml">
-            <search string="db_back_up_policy" version="7.0">
-                <group string="By Attribute">
-                    <field name="name" string="name"/>
-                    <field name="cron_id" string="Cron"/>
-                </group>
-                <group string="By object">
-                </group>
-            </search>
-        </field>
-    </record>
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_db_back_up_policy_filter" model="ir.ui.view">
+    <field name="name">infrastructure.db_back_up_policy.select</field>
+    <field name="model">infrastructure.db_back_up_policy</field>
+    <field name="arch" type="xml">
+        <search string="db_back_up_policy" version="7.0">
+            <group string="By Attribute">
+                <field name="name" string="name"/>
+                <field name="cron_id" string="Cron"/>
+            </group>
+            <group string="By object">
+            </group>
+        </search>
+    </field>
+</record>
 
-    <!-- FORMVIEW -->
-    <record id="view_infrastructure_db_back_up_policy_form" model="ir.ui.view">
-        <field name="name">infrastructure.db_back_up_policy.form</field>
-        <field name="model">infrastructure.db_back_up_policy</field>
-        <field name="arch" type="xml">
-            <form string="db_back_up_policy" version="7.0">
-                <header>
-                </header>
-                <sheet string="db_back_up_policy">
-                 <group>
-                    <field name="name"/>
-                    <field name="cron_id"/>
-                 </group>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <!-- TREEVIEW -->
-    <record id="view_infrastructure_db_back_up_policy_tree" model="ir.ui.view">
-        <field name="name">infrastructure.db_back_up_policy.tree</field>
-        <field name="model">infrastructure.db_back_up_policy</field>
-        <field name="arch" type="xml">
-            <tree string="db_back_up_policy">
+<!-- FORMVIEW -->
+<record id="view_infrastructure_db_back_up_policy_form" model="ir.ui.view">
+    <field name="name">infrastructure.db_back_up_policy.form</field>
+    <field name="model">infrastructure.db_back_up_policy</field>
+    <field name="arch" type="xml">
+        <form string="db_back_up_policy" version="7.0">
+            <header>
+            </header>
+            <sheet string="db_back_up_policy">
+             <group>
                 <field name="name"/>
                 <field name="cron_id"/>
-            </tree>
-        </field>
-    </record>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
 
-    <record id="action_infrastructure_db_back_up_policy_db_back_up_policies" model="ir.actions.act_window">
-        <field name="name">DB Back Up Policies</field>
-        <field name="res_model">infrastructure.db_back_up_policy</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_infrastructure_db_back_up_policy_tree"/>
-        <field name="search_view_id" ref="view_infrastructure_db_back_up_policy_filter"/>
-        <field name="domain">[]</field>
-    </record>
+<!-- TREEVIEW -->
+<record id="view_infrastructure_db_back_up_policy_tree" model="ir.ui.view">
+    <field name="name">infrastructure.db_back_up_policy.tree</field>
+    <field name="model">infrastructure.db_back_up_policy</field>
+    <field name="arch" type="xml">
+        <tree string="db_back_up_policy">
+            <field name="name"/>
+            <field name="cron_id"/>
+        </tree>
+    </field>
+</record>
 
-    <menuitem
-        name="DB Back Up Policies"
-        id="menu_db_back_up_policies"
-        sequence="100"
-        action="action_infrastructure_db_back_up_policy_db_back_up_policies"
-        parent="menu_databases_conf"
-        groups="group_manager"
-        />
+<record id="action_infrastructure_db_back_up_policy_db_back_up_policies" model="ir.actions.act_window">
+    <field name="name">DB Back Up Policies</field>
+    <field name="res_model">infrastructure.db_back_up_policy</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_infrastructure_db_back_up_policy_tree"/>
+    <field name="search_view_id" ref="view_infrastructure_db_back_up_policy_filter"/>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    name="DB Back Up Policies"
+    id="menu_db_back_up_policies"
+    sequence="100"
+    action="action_infrastructure_db_back_up_policy_db_back_up_policies"
+    parent="menu_databases_conf"
+    groups="group_manager"
+    />
 
 </data>
 </openerp>

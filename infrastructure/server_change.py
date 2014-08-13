@@ -39,8 +39,5 @@ class server_change(models.Model):
         required=True
     )
 
-    # _defaults {
-    #     'user_id': lambda self, cr, uid, context: uid,
-    # }
 
 server_change()

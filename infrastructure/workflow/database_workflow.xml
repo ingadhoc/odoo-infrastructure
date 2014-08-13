@@ -1,141 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-##############################################################################
-#
-#    Infrastructure
-#    Copyright (C) 2014 Ingenieria ADHOC
-#    No email
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
--->
-<!-- infrastructure.database -->
-<!-- infrastructure.database -->
 <!-- infrastructure.database -->
 <openerp>
-    <data>
-        <!-- Workflow -->
+<data>
 
-        <record id="database_untitle_wkf" model="workflow">
-            <field name="name">infrastructure.database.untitle</field>
-            <field name="osv">infrastructure.database</field>
-            <field name="on_create">True</field>
-        </record>
+<!-- Workflow -->
+<record id="database_untitle_wkf" model="workflow">
+    <field name="name">infrastructure.database.untitle</field>
+    <field name="osv">infrastructure.database</field>
+    <field name="on_create">True</field>
+</record>
 
-        <!-- Activities -->
+<!-- Activities -->
+<record id="a_14EE_0EB5" model="workflow.activity">
+    <field name="wkf_id" ref="database_untitle_wkf"/>
+    <field name="flow_start">True</field>
+    <field name="name">Draft</field>
+    <field name="action">write({'state':'draft'})</field>
+    <field name="kind">function</field>
+</record>
 
-        <record id="a_14EE_0EB5" model="workflow.activity">
-            <field name="wkf_id" ref="database_untitle_wkf"/>
-            <field name="flow_start">True</field>
-            <field name="name">Draft</field>
-            <field name="action">
-                write({'state':'draft'})
-            </field>
-            <field name="kind">function</field>
-        </record>
-        <record id="a_14EE_100F" model="workflow.activity">
-            <field name="wkf_id" ref="database_untitle_wkf"/>
-            <field name="name">Maintenance</field>
-            <field name="action">
-                write({'state':'maintenance'})
-            </field>
-            <field name="kind">function</field>
-        </record>
-        <record id="a_14EE_0EB7" model="workflow.activity">
-            <field name="wkf_id" ref="database_untitle_wkf"/>
-            <field name="name">Active</field>
-            <field name="action">
-                write({'state':'active'})
-            </field>
-            <field name="kind">function</field>
-        </record>
-        <record id="a_14EE_1011" model="workflow.activity">
-            <field name="wkf_id" ref="database_untitle_wkf"/>
-            <field name="name">Deactivated</field>
-            <field name="action">
-                write({'state':'deactivated'})
-            </field>
-            <field name="kind">function</field>
-        </record>
-        <record id="a_14EE_0EB9" model="workflow.activity">
-            <field name="wkf_id" ref="database_untitle_wkf"/>
-            <field name="flow_stop">True</field>
-            <field name="name">Cancel</field>
-            <field name="action">
-                write({'state':'cancel'})
-            </field>
-            <field name="kind">function</field>
-        </record>
+<record id="a_14EE_100F" model="workflow.activity">
+    <field name="wkf_id" ref="database_untitle_wkf"/>
+    <field name="name">Maintenance</field>
+    <field name="action">write({'state':'maintenance'})</field>
+    <field name="kind">function</field>
+</record>
 
-        <!-- Transitions -->
+<record id="a_14EE_0EB7" model="workflow.activity">
+    <field name="wkf_id" ref="database_untitle_wkf"/>
+    <field name="name">Active</field>
+    <field name="action">write({'state':'active'})</field>
+    <field name="kind">function</field>
+</record>
 
-        <record id="t_14EE_0EB8" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_0EB5"/>
-            <field name="act_to" ref="a_14EE_0EB7"/>
-            <field name="signal">sgn_to_active</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_0EBB" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_0EB7"/>
-            <field name="act_to" ref="a_14EE_0EB9"/>
-            <field name="signal">sgn_cancel</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_0EBC" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_0EB9"/>
-            <field name="act_to" ref="a_14EE_0EB5"/>
-            <field name="signal">sgn_to_draft</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_1010" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_0EB7"/>
-            <field name="act_to" ref="a_14EE_100F"/>
-            <field name="signal">sgn_to_maintenance</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_1012" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_0EB7"/>
-            <field name="act_to" ref="a_14EE_1011"/>
-            <field name="signal">sgn_deactivate</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_1013" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_1011"/>
-            <field name="act_to" ref="a_14EE_0EB7"/>
-            <field name="signal">sgn_to_active</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_1014" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_100F"/>
-            <field name="act_to" ref="a_14EE_0EB7"/>
-            <field name="signal">sgn_to_active</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_1015" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_1011"/>
-            <field name="act_to" ref="a_14EE_0EB9"/>
-            <field name="signal">sgn_cancel</field>
-            <field name="condition">True</field>
-        </record>
-        <record id="t_14EE_1016" model="workflow.transition">
-            <field name="act_from" ref="a_14EE_100F"/>
-            <field name="act_to" ref="a_14EE_0EB9"/>
-            <field name="signal">sgn_cancel</field>
-            <field name="condition">True</field>
-        </record>
-    </data>
+<record id="a_14EE_1011" model="workflow.activity">
+    <field name="wkf_id" ref="database_untitle_wkf"/>
+    <field name="name">Deactivated</field>
+    <field name="action">write({'state':'deactivated'})</field>
+    <field name="kind">function</field>
+</record>
+
+<record id="a_14EE_0EB9" model="workflow.activity">
+    <field name="wkf_id" ref="database_untitle_wkf"/>
+    <field name="flow_stop">True</field>
+    <field name="name">Cancel</field>
+    <field name="action">write({'state':'cancel'})</field>
+    <field name="kind">function</field>
+</record>
+
+<!-- Transitions -->
+<record id="t_14EE_0EB8" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_0EB5"/>
+    <field name="act_to" ref="a_14EE_0EB7"/>
+    <field name="signal">sgn_to_active</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_0EBB" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_0EB7"/>
+    <field name="act_to" ref="a_14EE_0EB9"/>
+    <field name="signal">sgn_cancel</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_0EBC" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_0EB9"/>
+    <field name="act_to" ref="a_14EE_0EB5"/>
+    <field name="signal">sgn_to_draft</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_1010" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_0EB7"/>
+    <field name="act_to" ref="a_14EE_100F"/>
+    <field name="signal">sgn_to_maintenance</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_1012" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_0EB7"/>
+    <field name="act_to" ref="a_14EE_1011"/>
+    <field name="signal">sgn_deactivate</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_1013" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_1011"/>
+    <field name="act_to" ref="a_14EE_0EB7"/>
+    <field name="signal">sgn_to_active</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_1014" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_100F"/>
+    <field name="act_to" ref="a_14EE_0EB7"/>
+    <field name="signal">sgn_to_active</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_1015" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_1011"/>
+    <field name="act_to" ref="a_14EE_0EB9"/>
+    <field name="signal">sgn_cancel</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_14EE_1016" model="workflow.transition">
+    <field name="act_from" ref="a_14EE_100F"/>
+    <field name="act_to" ref="a_14EE_0EB9"/>
+    <field name="signal">sgn_cancel</field>
+    <field name="condition">True</field>
+</record>
+
+</data>
 </openerp>
-<!-- vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4
-     -->

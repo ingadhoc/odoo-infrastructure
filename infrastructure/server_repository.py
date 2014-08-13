@@ -61,7 +61,7 @@ class server_repository(models.Model):
             path = os.path.join(
                 self.server_id.sources_folder, self.repository_id.folder)
             if exists(path, use_sudo=True):
-                # aparentemente ya existe el repo, vamos a intentar actualizarlo
+                # aparentemente ya existe el repo, intentamos actualizarlo
                 self.update_repository(path)
                 self.path = path
             else:

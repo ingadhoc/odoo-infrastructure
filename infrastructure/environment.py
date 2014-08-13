@@ -9,18 +9,21 @@ import os
 
 
 class environment(models.Model):
+
     """"""
-    # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder volver si no existe el path ni el source path y si no existen ambienets activos
+    # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder
+    # volver si no existe el path ni el source path y si no existen ambienets
+    # activos
 
     _name = 'infrastructure.environment'
     _description = 'environment'
-    _inherit = [ 'ir.needaction_mixin','mail.thread' ]
+    _inherit = ['ir.needaction_mixin', 'mail.thread']
 
     _states_ = [
         # State machine: untitle
-        ('draft','Draft'),
-        ('active','Active'),
-        ('cancel','Cancel'),
+        ('draft', 'Draft'),
+        ('active', 'Active'),
+        ('cancel', 'Cancel'),
     ]
 
     number = fields.Integer(
@@ -125,7 +128,7 @@ class environment(models.Model):
         'environment_id',
         string='Instances',
         context={
-            'from_environment':True
+            'from_environment': True
         }
     )
 
@@ -158,9 +161,12 @@ class environment(models.Model):
 
     _track = {
         'state': {
-            'infrastructure.environment_draft': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-            'infrastructure.environment_active': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-            'infrastructure.environment_cancel': lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+            'infrastructure.environment_draft':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
+            'infrastructure.environment_active':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
+            'infrastructure.environment_cancel':
+            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
         },
     }
 
@@ -172,13 +178,15 @@ class environment(models.Model):
     @api.one
     @api.constrains('number')
     def _check_number(self):
-        if not self.number or self.number <10 or self.number > 99:
+        if not self.number or self.number < 10 or self.number > 99:
             raise Warning(_('Number should be between 10 and 99'))
 
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(_('You cannot delete a environment which is not draft or cancelled.'))
+            raise Warning(
+                _('You cannot delete a environment which is not \
+                    draft or cancelled.'))
         return super(environment, self).unlink()
 
     @api.one
@@ -202,16 +210,19 @@ class environment(models.Model):
         if self.type == 'virtualenv':
             self.server_id.get_env()
             if exists(self.path, use_sudo=True):
-                raise Warning(_("It seams that the environment already exists because there is a folder '%s'") %(self.path))
+                raise Warning(
+                    _("It seams that the environment already exists \
+                        because there is a folder '%s'") % (self.path))
             sudo('virtualenv ' + self.path)
         else:
-            raise Warning(_("Type '%s' not implemented yet.") %(self.type))
+            raise Warning(_("Type '%s' not implemented yet.") % (self.type))
 
     @api.one
     def make_sources_path(self):
         self.server_id.get_env()
         if exists(self.sources_path, use_sudo=True):
-            raise Warning(_("Folder '%s' already exists") %(self.sources_path))
+            raise Warning(_("Folder '%s' already exists") %
+                          (self.sources_path))
         sudo('mkdir -p ' + self.sources_path)
 
     @api.one
@@ -223,32 +234,41 @@ class environment(models.Model):
             if repository.server_repository_id.repository_id.is_server:
                 environment_repository = repository
         if not environment_repository:
-            raise Warning(_("No Server Repository Found on actual environment"))
+            raise Warning(
+                _("No Server Repository Found on actual environment"))
         if not exists(environment_repository.path, use_sudo=True):
-            raise Warning(_("Server Path '%s' does not exist, check server repository path. It is probable that repositories have not been copied to this environment yet.") %(environment_repository.path))
+            raise Warning(_("Server Path '%s' does not exist, check \
+                server repository path. It is probable that repositories \
+                have not been copied to this environment yet.") % (
+                environment_repository.path))
         return environment_repository
 
     @api.one
     def install_odoo(self):
-        # TODO agregar que si ya existe openerp tal vez haya que borrar y volver a crearlo
+        # TODO agregar que si ya existe openerp tal vez haya que borrar y
+        # volver a crearlo
         if self.type == 'virtualenv':
             self.server_id.get_env()
             environment_repository = self.check_repositories()
             with cd(environment_repository.path):
-                sudo('source ' + os.path.join(self.path, 'bin/activate') + ' && ' + environment_repository.server_repository_id.repository_id.install_server_command)
+                sudo(
+                    'source ' + os.path.join(
+                        self.path, 'bin/activate') + ' && ' + environment_repository.server_repository_id.repository_id.install_server_command)
             self.change_path_group_and_perm()
         else:
-            raise Warning(_("Type '%s' not implemented yet.") %(self.type))
-
+            raise Warning(_("Type '%s' not implemented yet.") % (self.type))
 
     @api.one
     def change_path_group_and_perm(self):
         self.server_id.get_env()
         try:
-            sudo('chown -R :%s %s' %(self.server_id.instance_user_group, self.path))
-            sudo('chmod -R g+rw %s' %(self.path))
+            sudo('chown -R :%s %s' %
+                 (self.server_id.instance_user_group, self.path))
+            sudo('chmod -R g+rw %s' % (self.path))
         except:
-            raise Warning(_("Error changing group '%s' to path '%s'. Please verifify that group and path exists") %(self.server_id.instance_user_group, self.path))
+            raise Warning(_("Error changing group '%s' to path '%s'.\
+             Please verifify that group and path exists") % (
+                self.server_id.instance_user_group, self.path))
 
     @api.multi
     def create_environment(self):
@@ -257,11 +277,13 @@ class environment(models.Model):
         self.signal_workflow('sgn_to_active')
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
-        self.write(cr, uid, ids, {'state':'draft'})
+        self.write(cr, uid, ids, {'state': 'draft'})
         wf_service = netsvc.LocalService("workflow")
         for obj_id in ids:
-            wf_service.trg_delete(uid, 'infrastructure.environment', obj_id, cr)
-            wf_service.trg_create(uid, 'infrastructure.environment', obj_id, cr)
+            wf_service.trg_delete(
+                uid, 'infrastructure.environment', obj_id, cr)
+            wf_service.trg_create(
+                uid, 'infrastructure.environment', obj_id, cr)
         return True
 
     _sql_constraints = [
