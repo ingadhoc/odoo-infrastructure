@@ -11,8 +11,11 @@ import re
 
 
 class instance(models.Model):
+
     """"""
-    # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder volver si no existe el path ni el source path y si no existen ambienets activo
+    # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder
+    # volver si no existe el path ni el source path y si no existen ambienets
+    # activo
     _name = 'infrastructure.instance'
     _description = 'instance'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
@@ -298,11 +301,9 @@ class instance(models.Model):
             'Name must be unique per environment!'),
     ]
 
-
     def get_user(self, cr, uid, ids, context=None):
         """"""
         raise NotImplementedError
-
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
@@ -381,7 +382,8 @@ class instance(models.Model):
         conf_file_path = False
         logfile = False
         data_dir = False
-        # TODO notar que aca se toma el valor del campo function y no el valor stored en el path, hay que arreglarlo
+        # TODO notar que aca se toma el valor del campo function y no el valor
+        # stored en el path, hay que arreglarlo
         if self.environment_id.path and self.name:
             conf_file_path = os.path.join(
                 self.environment_id.path, 'conf_' + self.name) + '.conf'
@@ -412,12 +414,15 @@ class instance(models.Model):
         # self.stop_service()
         if not exists(self.environment_id.path, use_sudo=True):
             raise except_orm(_('No Environment Path!'),
-                _("Environment path '%s' does not exists. Please create it first!") % (self.environment_id.path))
+                             _("Environment path '%s' does not exists. \
+                                Please create it first!")
+                             % (self.environment_id.path))
 
         command = self.run_server_command
         command += ' --stop-after-init -s -c ' + self.conf_file_path
 
-        # Remove file if it already exists, we do it so we can put back some booelan values as unaccent
+        # Remove file if it already exists, we do it so we can put back some
+        # booelan values as unaccent
         if exists(self.conf_file_path, use_sudo=True):
             sudo('rm ' + self.conf_file_path)
 
@@ -425,7 +430,8 @@ class instance(models.Model):
         for addon_path in literal_eval(self.addons_path):
             if not exists(addon_path, use_sudo=True):
                 raise except_orm(_('Addons path does not exist!'),
-                    _("Addons path '%s' does not exists. Please create it first!") % (addon_path))
+                                 _("Addons path '%s' does not exists. \
+                                    Please create it first!") % (addon_path))
             if not addons_path:
                 addons_path = addon_path
             addons_path += ',' + addon_path
@@ -436,7 +442,8 @@ class instance(models.Model):
         command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
         command += ' --logfile=' + self.logfile
 
-        # TODO ver si no da error este parametro en algunas versiones de odoo y sacarlo
+        # TODO ver si no da error este parametro en algunas versiones de odoo y
+        # sacarlo
         if self.data_dir:
             command += ' --data-dir=' + self.data_dir
 
@@ -471,7 +478,8 @@ class instance(models.Model):
             sudo(command, user=self.user)
         except:
             raise except_orm(_('Error creating conf file!'),
-                _("Error creating conf file! You can try stopping the instance and then try again."))
+                             _("Error creating conf file! You can try \
+                                stopping the instance and then try again."))
         sed(self.conf_file_path, '(admin_passwd).*',
             'admin_passwd = ' + self.admin_pass, use_sudo=True)
 
@@ -487,7 +495,8 @@ class instance(models.Model):
         service_folder = self.environment_id.server_id.service_folder
         if not exists(service_folder):
             raise except_orm(_('Server Service Folder not Found!'),
-                _("Service folter '%s' not found. Please create it first!") % (service_folder))
+                             _("Service folter '%s' not found. \
+                                Please create it first!") % (service_folder))
 
         # Check if service already exist
         service_file_path = os.path.join(service_folder, self.service_file)
@@ -584,7 +593,9 @@ class instance(models.Model):
         # Check nginx site folder exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         if not exists(nginx_sites_path):
-            raise Warning(_("Nginx Sites Folder not Found!, please check nginx is installed and folder '%s' exists!") % (nginx_sites_path))
+            raise Warning(_("Nginx Sites Folder not Found! \
+                Please check nginx is installed and folder '%s' exists!") % (
+                nginx_sites_path))
 
         # Check if file already exists and delete it
         nginx_site_file_path = os.path.join(

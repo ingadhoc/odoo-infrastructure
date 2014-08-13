@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api, _
+from openerp.osv import netsvc
 import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -8,6 +9,7 @@ from fabric.api import sudo
 
 
 class database(models.Model):
+
     """"""
     # TODO agregar campos calculados
     # Cantidad de usuarios
@@ -158,7 +160,9 @@ class database(models.Model):
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(_('You cannot delete a database which is not draft or cancelled.'))
+            raise Warning(
+                _('You cannot delete a database which is not draft \
+                    or cancelled.'))
         return super(database, self).unlink()
 
     @api.onchange('database_type_id')
@@ -172,13 +176,16 @@ class database(models.Model):
     def get_deact_date(self):
         deactivation_date = False
         if self.issue_date and self.database_type_id.auto_deactivation_days:
-            deactivation_date = (datetime.strptime(self.issue_date, '%Y-%m-%d') + relativedelta(days=self.database_type_id.auto_deactivation_days))
+            deactivation_date = (datetime.strptime(
+                self.issue_date, '%Y-%m-%d') + relativedelta(
+                days=self.database_type_id.auto_deactivation_days))
         self.deactivation_date = deactivation_date
 
     @api.one
     def get_sock(self):
-        base_url = self.instance_id.main_hostname # base_url = self.instance_id.environment_id.server_id.main_hostname
-        server_port = 80 # server_port = self.instance_id.xml_rpc_port
+        # base_url = self.instance_id.environment_id.server_id.main_hostname
+        base_url = self.instance_id.main_hostname
+        server_port = 80  # server_port = self.instance_id.xml_rpc_port
         rpc_db_url = 'http://%s:%d/xmlrpc/db' % (base_url, server_port)
         return xmlrpclib.ServerProxy(rpc_db_url)
 
@@ -188,10 +195,16 @@ class database(models.Model):
         new_db_name = self.name
         demo = self.demo_data
         user_password = 'admin'
-        lang = False # lang = 'en_US'
+        lang = False  # lang = 'en_US'
 
         try:
-            sock.create_database(self.instance_id.admin_pass, new_db_name, demo, lang, user_password)
+            sock.create_database(
+                self.instance_id.admin_pass,
+                new_db_name,
+                demo,
+                lang,
+                user_password
+            )
         except:
             raise Warning(_('Unable to create Database.'))
         self.signal_workflow('sgn_to_active')
@@ -203,9 +216,11 @@ class database(models.Model):
         try:
             sock.drop(self.instance_id.admin_pass, self.name)
         except:
-            raise Warning(_('Unable to drop Database. If you are working in an instance with "workers" then you can try restarting service.'))
+            raise Warning(
+                _('Unable to drop Database. If you are working in an \
+                    instance with "workers" then you can try \
+                    restarting service.'))
         self.signal_workflow('sgn_cancel')
-
 
     @api.one
     def dump_db(self):
@@ -215,12 +230,16 @@ class database(models.Model):
         try:
             return sock.dump(self.instance_id.admin_pass, self.name)
         except:
-            raise Warning(_('Unable to dump Database. If you are working in an instance with "workers" then you can try restarting service.'))
+            raise Warning(
+                _('Unable to dump Database. If you are working in an \
+                    instance with "workers" then you can try \
+                    restarting service.'))
 
     @api.one
     def kill_db_connection(self):
         self.server_id.get_env()
-        psql_command = "/SELECT pg_terminate_backend(pg_stat_activity.procpid) FROM pg_stat_activity WHERE pg_stat_activity.datname = '"
+        psql_command = "/SELECT pg_terminate_backend(pg_stat_activity.procpid)\
+         FROM pg_stat_activity WHERE pg_stat_activity.datname = '"
         psql_command += self.name + " AND procpid <> pg_backend_pid();"
         sudo('psql -U postgres -c ' + psql_command)
 
@@ -244,7 +263,7 @@ class database(models.Model):
     #     registry = openerp.modules.registry.RegistryManager.new(db)
     #     with registry.cursor() as cr:
     #         if copy:
-    #             # if it's a copy of a database, force generation of a new dbuuid
+    # if it's a copy of a database, force generation of a new dbuuid
     #             registry['ir.config_parameter'].init(cr, force=True)
     #         if filestore_path:
     #             filestore_dest = registry['ir.attachment']._filestore(cr, SUPERUSER_ID)
@@ -262,9 +281,13 @@ class database(models.Model):
         new_db = self.copy({'name': new_database_name})
         sock = self.get_sock()[0]
         try:
-            sock.duplicate_database(self.instance_id.admin_pass, self.name, new_database_name)
+            sock.duplicate_database(
+                self.instance_id.admin_pass, self.name, new_database_name)
         except:
-            raise Warning(_('Unable to duplicate Database. If you are working in an instance with "workers" then you can try restarting service.'))
+            raise Warning(
+                _('Unable to duplicate Database. If you are working in \
+                    an instance with "workers" then you can try \
+                    restarting service.'))
         new_db.signal_workflow('sgn_to_active')
         # TODO retornar accion de ventana a la bd creada
 
@@ -280,17 +303,14 @@ class database(models.Model):
     #     admin_name = param[inst_id]['admin_name']
     #     admin_pass = param[inst_id]['admin_pass']
     #     database = param[inst_id]['database']
-    #     #domain = database + '.' + param[inst_id]['base_url']
+    # domain = database + '.' + param[inst_id]['base_url']
     #     domain = base_url
     #     connection = openerplib.get_connection(hostname=domain, database=database, \
     #         login=admin_name, password=admin_pass, port=server_port)
     #     return connection
 
-
-
-
     def action_wfk_set_draft(self, cr, uid, ids, *args):
-        self.write(cr, uid, ids, {'state':'draft'})
+        self.write(cr, uid, ids, {'state': 'draft'})
         wf_service = netsvc.LocalService("workflow")
         for obj_id in ids:
             wf_service.trg_delete(uid, 'infrastructure.database', obj_id, cr)

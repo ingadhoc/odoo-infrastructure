@@ -8,7 +8,6 @@ class database_type(models.Model):
     _name = 'infrastructure.database_type'
     _description = 'database_type'
 
-
     name = fields.Char(
         string='Name',
         required=True

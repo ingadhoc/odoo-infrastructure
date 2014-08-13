@@ -54,13 +54,15 @@ class server_configuration_command(models.Model):
                 'pool': self.pool,
                 'time': time,
                 'cr': cr,
-                'context': dict(context), # copy context to prevent side-effects of eval
+                # copy context to prevent side-effects of eval
+                'context': dict(context),
                 'uid': uid,
                 'user': user,
             }
             print 'command.command', command.command
             print 'command.command.strip()', command.command.strip()
-            eval(command.command.strip(), cxt, mode="exec") # nocopy allows to return 'action'
+            # nocopy allows to return 'action'
+            eval(command.command.strip(), cxt, mode="exec")
             if 'result' in cxt['context']:
                 command_result = cxt['context'].get('result')
             result.append(command_result)
