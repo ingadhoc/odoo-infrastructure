@@ -127,28 +127,28 @@ class database(models.Model):
         string='Server',
         related='instance_id.environment_id.server_id',
         store=True,
-        readonly=True,
+        readonly=True
     )
 
     protected_db = fields.Boolean(
         string='Protected DB?',
         related='database_type_id.protect_db',
         store=True,
-        readonly=True,
+        readonly=True
     )
 
     color = fields.Integer(
         string='Color',
         related='database_type_id.color',
         store=True,
-        readonly=True,
+        readonly=True
     )
 
     deactivation_date = fields.Date(
         string='Deactivation Date',
         compute='get_deact_date',
         store=True,
-        readonly=False,
+        readonly=False
     )
 
     _sql_constraints = [

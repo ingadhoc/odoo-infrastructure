@@ -21,12 +21,12 @@ class command(models.Model):
 
     name = fields.Char(
         string='Name',
-        required=True,
+        required=True
     )
 
     command = fields.Text(
         string='Command',
-        required=True,
+        required=True
     )
 
     _order = "sequence"
