@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, _
+from openerp import models, fields, api, _
 
 
 class server_hostname(models.Model):
@@ -30,18 +30,13 @@ class server_hostname(models.Model):
         required=True
     )
 
-    def name_get(self, cr, uid, ids, context=None):
-        if not ids:
-            return []
-        if isinstance(ids, (int, long)):
-                    ids = [ids]
-        reads = self.read(cr, uid, ids, ['name', 'wildcard'], context=context)
+    @api.multi
+    def name_get(self):
         res = []
-        for record in reads:
-            name = record['name']
-            if record['wildcard']:
-                name += _(' - Wildcard')
-            res.append((record['id'], name))
+        if self.wildcard:
+            name = self.name
+            name += _(' - Wildcard')
+            res.append((self.id, name))
         return res
 
 
