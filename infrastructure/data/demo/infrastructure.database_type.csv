@@ -1,7 +1,7 @@
 id,name,prefix,automatic_drop,automatic_drop_days,protect_db,automatic_deactivation,auto_deactivation_days,color,url_prefix,url_example,db_name_example
-inf_db_typ_upgr,Upgrade Test,up,False,,False,False,,,up,up.adhoc.nubeadhoc.com,up_adhoc
-inf_db_typ_train,Test & Training,test,False,,False,False,,,test,test.adhoc.nubeadhoc.com,test_adhoc
-inf_db_typ_prod,Production,prod,False,,True,False,,,,adhoc.nubeadhoc.com,prod_adhoc
-inf_db_typ_migr,Migration,mig,False,,True,False,,,mig,mig.adhoc.nubeadhoc.com,mi_adhoc
-inf_db_typ_trou,Support & Troubleshooting,su,True,7,False,False,,,sup,sup.adhoc.nubeadhoc.com,su_adhoc
-inf_db_typ_trial,Trial,prod,False,,True,True,30,,,adhoc.nubeadhoc.com,prod_adhoc
+inf_db_typ_upgr,Upgrade Test,up,False,,False,False,,,up,up.customer.example.com,up_customer
+inf_db_typ_train,Test & Training,test,False,,False,False,,,test,test.customer.example.com,test_customer
+inf_db_typ_prod,Production,prod,False,,True,False,,,,customer.example.com,prod_customer
+inf_db_typ_migr,Migration,mig,False,,True,False,,,mig,mig.customer.example.com,mi_customer
+inf_db_typ_trou,Support & Troubleshooting,su,True,7,False,False,,,sup,sup.customer.example.com,su_customer
+inf_db_typ_trial,Trial,prod,False,,True,True,30,,,customer.example.com,prod_customer
