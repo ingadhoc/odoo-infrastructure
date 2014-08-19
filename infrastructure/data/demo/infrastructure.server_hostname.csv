@@ -1,4 +1,4 @@
 id,name,server_id/id,wildcard
-inf_server_host_1,example1.com,inf_server_minotauro,True
-inf_server_host_2,example2.com,inf_server_pegaso,True
-inf_server_host_3,example3.com,inf_server_minotauro,True
+inf_server_host_1,example01.com,inf_server_srv02,True
+inf_server_host_2,example02.com,inf_server_srv01,True
+inf_server_host_3,example03.com,inf_server_srv02,True

@@ -1,3 +1,3 @@
 id,name,server_configuration_id/id,ip_address,ssh_port,main_hostname,holder_id/id,owner_id/id,user_id/id,base_path,sources_dir,instance_user_group,gdrive_account,gdrive_passw,gdrive_space,open_ports,requires_vpn
-inf_server_pegaso,Pegaso,server_conf_12_04_server,199.60.199.199,22,pegaso.mycompania.com,inf_partner_nubenet,base.partner_root,base.partner_root,/opt/odoo/,/opt/odoo/sources,odoo,pegaso.grupoadhoc.com.ar,,100 GB,"22, 80, 443",False
-inf_server_minotauro,Minotauro,server_conf_12_04_server,199.60.199.200,22,minotauro..mycompania.com,inf_partner_nx,inf_partner_nx,base.partner_root,/opt/oerpenv/,/opt/oerpenv/sources,openerp,minotauro.grupoadhoc.com.ar,,100 GB,"22, 80, 443",False
+inf_server_srv01,SRV-01,server_conf_12_04_server,192.168.1.100,22,srv01.example.com,inf_partner_foobar,base.partner_root,base.partner_root,/opt/odoo/,/opt/odoo/sources,odoo,srv01.grupoadhoc.com.ar,,100 GB,"22, 80, 443",False
+inf_server_srv02,SRV-02,server_conf_12_04_server,192.168.1.200,22,srv02.example.com,inf_partner_bar,inf_partner_bar,base.partner_root,/opt/oerpenv/,/opt/oerpenv/sources,openerp,srv02.example.com,,100 GB,"22, 80, 443",False

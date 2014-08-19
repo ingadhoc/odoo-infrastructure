@@ -301,7 +301,8 @@ class instance(models.Model):
             'Name must be unique per environment!'),
     ]
 
-    def get_user(self, cr, uid, ids, context=None):
+    @api.one
+    def get_user(self):
         """"""
         raise NotImplementedError
 
