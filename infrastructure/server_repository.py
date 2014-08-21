@@ -46,7 +46,7 @@ class server_repository(models.Model):
                 "Please check that the setted path exists or empty \
                 it in order to donwload for first time '%s'!") % (path,))
 
-        with cd(path):
+        with cd(path.strip()):
             try:
                 sudo('git pull')
             except:
