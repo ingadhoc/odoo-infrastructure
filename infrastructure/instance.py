@@ -72,7 +72,7 @@ class instance(models.Model):
 
     db_filter = fields.Many2one(
         'infrastructure.db_filter',
-        string='Db filter',
+        string='DB Filter',
         required=True
     )
 

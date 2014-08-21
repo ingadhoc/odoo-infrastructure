@@ -13,7 +13,7 @@
                 <field name="name" string="name"/>
                 <field name="cron_id" string="Cron"/>
             </group>
-            <group string="By object">
+            <group string="By Object">
             </group>
         </search>
     </field>
@@ -50,7 +50,7 @@
 </record>
 
 <record id="action_infrastructure_db_back_up_policy_db_back_up_policies" model="ir.actions.act_window">
-    <field name="name">DB Back Up Policies</field>
+    <field name="name">DB Backup Policies</field>
     <field name="res_model">infrastructure.db_back_up_policy</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
@@ -60,7 +60,7 @@
 </record>
 
 <menuitem
-    name="DB Back Up Policies"
+    name="DB Backup Policies"
     id="menu_db_back_up_policies"
     sequence="100"
     action="action_infrastructure_db_back_up_policy_db_back_up_policies"
