@@ -12,6 +12,7 @@ class server_repository(models.Model):
 
     _name = 'infrastructure.server_repository'
     _description = 'server_repository'
+    _rec_name = 'repository_id'
 
     repository_id = fields.Many2one(
         'infrastructure.repository',
