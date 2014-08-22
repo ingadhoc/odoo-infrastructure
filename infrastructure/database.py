@@ -104,7 +104,7 @@ class database(models.Model):
     state = fields.Selection(
         _states_,
         'State',
-        default='state'
+        default='draft'
     )
 
     db_back_up_policy_ids = fields.Many2many(
