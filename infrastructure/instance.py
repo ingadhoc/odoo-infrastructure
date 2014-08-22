@@ -476,6 +476,10 @@ class instance(models.Model):
             self.environment_id.path, 'bin/activate') + ' && '
         command = activate_environment_command + command
         try:
+            sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
+            print
+            print command
+            print
             sudo(command, user=self.user)
         except:
             raise except_orm(_('Error creating conf file!'),
@@ -492,15 +496,15 @@ class instance(models.Model):
         service_file = template_service_file % (
             self.user, self.conf_file_path, daemon)
 
-        # Check service_folder exists
-        service_folder = self.environment_id.server_id.service_folder
-        if not exists(service_folder):
+        # Check service_dir exists
+        service_dir = self.environment_id.server_id.service_dir
+        if not exists(service_dir):
             raise except_orm(_('Server Service Folder not Found!'),
                              _("Service folter '%s' not found. \
-                                Please create it first!") % (service_folder))
+                                Please create it first!") % (service_dir))
 
         # Check if service already exist
-        service_file_path = os.path.join(service_folder, self.service_file)
+        service_file_path = os.path.join(service_dir, self.service_file)
         if exists(service_file_path, use_sudo=True):
             sudo('rm ' + service_file_path)
 
