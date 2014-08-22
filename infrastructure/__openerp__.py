@@ -59,6 +59,7 @@
         u'data/demo/infrastructure.environment_version.csv',
         u'data/demo/infrastructure.environment.csv',
         u'data/demo/infrastructure.db_filter.csv',
+        u'data/demo/infrastructure.database_type.csv',
         u'data/demo/infrastructure.server_repository.csv',
         u'data/demo/infrastructure.instance.csv',
         u'data/demo/infrastructure.instance_host.csv',
