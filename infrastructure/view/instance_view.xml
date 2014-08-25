@@ -49,7 +49,6 @@
                     statusbar_colors='{}'
                     />
             </header>
-            <field name="server_id" invisible="1"/>
             <sheet>
                 <div class="col-md-6">
                     <h1>
@@ -69,6 +68,7 @@
                 </div>
                 <group>
                     <group>
+                        <field name="server_id" invisible="1"/>
                         <field name="user"/>
                         <field name="admin_pass"/>
                         <field name="db_filter"/>

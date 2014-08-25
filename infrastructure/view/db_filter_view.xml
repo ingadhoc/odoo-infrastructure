@@ -13,7 +13,7 @@
                 <field name="name" string="Name"/>
                 <field name="rule" string="Rule"/>
             </group>
-            <group string="By object">
+            <group string="By Object">
             </group>
         </search>
     </field>
@@ -50,7 +50,7 @@
 </record>
 
 <record id="action_infrastructure_db_filter_db_filters" model="ir.actions.act_window">
-    <field name="name">Db Filters</field>
+    <field name="name">DB Filters</field>
     <field name="res_model">infrastructure.db_filter</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
@@ -60,7 +60,7 @@
 </record>
 
 <menuitem
-    name="Db Filters"
+    name="DB Filters"
     id="menu_db_filters"
     sequence="100"
     action="action_infrastructure_db_filter_db_filters"

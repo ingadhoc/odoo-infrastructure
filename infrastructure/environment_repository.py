@@ -96,7 +96,7 @@ class environment_repository(models.Model):
                                 or empty it in order to donwload for \
                                 first time '%s'!") % (path,))
 
-        with cd(path):
+        with cd(path.strip()):
             try:
                 sudo('git pull')
             except:
