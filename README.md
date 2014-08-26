@@ -21,7 +21,10 @@ If you don't have Pip, find it here: http://pypi.python.org/pypi/pip
 
 ## Credits
 
-**Ingeniería Adhoc** (www.ingadhoc.com)
+<p>
+<img alt="IngAdhoc" src="http://fotos.subefotos.com/a72e91469ba66af8f91ad7d775536930o.png" />
+</p>
+**Ingeniería Adhoc** - www.ingadhoc.com
 
 ## License
 
