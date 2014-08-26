@@ -10,7 +10,12 @@ class db_back_up_policy(models.Model):
     _description = 'db_back_up_policy'
 
     name = fields.Char(
-        string='name',
+        string='Name',
+        required=True
+    )
+
+    backup_prefix = fields.Char(
+        string='Back Up Prefix',
         required=True
     )
 

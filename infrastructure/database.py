@@ -151,6 +151,13 @@ class database(models.Model):
         readonly=False
     )
 
+    backup_ids = fields.One2many(
+        'infrastructure.database.backup',
+        'database_id',
+        string='Backups',
+        readonly=False
+    )
+
     _sql_constraints = [
         ('name_uniq', 'unique(name, server_id)',
             'Database Name Must be Unique per server'),
@@ -291,7 +298,25 @@ class database(models.Model):
         # TODO retornar accion de ventana a la bd creada
 
     @api.one
-    def back_up_now_db(self):
+    def _cron_bd_backup(self):
+        """ backup_policy_ids: Lista de back up policy que se referencia a este cron.
+        Para cada back up policy:
+            buscar las database_ids: lista de bases de datos con esas politicas de back up
+            ejecutar "back_up_now_db" pasando el 'backup_policy_id'
+        """
+
+    @api.one
+    def back_up_now_db(self, backup_policy_id=False):
+        """
+        Construir nombre_backup = '%s - %s - %s' % (backup_policy_prefix or 'manual', backup_name, now)
+        Hacer back up con dicho nombre y en el path del environment
+        Escribir un registro de "database.backup" con
+            name = nombre_backup
+            database_id = self.id
+            database_id = self.id
+            create_date = now
+            db_back_up_policy_id = backup_policy_id
+        """
         # TODO implementar esto
         raise Warning(_('Not Implemented yet'))
 

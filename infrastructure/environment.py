@@ -80,24 +80,6 @@ class environment(models.Model):
         string='Color Index'
     )
 
-    path = fields.Char(
-        string='Path',
-        readonly=True,
-        required=True,
-        states={
-            'draft': [('readonly', False)]
-        }
-    )
-
-    sources_path = fields.Char(
-        string='Sources Path',
-        readonly=True,
-        required=True,
-        states={
-            'draft': [('readonly', False)]
-        }
-    )
-
     install_server_command = fields.Char(
         string='Install Server Command',
         required=True,
@@ -134,7 +116,18 @@ class environment(models.Model):
 
     sources_path = fields.Char(
         string='Sources Path',
-        compute='_get_sources_path',
+        compute='_get_env_paths',
+        store=True,
+        readonly=True,
+        required=True,
+        states={
+            'draft': [('readonly', False)]
+        }
+    )
+
+    backups_path = fields.Char(
+        string='Back Ups Path',
+        compute='_get_env_paths',
         store=True,
         readonly=True,
         required=True,
@@ -199,11 +192,13 @@ class environment(models.Model):
 
     @api.one
     @api.depends('path')
-    def _get_sources_path(self):
+    def _get_env_paths(self):
         sources_path = False
         if self.path:
             sources_path = os.path.join(self.path, 'sources')
+            backups_path = os.path.join(self.path, 'backups')
         self.sources_path = sources_path
+        self.backups_path = backups_path
 
     @api.one
     def make_environment(self):
@@ -218,12 +213,16 @@ class environment(models.Model):
             raise Warning(_("Type '%s' not implemented yet.") % (self.type))
 
     @api.one
-    def make_sources_path(self):
+    def make_env_paths(self):
         self.server_id.get_env()
         if exists(self.sources_path, use_sudo=True):
             raise Warning(_("Folder '%s' already exists") %
                           (self.sources_path))
         sudo('mkdir -p ' + self.sources_path)
+        if exists(self.backups_path, use_sudo=True):
+            raise Warning(_("Folder '%s' already exists") %
+                          (self.backups_path))
+        sudo('mkdir -p ' + self.backups_path)
 
     @api.one
     @api.returns('infrastructure.environment_repository')
@@ -253,7 +252,8 @@ class environment(models.Model):
             with cd(environment_repository.path):
                 sudo(
                     'source ' + os.path.join(
-                        self.path, 'bin/activate') + ' && ' + environment_repository.server_repository_id.repository_id.install_server_command)
+                        self.path, 'bin/activate') + ' && ' + \
+                    environment_repository.server_repository_id.repository_id.install_server_command)
             self.change_path_group_and_perm()
         else:
             raise Warning(_("Type '%s' not implemented yet.") % (self.type))
@@ -273,7 +273,7 @@ class environment(models.Model):
     @api.multi
     def create_environment(self):
         self.make_environment()
-        self.make_sources_path()
+        self.make_env_paths()
         self.signal_workflow('sgn_to_active')
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
