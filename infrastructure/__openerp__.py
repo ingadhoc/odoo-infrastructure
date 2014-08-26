@@ -9,10 +9,7 @@
     'website': 'www.ingadhoc.com',
     'license': 'AGPL-3',
     'depends': [u'mail'],
-    'data': [],
-    'installable': True,
-    'auto_install': False,
-    'demo': [
+    'data': [
         u'wizard/duplicate_db_wizard_view.xml',
         u'security/infrastructure_group.xml',
         u'view/infrastructure_menuitem.xml',
@@ -50,6 +47,10 @@
         u'workflow/instance_workflow.xml',
         u'workflow/server_workflow.xml',
         u'security/ir.model.access.csv',
+    ],
+    'installable': True,
+    'auto_install': False,
+    'demo': [
         u'data/demo/res.partner.csv',
         u'data/demo/infrastructure.repository_branch.csv',
         u'data/demo/infrastructure.repository.csv',
