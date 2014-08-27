@@ -84,5 +84,3 @@ class repository(models.Model):
                 path = os.path.join(server.sources_folder, self.folder)
                 # TODO implementar otros tipos de repos
         return path
-
-repository()

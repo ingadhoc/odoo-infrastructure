@@ -19,6 +19,3 @@ class environment_version(models.Model):
         string='Default Branch',
         required=True
     )
-
-
-environment_version()

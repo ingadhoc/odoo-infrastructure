@@ -25,6 +25,3 @@ class service_command(models.Model):
         ondelete='cascade',
         required=True
     )
-
-
-service_command()

@@ -81,6 +81,3 @@ class instance_host(models.Model):
         if self.database_type_id.url_prefix:
             name = self.database_type_id.url_prefix + '.' + name
         self.name = name
-
-
-instance_host()

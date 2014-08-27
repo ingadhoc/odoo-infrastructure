@@ -52,6 +52,3 @@ class server_hostname(models.Model):
                 name += _(' - Wildcard')
             res.append((record['id'], name))
         return res
-
-
-server_hostname()

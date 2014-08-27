@@ -62,5 +62,3 @@ class database_type(models.Model):
         'db_backup_policy_id',
         string='Suggested Backup Policies'
     )
-
-database_type()

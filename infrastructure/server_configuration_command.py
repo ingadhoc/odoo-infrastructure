@@ -155,6 +155,3 @@ class server_configuration_command(models.Model):
                 command_result = cxt['context'].get('result')
             result.append(command_result)
         return result
-
-
-server_configuration_command()

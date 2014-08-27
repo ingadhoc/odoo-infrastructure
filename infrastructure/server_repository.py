@@ -70,6 +70,3 @@ class server_repository(models.Model):
         else:
             self.update_repository()
         return True
-
-
-server_repository()

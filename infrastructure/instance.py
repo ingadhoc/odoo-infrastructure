@@ -750,5 +750,3 @@ esac
 
 exit 0
 """
-
-instance()

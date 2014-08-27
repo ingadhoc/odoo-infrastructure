@@ -165,6 +165,3 @@ class environment_repository(models.Model):
         else:
             raise Warning(_("Type '%s' not implemented yet.") %
                           (self.environment_id.type))
-
-
-environment_repository()

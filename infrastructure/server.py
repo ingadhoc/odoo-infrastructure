@@ -290,6 +290,3 @@ class server(models.Model):
             wf_service.trg_delete(uid, 'infrastructure.server', obj_id, cr)
             wf_service.trg_create(uid, 'infrastructure.server', obj_id, cr)
         return True
-
-
-server()

@@ -35,6 +35,3 @@ class server_configuration(models.Model):
         context={'default_type': 'maintenance'},
         domain=[('type', '=', 'maintenance')]
     )
-
-
-server_configuration()

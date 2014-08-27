@@ -21,6 +21,3 @@ class repository_branch(models.Model):
         'repository_id',
         string='repository_ids'
     )
-
-
-repository_branch()

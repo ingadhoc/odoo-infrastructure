@@ -38,6 +38,3 @@ class server_change(models.Model):
         ondelete='cascade',
         required=True
     )
-
-
-server_change()

@@ -296,5 +296,3 @@ class environment(models.Model):
         ('sources_number', 'unique(number, server_id)',
             'Number must be unique per server!'),
     ]
-
-environment()

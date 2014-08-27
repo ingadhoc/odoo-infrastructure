@@ -20,6 +20,3 @@ class server_service(models.Model):
         string='Server',
         required=True
     )
-
-
-server_service()

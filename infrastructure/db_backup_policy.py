@@ -40,6 +40,3 @@ class db_backup_policy(models.Model):
         'database_type_id',
         string='database_type_ids'
     )
-
-
-db_backup_policy()

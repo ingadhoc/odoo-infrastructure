@@ -343,5 +343,3 @@ class database(models.Model):
 
     # @api.one
     # def action_wfk_set_draft(self):
-
-database()
