@@ -3,6 +3,7 @@
 import command
 import database
 import database_type
+import database_backup
 import db_back_up_policy
 import db_filter
 import environment
