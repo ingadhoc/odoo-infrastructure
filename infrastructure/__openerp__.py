@@ -64,6 +64,7 @@
         u'data/demo/infrastructure.server_repository.csv',
         u'data/demo/infrastructure.instance.csv',
         u'data/demo/infrastructure.instance_host.csv',
-        u'data/demo/infrastructure.server_configuration_command.csv'
+        u'data/demo/infrastructure.server_configuration_command.csv',
+        u'data/demo/infrastructure.database.csv'
         ],
     }
