@@ -41,7 +41,7 @@
 "access_infrastructure_mailserver_user","infrastructure.mailserver.user","model_infrastructure_mailserver","group_user",1,1,1,1
 "access_infrastructure_repository_branch_manager","infrastructure.repository_branch.manager","model_infrastructure_repository_branch","group_manager",1,1,1,1
 "access_infrastructure_repository_branch_user","infrastructure.repository_branch.user","model_infrastructure_repository_branch","group_user",1,1,1,1
-"access_infrastructure_db_back_up_policy_manager","infrastructure.db_back_up_policy.manager","model_infrastructure_db_back_up_policy","group_manager",1,1,1,1
-"access_infrastructure_db_back_up_policy_user","infrastructure.db_back_up_policy.user","model_infrastructure_db_back_up_policy","group_user",1,1,1,1
+"access_infrastructure_db_backup_policy_manager","infrastructure.db_backup_policy.manager","model_infrastructure_db_backup_policy","group_manager",1,1,1,1
+"access_infrastructure_db_backup_policy_user","infrastructure.db_backup_policy.user","model_infrastructure_db_backup_policy","group_user",1,1,1,1
 "access_infrastructure_database_type_manager","infrastructure.database_type.manager","model_infrastructure_database_type","group_manager",1,1,1,1
 "access_infrastructure_database_type_user","infrastructure.database_type.user","model_infrastructure_database_type","group_user",1,1,1,1

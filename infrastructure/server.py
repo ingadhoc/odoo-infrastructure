@@ -105,7 +105,7 @@ class server(models.Model):
         string='Color Index'
     )
 
-    sources_dir = fields.Char(
+    sources_path = fields.Char(
         string='Sources Directory',
         readonly=True,
         required=True,
@@ -113,7 +113,7 @@ class server(models.Model):
         default='/opt/odoo/sources'
     )
 
-    service_dir = fields.Char(
+    service_path = fields.Char(
         string='Service Directory',
         readonly=True,
         required=True,
@@ -129,7 +129,7 @@ class server(models.Model):
         default='odoo'
     )
 
-    nginx_log_dir = fields.Char(
+    nginx_log_path = fields.Char(
         string='Nginx Log Directory',
         readonly=True,
         required=True,

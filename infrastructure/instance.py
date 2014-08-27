@@ -134,7 +134,7 @@ class instance(models.Model):
         default=9
     )
 
-    data_dir = fields.Char(
+    data_path = fields.Char(
         string='Data Directory Path',
         readonly=True,
         states={'draft': [('readonly', False)]}
@@ -227,7 +227,7 @@ class instance(models.Model):
         states={'draft': [('readonly', False)]}
     )
 
-    data_dir = fields.Char(
+    data_path = fields.Char(
         string='Data Dir',
         compute='_get_paths',
         store=True,
@@ -289,7 +289,7 @@ class instance(models.Model):
             'Longpolling Port must be unique per server!'),
         ('logfile_uniq', 'unique(logfile, server_id)',
             'Log File Path must be unique per server!'),
-        ('data_dir_uniq', 'unique(data_dir, server_id)',
+        ('data_path_uniq', 'unique(data_path, server_id)',
             'Data Dir must be unique per server!'),
         ('conf_file_path_uniq', 'unique(conf_file_path, server_id)',
             'Config. File Path must be unique per server!'),
@@ -382,7 +382,7 @@ class instance(models.Model):
     def _get_paths(self):
         conf_file_path = False
         logfile = False
-        data_dir = False
+        data_path = False
         # TODO notar que aca se toma el valor del campo function y no el valor
         # stored en el path, hay que arreglarlo
         if self.environment_id.path and self.name:
@@ -390,11 +390,11 @@ class instance(models.Model):
                 self.environment_id.path, 'conf_' + self.name) + '.conf'
             logfile = os.path.join(
                 self.environment_id.path, 'log_' + self.name) + '.log'
-            data_dir = os.path.join(
+            data_path = os.path.join(
                 self.environment_id.path, '.local/share/odoo', self.name)
         self.conf_file_path = conf_file_path
         self.logfile = logfile
-        self.data_dir = data_dir
+        self.data_path = data_path
 
     # Actions
     @api.multi
@@ -445,8 +445,8 @@ class instance(models.Model):
 
         # TODO ver si no da error este parametro en algunas versiones de odoo y
         # sacarlo
-        if self.data_dir:
-            command += ' --data-dir=' + self.data_dir
+        if self.data_path:
+            command += ' --data-dir=' + self.data_path
 
         if self.module_load:
             command += ' --load=' + self.module_load
@@ -496,15 +496,15 @@ class instance(models.Model):
         service_file = template_service_file % (
             self.user, self.conf_file_path, daemon)
 
-        # Check service_dir exists
-        service_dir = self.environment_id.server_id.service_dir
-        if not exists(service_dir):
+        # Check service_path exists
+        service_path = self.environment_id.server_id.service_path
+        if not exists(service_path):
             raise except_orm(_('Server Service Folder not Found!'),
                              _("Service folter '%s' not found. \
-                                Please create it first!") % (service_dir))
+                                Please create it first!") % (service_path))
 
         # Check if service already exist
-        service_file_path = os.path.join(service_dir, self.service_file)
+        service_file_path = os.path.join(service_path, self.service_file)
         if exists(service_file_path, use_sudo=True):
             sudo('rm ' + service_file_path)
 
@@ -574,10 +574,10 @@ class instance(models.Model):
             raise Warning(_('You Must set at least one instance host!'))
 
         acces_log = os.path.join(
-            self.environment_id.server_id.nginx_log_dir,
+            self.environment_id.server_id.nginx_log_path,
             'access_' + re.sub('[-]', '_', self.service_file))
         error_log = os.path.join(
-            self.environment_id.server_id.nginx_log_dir,
+            self.environment_id.server_id.nginx_log_path,
             'error_' + re.sub('[-]', '_', self.service_file))
         xmlrpc_port = self.xml_rpc_port
 

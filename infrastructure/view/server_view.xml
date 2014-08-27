@@ -86,10 +86,10 @@
                     <page string="More Info">
                         <group>
                             <group>
-                                <field name="sources_dir"/>
-                                <field name="service_dir"/>
+                                <field name="sources_path"/>
+                                <field name="service_path"/>
                                 <field name="nginx_sites_path"/>
-                                <field name="nginx_log_dir"/>
+                                <field name="nginx_log_path"/>
                             </group>
                             <group>
                                 <field name="open_ports"/>

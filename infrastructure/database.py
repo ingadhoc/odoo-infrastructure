@@ -107,11 +107,11 @@ class database(models.Model):
         default='draft'
     )
 
-    db_back_up_policy_ids = fields.Many2many(
-        'infrastructure.db_back_up_policy',
-        'infrastructure_database_ids_db_back_up_policy_ids_rel',
+    db_backup_policy_ids = fields.Many2many(
+        'infrastructure.db_backup_policy',
+        'infrastructure_database_ids_db_backup_policy_ids_rel',
         'database_id',
-        'db_back_up_policy_id',
+        'db_backup_policy_id',
         string='Suggested Backup Policies'
     )
 
@@ -175,7 +175,7 @@ class database(models.Model):
     def onchange_database_type_id(self):
         if self.database_type_id:
             self.name = self.database_type_id.prefix + '_'
-            self.db_back_up_policy_ids = self.database_type_id.db_back_up_policy_ids
+            self.db_backup_policy_ids = self.database_type_id.db_backup_policy_ids
 
     @api.one
     @api.depends('database_type_id', 'issue_date')
@@ -302,11 +302,11 @@ class database(models.Model):
         """ backup_policy_ids: Lista de back up policy que se referencia a este cron.
         Para cada back up policy:
             buscar las database_ids: lista de bases de datos con esas politicas de back up
-            ejecutar "back_up_now_db" pasando el 'backup_policy_id'
+            ejecutar "backup_now_db" pasando el 'backup_policy_id'
         """
 
     @api.one
-    def back_up_now_db(self, backup_policy_id=False):
+    def backup_now_db(self, backup_policy_id=False):
         """
         Construir nombre_backup = '%s - %s - %s' % (backup_policy_prefix or 'manual', backup_name, now)
         Hacer back up con dicho nombre y en el path del environment
@@ -315,7 +315,7 @@ class database(models.Model):
             database_id = self.id
             database_id = self.id
             create_date = now
-            db_back_up_policy_id = backup_policy_id
+            db_backup_policy_id = backup_policy_id
         """
         # TODO implementar esto
         raise Warning(_('Not Implemented yet'))
