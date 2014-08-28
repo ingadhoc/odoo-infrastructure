@@ -126,7 +126,7 @@ class environment(models.Model):
     )
 
     backups_path = fields.Char(
-        string='Back Ups Path',
+        string='Backups Path',
         compute='_get_env_paths',
         store=True,
         readonly=True,
@@ -194,9 +194,11 @@ class environment(models.Model):
     @api.depends('path')
     def _get_env_paths(self):
         sources_path = False
+        backups_path = False
         if self.path:
             sources_path = os.path.join(self.path, 'sources')
             backups_path = os.path.join(self.path, 'backups')
+        print sources_path
         self.sources_path = sources_path
         self.backups_path = backups_path
 

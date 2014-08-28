@@ -1,42 +1,38 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, netsvc, _
-import xmlrpclib
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
-from fabric.api import sudo
+from openerp import models, fields
 
 
 class database_backup(models.Model):
 
     """"""
     _name = 'infrastructure.database.backup'
-    _description = 'Database Back Up'
+    _description = 'Database Backup'
 
     database_id = fields.Many2one(
         'infrastructure.database',
         string='Database',
         readonly=True,
-        required=True,
+        required=True
     )
 
     create_date = fields.Datetime(
         string='Date',
         readonly=True,
-        required=True,
+        required=True
     )
 
     # TODO name se debe componer con prefijo de backup policiy, nombre bd y datetime de creacion
     name = fields.Char(
         string='Name',
         readonly=True,
-        required=True,
+        required=True
     )
 
     db_backup_policy_id = fields.Many2one(
         'infrastructure.db_backup_policy',
         string='Backup Policy',
-        readonly=True,
+        readonly=True
     )
 
     def restore(self):
