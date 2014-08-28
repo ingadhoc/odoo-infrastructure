@@ -109,6 +109,9 @@
                     <page string="Notes">
                         <field name="note"/>
                     </page>
+                    <page string="Backups">
+                        <field name="backup_ids"/>
+                    </page>
                 </notebook>
             </sheet>
 
