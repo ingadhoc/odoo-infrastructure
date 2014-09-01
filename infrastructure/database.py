@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, netsvc, _
+from openerp import models, fields, api, netsvc, _, tools
 import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from fabric.api import sudo
+from os import path
 
 
 class database(models.Model):
@@ -212,7 +213,7 @@ class database(models.Model):
                 user_password
             )
         except:
-            raise Warning(_('Unable to create Database.'))
+            raise Warning(_('Unable to create database.'))
         self.signal_workflow('sgn_to_active')
         return True
 
@@ -298,7 +299,7 @@ class database(models.Model):
         # TODO retornar accion de ventana a la bd creada
 
     @api.one
-    def _cron_bd_backup(self):
+    def _cron_backup(self):
         """ backup_policy_ids: Lista de back up policy que se referencia a este cron.
         Para cada back up policy:
             buscar las database_ids: lista de bases de datos con esas politicas de back up
@@ -306,19 +307,40 @@ class database(models.Model):
         """
 
     @api.one
-    def backup_now_db(self, backup_policy_id=False):
-        """
-        Construir nombre_backup = '%s - %s - %s' % (backup_policy_prefix or 'manual', backup_name, now)
-        Hacer back up con dicho nombre y en el path del environment
-        Escribir un registro de "database.backup" con
-            name = nombre_backup
-            database_id = self.id
-            database_id = self.id
-            create_date = now
-            db_backup_policy_id = backup_policy_id
-        """
-        # TODO implementar esto
-        raise Warning(_('Not Implemented yet'))
+    def action_backup_now(self):
+        return self.backup_now()
+
+    @api.one
+    def backup_now(self, backup_policy_id=False):
+        """"""
+        now = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+        if not backup_policy_id:
+            policy_name = 'manual'
+        dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
+        dump_file = path.join(
+            self.instance_id.environment_id.backups_path,
+            dump_name
+        )
+
+        cmd = 'pg_dump %s --format=p --no-owner --file=%s' % (
+            self.name,
+            dump_file
+        )
+
+        values = {
+            'database_id': self.id,
+            'name': dump_name,
+            'create_date': datetime.now(),
+            'db_backup_policy_id': backup_policy_id
+        }
+
+        try:
+            self.server_id.get_env()
+            sudo(cmd, user='postgres')
+            self.backup_ids.create(values)
+        except:
+            raise Warning(_('Unable to backup database'))
 
     # def connect_to_openerp(self, cr, uid, inst_id, parameters, context=None):
     #     param = parameters

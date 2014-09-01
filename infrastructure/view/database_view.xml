@@ -68,7 +68,7 @@
                     </h2>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="backup_now_db" attrs="{'invisible':[('state','!=','active')]}"/>
+                    <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="action_backup_now" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" attrs="{'invisible':[('state','!=','draft')]}"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" attrs="{'invisible':[('state','!=','active')]}"/>
