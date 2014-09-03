@@ -3,7 +3,7 @@
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
-from fabric.api import sudo
+from fabric.api import sudo, shell_env
 from fabric.contrib.files import exists, append, sed
 from ast import literal_eval
 import os
@@ -445,8 +445,12 @@ class instance(models.Model):
 
         # TODO ver si no da error este parametro en algunas versiones de odoo y
         # sacarlo
-        if self.data_dir:
-            command += ' --data-dir=' + self.data_dir
+
+        if self.environment_id.environment_version_id.name in ('8.0', 'master'):
+            if self.data_dir:
+                command += ' --data-dir=' + self.data_dir
+            if self.longpolling_port:
+                command += ' --longpolling-port=' + str(self.longpolling_port)
 
         if self.module_load:
             command += ' --load=' + self.module_load
@@ -459,9 +463,6 @@ class instance(models.Model):
 
         if self.workers:
             command += ' --workers=' + str(self.workers)
-
-        if self.longpolling_port:
-            command += ' --longpolling-port=' + str(self.longpolling_port)
 
         if self.type == 'secure':
             command += ' --xmlrpcs-port=' + str(self.xml_rpcs_port)
@@ -480,7 +481,8 @@ class instance(models.Model):
             print
             print command
             print
-            sudo(command, user=self.user)
+            with shell_env(PYTHON_EGG_CACHE='/tmp/'):
+                sudo(command, user=self.user)
         except:
             raise except_orm(_('Error creating conf file!'),
                              _("Error creating conf file! You can try \
