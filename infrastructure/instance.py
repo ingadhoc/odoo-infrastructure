@@ -482,7 +482,7 @@ class instance(models.Model):
             print command
             print
             with shell_env(PYTHON_EGG_CACHE='/tmp/'):
-                sudo(command, user=self.user)
+                sudo(command, user=self.user, group='odoo')
         except:
             raise except_orm(_('Error creating conf file!'),
                              _("Error creating conf file! You can try \
