@@ -3,7 +3,7 @@
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
-from fabric.api import sudo
+from fabric.api import sudo, shell_env
 from fabric.contrib.files import exists, append, sed
 from ast import literal_eval
 import os
@@ -121,6 +121,7 @@ class instance(models.Model):
         required=True,
         states={'draft': [('readonly', False)]}
     )
+
     log_level = fields.Selection([
         (u'info', 'info'), (u'debug_rpc', 'debug_rpc'),
         (u'warn', 'warn'), (u'test', 'test'), (u'critical', 'critical'),
@@ -134,8 +135,8 @@ class instance(models.Model):
         default=9
     )
 
-    data_path = fields.Char(
-        string='Data Directory Path',
+    data_dir = fields.Char(
+        string='Data Directory',
         readonly=True,
         states={'draft': [('readonly', False)]}
     )
@@ -227,7 +228,7 @@ class instance(models.Model):
         states={'draft': [('readonly', False)]}
     )
 
-    data_path = fields.Char(
+    data_dir = fields.Char(
         string='Data Dir',
         compute='_get_paths',
         store=True,
@@ -289,7 +290,7 @@ class instance(models.Model):
             'Longpolling Port must be unique per server!'),
         ('logfile_uniq', 'unique(logfile, server_id)',
             'Log File Path must be unique per server!'),
-        ('data_path_uniq', 'unique(data_path, server_id)',
+        ('data_dir_uniq', 'unique(data_dir, server_id)',
             'Data Dir must be unique per server!'),
         ('conf_file_path_uniq', 'unique(conf_file_path, server_id)',
             'Config. File Path must be unique per server!'),
@@ -382,7 +383,7 @@ class instance(models.Model):
     def _get_paths(self):
         conf_file_path = False
         logfile = False
-        data_path = False
+        data_dir = False
         # TODO notar que aca se toma el valor del campo function y no el valor
         # stored en el path, hay que arreglarlo
         if self.environment_id.path and self.name:
@@ -390,11 +391,11 @@ class instance(models.Model):
                 self.environment_id.path, 'conf_' + self.name) + '.conf'
             logfile = os.path.join(
                 self.environment_id.path, 'log_' + self.name) + '.log'
-            data_path = os.path.join(
+            data_dir = os.path.join(
                 self.environment_id.path, '.local/share/odoo', self.name)
         self.conf_file_path = conf_file_path
         self.logfile = logfile
-        self.data_path = data_path
+        self.data_dir = data_dir
 
     # Actions
     @api.multi
@@ -445,8 +446,11 @@ class instance(models.Model):
 
         # TODO ver si no da error este parametro en algunas versiones de odoo y
         # sacarlo
-        if self.data_path:
-            command += ' --data-dir=' + self.data_path
+        if self.environment_id.environment_version_id.name in ('8.0', 'master'):
+            if self.data_dir:
+                command += ' --data-dir=' + self.data_dir
+            if self.longpolling_port:
+                command += ' --longpolling-port=' + str(self.longpolling_port)
 
         if self.module_load:
             command += ' --load=' + self.module_load
@@ -459,9 +463,6 @@ class instance(models.Model):
 
         if self.workers:
             command += ' --workers=' + str(self.workers)
-
-        if self.longpolling_port:
-            command += ' --longpolling-port=' + str(self.longpolling_port)
 
         if self.type == 'secure':
             command += ' --xmlrpcs-port=' + str(self.xml_rpcs_port)
@@ -480,7 +481,8 @@ class instance(models.Model):
             print
             print command
             print
-            sudo(command, user=self.user)
+            with shell_env(PYTHON_EGG_CACHE='/tmp/'):
+                sudo(command, user=self.user, group='odoo')
         except:
             raise except_orm(_('Error creating conf file!'),
                              _("Error creating conf file! You can try \

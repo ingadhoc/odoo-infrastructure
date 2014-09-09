@@ -106,7 +106,7 @@ class server(models.Model):
     )
 
     sources_path = fields.Char(
-        string='Sources Directory',
+        string='Sources Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -114,7 +114,7 @@ class server(models.Model):
     )
 
     service_path = fields.Char(
-        string='Service Directory',
+        string='Service Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -130,7 +130,7 @@ class server(models.Model):
     )
 
     nginx_log_path = fields.Char(
-        string='Nginx Log Directory',
+        string='Nginx Log Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
