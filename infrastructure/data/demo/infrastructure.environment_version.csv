@@ -1,8 +1,8 @@
 id,name,default_branch_id/id
-inf_env_version_1,OpenERP 6.1,inf_rep_branch_61
-inf_env_version_2,OpenERP 7.0,inf_rep_branch_70
-inf_env_version_3,OpenERP saas-3,inf_rep_branch_s3
-inf_env_version_4,OpenERP saas-4,inf_rep_branch_s4
-inf_env_version_5,OpenERP saas-5,inf_rep_branch_s5
-inf_env_version_6,Odoo Master,inf_rep_branch_master
-inf_env_version_7,Odoo 8.0,inf_rep_branch_80
+inf_env_version_1,6.1,inf_rep_branch_61
+inf_env_version_2,7.0,inf_rep_branch_70
+inf_env_version_3,saas-3,inf_rep_branch_s3
+inf_env_version_4,saas-4,inf_rep_branch_s4
+inf_env_version_5,saas-5,inf_rep_branch_s5
+inf_env_version_6,master,inf_rep_branch_master
+inf_env_version_7,8.0,inf_rep_branch_80
