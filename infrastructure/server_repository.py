@@ -47,12 +47,15 @@ class server_repository(models.Model):
                 "Please check that the setted path exists or empty \
                 it in order to donwload for first time '%s'!") % (path,))
 
+        cmd = 'git pull'
         with cd(path.strip()):
             try:
-                sudo('git pull')
-            except:
-                raise except_orm(_('Error Making git pull!'), _(
-                    "Error making git pull on '%s'!") % (path))
+                sudo(cmd)
+            except Exception, e:
+                raise except_orm(
+                    _("Error executing '%s' on '%s'") % (cmd, path),
+                    _('Command output: %s') % e
+                )
 
     @api.one
     def get_update_repository(self):
