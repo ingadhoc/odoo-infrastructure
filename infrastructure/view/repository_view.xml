@@ -11,7 +11,7 @@
         <search string="repository" version="7.0">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
-                <field name="folder" string="Folder"/>
+                <field name="directory" string="Directory"/>
                 <field name="type" string="Type"/>
                 <field name="pip_packages" string="PIP Packages"/>
             </group>
@@ -32,9 +32,9 @@
             <sheet string="repository">
              <group>
                 <field name="name"/>
-                <field name="folder"/>
+                <field name="directory"/>
                 <field name="type"/>
-                <field name="addons_subfolder"/>
+                <field name="addons_subdirectory"/>
                 <field name="url"/>
                 <field name="pip_packages"/>
                 <field name="is_server"/>
@@ -61,7 +61,7 @@
                     widget="handle"
                 />
             <field name="name"/>
-            <field name="folder"/>
+            <field name="directory"/>
             <field name="type"/>
             <field name="url"/>
             <field name="pip_packages"/>
@@ -70,8 +70,8 @@
     </field>
 </record>
 
-<record id="action_infrastructure_repository_respositories" model="ir.actions.act_window">
-    <field name="name">Respositories</field>
+<record id="action_infrastructure_repository_repositories" model="ir.actions.act_window">
+    <field name="name">Repositories</field>
     <field name="res_model">infrastructure.repository</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
@@ -81,10 +81,10 @@
 </record>
 
 <menuitem
-    name="Respositories"
-    id="menu_respositories"
+    name="Repositories"
+    id="menu_repositories"
     sequence="100"
-    action="action_infrastructure_repository_respositories"
+    action="action_infrastructure_repository_repositories"
     parent="menu_repositories_conf"
     groups="group_manager"
     />

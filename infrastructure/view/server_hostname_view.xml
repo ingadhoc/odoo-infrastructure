@@ -49,5 +49,24 @@
     </field>
 </record>
 
+<record id="action_infrastructure_server_hostname" model="ir.actions.act_window">
+    <field name="name">Server Hostnames</field>
+    <field name="res_model">infrastructure.server_hostname</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_infrastructure_server_hostname_tree"/>
+    <field name="search_view_id" ref="view_infrastructure_server_hostname_filter"/>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    name="Server Hostnames"
+    id="menu_server_hostname"
+    sequence="30"
+    action="action_infrastructure_server_hostname"
+    parent="menu_serv__env_and_inst"
+    groups="group_manager"
+    />
+
 </data>
 </openerp>

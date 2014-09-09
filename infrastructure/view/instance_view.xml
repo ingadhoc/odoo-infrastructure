@@ -100,7 +100,7 @@
                             <group>
                                 <field name="conf_file_path"/>
                                 <field name="logfile"/>
-                                <field name="data_path"/>
+                                <field name="data_dir"/>
                                 <field name="service_file"/>
                             </group>
                         </group>
