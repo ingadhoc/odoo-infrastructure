@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api, netsvc, _, tools
+from openerp import models, fields, api, netsvc, _
+from openerp.exceptions import except_orm
 import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -212,8 +213,13 @@ class database(models.Model):
                 lang,
                 user_password
             )
-        except:
-            raise Warning(_('Unable to create database.'))
+        # except:
+        #     raise Warning(_('Unable to create database.'))
+        except Exception, e:
+            raise except_orm(
+                _("Unable to create '%s' database") % new_db_name,
+                _('Command output: %s') % e
+            )
         self.signal_workflow('sgn_to_active')
         return True
 
@@ -339,8 +345,14 @@ class database(models.Model):
             self.server_id.get_env()
             sudo(cmd, user='postgres')
             self.backup_ids.create(values)
-        except:
-            raise Warning(_('Unable to backup database'))
+
+        except Exception, e:
+            raise except_orm(
+                _("Unable to backup '%s' database") % self.id,
+                _('Command output: %s') % e
+            )
+        # except:
+        #     raise Warning(_('Unable to backup database'))
 
     # def connect_to_openerp(self, cr, uid, inst_id, parameters, context=None):
     #     param = parameters
