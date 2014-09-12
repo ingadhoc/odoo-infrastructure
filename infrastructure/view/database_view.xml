@@ -106,11 +106,11 @@
                     <field name="db_backup_policy_ids" widget="many2many_tags"/>
                  </group>
                 <notebook>
-                    <page string="Notes">
-                        <field name="note"/>
-                    </page>
                     <page string="Backups">
                         <field name="backup_ids"/>
+                    </page>
+                    <page string="Notes">
+                        <field name="note"/>
                     </page>
                 </notebook>
             </sheet>

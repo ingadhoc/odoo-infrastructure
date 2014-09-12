@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields
+from openerp import models, fields, api
+from os import path
+from fabric.api import cd, sudo
 
 
 class database_backup(models.Model):
@@ -47,3 +49,11 @@ class database_backup(models.Model):
 
     def download(self):
         """Descarga el back up en el exploradorador del usuario"""
+
+    @api.multi
+    def unlink(self):
+        backups_path = self.database_id.instance_id.environment_id.backups_path
+        self.database_id.server_id.get_env()
+        with cd(backups_path):
+            sudo('rm -f %s' % self.name)
+        return super(database_backup, self).unlink()
