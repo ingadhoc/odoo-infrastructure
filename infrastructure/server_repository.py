@@ -49,9 +49,6 @@ class server_repository(models.Model):
             #         in order to download for first time!") % path
             #      )
             cmd = 'git clone %s %s' % (self.repository_id.url, path)
-            print
-            print self.server_id.user_name, cmd
-            print
             try:
                 # sudo(cmd, user=self.server_id.user_name, group='odoo')
                 sudo(cmd, user='odoo', group='odoo')

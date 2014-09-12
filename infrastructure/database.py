@@ -193,7 +193,8 @@ class database(models.Model):
     def get_sock(self):
         # base_url = self.instance_id.environment_id.server_id.main_hostname
         base_url = self.instance_id.main_hostname
-        server_port = 80  # server_port = self.instance_id.xml_rpc_port
+        server_port = 80
+        # server_port = self.instance_id.xml_rpc_port
         rpc_db_url = 'http://%s:%d/xmlrpc/db' % (base_url, server_port)
         return xmlrpclib.ServerProxy(rpc_db_url)
 
