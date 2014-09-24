@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_restore_database_wizard_view" model="ir.ui.view">
+     <field name="name">Restore Database Wizard</field>
+     <field name="model">infrastructure.restore_database.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Restore Database">
+            <group>
+                <field name="database_backup_id"/>
+                <field name="create_date"/>
+                <field name="server_id"/>
+                <field name="environment_id"
+                    domain="[('server_id','=',server_id)]"/>
+                <field name="instance_id"
+                    domain="[('environment_id','=',environment_id)]"/>
+                <field name="database_id"
+                    domain="[('instance_id','=',instance_id)]" context="{'default_instance_id': instance_id}"/>
+                <field name="overwrite_active"/>
+            </group>
+            <footer>
+                <button name="restore_database" string="Restore" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_restore_database_wizard" model="ir.actions.act_window">
+     <field name="name">Restore Database Wizard</field>
+     <field name="res_model">infrastructure.restore_database.wizard</field>
+     <field name="type">ir.actions.act_window</field>
+     <field name="view_type">form</field>
+     <field name="view_mode">tree,form</field>
+     <field name="view_id" ref="infrastructure_restore_database_wizard_view"/>
+     <field name="context">{}</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>

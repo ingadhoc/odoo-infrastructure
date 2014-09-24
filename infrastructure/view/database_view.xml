@@ -59,6 +59,8 @@
                 <div class="col-md-6">
                     <h2>
                         <field name="database_type_id" placeholder="Type..."/>
+                        <field name="server_id" invisible="1"/>
+                        <field name="instance_id" invisible="1"/>
                     </h2>
                     <h1>
                         <field name="name" placeholder="Name..."/>

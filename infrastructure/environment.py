@@ -198,7 +198,6 @@ class environment(models.Model):
         if self.path:
             sources_path = os.path.join(self.path, 'sources')
             backups_path = os.path.join(self.path, 'backups')
-        print sources_path
         self.sources_path = sources_path
         self.backups_path = backups_path
 

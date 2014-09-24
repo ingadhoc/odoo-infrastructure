@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields, api
+from openerp import models, fields, api, _
+from openerp.exceptions import except_orm
+from fabric.api import cd, sudo, settings
 from os import path
-from fabric.api import cd, sudo
 
 
 class database_backup(models.Model):
@@ -24,7 +25,7 @@ class database_backup(models.Model):
         required=True
     )
 
-    # TODO name se debe componer con prefijo de backup policiy, nombre bd y datetime de creacion
+    # TODO name se debe componer con prefijo de backup policy, nombre bd y datetime de creacion
     name = fields.Char(
         string='Name',
         readonly=True,
@@ -37,15 +38,45 @@ class database_backup(models.Model):
         readonly=True
     )
 
-    def restore(self):
-        """ Se debe crear un wizard y un boton que llame a dicho wizard,
-        luego el wizard va a llamar a esta funcion pasando determiandos argumentos.
-            # type = [('new','New'),('overwrite','Overwrite')]
-            instance_id = listas de instancias
-            database_id = campo m2o a database de esa instancia
-                Se va poder elegir una bd o elegir el widget del m2o el "create" y a la nueva bd se le passa por contexto la instance seleccionada
-            Luego, al confirmar el wizard, se hace el restore de la bd y se pasa la database_id al estado "active"
-        """
+    @api.one
+    def restore(self, target_database, overwrite_active):
+        """"""
+        dump_file = path.join(
+            self.database_id.instance_id.environment_id.backups_path,
+            self.name
+        )
+
+        cmd = 'pg_restore'
+        cmd += ' --clean'
+        cmd += ' --disable-triggers'
+        cmd += ' --no-privileges'
+        cmd += ' --no-owner'
+        cmd += ' --ignore'
+        cmd += ' --format=c'
+        cmd += ' --host localhost'
+        cmd += ' --port 5432'
+        cmd += ' --username %s --dbname %s %s' % (
+            target_database.instance_id.user,
+            target_database.name,
+            dump_file
+        )
+
+        try:
+            if target_database.state == 'active' and not overwrite_active:
+                raise except_orm(
+                    _("Cannot restore '%s' database") % target_database.name,
+                    _('Database is activated. Please set database to draft or \
+                      check the overwrite option.')
+                )
+            target_database.server_id.get_env()
+            with settings(warn_only=True):
+                sudo(cmd, user='postgres')
+
+        except SystemExit, e:
+            raise except_orm(
+                _("Unable to restore '%s' database") % self.id,
+                _('Command output: %s') % e
+            )
 
     def download(self):
         """Descarga el back up en el exploradorador del usuario"""

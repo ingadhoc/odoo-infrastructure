@@ -214,8 +214,6 @@ class database(models.Model):
                 lang,
                 user_password
             )
-        # except:
-        #     raise Warning(_('Unable to create database.'))
         except Exception, e:
             raise except_orm(
                 _("Unable to create '%s' database") % new_db_name,
@@ -330,7 +328,7 @@ class database(models.Model):
             dump_name
         )
 
-        cmd = 'pg_dump %s --format=p --no-owner --file=%s' % (
+        cmd = 'pg_dump %s --format=c --compress 9 --file=%s' % (
             self.name,
             dump_file
         )
@@ -352,21 +350,6 @@ class database(models.Model):
                 _("Unable to backup '%s' database") % self.id,
                 _('Command output: %s') % e
             )
-        # except:
-        #     raise Warning(_('Unable to backup database'))
-
-    # def connect_to_openerp(self, cr, uid, inst_id, parameters, context=None):
-    #     param = parameters
-    #     base_url = param[inst_id]['base_url']
-    #     server_port = int(param[inst_id]['server_port'])
-    #     admin_name = param[inst_id]['admin_name']
-    #     admin_pass = param[inst_id]['admin_pass']
-    #     database = param[inst_id]['database']
-    # domain = database + '.' + param[inst_id]['base_url']
-    #     domain = base_url
-    #     connection = openerplib.get_connection(hostname=domain, database=database, \
-    #         login=admin_name, password=admin_pass, port=server_port)
-    #     return connection
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
@@ -375,6 +358,3 @@ class database(models.Model):
             wf_service.trg_delete(uid, 'infrastructure.database', obj_id, cr)
             wf_service.trg_create(uid, 'infrastructure.database', obj_id, cr)
         return True
-
-    # @api.one
-    # def action_wfk_set_draft(self):
