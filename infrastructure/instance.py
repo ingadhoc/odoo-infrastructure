@@ -481,8 +481,7 @@ class instance(models.Model):
             print
             print command
             print
-            # with shell_env(PYTHON_EGG_CACHE='/tmp/'):
-            eggs_dir = '/home/%s/.python-eggs'
+            eggs_dir = '/home/%s/.python-eggs' % self.user
             if not exists(eggs_dir, use_sudo=True):
                 sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
 
