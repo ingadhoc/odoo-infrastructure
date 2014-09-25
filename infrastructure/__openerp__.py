@@ -11,6 +11,7 @@
     'depends': [u'mail'],
     'data': [
         u'wizard/duplicate_db_wizard_view.xml',
+        u'wizard/restore_database_wizard_view.xml',
         u'security/infrastructure_group.xml',
         u'view/infrastructure_menuitem.xml',
         u'view/server_hostname_view.xml',
@@ -36,6 +37,7 @@
         u'view/server_configuration_command_view.xml',
         u'view/environment_view.xml',
         u'view/server_view.xml',
+        u'view/database_backup_view.xml',
         u'data/cron.xml',
         u'data/database_track.xml',
         u'data/db_backup_policy.xml',
@@ -64,6 +66,7 @@
         u'data/demo/infrastructure.server_repository.csv',
         u'data/demo/infrastructure.instance.csv',
         u'data/demo/infrastructure.instance_host.csv',
-        u'data/demo/infrastructure.server_configuration_command.csv'
+        u'data/demo/infrastructure.server_configuration_command.csv',
+        u'data/demo/infrastructure.database.csv'
         ],
     }

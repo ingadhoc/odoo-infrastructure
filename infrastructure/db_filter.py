@@ -18,6 +18,3 @@ class db_filter(models.Model):
         string='Rule',
         required=True
     )
-
-
-db_filter()

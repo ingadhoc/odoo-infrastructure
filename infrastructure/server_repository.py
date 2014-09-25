@@ -2,7 +2,7 @@
 
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
-from fabric.api import cd, sudo
+from fabric.api import cd, sudo, settings
 from fabric.contrib.files import exists
 import os
 
@@ -42,17 +42,36 @@ class server_repository(models.Model):
         self.server_id.get_env()
         if not path:
             path = self.path
-        if not path and not exists(path, use_sudo=True):
-            raise except_orm(_('No Repository Folder!'), _(
-                "Please check that the setted path exists or empty \
-                it in order to donwload for first time '%s'!") % (path,))
-
-        with cd(path.strip()):
+        if not path or not exists(path, use_sudo=True):
+            # raise except_orm(
+            #      _('No Repository Folder!'),
+            #      _("Please check that the especified path '%s' exists \
+            #         in order to download for first time!") % path
+            #      )
+            cmd = 'git clone %s %s' % (self.repository_id.url, path)
             try:
-                sudo('git pull')
-            except:
-                raise except_orm(_('Error Making git pull!'), _(
-                    "Error making git pull on '%s'!") % (path))
+                # sudo(cmd, user=self.server_id.user_name, group='odoo')
+                sudo(cmd, user='odoo', group='odoo')
+            except SystemExit, e:
+                raise except_orm(
+                    _("Error executing '%s' on '%s'") % (cmd, path),
+                    _('Unknown system error')
+                )
+        else:
+            cmd = 'git pull'
+            with cd(path.strip()):
+                try:
+                    sudo(cmd)
+                except Exception, e:
+                    raise except_orm(
+                        _("Error executing '%s' on '%s'") % (cmd, path),
+                        _('Command output: %s') % e
+                    )
+                except SystemExit, e:
+                    raise except_orm(
+                        _("Error executing '%s' on '%s'") % (cmd, path),
+                        _('Unknown system error')
+                    )
 
     @api.one
     def get_update_repository(self):
@@ -60,7 +79,7 @@ class server_repository(models.Model):
         if not self.path:
             # Check if repository on path
             path = os.path.join(
-                self.server_id.sources_dir, self.repository_id.folder)
+                self.server_id.sources_path, self.repository_id.directory)
             if exists(path, use_sudo=True):
                 # aparentemente ya existe el repo, intentamos actualizarlo
                 self.update_repository(path)
@@ -70,6 +89,3 @@ class server_repository(models.Model):
         else:
             self.update_repository()
         return True
-
-
-server_repository()

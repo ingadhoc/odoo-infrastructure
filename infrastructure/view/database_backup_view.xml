@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- infrastructure.database.backup -->
+<openerp>
+<data>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_database_backup_tree" model="ir.ui.view">
+    <field name="name">infrastructure.database.backup.tree</field>
+    <field name="model">infrastructure.database.backup</field>
+    <field name="arch" type="xml">
+        <tree string="Database Backups">
+            <field name="name"/>
+            <field name="create_date"/>
+            <button
+                string="Restore Database"
+                icon="gtk-go-up"
+                type="action"
+                name="%(action_infrastructure_restore_database_wizard)d"
+                help="Restore Database" context="{'search_default_database_backup_id': active_id}"/>
+        </tree>
+    </field>
+</record>
+
+</data>
+</openerp>

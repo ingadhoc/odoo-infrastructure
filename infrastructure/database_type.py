@@ -55,12 +55,10 @@ class database_type(models.Model):
         string='Database Name Example'
     )
 
-    db_back_up_policy_ids = fields.Many2many(
-        'infrastructure.db_back_up_policy',
-        'infrastructure_database_type_ids_db_back_up_policy_ids_rel',
+    db_backup_policy_ids = fields.Many2many(
+        'infrastructure.db_backup_policy',
+        'infrastructure_database_type_ids_db_backup_policy_ids_rel',
         'database_type_id',
-        'db_back_up_policy_id',
+        'db_backup_policy_id',
         string='Suggested Backup Policies'
     )
-
-database_type()

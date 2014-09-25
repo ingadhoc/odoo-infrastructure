@@ -1,4 +1,4 @@
-id,name,folder,addons_subfolder,url,pip_packages,type,is_server,branch_ids/id
+id,name,directory,addons_subdirectory,url,pip_packages,type,is_server,branch_ids/id
 inf_repo_git_odoo_argentina,odoo Argentina,odoo-argentina,,https://github.com/ingadhoc/odoo-argentina.git,geopy==0.95.1 BeautifulSoup,git,,inf_rep_branch_master
 inf_repo_git_odoo_odoo,odoo Server,odoo,,https://github.com/odoo/odoo,werkzeug==0.8.3 pyPdf http,git,True,"inf_rep_branch_master,inf_rep_branch_61,inf_rep_branch_70,inf_rep_branch_80"
 inf_repo_git_adhoc_addons,odoo ADHOC,odoo-adhoc,,https://github.com/ingadhoc/odoo-addons.git,,git,,inf_rep_branch_master

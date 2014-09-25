@@ -121,6 +121,7 @@ class instance(models.Model):
         required=True,
         states={'draft': [('readonly', False)]}
     )
+
     log_level = fields.Selection([
         (u'info', 'info'), (u'debug_rpc', 'debug_rpc'),
         (u'warn', 'warn'), (u'test', 'test'), (u'critical', 'critical'),
@@ -135,7 +136,7 @@ class instance(models.Model):
     )
 
     data_dir = fields.Char(
-        string='Data Directory Path',
+        string='Data Directory',
         readonly=True,
         states={'draft': [('readonly', False)]}
     )
@@ -445,7 +446,6 @@ class instance(models.Model):
 
         # TODO ver si no da error este parametro en algunas versiones de odoo y
         # sacarlo
-
         if self.environment_id.environment_version_id.name in ('8.0', 'master'):
             if self.data_dir:
                 command += ' --data-dir=' + self.data_dir
@@ -481,12 +481,22 @@ class instance(models.Model):
             print
             print command
             print
-            with shell_env(PYTHON_EGG_CACHE='/tmp/'):
+            eggs_dir = '/home/%s/.python-eggs' % self.user
+            if not exists(eggs_dir, use_sudo=True):
+                sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
+
+            with shell_env(PYTHON_EGG_CACHE=eggs_dir):
                 sudo(command, user=self.user, group='odoo')
-        except:
-            raise except_orm(_('Error creating conf file!'),
-                             _("Error creating conf file! You can try \
-                                stopping the instance and then try again."))
+        except Exception, e:
+            raise except_orm(
+                _('Error creating configuration file'),
+                _('Command output: %s') % e
+            )
+        except SystemExit, e:
+            raise except_orm(
+                _('Error creating configuration file'),
+                _('Unknown error. Stop the instance and try again.')
+            )
         sed(self.conf_file_path, '(admin_passwd).*',
             'admin_passwd = ' + self.admin_pass, use_sudo=True)
 
@@ -498,15 +508,15 @@ class instance(models.Model):
         service_file = template_service_file % (
             self.user, self.conf_file_path, daemon)
 
-        # Check service_dir exists
-        service_dir = self.environment_id.server_id.service_dir
-        if not exists(service_dir):
+        # Check service_path exists
+        service_path = self.environment_id.server_id.service_path
+        if not exists(service_path):
             raise except_orm(_('Server Service Folder not Found!'),
                              _("Service folter '%s' not found. \
-                                Please create it first!") % (service_dir))
+                                Please create it first!") % (service_path))
 
         # Check if service already exist
-        service_file_path = os.path.join(service_dir, self.service_file)
+        service_file_path = os.path.join(service_path, self.service_file)
         if exists(service_file_path, use_sudo=True):
             sudo('rm ' + service_file_path)
 
@@ -576,10 +586,10 @@ class instance(models.Model):
             raise Warning(_('You Must set at least one instance host!'))
 
         acces_log = os.path.join(
-            self.environment_id.server_id.nginx_log_dir,
+            self.environment_id.server_id.nginx_log_path,
             'access_' + re.sub('[-]', '_', self.service_file))
         error_log = os.path.join(
-            self.environment_id.server_id.nginx_log_dir,
+            self.environment_id.server_id.nginx_log_path,
             'error_' + re.sub('[-]', '_', self.service_file))
         xmlrpc_port = self.xml_rpc_port
 
@@ -597,12 +607,13 @@ class instance(models.Model):
             nginx_long_polling
         )
 
-        # Check nginx site folder exists
+        # Check nginx sites-enabled directory exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         if not exists(nginx_sites_path):
-            raise Warning(_("Nginx Sites Folder not Found! \
-                Please check nginx is installed and folder '%s' exists!") % (
-                nginx_sites_path))
+            raise Warning(
+                _("Nginx '%s' directory not found! \
+                Check if Nginx is installed!") % nginx_sites_path
+            )
 
         # Check if file already exists and delete it
         nginx_site_file_path = os.path.join(
@@ -633,7 +644,7 @@ server {
         error_log %s;
 
         location / {
-                proxy_pass                      http://127.0.0.1:%i;
+                proxy_pass              http://127.0.0.1:%i;
                 proxy_set_header        X-Forwarded-Host $host;
         }
 
@@ -752,5 +763,3 @@ esac
 
 exit 0
 """
-
-instance()

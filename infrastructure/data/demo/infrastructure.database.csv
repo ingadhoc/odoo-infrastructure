@@ -1,0 +1,2 @@
+id,demo_data,instance_id/id,name,partner_id/id,state,database_type_id/id
+inf_database_01,True,inf_inst_customer01-61,prod_example,inf_partner_customer01,Draft,inf_db_typ_prod

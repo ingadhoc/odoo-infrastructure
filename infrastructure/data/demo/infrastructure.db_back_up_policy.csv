@@ -1,4 +1,4 @@
-id,name,prefix,automatic_drop,automatic_drop_days,protect_db,automatic_deactivation,auto_deactivation_days,color,db_back_up_policy_ids/id
+id,name,prefix,automatic_drop,automatic_drop_days,protect_db,automatic_deactivation,auto_deactivation_days,color,db_backup_policy_ids/id
 inf_db_typ_upgr,Upgrade Test,upgr,False,,False,False,,,
 inf_db_typ_train,Training,train,False,,False,False,,,
 inf_db_typ_prod,Production,prod,False,,True,False,,,"infrastructure.bd_backup_policy_daily,infrastructure.bd_backup_policy_weekly,infrastructure.bd_backup_policy_monthly"

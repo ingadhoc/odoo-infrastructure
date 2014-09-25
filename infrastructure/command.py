@@ -30,6 +30,3 @@ class command(models.Model):
     )
 
     _order = "sequence"
-
-
-command()

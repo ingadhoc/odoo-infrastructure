@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api, netsvc, _
+from openerp.exceptions import except_orm
 import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from fabric.api import sudo
+from os import path
 
 
 class database(models.Model):
@@ -107,11 +109,11 @@ class database(models.Model):
         default='draft'
     )
 
-    db_back_up_policy_ids = fields.Many2many(
-        'infrastructure.db_back_up_policy',
-        'infrastructure_database_ids_db_back_up_policy_ids_rel',
+    db_backup_policy_ids = fields.Many2many(
+        'infrastructure.db_backup_policy',
+        'infrastructure_database_ids_db_backup_policy_ids_rel',
         'database_id',
-        'db_back_up_policy_id',
+        'db_backup_policy_id',
         string='Suggested Backup Policies'
     )
 
@@ -151,6 +153,13 @@ class database(models.Model):
         readonly=False
     )
 
+    backup_ids = fields.One2many(
+        'infrastructure.database.backup',
+        'database_id',
+        string='Backups',
+        readonly=False
+    )
+
     _sql_constraints = [
         ('name_uniq', 'unique(name, server_id)',
             'Database Name Must be Unique per server'),
@@ -168,7 +177,7 @@ class database(models.Model):
     def onchange_database_type_id(self):
         if self.database_type_id:
             self.name = self.database_type_id.prefix + '_'
-            self.db_back_up_policy_ids = self.database_type_id.db_back_up_policy_ids
+            self.db_backup_policy_ids = self.database_type_id.db_backup_policy_ids
 
     @api.one
     @api.depends('database_type_id', 'issue_date')
@@ -184,7 +193,8 @@ class database(models.Model):
     def get_sock(self):
         # base_url = self.instance_id.environment_id.server_id.main_hostname
         base_url = self.instance_id.main_hostname
-        server_port = 80  # server_port = self.instance_id.xml_rpc_port
+        server_port = 80
+        # server_port = self.instance_id.xml_rpc_port
         rpc_db_url = 'http://%s:%d/xmlrpc/db' % (base_url, server_port)
         return xmlrpclib.ServerProxy(rpc_db_url)
 
@@ -204,8 +214,11 @@ class database(models.Model):
                 lang,
                 user_password
             )
-        except:
-            raise Warning(_('Unable to create Database.'))
+        except Exception, e:
+            raise except_orm(
+                _("Unable to create '%s' database") % new_db_name,
+                _('Command output: %s') % e
+            )
         self.signal_workflow('sgn_to_active')
         return True
 
@@ -291,22 +304,52 @@ class database(models.Model):
         # TODO retornar accion de ventana a la bd creada
 
     @api.one
-    def back_up_now_db(self):
-        # TODO implementar esto
-        raise Warning(_('Not Implemented yet'))
+    def _cron_backup(self):
+        """ backup_policy_ids: Lista de back up policy que se referencia a este cron.
+        Para cada back up policy:
+            buscar las database_ids: lista de bases de datos con esas politicas de back up
+            ejecutar "backup_now_db" pasando el 'backup_policy_id'
+        """
 
-    # def connect_to_openerp(self, cr, uid, inst_id, parameters, context=None):
-    #     param = parameters
-    #     base_url = param[inst_id]['base_url']
-    #     server_port = int(param[inst_id]['server_port'])
-    #     admin_name = param[inst_id]['admin_name']
-    #     admin_pass = param[inst_id]['admin_pass']
-    #     database = param[inst_id]['database']
-    # domain = database + '.' + param[inst_id]['base_url']
-    #     domain = base_url
-    #     connection = openerplib.get_connection(hostname=domain, database=database, \
-    #         login=admin_name, password=admin_pass, port=server_port)
-    #     return connection
+    @api.one
+    def action_backup_now(self):
+        return self.backup_now()
+
+    @api.one
+    def backup_now(self, backup_policy_id=False):
+        """"""
+        now = datetime.now().strftime('%Y%m%d_%H%M%S')
+
+        if not backup_policy_id:
+            policy_name = 'manual'
+        dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
+        dump_file = path.join(
+            self.instance_id.environment_id.backups_path,
+            dump_name
+        )
+
+        cmd = 'pg_dump %s --format=c --compress 9 --file=%s' % (
+            self.name,
+            dump_file
+        )
+
+        values = {
+            'database_id': self.id,
+            'name': dump_name,
+            'create_date': datetime.now(),
+            'db_backup_policy_id': backup_policy_id
+        }
+
+        try:
+            self.server_id.get_env()
+            sudo(cmd, user='postgres')
+            self.backup_ids.create(values)
+
+        except Exception, e:
+            raise except_orm(
+                _("Unable to backup '%s' database") % self.id,
+                _('Command output: %s') % e
+            )
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
@@ -315,8 +358,3 @@ class database(models.Model):
             wf_service.trg_delete(uid, 'infrastructure.database', obj_id, cr)
             wf_service.trg_create(uid, 'infrastructure.database', obj_id, cr)
         return True
-
-    # @api.one
-    # def action_wfk_set_draft(self):
-
-database()

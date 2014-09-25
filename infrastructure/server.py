@@ -105,16 +105,16 @@ class server(models.Model):
         string='Color Index'
     )
 
-    sources_dir = fields.Char(
-        string='Sources Directory',
+    sources_path = fields.Char(
+        string='Sources Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/sources'
     )
 
-    service_dir = fields.Char(
-        string='Service Directory',
+    service_path = fields.Char(
+        string='Service Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -129,8 +129,8 @@ class server(models.Model):
         default='odoo'
     )
 
-    nginx_log_dir = fields.Char(
-        string='Nginx Log Directory',
+    nginx_log_path = fields.Char(
+        string='Nginx Log Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -290,6 +290,3 @@ class server(models.Model):
             wf_service.trg_delete(uid, 'infrastructure.server', obj_id, cr)
             wf_service.trg_create(uid, 'infrastructure.server', obj_id, cr)
         return True
-
-
-server()

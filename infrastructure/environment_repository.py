@@ -74,15 +74,15 @@ class environment_repository(models.Model):
 
         if not exists(self.environment_id.sources_path, use_sudo=True):
             raise except_orm(_('No Sources Folder!'),
-                             _("Sources folder '%s' does not exists. \
+                             _("Sources directory '%s' does not exists. \
                                 Please create the environment first!")
                              % (self.environment_id.sources_path))
         command += ' ' + self.environment_id.sources_path
 
         sudo(command)
-        folder = os.path.basename(
+        directory = os.path.basename(
             os.path.normpath(self.server_repository_id.path))
-        self.path = os.path.join(self.environment_id.sources_path, folder)
+        self.path = os.path.join(self.environment_id.sources_path, directory)
 
     @api.one
     def update_repository(self, path=False):
@@ -108,10 +108,10 @@ class environment_repository(models.Model):
         if self.server_repository_id.repository_id.is_server:
             res = [os.path.join(self.path, 'addons'), os.path.join(
                 self.path, 'openerp/addons')]
-        elif self.server_repository_id.repository_id.addons_subfolder:
+        elif self.server_repository_id.repository_id.addons_subdirectory:
             res = [os.path.join(
                 self.path,
-                self.server_repository_id.repository_id.addons_subfolder)]
+                self.server_repository_id.repository_id.addons_subdirectory)]
         else:
             res = [self.path]
         return res
@@ -122,7 +122,7 @@ class environment_repository(models.Model):
 
         # Create if not path defined
         if not self.path:
-            # See if there folder for future repository exists
+            # See if there directory for future repository exists
             path = os.path.join(
                 self.environment_id.sources_path,
                 os.path.basename(
@@ -165,6 +165,3 @@ class environment_repository(models.Model):
         else:
             raise Warning(_("Type '%s' not implemented yet.") %
                           (self.environment_id.type))
-
-
-environment_repository()

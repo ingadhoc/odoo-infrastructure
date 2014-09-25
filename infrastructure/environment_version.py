@@ -19,11 +19,6 @@ class environment_version(models.Model):
     _name = 'infrastructure.environment_version'
     _description = 'environment_version'
 
-    # name = fields.Char(
-    #     string='Name',
-    #     required=True
-    # )
-
     name = fields.Selection(
         _odoo_versions_,
         string='Name',
@@ -35,7 +30,6 @@ class environment_version(models.Model):
         string='Default Branch',
         required=True
     )
-
 
 
 environment_version()

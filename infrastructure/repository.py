@@ -23,8 +23,8 @@ class repository(models.Model):
         required=True
     )
 
-    folder = fields.Char(
-        string='Folder',
+    directory = fields.Char(
+        string='Directory',
         required=True
     )
 
@@ -34,8 +34,8 @@ class repository(models.Model):
         required=True
     )
 
-    addons_subfolder = fields.Char(
-        string='Addons Subfolder'
+    addons_subdirectory = fields.Char(
+        string='Addons Subdirectory'
     )
 
     url = fields.Char(
@@ -69,20 +69,18 @@ class repository(models.Model):
     @api.one
     def get_repository(self, server):
         server.get_env()
-        if not exists(server.sources_dir, use_sudo=True):
+        if not exists(server.sources_path, use_sudo=True):
             raise except_orm(
-                _('No Source Folder!'),
-                _("Please first create the source folder '%s'!")
-                % (server.sources_dir,))
-        with cd(server.sources_dir):
+                _('No Source Directory!'),
+                _("Please first create the source directory '%s'!")
+                % (server.sources_path,))
+        with cd(server.sources_path):
             path = False
             if self.type == 'git':
                 command = 'git clone '
                 command += self.url
-                command += ' ' + self.folder
+                command += ' ' + self.directory
                 sudo(command)
-                path = os.path.join(server.sources_dir, self.folder)
+                path = os.path.join(server.sources_path, self.directory)
                 # TODO implementar otros tipos de repos
         return path
-
-repository()

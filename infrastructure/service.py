@@ -23,6 +23,3 @@ class service(models.Model):
         'service_id',
         string='Commands'
     )
-
-
-service()
