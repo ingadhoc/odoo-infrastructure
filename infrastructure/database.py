@@ -6,6 +6,7 @@ import xmlrpclib
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from fabric.api import sudo
+from fabric.contrib.files import exists
 from os import path
 
 
@@ -323,10 +324,10 @@ class database(models.Model):
         if not backup_policy_id:
             policy_name = 'manual'
         dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
-        dump_file = path.join(
-            self.instance_id.environment_id.backups_path,
-            dump_name
-        )
+
+        backups_path = self.instance_id.environment_id.backups_path
+
+        dump_file = path.join(backups_path, dump_name)
 
         cmd = 'pg_dump %s --format=c --compress 9 --file=%s' % (
             self.name,
@@ -342,6 +343,11 @@ class database(models.Model):
 
         try:
             self.server_id.get_env()
+            user = self.instance_id.user
+
+            if not exists(backups_path, use_sudo=True):
+                sudo('mkdir -m a=rwx -p ' + backups_path, user=user, group='odoo')
+
             sudo(cmd, user='postgres')
             self.backup_ids.create(values)
 

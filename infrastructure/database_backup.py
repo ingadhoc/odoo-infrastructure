@@ -41,10 +41,10 @@ class database_backup(models.Model):
     @api.one
     def restore(self, target_database, overwrite_active):
         """"""
-        dump_file = path.join(
-            self.database_id.instance_id.environment_id.backups_path,
-            self.name
-        )
+
+        backups_path = self.database_id.instance_id.environment_id.backups_path
+
+        dump_file = path.join(backups_path, self.name)
 
         cmd = 'pg_restore'
         cmd += ' --clean'
