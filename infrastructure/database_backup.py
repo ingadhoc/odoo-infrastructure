@@ -11,6 +11,7 @@ class database_backup(models.Model):
     """"""
     _name = 'infrastructure.database.backup'
     _description = 'Database Backup'
+    _order = "create_date desc"
 
     database_id = fields.Many2one(
         'infrastructure.database',
