@@ -3,6 +3,7 @@
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
 from fabric.api import cd, sudo, settings
+from fabric.context_managers import hide
 from os import path
 
 
@@ -43,6 +44,13 @@ class database_backup(models.Model):
     def restore(self, target_database, overwrite_active):
         """"""
 
+        # METER LOGICA CUANDO EL SERVER ES REMOTO Y HAY QUE UPLOADEAR EL FILE
+
+        # with cd('/tmp'):
+        #     put('/path/to/local/test.txt', 'files')
+
+        #http://docs.fabfile.org/en/latest/api/core/operations.html
+
         backups_path = self.database_id.instance_id.environment_id.backups_path
 
         dump_file = path.join(backups_path, self.name)
@@ -70,13 +78,16 @@ class database_backup(models.Model):
                       check the overwrite option.')
                 )
             target_database.server_id.get_env()
-            with settings(warn_only=True):
+            with settings(
+                hide('warnings', 'running', 'stdout', 'stderr'),
+                warn_only=True
+            ):
                 sudo(cmd, user='postgres')
 
-        except SystemExit, e:
+        except SystemExit:
             raise except_orm(
-                _("Unable to restore '%s' database") % self.id,
-                _('Command output: %s') % e
+                _("Unable to restore database"),
+                _("Verify if '%s' target database exists") % target_database.name
             )
 
     def download(self):
