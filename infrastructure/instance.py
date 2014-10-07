@@ -3,8 +3,9 @@
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
-from fabric.api import sudo, shell_env
+from fabric.api import sudo, shell_env, settings
 from fabric.contrib.files import exists, append, sed
+from fabric.context_managers import hide
 from ast import literal_eval
 import os
 import re
@@ -477,16 +478,23 @@ class instance(models.Model):
             self.environment_id.path, 'bin/activate') + ' && '
         command = activate_environment_command + command
         try:
-            sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
+            with settings(
+                hide('warnings', 'running', 'stdout', 'stderr'),
+                warn_only=True
+            ):
+                sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
             print
             print command
             print
             eggs_dir = '/home/%s/.python-eggs' % self.user
             if not exists(eggs_dir, use_sudo=True):
-                sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
-
-            with shell_env(PYTHON_EGG_CACHE=eggs_dir):
-                sudo(command, user=self.user, group='odoo')
+                with settings(
+                hide('warnings', 'running', 'stdout', 'stderr'),
+                warn_only=True
+                ):
+                    sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
+                    with shell_env(PYTHON_EGG_CACHE=eggs_dir):
+                        sudo(command, user=self.user, group='odoo')
         except Exception, e:
             raise except_orm(
                 _('Error creating configuration file'),
