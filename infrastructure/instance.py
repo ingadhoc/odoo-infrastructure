@@ -3,8 +3,9 @@
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
-from fabric.api import sudo, shell_env
+from fabric.api import sudo, shell_env, settings
 from fabric.contrib.files import exists, append, sed
+from fabric.context_managers import hide
 from ast import literal_eval
 import os
 import re
@@ -483,10 +484,20 @@ class instance(models.Model):
             print
             eggs_dir = '/home/%s/.python-eggs' % self.user
             if not exists(eggs_dir, use_sudo=True):
-                sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
-
+                with settings(
+                    hide('warnings', 'running', 'stdout', 'stderr'),
+                    warn_only=True
+                ):
+                    sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
             with shell_env(PYTHON_EGG_CACHE=eggs_dir):
-                sudo(command, user=self.user, group='odoo')
+                with settings(
+                    hide('warnings', 'running', 'stdout', 'stderr'),
+                    warn_only=True
+                ):
+                    sudo('chmod g+rw -R ' + self.environment_id.path)
+                    sudo(command, user=self.user, group='odoo')
+                    sed(self.conf_file_path, '(admin_passwd).*',
+                        'admin_passwd = ' + self.admin_pass, use_sudo=True)
         except Exception, e:
             raise except_orm(
                 _('Error creating configuration file'),
@@ -497,8 +508,6 @@ class instance(models.Model):
                 _('Error creating configuration file'),
                 _('Unknown error. Stop the instance and try again.')
             )
-        sed(self.conf_file_path, '(admin_passwd).*',
-            'admin_passwd = ' + self.admin_pass, use_sudo=True)
 
     @api.multi
     def update_service_file(self):
