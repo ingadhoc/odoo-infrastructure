@@ -474,9 +474,6 @@ class instance(models.Model):
         # TODO ver de agregar --log-db=LOG_DB
         # TODO check that user exists
         # TODO tal vez -r -w para database data
-        activate_environment_command = ' source ' + os.path.join(
-            self.environment_id.path, 'bin/activate') + ' && '
-        command = activate_environment_command + command
         try:
             sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
             print
@@ -484,18 +481,14 @@ class instance(models.Model):
             print
             eggs_dir = '/home/%s/.python-eggs' % self.user
             if not exists(eggs_dir, use_sudo=True):
-                with settings(
-                    hide('warnings', 'running', 'stdout', 'stderr'),
-                    warn_only=True
-                ):
-                    sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
+                sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
             with shell_env(PYTHON_EGG_CACHE=eggs_dir):
+                sudo('chmod g+rw -R ' + self.environment_id.path)
+                sudo(command, user=self.user, group='odoo')
                 with settings(
                     hide('warnings', 'running', 'stdout', 'stderr'),
                     warn_only=True
                 ):
-                    sudo('chmod g+rw -R ' + self.environment_id.path)
-                    sudo(command, user=self.user, group='odoo')
                     sed(self.conf_file_path, '(admin_passwd).*',
                         'admin_passwd = ' + self.admin_pass, use_sudo=True)
         except Exception, e:
