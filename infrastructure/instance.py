@@ -413,7 +413,8 @@ class instance(models.Model):
     @api.one
     def update_conf_file(self):
         self.environment_id.server_id.get_env()
-        # TODO: chequear si el servicio esta levantado y bajarlo, si estaba levantado volver a iniciarlo
+        # TODO: chequear si el servicio esta levantado y bajarlo,
+        # si estaba levantado volver a iniciarlo
         # self.stop_service()
         if not exists(self.environment_id.path, use_sudo=True):
             raise except_orm(_('No Environment Path!'),
@@ -421,7 +422,7 @@ class instance(models.Model):
                                 Please create it first!")
                              % (self.environment_id.path))
 
-        command = self.run_server_command
+        command = self.environment_id.path + '/bin/' + self.run_server_command
         command += ' --stop-after-init -s -c ' + self.conf_file_path
 
         # Remove file if it already exists, we do it so we can put back some
@@ -485,22 +486,10 @@ class instance(models.Model):
             with shell_env(PYTHON_EGG_CACHE=eggs_dir):
                 sudo('chmod g+rw -R ' + self.environment_id.path)
                 sudo(command, user=self.user, group='odoo')
-                with settings(
-                    hide('warnings', 'running', 'stdout', 'stderr'),
-                    warn_only=True
-                ):
-                    sed(self.conf_file_path, '(admin_passwd).*',
-                        'admin_passwd = ' + self.admin_pass, use_sudo=True)
-        except Exception, e:
-            raise except_orm(
-                _('Error creating configuration file'),
-                _('Command output: %s') % e
-            )
-        except SystemExit, e:
-            raise except_orm(
-                _('Error creating configuration file'),
-                _('Unknown error. Stop the instance and try again.')
-            )
+        except:
+            raise except_orm(_('Error creating configuration file!'),
+            _("Try stopping the instance and then try again."))
+        sed(self.conf_file_path, '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass, use_sudo=True)
 
     @api.multi
     def update_service_file(self):
