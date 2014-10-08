@@ -482,19 +482,14 @@ class instance(models.Model):
             print
             eggs_dir = '/home/%s/.python-eggs' % self.user
             if not exists(eggs_dir, use_sudo=True):
-                sudo('mkdir %s' % eggs_dir, user=self.user, group='odoo')
+                sudo('mkdir %s' % eggs_dir, user=self.user)
             with shell_env(PYTHON_EGG_CACHE=eggs_dir):
                 sudo('chmod g+rw -R ' + self.environment_id.path)
-                sudo(command, user=self.user, group='odoo')
+                sudo(command, user=self.user)
         except:
-            raise except_orm(
-                _('Error creating configuration file!'),
-                _("Try stopping the instance and then try again.")
-            )
-        sed(self.conf_file_path,
-            '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass,
-            use_sudo=True
-        )
+            raise except_orm(_('Error creating configuration file!'),
+            _("Try stopping the instance and then try again."))
+        sed(self.conf_file_path, '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass, use_sudo=True)
 
     @api.multi
     def update_service_file(self):
@@ -523,14 +518,18 @@ class instance(models.Model):
     @api.one
     def create_user(self):
         self.environment_id.server_id.get_env()
-        sudo('adduser --system ' + self.user)
-        try:
-            sudo("sudo usermod -a -G %s %s" % (
-                self.environment_id.server_id.instance_user_group, self.user))
-        except:
-            raise Warning(_("Error changing group '%s' of user '%s'. \
-                Please verifify that user and group exists!") % (
-                self.environment_id.server_id.instance_user_group, self.user))
+        sudo('adduser --system --ingroup odoo ' + self.user)
+        # TODO Es probable que todo esto no lo neceistemos y lo podamos borrar
+        # user_home_path = '/home/%s/' % self.user
+        # try:
+        #     sudo('chmod 777 ' + user_home_path)
+        #     sudo('chown ' + self.user + ':odoo -R ' + user_home_path)
+        #     sudo("sudo usermod -a -G %s %s" % (
+        #         self.environment_id.server_id.instance_user_group, self.user))
+        # except:
+        #     raise Warning(_("Error changing group '%s' of user '%s'. \
+        #         Please verifify that user and group exists!") % (
+        #         self.environment_id.server_id.instance_user_group, self.user))
 
     @api.one
     def create_pg_user(self):
