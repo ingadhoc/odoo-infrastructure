@@ -4,6 +4,7 @@ from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
 from fabric.api import cd, sudo, settings
 from fabric.context_managers import hide
+from fabric.operations import get, put
 from os import path
 
 
@@ -44,15 +45,10 @@ class database_backup(models.Model):
     def restore(self, target_database, overwrite_active):
         """"""
 
-        # METER LOGICA CUANDO EL SERVER ES REMOTO Y HAY QUE UPLOADEAR EL FILE
-
-        # with cd('/tmp'):
-        #     put('/path/to/local/test.txt', 'files')
-
-        #http://docs.fabfile.org/en/latest/api/core/operations.html
+        source_server = self.database_id.server_id
+        target_server = target_database.server_id
 
         backups_path = self.database_id.instance_id.environment_id.backups_path
-
         dump_file = path.join(backups_path, self.name)
 
         cmd = 'pg_restore'
@@ -64,10 +60,9 @@ class database_backup(models.Model):
         cmd += ' --format=c'
         cmd += ' --host localhost'
         cmd += ' --port 5432'
-        cmd += ' --username %s --dbname %s %s' % (
+        cmd += ' --username %s --dbname %s' % (
             target_database.instance_id.user,
             target_database.name,
-            dump_file
         )
 
         try:
@@ -77,7 +72,21 @@ class database_backup(models.Model):
                     _('Database is activated. Please set database to draft or \
                       check the overwrite option.')
                 )
-            target_database.server_id.get_env()
+
+            source_server.get_env()
+
+            if source_server != target_server:
+                tmp_path = '/tmp/'
+                local_file = get(dump_file, tmp_path)
+
+                if local_file.succeeded:
+                    remote_file = put(local_file[0], tmp_path, mode=0755)
+                    if remote_file.succeeded:
+                        cmd += ' %s' % (remote_file[0])
+                        target_server.get_env()
+            else:
+                cmd += ' %s' % (dump_file)
+
             with settings(
                 hide('warnings', 'running', 'stdout', 'stderr'),
                 warn_only=True
