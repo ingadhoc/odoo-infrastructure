@@ -487,9 +487,14 @@ class instance(models.Model):
                 sudo('chmod g+rw -R ' + self.environment_id.path)
                 sudo(command, user=self.user, group='odoo')
         except:
-            raise except_orm(_('Error creating configuration file!'),
-            _("Try stopping the instance and then try again."))
-        sed(self.conf_file_path, '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass, use_sudo=True)
+            raise except_orm(
+                _('Error creating configuration file!'),
+                _("Try stopping the instance and then try again.")
+            )
+        sed(self.conf_file_path,
+            '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass,
+            use_sudo=True
+        )
 
     @api.multi
     def update_service_file(self):
