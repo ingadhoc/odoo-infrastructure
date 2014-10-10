@@ -304,13 +304,21 @@ class database(models.Model):
         new_db.signal_workflow('sgn_to_active')
         # TODO retornar accion de ventana a la bd creada
 
-    @api.one
-    def _cron_backup(self):
-        """ backup_policy_ids: Lista de back up policy que se referencia a este cron.
-        Para cada back up policy:
-            buscar las database_ids: lista de bases de datos con esas politicas de back up
-            ejecutar "backup_now_db" pasando el 'backup_policy_id'
-        """
+    def _cron_db_backup(self, cr, uid, policy, context=None):
+        """"""
+        # Search for the backup policy having 'policy' as backup prefix
+        backup_policy_obj = self.pool['infrastructure.db_backup_policy']
+        backup_policy_id = backup_policy_obj.search(
+            cr, uid, [('backup_prefix', '=', policy)], context=context)[0]
+
+        # Search for databases using that backup policy
+        backup_policy = backup_policy_obj.browse(
+            cr, uid, backup_policy_id, context=None)
+        databases = backup_policy.database_ids
+
+        # Backup each database
+        for database in databases:
+            database.backup_now(backup_policy_id)
 
     @api.one
     def action_backup_now(self):
@@ -323,6 +331,11 @@ class database(models.Model):
 
         if not backup_policy_id:
             policy_name = 'manual'
+        else:
+            backup_policy = self.env['infrastructure.db_backup_policy'].search(
+                [('id', '=', backup_policy_id)])
+            policy_name = backup_policy.backup_prefix
+
         dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
 
         backups_path = self.instance_id.environment_id.backups_path
@@ -353,7 +366,7 @@ class database(models.Model):
 
         except Exception, e:
             raise except_orm(
-                _("Unable to backup '%s' database") % self.id,
+                _("Unable to backup '%s' database") % self.name,
                 _('Command output: %s') % e
             )
 
