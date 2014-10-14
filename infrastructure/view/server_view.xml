@@ -121,6 +121,12 @@
                             <field name="install_command_ids" context="{'server_id':id}"/>
                         </group>
                     </page>
+                    <page string="Catch-All">
+                        <group>
+                            <field name="local_aliases_path"/>
+                            <field name="virtual_aliases_path"/>
+                        </group>
+                    </page>
                </notebook>
             </sheet>
             <div class="oe_chatter">

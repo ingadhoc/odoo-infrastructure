@@ -229,6 +229,22 @@ class server(models.Model):
         compute='_get_environments'
     )
 
+    local_aliases_path = fields.Char(
+        string='Local Aliases Path',
+        readonly=True,
+        required=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/aliases'
+    )
+
+    virtual_aliases_path = fields.Char(
+        string='Virtual Aliases Path',
+        readonly=True,
+        required=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/postfix/virtual_aliases'
+    )
+
     _sql_constraints = [
         ('name_uniq', 'unique(name)',
             'Server Name must be unique!'),
