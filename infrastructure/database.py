@@ -82,8 +82,12 @@ class database(models.Model):
         string='SMTP Server'
     )
 
-    alias_domain = fields.Char(
-        string='Alias Domain'
+    # alias_domain = fields.Char(
+    #     string='Alias Domain'
+    # )
+
+    domain_alias = fields.Char(
+        string='Domain Alias'
     )
 
     attachment_loc_type = fields.Selection(
@@ -161,6 +165,12 @@ class database(models.Model):
         readonly=False
     )
 
+    admin_password = fields.Char(
+        string='Admin Password',
+        required=True,
+        default='admin'
+    )
+
     _sql_constraints = [
         ('name_uniq', 'unique(name, server_id)',
             'Database Name Must be Unique per server'),
@@ -234,6 +244,21 @@ class database(models.Model):
                     instance with "workers" then you can try \
                     restarting service.'))
         self.signal_workflow('sgn_cancel')
+
+    @api.one
+    def change_admin_pass_db(self):
+        pass
+        # sock = self.get_sock()[0]
+        # try:
+            # sock.drop(self.instance_id.admin_pass, self.name)
+        # except Exception, e:
+            # raise except_orm(_("Unable to backup '%s' database") % e
+            # print e
+            # raise Warning(
+            #     _('Unable to drop Database. If you are working in an \
+            #         instance with "workers" then you can try \
+            #         restarting service.'))
+        # self.signal_workflow('sgn_cancel')
 
     @api.one
     def dump_db(self):
