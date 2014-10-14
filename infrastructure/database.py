@@ -28,6 +28,8 @@ class database(models.Model):
         ('cancel', 'Cancel'),
     ]
 
+    _mail_post_access = 'read'
+
     _track = {
         'state': {
             'infrastructure.database_draft':
@@ -388,12 +390,25 @@ class database(models.Model):
 
             sudo(cmd, user='postgres')
             self.backup_ids.create(values)
+            self.message_post(body=_('Backup Completed Successfully'))
 
         except Exception, e:
-            raise except_orm(
-                _("Unable to backup '%s' database") % self.name,
-                _('Command output: %s') % e
-            )
+            if policy_name == 'manual':
+                raise except_orm(
+                    _("Unable to backup '%s' database") % self.name,
+                    _('Command output: %s') % e
+                )
+            else:
+                self.message_post(body=_('Backup Failed: %s' % e))
+
+        except SystemExit:
+            if policy_name == 'manual':
+                raise except_orm(
+                    _("Unable to backup '%s' database") % self.name,
+                    _('Unknown System Error')
+                )
+            else:
+                self.message_post(body=_('Backup Failed: Unknown System Error'))
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})

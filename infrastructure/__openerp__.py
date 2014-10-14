@@ -44,6 +44,7 @@
         u'data/environment_track.xml',
         u'data/instance_track.xml',
         u'data/server_track.xml',
+        u'data/database_backup_track.xml',
         u'workflow/database_workflow.xml',
         u'workflow/environment_workflow.xml',
         u'workflow/instance_workflow.xml',
