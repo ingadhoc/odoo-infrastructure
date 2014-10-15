@@ -47,17 +47,19 @@ class database(models.Model):
 
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
-        string='Type',
+        string='Database Type',
         readonly=True,
         required=True,
-        states={'draft': [('readonly', False)]}
+        states={'draft': [('readonly', False)]},
+        track_visibility='onchange'
     )
 
     name = fields.Char(
         string='Name',
         readonly=True,
         required=True,
-        states={'draft': [('readonly', False)]}
+        states={'draft': [('readonly', False)]},
+        track_visibility='onchange'
     )
 
     partner_id = fields.Many2one(
