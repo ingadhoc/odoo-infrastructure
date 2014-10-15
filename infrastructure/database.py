@@ -84,10 +84,6 @@ class database(models.Model):
         string='SMTP Server'
     )
 
-    # alias_domain = fields.Char(
-    #     string='Alias Domain'
-    # )
-
     domain_alias = fields.Char(
         string='Domain Alias'
     )
@@ -390,7 +386,12 @@ class database(models.Model):
 
             sudo(cmd, user='postgres')
             self.backup_ids.create(values)
-            self.message_post(body=_('Backup Completed Successfully'))
+            self.message_post(
+                subject=_('Backup Status'),
+                body=_('Completed Successfully'),
+                type='comment',
+                subtype='mt_backup_ok'
+            )
 
         except Exception, e:
             if policy_name == 'manual':
@@ -399,7 +400,12 @@ class database(models.Model):
                     _('Command output: %s') % e
                 )
             else:
-                self.message_post(body=_('Backup Failed: %s' % e))
+                self.message_post(
+                    subject=_('Backup Status'),
+                    body=_('Backup Failed: %s' % e),
+                    type='notification',
+                    subtype='mt_backup_fail'
+                )
 
         except SystemExit:
             if policy_name == 'manual':
@@ -408,7 +414,12 @@ class database(models.Model):
                     _('Unknown System Error')
                 )
             else:
-                self.message_post(body=_('Backup Failed: Unknown System Error'))
+                self.message_post(
+                    subject=_('Backup Status'),
+                    body=_('Backup Failed: Unknown System Error'),
+                    type='notification',
+                    subtype='mt_backup_fail'
+                )
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})

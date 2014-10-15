@@ -6,15 +6,11 @@
         <field name="name">Backup Successful</field>
         <field name="res_model">infrastructure.database</field>
         <field name="default" eval="False"/>
-        <!-- <field name="hidden" eval="True"/> -->
-        <!-- <field name="description">Backup Successful</field> -->
     </record>
     <record id="mt_backup_fail" model="mail.message.subtype">
         <field name="name">Backup Failed</field>
         <field name="res_model">infrastructure.database</field>
-        <field name="default" eval="False"/>
-        <!-- <field name="hidden" eval="True"/> -->
-        <!-- <field name="description">Backup Failed</field> -->
+        <field name="default" eval="True"/>
     </record>
 
 </data>
