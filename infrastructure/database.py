@@ -8,6 +8,7 @@ from datetime import datetime
 from fabric.api import sudo
 from fabric.contrib.files import exists
 from os import path
+from erppeek import Client
 
 
 class database(models.Model):
@@ -246,19 +247,25 @@ class database(models.Model):
         self.signal_workflow('sgn_cancel')
 
     @api.one
-    def change_admin_pass_db(self):
-        pass
-        # sock = self.get_sock()[0]
-        # try:
-            # sock.drop(self.instance_id.admin_pass, self.name)
-        # except Exception, e:
-            # raise except_orm(_("Unable to backup '%s' database") % e
-            # print e
-            # raise Warning(
-            #     _('Unable to drop Database. If you are working in an \
-            #         instance with "workers" then you can try \
-            #         restarting service.'))
-        # self.signal_workflow('sgn_cancel')
+    def change_admin_passwd(self, current_passwd, new_passwd):
+        try:
+            hostname = self.instance_id.main_hostname
+            port = 80
+
+            client = Client(
+                'http://%s:%d' % ('127.0.0.1', 8069),
+                db='prod_example',
+                user='admin',
+                password=current_passwd)
+
+            user_obj = client.model('res.users')
+            return user_obj.change_password(current_passwd, new_passwd)
+
+        except Exception, e:
+            raise except_orm(
+                _("Unable to change password."),
+                _('Error: %s') % e
+            )
 
     @api.one
     def dump_db(self):

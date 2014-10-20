@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_change_db_passwd_wizard_view" model="ir.ui.view">
+     <field name="name">Change Database Password</field>
+     <field name="model">infrastructure.change_db_passwd.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Duplicate DB">
+            <group>
+                <field name="new_passwd" password="True"/>
+                <field name="confirm_passwd" password="True"/>
+            </group>
+            <footer>
+                <button name="change_db_passwd" string="Change" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_change_db_passwd_wizard" model="ir.actions.act_window">
+     <field name="name">Change Database Password</field>
+     <field name="res_model">infrastructure.change_db_passwd.wizard</field>
+     <field name="type">ir.actions.act_window</field>
+     <field name="view_type">form</field>
+     <field name="view_mode">tree,form</field>
+     <field name="view_id" ref="infrastructure_change_db_passwd_wizard_view"/>
+     <field name="context">{}</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>
