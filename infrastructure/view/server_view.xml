@@ -72,7 +72,17 @@
                         <field name="ssh_port"/>
                         <field name="requires_vpn"/>
                         <field name="user_name"/>
-                        <field name="password" password="True"/>
+                        <label for="password"/>
+                            <div>
+                                <field
+                                    name="password"
+                                    password="True"
+                                    class="oe_inline"/>
+                                <button name="show_passwd"
+                                    string="⇒ View Password"
+                                    type="object"
+                                    class="oe_link"/>
+                            </div>
                     </group>
                     <group>
                         <field name="base_path"/>

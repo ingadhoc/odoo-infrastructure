@@ -274,6 +274,13 @@ class server(models.Model):
         env.port = self.ssh_port
         return env
 
+    @api.one
+    def show_passwd(self):
+        raise except_orm(
+            _("Password for user '%s':") % self.user_name,
+            _("%s") % self.password
+        )
+
     @api.multi
     def reboot_server(self):
         self.get_env()
