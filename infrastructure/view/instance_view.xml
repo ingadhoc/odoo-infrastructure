@@ -70,7 +70,17 @@
                     <group>
                         <field name="server_id" invisible="1"/>
                         <field name="user"/>
-                        <field name="admin_pass"/>
+                        <label for="admin_pass"/>
+                            <div>
+                                <field
+                                    name="admin_pass"
+                                    password="True"
+                                    class="oe_inline"/>
+                                <button name="show_passwd"
+                                    string="⇒ View Password"
+                                    type="object"
+                                    class="oe_link"/>
+                            </div>
                         <field name="db_filter"/>
                         <field name="main_hostname" widget="url"/>
                     </group>

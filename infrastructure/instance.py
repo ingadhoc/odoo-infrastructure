@@ -308,6 +308,13 @@ class instance(models.Model):
         """"""
         raise NotImplementedError
 
+    @api.one
+    def show_passwd(self):
+        raise except_orm(
+            _("Password for user '%s':") % self.user,
+            _("%s") % self.admin_pass
+        )
+
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
         wf_service = netsvc.LocalService("workflow")
