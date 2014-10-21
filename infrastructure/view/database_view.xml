@@ -80,7 +80,18 @@
                 </div>
                  <group>
                     <group>
-                        <field name="admin_password" password="True"/>
+                        <label for="admin_password"/>
+                            <div>
+                                <field
+                                    name="admin_password"
+                                    password="True"
+                                    class="oe_inline"/>
+                                <button name="show_passwd"
+                                    string="⇒ View Password"
+                                    type="object"
+                                    class="oe_link"/>
+                            </div>
+
                         <field name="demo_data"/>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>

@@ -289,6 +289,13 @@ class database(models.Model):
         sudo('psql -U postgres -c ' + psql_command)
 
     @api.one
+    def show_passwd(self):
+        raise except_orm(
+            _("'admin' password for database '%s'") % self.name,
+            _("%s") % self.admin_password
+        )
+
+    @api.one
     def upload_mail_server_config(self):
         # TODO implementar esta funcion
         raise Warning(_('Not Implemented yet'))
