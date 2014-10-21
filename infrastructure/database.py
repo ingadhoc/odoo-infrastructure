@@ -253,7 +253,7 @@ class database(models.Model):
             port = 80
 
             client = Client(
-                'http://%s:%d' % ('127.0.0.1', 8069),
+                'http://%s:%d' % (hostname, port),
                 db='prod_example',
                 user='admin',
                 password=current_passwd)
@@ -291,7 +291,7 @@ class database(models.Model):
     @api.one
     def show_passwd(self):
         raise except_orm(
-            _("'admin' password for database '%s'") % self.name,
+            _("'admin' password for database '%s':") % self.name,
             _("%s") % self.admin_password
         )
 
