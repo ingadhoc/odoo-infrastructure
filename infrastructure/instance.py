@@ -3,9 +3,8 @@
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
-from fabric.api import sudo, shell_env, settings
+from fabric.api import sudo, shell_env
 from fabric.contrib.files import exists, append, sed
-from fabric.context_managers import hide
 from ast import literal_eval
 import os
 import re
@@ -58,30 +57,10 @@ class instance(models.Model):
         default='none_secure'
     )
 
-    xml_rpc_port = fields.Integer(
-        string='XML-RPC Port',
-        required=True
-    )
-
-    xml_rpcs_port = fields.Integer(
-        string='XML-RPCS Port'
-    )
-
-    longpolling_port = fields.Integer(
-        string='Longpolling Port'
-    )
-
     db_filter = fields.Many2one(
         'infrastructure.db_filter',
         string='DB Filter',
         required=True
-    )
-
-    user = fields.Char(
-        string='User / Service File',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
     )
 
     note = fields.Html(
@@ -90,19 +69,6 @@ class instance(models.Model):
 
     color = fields.Integer(
         string='Color Index'
-    )
-
-    addons_path = fields.Text(
-        string='Addons Path',
-        required=True,
-        default='[]'
-    )
-
-    conf_file_path = fields.Char(
-        string='Config File Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
     )
 
     run_server_command = fields.Char(
@@ -114,13 +80,6 @@ class instance(models.Model):
     proxy_mode = fields.Boolean(
         string='Proxy Mode?',
         default=True
-    )
-
-    logfile = fields.Char(
-        string='Log File Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
     )
 
     log_level = fields.Selection([
@@ -136,12 +95,6 @@ class instance(models.Model):
         default=9
     )
 
-    data_dir = fields.Char(
-        string='Data Directory',
-        readonly=True,
-        states={'draft': [('readonly', False)]}
-    )
-
     admin_pass = fields.Char(
         string='Admin Password',
         required=True,
@@ -154,13 +107,6 @@ class instance(models.Model):
 
     module_load = fields.Char(
         string='Load default modules'
-    )
-
-    service_file = fields.Char(
-        string='Service/Nginx File Name',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
     )
 
     main_hostname = fields.Char(

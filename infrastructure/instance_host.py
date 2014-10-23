@@ -26,15 +26,6 @@ class instance_host(models.Model):
         string='Database Type'
     )
 
-    wildcard = fields.Boolean(
-        string='wildcard'
-    )
-
-    server_id = fields.Many2one(
-        'infrastructure.server',
-        string='server_id'
-    )
-
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='instance_id',
