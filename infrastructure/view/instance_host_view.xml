@@ -30,7 +30,7 @@
             <sheet string="instance_host">
              <group>
                 <field name="server_hostname_id"
-                    domain="[('server_id','=',server_id)]"
+                    domain="[('server_id','=',parent.server_id)]"
                     />
                 <field name="subdomain"
                     attrs="{'invisible':[('wildcard','!=',True)]}"
