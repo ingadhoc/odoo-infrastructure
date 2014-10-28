@@ -39,9 +39,6 @@
                 <field name="wildcard"
                     invisible="True"
                     />
-                <field name="server_id"
-                    invisible="True"
-                    />
                 <field name="name"/>
              </group>
             </sheet>

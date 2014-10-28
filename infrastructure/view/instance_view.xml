@@ -120,7 +120,7 @@
                         <!-- con este widget no funciona bien de una -->
                         <!-- <field name="instance_host_ids" widget="many2many_tags"/> -->
                         <label for="instance_host_ids"/>
-                        <field name="instance_host_ids" context="{'default_server_id':server_id}"/>
+                        <field name="instance_host_ids"/>
                     </page>
                     <page string="Notes">
                         <field name="note"/>
