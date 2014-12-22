@@ -3,6 +3,7 @@
 from openerp import models, fields, api
 from openerp.tools.safe_eval import safe_eval as eval
 from fabric.api import run, cd, env, sudo
+from fabric.contrib.files import exists, append, sed
 import errno
 import time
 import os
@@ -142,6 +143,10 @@ class server_configuration_command(models.Model):
                 'pool': self.pool,
                 'time': time,
                 'cr': cr,
+                # Fabric file commands
+                'exists': exists,
+                'append': append,
+                'sed': sed,
                 # copy context to prevent side-effects of eval
                 'context': dict(context),
                 'uid': uid,

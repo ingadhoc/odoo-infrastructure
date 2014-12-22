@@ -4,6 +4,7 @@ from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, sudo, reboot
+from fabric.contrib.files import exists, append, sed
 
 
 class server(models.Model):

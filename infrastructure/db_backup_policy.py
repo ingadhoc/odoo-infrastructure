@@ -22,6 +22,7 @@ class db_backup_policy(models.Model):
     cron_id = fields.Many2one(
         'ir.cron',
         string='Cron',
+        ondelete='cascade',
         required=True
     )
 
