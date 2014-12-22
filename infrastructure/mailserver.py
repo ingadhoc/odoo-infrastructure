@@ -7,5 +7,4 @@ class mailserver(models.Model):
     """"""
 
     _name = 'infrastructure.mailserver'
-    _description = 'mailserver'
-    _inherit = ['ir.mail_server']
+    _inherit = 'ir.mail_server'

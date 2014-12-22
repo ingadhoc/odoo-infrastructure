@@ -100,6 +100,18 @@
                                 <field name="service_path"/>
                                 <field name="nginx_sites_path"/>
                                 <field name="nginx_log_path"/>
+                                <field name="postgres_superuser"/>
+                                <label for="password"/>
+                                    <div>
+                                        <field
+                                            name="postgres_superuser_pass"
+                                            password="True"
+                                            class="oe_inline"/>
+                                        <button name="show_pg_passwd"
+                                            string="⇒ View Password"
+                                            type="object"
+                                            class="oe_link"/>
+                                    </div>
                             </group>
                             <group>
                                 <field name="open_ports"/>

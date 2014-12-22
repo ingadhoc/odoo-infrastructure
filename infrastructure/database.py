@@ -254,7 +254,7 @@ class database(models.Model):
 
             client = Client(
                 'http://%s:%d' % (hostname, port),
-                db='prod_example',
+                db=self.name,
                 user='admin',
                 password=current_passwd)
 
@@ -297,7 +297,40 @@ class database(models.Model):
 
     @api.one
     def upload_mail_server_config(self):
-        # TODO implementar esta funcion
+        if not self.smtp_server_id:
+            raise Warning(_(
+                'You must choose an SMTP server config in order to upload it'))
+        vals = {
+            'name': self.smtp_server_id.name,
+            'sequence': self.smtp_server_id.sequence,
+            'smtp_debug': self.smtp_server_id.smtp_debug,
+            'smtp_encryption': self.smtp_server_id.smtp_encryption,
+            'smtp_host': self.smtp_server_id.smtp_host,
+            'smtp_pass': self.smtp_server_id.smtp_pass,
+            'smtp_port': self.smtp_server_id.smtp_port,
+            'smtp_user': self.smtp_server_id.smtp_user,
+        }
+        try:
+            hostname = self.instance_id.main_hostname
+            port = 80
+
+            client = Client(
+                'http://%s:%d' % (hostname, port),
+                db=self.name,
+                user='admin',
+                password=self.admin_password)
+                # password=current_passwd)
+
+            mail_server_obj = client.model('ir.mail_server')
+
+            return mail_server_obj.create(vals)
+
+        except Exception, e:
+            raise except_orm(
+                _("Unable to Upload SMTP Config."),
+                _('Error: %s') % e
+            )
+
         raise Warning(_('Not Implemented yet'))
 
     @api.one

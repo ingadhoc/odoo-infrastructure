@@ -4,7 +4,7 @@
 <data>
 
 <!-- SEARCH VIEW -->
-<record id="view_infrastructure_mailserver_filter" model="ir.ui.view">
+<!-- <record id="view_infrastructure_mailserver_filter" model="ir.ui.view">
     <field name="name">infrastructure.mailserver.select</field>
     <field name="model">infrastructure.mailserver</field>
     <field name="arch" type="xml">
@@ -15,41 +15,38 @@
             </group>
         </search>
     </field>
-</record>
+</record> -->
 
 <!-- FORMVIEW -->
 <record id="view_infrastructure_mailserver_form" model="ir.ui.view">
     <field name="name">infrastructure.mailserver.form</field>
     <field name="model">infrastructure.mailserver</field>
+    <field name="inherit_id" ref="base.ir_mail_server_form"/>
+    <field name="mode">primary</field>
     <field name="arch" type="xml">
-        <form string="mailserver" version="7.0">
-            <header>
-            </header>
-            <sheet string="mailserver">
-             <group>
-             </group>
-            </sheet>
+        <form position="attributes">
+            <attribute name="string">Infrastructure Mailserver</attribute>
         </form>
     </field>
 </record>
 
 <!-- TREEVIEW -->
-<record id="view_infrastructure_mailserver_tree" model="ir.ui.view">
+<!-- <record id="view_infrastructure_mailserver_tree" model="ir.ui.view">
     <field name="name">infrastructure.mailserver.tree</field>
     <field name="model">infrastructure.mailserver</field>
     <field name="arch" type="xml">
         <tree string="mailserver">
         </tree>
     </field>
-</record>
+</record> -->
 
 <record id="action_infrastructure_mailserver_mail_servers" model="ir.actions.act_window">
     <field name="name">Mail Servers</field>
     <field name="res_model">infrastructure.mailserver</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
-    <field name="view_id" ref="view_infrastructure_mailserver_tree"/>
-    <field name="search_view_id" ref="view_infrastructure_mailserver_filter"/>
+    <field name="view_id" ref=""/>
+    <field name="search_view_id" ref=""/>
     <field name="domain">[]</field>
 </record>
 

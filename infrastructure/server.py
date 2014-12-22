@@ -4,7 +4,6 @@ from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, sudo, reboot
-from fabric.contrib.files import exists, append, sed
 
 
 class server(models.Model):
@@ -146,6 +145,23 @@ class server(models.Model):
         default='/etc/nginx/sites-enabled'
     )
 
+    postgres_superuser = fields.Char(
+        string='Postgres Superuser',
+        help="Postgres Superuser. You can record and existing one or create a new one with an installation command",
+        readonly=True,
+        required=True,
+        states={'draft': [('readonly', False)]},
+        default='odoo'
+    )
+
+    postgres_superuser_pass = fields.Char(
+        string='Postgres Superuser Pwd',
+        help="Postgres Superuser Password. You can record and existing one or create a new one with an installation command",
+        # readonly=True, Esperando a que esten seteadas todas las claves
+        required=True,
+        states={'draft': [('readonly', False)]},
+    )
+
     gdrive_account = fields.Char(
         string='Gdrive Account',
         readonly=True,
@@ -280,6 +296,13 @@ class server(models.Model):
         raise except_orm(
             _("Password for user '%s':") % self.user_name,
             _("%s") % self.password
+        )
+
+    @api.one
+    def show_pg_passwd(self):
+        raise except_orm(
+            _("Password for pg user '%s':") % self.postgres_superuser,
+            _("%s") % self.postgres_superuser_pass
         )
 
     @api.multi
