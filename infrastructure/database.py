@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, api, netsvc, _
 from openerp.exceptions import except_orm
 import xmlrpclib
@@ -9,6 +8,7 @@ from fabric.api import sudo
 from fabric.contrib.files import exists
 from os import path
 from erppeek import Client
+from openerp.exceptions import Warning
 
 
 class database(models.Model):
