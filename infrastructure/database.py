@@ -163,14 +163,27 @@ class database(models.Model):
         'infrastructure.database.backup',
         'database_id',
         string='Backups',
-        readonly=False
+    )
+
+    module_ids = fields.One2many(
+        'infrastructure.database.module',
+        'database_id',
+        string='Modules',
+    )
+
+    base_module_ids = fields.Many2many(
+        'infrastructure.base.module',
+        'infrastructure_database_ids_base_module_rel',
+        'database_id',
+        'base_module_id',
+        string='Base Modules',
     )
 
     admin_password = fields.Char(
         string='Admin Password',
         required=True,
         default='admin',
-        deprecated=True, #we use server admin pass to autheticate now
+        deprecated=True,  # we use server admin pass to autheticate now
     )
 
     _sql_constraints = [
@@ -202,6 +215,7 @@ class database(models.Model):
                 days=self.database_type_id.auto_deactivation_days))
         self.deactivation_date = deactivation_date
 # DATABASE CRUD
+
     @api.one
     def get_sock(self):
         # base_url = self.instance_id.environment_id.server_id.main_hostname
@@ -283,36 +297,86 @@ class database(models.Model):
         psql_command += self.name + " AND procpid <> pg_backend_pid();"
         sudo('psql -U postgres -c ' + psql_command)
 
+# Database connection helper
+    @api.multi
+    def get_client(self):
+        self.ensure_one()
+        try:
+            return Client(
+                'http://%s:%d' % (self.instance_id.main_hostname, 80),
+                db=self.name,
+                user='admin',
+                password=self.instance_id.admin_pass)
+        except Exception, e:
+            raise except_orm(
+                _("Unable to Connect to Database."),
+                _('Error: %s') % e
+            )
+
+# Modules management
+    @api.one
+    def install_base_modules(self):
+        client = self.get_client()
+        for module in self.base_module_ids:
+            client.install(module.name)
+
+    @api.one
+    def update_modules_data(self):
+        client = self.get_client()
+        # modules_data = client.modules()
+        self.module_ids.unlink()
+        fields = [
+            'sequence',
+            'author',
+            'auto_install',
+            'installed_version',
+            'latest_version',
+            'published_version',
+            'name',
+            'shortdesc',
+            'state']
+        modules_data = client.model('ir.module.module').update_list()
+        modules_data = client.read(
+            'ir.module.module', [], fields)
+
+        vals = {'database_id': self.id}
+        for module in modules_data:
+            for field in fields:
+                vals[field] = module[field]
+            self.env['infrastructure.database.module'].create(vals)
+
 # MAIL server and catchall configurations
     @api.one
     def upload_mail_server_config(self):
         if not self.smtp_server_id:
             raise Warning(_(
                 'You must choose an SMTP server config in order to upload it'))
-        vals = {
-            'name': self.smtp_server_id.name,
-            'sequence': self.smtp_server_id.sequence,
-            'smtp_debug': self.smtp_server_id.smtp_debug,
-            'smtp_encryption': self.smtp_server_id.smtp_encryption,
-            'smtp_host': self.smtp_server_id.smtp_host,
-            'smtp_pass': self.smtp_server_id.smtp_pass,
-            'smtp_port': self.smtp_server_id.smtp_port,
-            'smtp_user': self.smtp_server_id.smtp_user,
-        }
+        rows = [[
+            self.smtp_server_id.external_id,
+            self.smtp_server_id.name,
+            self.smtp_server_id.sequence,
+            self.smtp_server_id.smtp_debug,
+            self.smtp_server_id.smtp_encryption,
+            self.smtp_server_id.smtp_host,
+            self.smtp_server_id.smtp_pass,
+            self.smtp_server_id.smtp_port,
+            self.smtp_server_id.smtp_user,
+        ]]
+        fields = [
+            'id',
+            'name',
+            'sequence',
+            'smtp_debug',
+            'smtp_encryption',
+            'smtp_host',
+            'smtp_pass',
+            'smtp_port',
+            'smtp_user',
+            ]
+        client = self.get_client()
         try:
-            hostname = self.instance_id.main_hostname
-            port = 80
-
-            client = Client(
-                'http://%s:%d' % (hostname, port),
-                db=self.name,
-                user='admin',
-                password=self.admin_password)
-                # password=current_passwd)
-
             mail_server_obj = client.model('ir.mail_server')
-
-            return mail_server_obj.create(vals)
+            return mail_server_obj.load(fields, rows)
 
         except Exception, e:
             raise except_orm(
@@ -320,14 +384,13 @@ class database(models.Model):
                 _('Error: %s') % e
             )
 
-        raise Warning(_('Not Implemented yet'))
-
     @api.one
     def config_catchall(self):
         # TODO implementar esta funcion
-        # Client.modules(name='', installed=True)
-        # Verificar instalacion de passkey
-        raise Warning(_('Not Implemented yet'))
+        client = self.get_client()
+        a = client.modules(
+            name='auth_server_admin_passwd_passkey', installed=True)
+        print 'a', a
 
     # TODO implementar cambio de usuario de postgres al duplicar una bd o de manera manual.
     # Al parecer da error por el parametro que se alamcena database.uuid
@@ -404,7 +467,8 @@ class database(models.Model):
             user = self.instance_id.user
 
             if not exists(backups_path, use_sudo=True):
-                sudo('mkdir -m a=rwx -p ' + backups_path, user=user, group='odoo')
+                sudo(
+                    'mkdir -m a=rwx -p ' + backups_path, user=user, group='odoo')
 
             sudo(cmd, user='postgres')
             self.backup_ids.create(values)

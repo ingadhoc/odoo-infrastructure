@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- SEARCH VIEW -->
+<!-- <record id="view_database_module_filter" model="ir.ui.view">
+    <field name="name">infrastructure.database.module.select</field>
+    <field name="model">infrastructure.database.module</field>
+    <field name="inherit_id" ref="base.module_form"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+    </field>
+</record> -->
+
+<!-- FORMVIEW -->
+<record id="view_database_module_form" model="ir.ui.view">
+    <field name="name">infrastructure.database.module.form</field>
+    <field name="model">infrastructure.database.module</field>
+    <field name="inherit_id" ref="view_base_module_form"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+        <h3 position="after">
+            <div>
+                <button name="button_immediate_install" states="uninstalled" string="Install" type="object" class="oe_highlight"/>
+                <button name="button_immediate_upgrade" states="installed" string="Upgrade" type="object" class="oe_highlight"/>
+                <button name="button_uninstall" states="installed" string="Uninstall" type="object"/>
+                <button name="button_uninstall_cancel" states="to remove" string="Cancel Uninstall" type="object"/>
+                <button name="button_upgrade_cancel" states="to upgrade" string="Cancel Upgrade" type="object"/>
+                <button name="button_install_cancel" states="to install" string="Cancel Install" type="object"/>
+            </div>
+        </h3>
+        <group name="gral_info">
+            <field name="auto_install"/>
+            <field name="state"/>
+        </group>
+        <group name="gral_info" position="after">
+            <group name="version_info">
+                <field name="installed_version"/>
+                <field name="published_version"/>
+                <field name="latest_version"/>
+            </group>
+        </group>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_database_module_tree" model="ir.ui.view">
+    <field name="name">infrastructure.database.module.tree</field>
+    <field name="model">infrastructure.database.module</field>
+    <field name="arch" type="xml">
+        <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed'" create="false" string="Modules">
+            <field name="shortdesc"/>
+            <field name="name" groups="base.group_no_one"/>
+            <field name="author"/>
+            <field name="installed_version"/>
+            <field name="state"/>
+            <!-- <field name="category_id" invisible="1"/> -->
+        </tree>
+    </field>
+</record>
+
+<!-- <record id="action_database_module_mail_servers" model="ir.actions.act_window">
+    <field name="name">Mail Servers</field>
+    <field name="res_model">infrastructure.database.module</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref=""/>
+    <field name="search_view_id" ref=""/>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    name="Mail Servers"
+    id="menu_mail_servers"
+    sequence="20"
+    action="action_database_module_mail_servers"
+    parent="menu_miscellaneous"
+    groups="group_manager"
+    /> -->
+
+</data>
+</openerp>

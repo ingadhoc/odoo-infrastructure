@@ -27,6 +27,9 @@
         <form position="attributes">
             <attribute name="string">Infrastructure Mailserver</attribute>
         </form>
+        <field name="sequence" position="after">
+            <field name="external_id"/>
+        </field>
     </field>
 </record>
 

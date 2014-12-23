@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- SEARCH VIEW -->
+<record id="view_base_module_filter" model="ir.ui.view">
+    <field name="name">infrastructure.base.module.select</field>
+    <field name="model">infrastructure.base.module</field>
+    <field name="arch" type="xml">
+        <search string="Search modules">
+            <field name="name" filter_domain="['|', '|', ('summary', 'ilike', self), ('shortdesc', 'ilike', self), ('name',
+                'ilike', self)]" string="Module"/>
+            <group expand="0" string="Group By">
+                <filter string="Author" domain="[]" context="{'group_by':'author'}"/>
+            </group>
+       </search>
+    </field>
+</record>
+
+<!-- FORMVIEW -->
+<record id="view_base_module_form" model="ir.ui.view">
+    <field name="name">infrastructure.base.module.form</field>
+    <field name="model">infrastructure.base.module</field>
+    <field name="inherit_id" ref=""/>
+    <field name="arch" type="xml">
+        <form create="0" edit="0" string="Module">
+            <sheet>
+            <div class="oe_title">
+                <h1><field name="shortdesc"/></h1>
+                <h3 class="oe_fade">
+                    By <field name="author" class="oe_inline"/>
+                </h3>
+            </div>
+            <div class="oe_clear"/>
+            <notebook>
+                <page string="Information">
+                    <group>
+                        <group name="gral_info">
+                            <field name="name"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_base_module_tree" model="ir.ui.view">
+    <field name="name">infrastructure.base.module.tree</field>
+    <field name="model">infrastructure.base.module</field>
+    <field name="inherit_id" ref=""/>
+    <field name="arch" type="xml">
+        <tree string="Modules">
+            <field name="shortdesc"/>
+            <field name="name" groups="base.group_no_one"/>
+            <field name="author"/>
+        </tree>
+    </field>
+</record>
+
+<record id="action_base_module" model="ir.actions.act_window">
+    <field name="name">Base Modules</field>
+    <field name="res_model">infrastructure.base.module</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref=""/>
+    <field name="search_view_id" ref=""/>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    name="Base Modules"
+    id="menu_base_module"
+    sequence="40"
+    action="action_base_module"
+    parent="menu_miscellaneous"
+    groups="group_manager"
+    />
+
+</data>
+</openerp>

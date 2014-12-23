@@ -100,8 +100,24 @@
                     <field name="db_backup_policy_ids" widget="many2many_tags"/>
                  </group>
                 <notebook>
-                    <page string="Backups">
+                    <page string="Backups" name="backup_ids">
                         <field name="backup_ids"/>
+                    </page>
+                    <page string="Base Modules" name="base_module_ids">
+                        <button type="object" name="update_modules_data" string="Update Modules Data"/>
+                        <button type="object" name="install_base_modules" string="Install Modules"/>
+                        <field name="base_module_ids" context="{'database_id':active_id}">
+                            <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed';orange:state=='not_available'" create="false" string="Modules">
+                                <field name="shortdesc"/>
+                                <field name="name" groups="base.group_no_one"/>
+                                <field name="author"/>
+                                <field name="state"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Modules" name="module_ids">
+                        <button type="object" name="update_modules_data" string="Update Modules Data"/>
+                        <field name="module_ids"/>
                     </page>
                     <page string="Notes">
                         <field name="note"/>
