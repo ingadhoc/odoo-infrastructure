@@ -248,27 +248,6 @@ class database(models.Model):
         self.signal_workflow('sgn_cancel')
 
     @api.one
-    def change_admin_passwd(self, current_passwd, new_passwd):
-        try:
-            hostname = self.instance_id.main_hostname
-            port = 80
-
-            client = Client(
-                'http://%s:%d' % (hostname, port),
-                db=self.name,
-                user='admin',
-                password=current_passwd)
-
-            user_obj = client.model('res.users')
-            return user_obj.change_password(current_passwd, new_passwd)
-
-        except Exception, e:
-            raise except_orm(
-                _("Unable to change password."),
-                _('Error: %s') % e
-            )
-
-    @api.one
     def dump_db(self):
         raise Warning(_('Not Implemented yet'))
         # TODO arreglar esto para que devuelva el archivo y lo descargue
@@ -337,6 +316,7 @@ class database(models.Model):
     @api.one
     def config_catchall(self):
         # TODO implementar esta funcion
+        Client.modules(name='', installed=Non
         # Verificar instalacion de passkey
         raise Warning(_('Not Implemented yet'))
 
