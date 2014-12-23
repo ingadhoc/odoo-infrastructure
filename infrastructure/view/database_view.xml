@@ -82,27 +82,18 @@
                         <field name="demo_data"/>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
-                        <!-- TODO ver si hace falta implementar, ahora parece que predeterminadamente almacena en filesystem -->
-<!--                                <field name="attachment_loc_type"/>
-                        <label for="attachment_loc_type"/>
-                         <div class="oe_inline">
-                            <field name="attachment_loc_type"/>
-                            <button class="oe_link oe_inline" type="object" name="apply_attachment_type" string="Upload Config"/>
-                        </div>
-                        <field name="attachment_location" attrs="{'required':[('attachment_loc_type','=','filesystem')],'invisible':[('attachment_loc_type','!=','filesystem')]}"/> -->
                     </group>
                     <group>
                         <label for="smtp_server_id"/>
                         <div class="oe_inline">
                             <field name="smtp_server_id" class="oe_inline"/>
-                            <button class="oe_link oe_inline" type="object" name="upload_mail_server_config" string="Upload Config"/>
+                            <button class="oe_link oe_inline" type="object" name="upload_mail_server_config" attrs="{'invisible':[('smtp_server_id','=',False)]}" string="Upload Config"/>
                         </div>
-                        <field name="domain_alias"/>
-<!--                         <label for="alias_domain"/>
+                        <label for="domain_alias"/>
                         <div class="oe_inline">
-                            <field name="alias_domain" class="oe_inline"/>
-                            <button class="oe_link oe_inline" type="object" name="config_catchall" string="Config Catchall"/>
-                        </div> -->
+                            <field name="domain_alias" class="oe_inline"/>
+                            <button class="oe_link oe_inline" type="object" name="config_catchall" attrs="{'invisible':[('domain_alias','=',False)]}" string="Config Catchall"/>
+                        </div>
                     </group>
                  </group>
                  <group>

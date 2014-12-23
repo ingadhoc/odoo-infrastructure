@@ -169,7 +169,8 @@ class database(models.Model):
     admin_password = fields.Char(
         string='Admin Password',
         required=True,
-        default='admin'
+        default='admin',
+        deprecated=True, #we use server admin pass to autheticate now
     )
 
     _sql_constraints = [
@@ -336,12 +337,9 @@ class database(models.Model):
     @api.one
     def config_catchall(self):
         # TODO implementar esta funcion
+        # Verificar instalacion de passkey
         raise Warning(_('Not Implemented yet'))
 
-    @api.one
-    def apply_attachment_type(self):
-        # TODO implementar esta funcion
-        raise Warning(_('Not Implemented yet'))
     # TODO implementar cambio de usuario de postgres al duplicar una bd o de manera manual.
     # Al parecer da error por el parametro que se alamcena database.uuid
     # Para eso podemos ver todo el docigo que esta en db.py, sobre todo esta parte:
