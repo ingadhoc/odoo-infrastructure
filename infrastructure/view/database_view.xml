@@ -74,24 +74,11 @@
                     <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" attrs="{'invisible':[('state','!=','draft')]}"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button type="action" string="Change Password" class="oe_stat_button" name="%(action_infrastructure_change_db_passwd_wizard)d" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button type="object" string="Kill Connections" class="oe_stat_button" name="kill_db_connection" attrs="{'invisible':[('state','!=','active')]}"/>
                 </div>
                  <group>
                     <group>
-                        <label for="admin_password"/>
-                            <div>
-                                <field
-                                    name="admin_password"
-                                    password="True"
-                                    class="oe_inline"/>
-                                <button name="show_passwd"
-                                    string="⇒ View Password"
-                                    type="object"
-                                    class="oe_link"/>
-                            </div>
-
                         <field name="demo_data"/>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
