@@ -261,6 +261,21 @@ class database(models.Model):
                     restarting service.'))
 
     @api.one
+    def duplicate_db(self, new_database_name):
+        new_db = self.copy({'name': new_database_name})
+        sock = self.get_sock()[0]
+        try:
+            sock.duplicate_database(
+                self.instance_id.admin_pass, self.name, new_database_name)
+        except:
+            raise Warning(
+                _('Unable to duplicate Database. If you are working in \
+                    an instance with "workers" then you can try \
+                    restarting service.'))
+        new_db.signal_workflow('sgn_to_active')
+        # TODO retornar accion de ventana a la bd creada
+
+    @api.one
     def kill_db_connection(self):
         self.server_id.get_env()
         psql_command = "/SELECT pg_terminate_backend(pg_stat_activity.procpid)\
@@ -268,6 +283,7 @@ class database(models.Model):
         psql_command += self.name + " AND procpid <> pg_backend_pid();"
         sudo('psql -U postgres -c ' + psql_command)
 
+# MAIL server and catchall configurations
     @api.one
     def upload_mail_server_config(self):
         if not self.smtp_server_id:
@@ -309,7 +325,7 @@ class database(models.Model):
     @api.one
     def config_catchall(self):
         # TODO implementar esta funcion
-        Client.modules(name='', installed=Non
+        # Client.modules(name='', installed=True)
         # Verificar instalacion de passkey
         raise Warning(_('Not Implemented yet'))
 
@@ -332,21 +348,7 @@ class database(models.Model):
     #             except psycopg2.Error:
     #                 pass
 
-    @api.one
-    def duplicate_db(self, new_database_name):
-        new_db = self.copy({'name': new_database_name})
-        sock = self.get_sock()[0]
-        try:
-            sock.duplicate_database(
-                self.instance_id.admin_pass, self.name, new_database_name)
-        except:
-            raise Warning(
-                _('Unable to duplicate Database. If you are working in \
-                    an instance with "workers" then you can try \
-                    restarting service.'))
-        new_db.signal_workflow('sgn_to_active')
-        # TODO retornar accion de ventana a la bd creada
-
+# DATABASE back ups
     def _cron_db_backup(self, cr, uid, policy, context=None):
         """"""
         # Search for the backup policy having 'policy' as backup prefix
@@ -441,6 +443,7 @@ class database(models.Model):
                     subtype='mt_backup_fail'
                 )
 
+# WORKFLOW
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
         wf_service = netsvc.LocalService("workflow")
