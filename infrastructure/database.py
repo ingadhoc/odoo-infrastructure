@@ -201,7 +201,7 @@ class database(models.Model):
                 self.issue_date, '%Y-%m-%d') + relativedelta(
                 days=self.database_type_id.auto_deactivation_days))
         self.deactivation_date = deactivation_date
-
+# DATABASE CRUD
     @api.one
     def get_sock(self):
         # base_url = self.instance_id.environment_id.server_id.main_hostname
@@ -267,13 +267,6 @@ class database(models.Model):
          FROM pg_stat_activity WHERE pg_stat_activity.datname = '"
         psql_command += self.name + " AND procpid <> pg_backend_pid();"
         sudo('psql -U postgres -c ' + psql_command)
-
-    @api.one
-    def show_passwd(self):
-        raise except_orm(
-            _("'admin' password for database '%s':") % self.name,
-            _("%s") % self.admin_password
-        )
 
     @api.one
     def upload_mail_server_config(self):
