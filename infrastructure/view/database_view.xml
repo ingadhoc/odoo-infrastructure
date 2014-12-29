@@ -13,6 +13,7 @@
                 <field name="database_type_id" string="Type"/>
                 <field name="name" string="Name"/>
                 <field name="partner_id" string="Partner"/>
+                <field name="server_id" string="Server"/>
                 <field name="demo_data" string="Demo Data?"/>
             </group>
             <group string="By Object">
@@ -28,6 +29,7 @@
     <field name="model">infrastructure.database</field>
     <field name="arch" type="xml">
         <form string="database" version="7.0">
+            <field name="id" invisible="1"/>
             <header>
                 <button name="action_wfk_set_draft"
                     type="object"
@@ -58,9 +60,9 @@
             <sheet string="database">
                 <div class="col-md-6">
                     <h2>
+                        <field name="server_id" class="oe_inline"/> - <field name="environment_id" class="oe_inline"/>
+                        <field name="instance_id" invisible="0"/>
                         <field name="database_type_id" placeholder="Type..."/>
-                        <field name="server_id" invisible="1"/>
-                        <field name="instance_id" invisible="1"/>
                     </h2>
                     <h1>
                         <field name="name" placeholder="Name..."/>
@@ -89,14 +91,20 @@
                             <field name="smtp_server_id" class="oe_inline"/>
                             <button class="oe_link oe_inline" type="object" name="upload_mail_server_config" attrs="{'invisible':[('smtp_server_id','=',False)]}" string="Upload Config"/>
                         </div>
-                        <label for="domain_alias"/>
-                        <div class="oe_inline">
-                            <field name="domain_alias" class="oe_inline"/>
-                            <button class="oe_link oe_inline" type="object" name="config_catchall" attrs="{'invisible':[('domain_alias','=',False)]}" string="Config Catchall"/>
-                        </div>
                     </group>
                  </group>
                  <group>
+                    <field name="alias_hostname_id" domain="[('server_id','=',server_id)]"/>
+                    <field name="alias_prefix" attrs="{'invisible':[('alias_hostname_wildcard','=',False)]}"/>
+                    <field name="alias_hostname_wildcard" invisible="1"/>
+                    <label for="domain_alias"/>
+                    <div class="oe_inline">
+                        <field name="domain_alias" class="oe_inline"/>
+                        <button class="oe_link oe_inline" type="object" name="config_catchall" attrs="{'invisible':[('domain_alias','=',False)]}" string="Config Catchall"/>
+                    </div>
+                    <field name="mailgate_path"/>
+                    <field name="virtual_alias"/>
+                    <field name="local_alias"/>
                     <field name="db_backup_policy_ids" widget="many2many_tags"/>
                  </group>
                 <notebook>
@@ -104,9 +112,9 @@
                         <field name="backup_ids"/>
                     </page>
                     <page string="Base Modules" name="base_module_ids">
-                        <button type="object" name="update_modules_data" string="Update Modules Data"/>
+                        <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
                         <button type="object" name="install_base_modules" string="Install Modules"/>
-                        <field name="base_module_ids" context="{'database_id':active_id}">
+                        <field name="base_module_ids" context="{'database_id':id}">
                             <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed';orange:state=='not_available'" create="false" string="Modules">
                                 <field name="shortdesc"/>
                                 <field name="name" groups="base.group_no_one"/>
@@ -116,7 +124,7 @@
                         </field>
                     </page>
                     <page string="Modules" name="module_ids">
-                        <button type="object" name="update_modules_data" string="Update Modules Data"/>
+                        <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
                         <field name="module_ids"/>
                     </page>
                     <page string="Notes">

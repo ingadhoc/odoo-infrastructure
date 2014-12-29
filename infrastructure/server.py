@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
-
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, sudo, reboot
+from fabric.contrib.files import append
+# For postfix
+from fabric.api import *
+from fabtools.deb import is_installed, preseed_package, install
+from fabtools.require.service import started
 
 
 class server(models.Model):
@@ -77,6 +81,17 @@ class server(models.Model):
         required=True
     )
 
+    database_ids = fields.One2many(
+        'infrastructure.database',
+        'server_id',
+        string='Databases'
+    )
+
+    database_count = fields.Integer(
+        string='# Databases',
+        compute='_get_databases'
+    )
+
     software_data = fields.Html(
         string='Software Data'
     )
@@ -135,6 +150,14 @@ class server(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         default='/var/log/nginx'
+    )
+
+    nginx_sites_path = fields.Char(
+        string='Nginx Sites Path',
+        readonly=True,
+        required=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/nginx/sites-enabled'
     )
 
     nginx_sites_path = fields.Char(
@@ -246,26 +269,50 @@ class server(models.Model):
         compute='_get_environments'
     )
 
-    local_aliases_path = fields.Char(
+    local_alias_path = fields.Char(
         string='Local Aliases Path',
+        help='Local Alias Path For Catch All Configuration',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/aliases'
     )
 
-    virtual_aliases_path = fields.Char(
+    virtual_alias_path = fields.Char(
         string='Virtual Aliases Path',
         readonly=True,
         required=True,
+        help='Virtual Alias Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
         default='/etc/postfix/virtual_aliases'
+    )
+
+    virtual_domains_regex_path = fields.Char(
+        string='Virtual Domain Regex Path',
+        readonly=True,
+        required=True,
+        help='Virtual Domain Regex Path For Postfix Catch All Configuration',
+        states={'draft': [('readonly', False)]},
+        default='/etc/postfix/virtual_domains_regex'
+    )
+
+    postfix_hostname = fields.Char(
+        string='Postfix Hostname',
+        # readonly=True, esperando a que esten todos completados
+        required=True,
+        states={'draft': [('readonly', False)]},
     )
 
     _sql_constraints = [
         ('name_uniq', 'unique(name)',
             'Server Name must be unique!'),
     ]
+
+    @api.one
+    @api.onchange('main_hostname')
+    def change_main_hostname(self):
+        if not self.postfix_hostname:
+            self.postfix_hostname = self.main_hostname
 
     @api.one
     def unlink(self):
@@ -278,6 +325,11 @@ class server(models.Model):
     @api.depends('environment_ids')
     def _get_environments(self):
         self.environment_count = len(self.environment_ids)
+
+    @api.one
+    @api.depends('database_ids')
+    def _get_databases(self):
+        self.database_count = len(self.database_ids)
 
     @api.one
     def get_env(self):
@@ -337,3 +389,49 @@ class server(models.Model):
             wf_service.trg_delete(uid, 'infrastructure.server', obj_id, cr)
             wf_service.trg_create(uid, 'infrastructure.server', obj_id, cr)
         return True
+
+    @api.one
+    def add_to_virtual_domains(self):
+        self.get_env()
+        # TODO remove this
+        # booelan values as unaccent
+        # if exists(self.virtual_domains_regex_path, use_sudo=True):
+        #     sudo('rm ' + self.virtual_domains_regex_path)
+        for domain in self.hostname_ids:
+            append(
+                self.virtual_domains_regex_path,
+                domain.domain_regex,
+                use_sudo=True,)
+
+# Install POSTFIX (TODO tal vez llevar a server service o hacer de otra manera)
+    @api.one
+    def install_postfix(self):
+    # def install_postfix(mailname):
+        """
+        Require a Postfix email server.
+
+        This makes sure that Postfix is installed and started.
+
+        ::
+
+            from fabtools import require
+
+            # Handle incoming email for our domain
+            require.postfix.server('example.com')
+
+        """
+        self.get_env()
+        # Ensure the package is installed
+        if not is_installed('postfix'):
+            print 'self.postfix_hostname', self.postfix_hostname
+            preseed_package('postfix', {
+                'postfix/main_mailer_type': ('select', 'Internet Site'),
+                'postfix/mailname': ('string', self.postfix_hostname),
+                'postfix/destinations': (
+                    'string', '%s, localhost.localdomain, localhost ' % (
+                        self.postfix_hostname),)
+            })
+            install('postfix')
+
+        # Ensure the service is started
+        started('postfix')

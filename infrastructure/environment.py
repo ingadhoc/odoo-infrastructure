@@ -152,6 +152,17 @@ class environment(models.Model):
         compute='_get_instances'
     )
 
+    database_ids = fields.One2many(
+        'infrastructure.database',
+        'server_id',
+        string='Databases'
+    )
+
+    database_count = fields.Integer(
+        string='# Databases',
+        compute='_get_databases'
+    )
+
     _track = {
         'state': {
             'infrastructure.environment_draft':
@@ -162,6 +173,11 @@ class environment(models.Model):
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
         },
     }
+
+    @api.one
+    @api.depends('database_ids')
+    def _get_databases(self):
+        self.database_count = len(self.database_ids)
 
     @api.one
     @api.depends('instance_ids')

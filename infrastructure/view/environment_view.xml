@@ -30,6 +30,7 @@
     <field name="model">infrastructure.environment</field>
     <field name="arch" type="xml">
         <form string="environment" version="7.0">
+            <field name="id" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
                     states="draft"
@@ -58,8 +59,11 @@
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_instance_instances)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_environment_id': active_id}">
+                    <button name="%(infrastructure.action_infrastructure_instance_instances)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_environment_id': id}">
                         <field name="instance_count" widget="statinfo"/>
+                    </button>
+                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': id}">
+                        <field name="database_count" widget="statinfo"/>
                     </button>
                 </div>
                 <group>

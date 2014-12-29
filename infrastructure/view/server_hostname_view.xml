@@ -31,6 +31,7 @@
              <group>
                 <field name="name"/>
                 <field name="wildcard"/>
+                <field name="domain_regex"/>
              </group>
             </sheet>
         </form>
@@ -45,6 +46,7 @@
         <tree string="server_hostname">
             <field name="name"/>
             <field name="wildcard"/>
+            <field name="domain_regex"/>
         </tree>
     </field>
 </record>

@@ -30,6 +30,7 @@
     <field name="model">infrastructure.instance</field>
     <field name="arch" type="xml">
         <form string="instance" version="7.0">
+            <field name="id" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
                     states="draft"
@@ -59,7 +60,7 @@
                     </h2>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_instance_id': active_id}">
+                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_instance_id': id}">
                         <field name="database_count" widget="statinfo"/>
                     </button>
                     <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_service" attrs="{'invisible':[('state','!=','active')]}"/>
@@ -90,6 +91,7 @@
                         <field name="xml_rpc_port"/>
                         <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
                         <field name="longpolling_port"/>
+                        <field name="limit_time_real"/>
                     </group>
                 </group>
                 <notebook>

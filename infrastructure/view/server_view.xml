@@ -29,6 +29,7 @@
     <field name="model">infrastructure.server</field>
     <field name="arch" type="xml">
         <form string="server" version="7.0">
+            <field name="id" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
                     states="draft"
@@ -59,8 +60,11 @@
                     </h2>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_environment_environments)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': active_id}">
+                    <button name="%(infrastructure.action_infrastructure_environment_environments)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': id}">
                         <field name="environment_count" widget="statinfo"/>
+                    </button>
+                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': id}">
+                        <field name="database_count" widget="statinfo"/>
                     </button>
                     <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server"/>
                     <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx"/>
@@ -100,6 +104,10 @@
                                 <field name="service_path"/>
                                 <field name="nginx_sites_path"/>
                                 <field name="nginx_log_path"/>
+                                <field name="local_alias_path"/>
+                                <field name="virtual_alias_path"/>
+                                <field name="virtual_domains_regex_path"/>
+                                <field name="postfix_hostname"/>
                                 <field name="postgres_superuser"/>
                                 <label for="password"/>
                                     <div>
@@ -127,9 +135,6 @@
                     <page string="Changes">
                        <field name="change_ids"/>
                     </page>
-                    <page string="Hostnames">
-                       <field name="hostname_ids"/>
-                    </page>
                     <page string="Data">
                         <group col="1">
                            <field name="software_data"/>
@@ -139,15 +144,12 @@
                        </group>
                    </page>
                     <page string="Installation">
-                        <group col="1">
-                            <field name="install_command_ids" context="{'server_id':id}"/>
-                        </group>
+                        <button type="object" name="install_postfix" string="Install Posftix"/>
+                        <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
-                    <page string="Catch-All Aliases">
-                        <group>
-                            <field name="local_aliases_path"/>
-                            <field name="virtual_aliases_path"/>
-                        </group>
+                    <page string="Hostnames">
+                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall"/>
+                       <field name="hostname_ids"/>
                     </page>
                </notebook>
             </sheet>

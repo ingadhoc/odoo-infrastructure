@@ -22,6 +22,11 @@ class database(models.Model):
         'Author',
         required=True,
     )
+    default_on_new_db = fields.Boolean(
+        string='Default on New Database',
+        default=True,
+    )
+
     sequence = fields.Integer(
         'Sequence',
     )

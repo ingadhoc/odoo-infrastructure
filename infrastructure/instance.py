@@ -17,6 +17,7 @@ class instance(models.Model):
     # volver si no existe el path ni el source path y si no existen ambienets
     # activo
     _name = 'infrastructure.instance'
+    _rec_name = 'display_name'
     _description = 'instance'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
     _states_ = [
@@ -42,6 +43,12 @@ class instance(models.Model):
         default=1
     )
 
+    display_name = fields.Char(
+        'Name',
+        compute='get_display_name',
+        store=True,
+        )
+
     name = fields.Char(
         string='Name',
         readonly=True,
@@ -61,6 +68,13 @@ class instance(models.Model):
         'infrastructure.db_filter',
         string='DB Filter',
         required=True
+    )
+
+    limit_time_real = fields.Integer(
+        string='Limit Time Real',
+        required=True,
+        default=300,
+        help='Maximum allowed Real time per request. The default odoo value is 120 but we use 300 to avoid some workers timeout error'
     )
 
     note = fields.Html(
@@ -250,6 +264,16 @@ class instance(models.Model):
     ]
 
     @api.one
+    @api.depends(
+        'name',
+        'environment_id',
+        'environment_id.name',
+        )
+    def get_display_name(self):
+        self.display_name = "%s - %s" % (
+            self.environment_id.name or '', self.name or '')
+
+    @api.one
     def get_user(self):
         """"""
         raise NotImplementedError
@@ -398,6 +422,7 @@ class instance(models.Model):
         command += ' --db-filter=' + self.db_filter.rule
         command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
         command += ' --logfile=' + self.logfile
+        command += ' --limit-time-real=' + str(self.limit_time_real)
 
         # TODO ver si no da error este parametro en algunas versiones de odoo y
         # sacarlo
