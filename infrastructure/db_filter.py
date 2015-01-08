@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from openerp.exceptions import Warning
 from openerp import models, fields
 
 
