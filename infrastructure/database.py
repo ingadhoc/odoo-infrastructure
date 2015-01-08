@@ -201,9 +201,10 @@ class database(models.Model):
 
     admin_password = fields.Char(
         string='Admin Password',
-        required=True,
+        help='When trying to connect to the database first we are going to try by using the instance password and then with thisone.',
+        # required=True,
         default='admin',
-        deprecated=True,  # we use server admin pass to autheticate now
+        # deprecated=True,  # we use server admin pass to autheticate now
     )
 
     virtual_alias = fields.Char(
@@ -234,6 +235,16 @@ class database(models.Model):
         related='alias_hostname_id.wildcard',
         string='Wildcard?',
     )
+
+    module_count = fields.Integer(
+        string='# Modules',
+        compute='_get_modules'
+    )
+
+    @api.one
+    @api.depends('module_ids')
+    def _get_modules(self):
+        self.module_count = len(self.module_ids)
 
     @api.one
     @api.depends(
@@ -314,6 +325,14 @@ class database(models.Model):
                 self.issue_date, '%Y-%m-%d') + relativedelta(
                 days=self.database_type_id.auto_deactivation_days))
         self.deactivation_date = deactivation_date
+
+    @api.one
+    def show_passwd(self):
+        raise except_orm(
+            _("Password:"),
+            _("%s") % self.admin_password
+        )
+
 # DATABASE CRUD
 
     @api.one
@@ -333,7 +352,7 @@ class database(models.Model):
             self.name,
             demo=self.demo_data,
             lang='en_US',
-            user_password='admin')
+            user_password=self.user_password or 'admin')
         client = self.get_client()
         self.update_modules_data()
         self.signal_workflow('sgn_to_active')
@@ -394,16 +413,31 @@ class database(models.Model):
             if not_database:
                 return Client(
                     'http://%s:%d' % (self.instance_id.main_hostname, 80))
-            return Client(
-                'http://%s:%d' % (self.instance_id.main_hostname, 80),
-                db=self.name,
-                user='admin',
-                password=self.instance_id.admin_pass)
         except Exception, e:
             raise except_orm(
                 _("Unable to Connect to Database."),
                 _('Error: %s') % e
             )
+        # First try to connect using instance pass
+        try:
+            return Client(
+                'http://%s:%d' % (self.instance_id.main_hostname, 80),
+                db=self.name,
+                user='admin',
+                password=self.instance_id.admin_pass)
+        # then try to connect using database pass
+        except:
+            try:
+                return Client(
+                    'http://%s:%d' % (self.instance_id.main_hostname, 80),
+                    db=self.name,
+                    user='admin',
+                    password=self.admin_password)
+            except Exception, e:
+                raise except_orm(
+                    _("Unable to Connect to Database."),
+                    _('Error: %s') % e
+                )
 
 # Modules management
     @api.one

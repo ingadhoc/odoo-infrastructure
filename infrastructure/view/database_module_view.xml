@@ -3,14 +3,26 @@
 <data>
 
 <!-- SEARCH VIEW -->
-<!-- <record id="view_database_module_filter" model="ir.ui.view">
+<record id="view_database_module_filter" model="ir.ui.view">
     <field name="name">infrastructure.database.module.select</field>
     <field name="model">infrastructure.database.module</field>
-    <field name="inherit_id" ref="base.module_form"/>
-    <field name="mode">primary</field>
+    <field name="inherit_id" ref=""/>
     <field name="arch" type="xml">
+        <search string="Search modules">
+            <field name="name" filter_domain="['|', ('shortdesc', 'ilike', self), ('name','ilike', self)]" string="Module"/>
+            <filter name="app" string="Apps" domain="[('application', '=', 1)]"/>
+            <filter name="extra" string="Extra" domain="[('application', '=', 0)]"/>
+            <field name="database_id"/>
+            <separator/>
+            <filter name="installed" string="Installed" domain="[('state', 'in', ['installed', 'to upgrade', 'to remove'])]"/>
+            <filter string="Not Installed" domain="[('state', 'in', ['uninstalled', 'uninstallable', 'to install'])]"/>
+            <group expand="0" string="Group By">
+                <filter string="Author" domain="[]" context="{'group_by':'author'}"/>
+                <filter string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+            </group>
+       </search>
     </field>
-</record> -->
+</record>
 
 <!-- FORMVIEW -->
 <record id="view_database_module_form" model="ir.ui.view">
@@ -21,12 +33,12 @@
     <field name="arch" type="xml">
         <h3 position="after">
             <div>
-                <button name="button_immediate_install" states="uninstalled" string="Install" type="object" class="oe_highlight"/>
-                <button name="button_immediate_upgrade" states="installed" string="Upgrade" type="object" class="oe_highlight"/>
-                <button name="button_uninstall" states="installed" string="Uninstall" type="object"/>
-                <button name="button_uninstall_cancel" states="to remove" string="Cancel Uninstall" type="object"/>
-                <button name="button_upgrade_cancel" states="to upgrade" string="Cancel Upgrade" type="object"/>
-                <button name="button_install_cancel" states="to install" string="Cancel Install" type="object"/>
+                <button name="install_modules" states="uninstalled" string="Install" type="object" class="oe_highlight"/>
+                <button name="upgrade_modules" states="installed" string="Upgrade" type="object" class="oe_highlight"/>
+                <button name="uninstall_modules" states="installed" string="Uninstall" type="object"/>
+                <!-- <button name="button_uninstall_cancel" states="to remove" string="Cancel Uninstall" type="object"/> -->
+                <!-- <button name="button_upgrade_cancel" states="to upgrade" string="Cancel Upgrade" type="object"/> -->
+                <!-- <button name="button_install_cancel" states="to install" string="Cancel Install" type="object"/> -->
             </div>
         </h3>
         <group name="gral_info">
@@ -59,8 +71,8 @@
     </field>
 </record>
 
-<!-- <record id="action_database_module_mail_servers" model="ir.actions.act_window">
-    <field name="name">Mail Servers</field>
+<record id="action_infrastructure_database_module" model="ir.actions.act_window">
+    <field name="name">Database Modules</field>
     <field name="res_model">infrastructure.database.module</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
@@ -69,7 +81,67 @@
     <field name="domain">[]</field>
 </record>
 
-<menuitem
+<!-- Acciones multiples  -->
+<!-- Install -->
+<record id="action_server_database_module_install" model="ir.actions.server">
+    <field name="name">Module Install</field>
+    <field name="condition">True</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_infrastructure_database_module" />
+    <field name="state">code</field>
+    <field name="code">self.install_modules(cr, uid, context.get('active_ids', []), context=context)</field>
+</record>
+
+<record model="ir.values" id="action_database_module_install">
+    <field name="name">action_database_module_install</field>
+    <field name="action_id" ref="action_server_database_module_install" />
+    <field name="value" eval="'ir.actions.server,' + str(ref('action_server_database_module_install'))" />
+    <field name="key">action</field>
+    <field name="model_id" ref="model_infrastructure_database_module" />
+    <field name="model">infrastructure.database.module</field>
+    <field name="key2">client_action_multi</field>
+</record>
+
+<!-- Uninstall -->
+<record id="action_server_database_module_uninstall" model="ir.actions.server">
+    <field name="name">Module Uninstall</field>
+    <field name="condition">True</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_infrastructure_database_module" />
+    <field name="state">code</field>
+    <field name="code">self.uninstall_modules(cr, uid, context.get('active_ids', []), context=context)</field>
+</record>
+
+<record model="ir.values" id="action_database_module_uninstall">
+    <field name="name">action_database_module_uninstall</field>
+    <field name="action_id" ref="action_server_database_module_uninstall" />
+    <field name="value" eval="'ir.actions.server,' + str(ref('action_server_database_module_uninstall'))" />
+    <field name="key">action</field>
+    <field name="model_id" ref="model_infrastructure_database_module" />
+    <field name="model">infrastructure.database.module</field>
+    <field name="key2">client_action_multi</field>
+</record>
+
+<!-- Upgrade -->
+<record id="action_server_database_module_upgrade" model="ir.actions.server">
+    <field name="name">Module Uninstall</field>
+    <field name="condition">True</field>
+    <field name="type">ir.actions.server</field>
+    <field name="model_id" ref="model_infrastructure_database_module" />
+    <field name="state">code</field>
+    <field name="code">self.upgrade_modules(cr, uid, context.get('active_ids', []), context=context)</field>
+</record>
+
+<record model="ir.values" id="action_database_module_upgrade">
+    <field name="name">action_database_module_upgrade</field>
+    <field name="action_id" ref="action_server_database_module_upgrade" />
+    <field name="value" eval="'ir.actions.server,' + str(ref('action_server_database_module_upgrade'))" />
+    <field name="key">action</field>
+    <field name="model_id" ref="model_infrastructure_database_module" />
+    <field name="model">infrastructure.database.module</field>
+    <field name="key2">client_action_multi</field>
+</record>
+<!-- <menuitem
     name="Mail Servers"
     id="menu_mail_servers"
     sequence="20"

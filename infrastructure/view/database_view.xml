@@ -73,6 +73,9 @@
                     </h2>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
+                    <button name="%(infrastructure.action_infrastructure_database_module)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_database_id': id,'search_default_installed': 1}">
+                        <field name="module_count" widget="statinfo"/>
+                    </button>
                     <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="action_backup_now" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" attrs="{'invisible':[('state','!=','active')]}"/>
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" attrs="{'invisible':[('state','!=','draft')]}"/>
@@ -87,6 +90,17 @@
                         <field name="deactivation_date"/>
                     </group>
                     <group>
+                        <label for="admin_pass"/>
+                            <div>
+                                <field
+                                    name="admin_password"
+                                    password="True"
+                                    class="oe_inline"/>
+                                <button name="show_passwd"
+                                    string="⇒ View Password"
+                                    type="object"
+                                    class="oe_link"/>
+                            </div>
                         <label for="smtp_server_id"/>
                         <div class="oe_inline">
                             <field name="smtp_server_id" class="oe_inline"/>

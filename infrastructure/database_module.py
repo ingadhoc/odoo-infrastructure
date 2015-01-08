@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields
+from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 
 
 class database(models.Model):
@@ -31,11 +32,9 @@ class database(models.Model):
     )
     installed_version = fields.Char(
         'Latest Version',
-        required=True,
     )
     latest_version = fields.Char(
         'Installed Version',
-        required=True,
     )
     published_version = fields.Char(
         'Published Version',
@@ -43,3 +42,44 @@ class database(models.Model):
     auto_install = fields.Boolean(
         'Auto Install',
     )
+
+    @api.multi
+    def check_one_database(self):
+        database = set([x.database_id for x in self])
+        if len(database) != 1:
+            raise Warning(_(
+                'You can only use this function in modules of the same database'))
+        return database.pop()
+
+    @api.multi
+    def install_modules(self):
+        database = self.check_one_database()
+        client = self.database_id.get_client()
+        # No se como correrlo sin hacer el for
+        for module in self:
+            client.install(module.name)
+        module_names = [x.name for x in self]
+        database.update_modules_data(
+            modules_domain=[('name', 'in', module_names)])
+
+    @api.multi
+    def upgrade_modules(self):
+        database = self.check_one_database()
+        client = self.database_id.get_client()
+        # No se como correrlo sin hacer el for
+        for module in self:
+            client.upgrade(module.name)
+        module_names = [x.name for x in self]
+        database.update_modules_data(
+            modules_domain=[('name', 'in', module_names)])
+
+    @api.multi
+    def uninstall_modules(self):
+        database = self.check_one_database()
+        client = self.database_id.get_client()
+        # No se como correrlo sin hacer el for
+        for module in self:
+            client.uninstall(module.name)
+        module_names = [x.name for x in self]
+        database.update_modules_data(
+            modules_domain=[('name', 'in', module_names)])
