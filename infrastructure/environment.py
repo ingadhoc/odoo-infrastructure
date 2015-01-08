@@ -154,7 +154,7 @@ class environment(models.Model):
 
     database_ids = fields.One2many(
         'infrastructure.database',
-        'server_id',
+        'environment_id',
         string='Databases'
     )
 

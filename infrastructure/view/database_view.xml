@@ -12,12 +12,13 @@
             <group string="By Attribute">
                 <field name="database_type_id" string="Type"/>
                 <field name="name" string="Name"/>
-                <field name="partner_id" string="Partner"/>
-                <field name="server_id" string="Server"/>
                 <field name="demo_data" string="Demo Data?"/>
             </group>
             <group string="By Object">
+                <field name="partner_id" string="Partner"/>
                 <field name="instance_id" string="Instance"/>
+                <field name="environment_id" string="Server"/>
+                <field name="server_id" string="Server"/>
             </group>
         </search>
     </field>
