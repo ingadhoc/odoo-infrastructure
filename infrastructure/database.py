@@ -352,7 +352,7 @@ class database(models.Model):
             self.name,
             demo=self.demo_data,
             lang='en_US',
-            user_password=self.user_password or 'admin')
+            user_password=self.admin_password or 'admin')
         client = self.get_client()
         self.update_modules_data()
         self.signal_workflow('sgn_to_active')
