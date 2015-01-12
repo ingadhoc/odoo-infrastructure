@@ -56,6 +56,7 @@
     ],
     'installable': True,
     'auto_install': False,
+    'application': True,
     'demo': [
         u'data/demo/res.partner.csv',
         u'data/demo/infrastructure.repository_branch.csv',

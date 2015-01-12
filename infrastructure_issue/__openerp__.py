@@ -16,7 +16,7 @@
     'summary': '',
     'installable': True,
     'auto_install': False,
-    'application': True,
+    'application': False,
     'images': [],
     'data': [
         'project_issue_view.xml',
