@@ -92,6 +92,7 @@
                         <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
                         <field name="longpolling_port"/>
                         <field name="limit_time_real"/>
+                        <field name="db_maxconn"/>
                     </group>
                 </group>
                 <notebook>

@@ -90,7 +90,7 @@
                         <field name="deactivation_date"/>
                     </group>
                     <group>
-                        <label for="admin_pass"/>
+                        <label for="admin_password"/>
                             <div>
                                 <field
                                     name="admin_password"

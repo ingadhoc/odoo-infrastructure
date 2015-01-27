@@ -73,8 +73,15 @@ class instance(models.Model):
     limit_time_real = fields.Integer(
         string='Limit Time Real',
         required=True,
-        default=300,
+        default=120,
         help='Maximum allowed Real time per request. The default odoo value is 120 but we use 300 to avoid some workers timeout error'
+    )
+
+    db_maxconn = fields.Integer(
+        string='DB Max connections',
+        required=True,
+        default=32,
+        help='Specify the the maximum number of physical connections to posgresql. Default odoo config is 64, we use 32.'
     )
 
     note = fields.Html(
@@ -423,6 +430,7 @@ class instance(models.Model):
         command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
         command += ' --logfile=' + self.logfile
         command += ' --limit-time-real=' + str(self.limit_time_real)
+        command += ' --db_maxconn=' + str(self.db_maxconn)
 
         # TODO ver si no da error este parametro en algunas versiones de odoo y
         # sacarlo
