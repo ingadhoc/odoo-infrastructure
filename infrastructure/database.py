@@ -292,7 +292,7 @@ class database(models.Model):
             local_alias = '%s: "| %s  --host=localhost --port=%i -u %i -p %s -d %s' % (
                 self.domain_alias, self.mailgate_path,
                 self.instance_id.xml_rpc_port,
-                SUPERUSER_ID, self.instance_id.admin_pass, self._cr.dbname)
+                SUPERUSER_ID, self.instance_id.admin_pass, self.name)
         return local_alias
 
     _sql_constraints = [
