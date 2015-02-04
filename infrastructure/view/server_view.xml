@@ -14,7 +14,7 @@
                 <field name="ip_address" string="IP Address"/>
                 <field name="holder_id" string="Holder"/>
                 <field name="owner_id" string="Owner"/>
-                <field name="user_id" string="Used By"/>
+                <field name="user_by_id" string="Used By"/>
             </group>
             <group string="By object">
                 <field name="server_configuration_id" string="Server Config."/>
@@ -60,15 +60,20 @@
                     </h2>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_environment_environments)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': id}">
+                    <button name="action_view_environments" icon="fa-th-large" type="object" class="oe_stat_button">
                         <field name="environment_count" widget="statinfo"/>
                     </button>
-                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_server_id': id}">
+                    <button name="action_view_instances" icon="fa-th" type="object" class="oe_stat_button">
+                        <field name="instance_count" widget="statinfo"/>
+                    </button>
+                    <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                         <field name="database_count" widget="statinfo"/>
                     </button>
-                    <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server"/>
-                    <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx"/>
-                    <button name="restart_postgres" icon="fa-refresh" string="Restart Postgres" class="oe_stat_button" help="Restart Nginx"/>
+                </div>
+                <div class="oe_right oe_button_box" name="action_buttons">
+                    <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server" confirm="Are you sure you want to reboot the server?" state="active"/>
+                    <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart nxginx?" state="active"/>
+                    <button name="restart_postgres" icon="fa-refresh" string="Restart Postgres" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart postgres?" state="active"/>
                 </div>
                 <group>
                     <group>
@@ -85,7 +90,7 @@
                                 <button name="show_passwd"
                                     string="⇒ View Password"
                                     type="object"
-                                    class="oe_link"/>
+                                    class="oe_link oe_read_only"/>
                             </div>
                     </group>
                     <group>
@@ -93,7 +98,7 @@
                         <field name="instance_user_group"/>
                         <field name="holder_id"/>
                         <field name="owner_id"/>
-                        <field name="user_id"/>
+                        <field name="user_by_id"/>
                     </group>
                 </group>
                 <notebook>
@@ -118,7 +123,7 @@
                                         <button name="show_pg_passwd"
                                             string="⇒ View Password"
                                             type="object"
-                                            class="oe_link"/>
+                                            class="oe_link oe_read_only"/>
                                     </div>
                             </group>
                             <group>
@@ -144,11 +149,11 @@
                        </group>
                    </page>
                     <page string="Installation">
-                        <button type="object" name="install_postfix" string="Install Posftix"/>
+                        <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
                         <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
                     <page string="Hostnames">
-                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall"/>
+                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
                        <field name="hostname_ids"/>
                     </page>
                </notebook>
@@ -175,7 +180,7 @@
             <field name="ip_address"/>
             <field name="holder_id"/>
             <field name="owner_id"/>
-            <field name="user_id"/>
+            <field name="user_by_id"/>
             <field name="server_configuration_id"/>
             <field name="state" />
         </tree>

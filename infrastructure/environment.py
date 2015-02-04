@@ -28,11 +28,11 @@ class environment(models.Model):
 
     number = fields.Integer(
         string='Number',
-        readonly=True,
         required=True,
+        readonly=True,
         states={
             'draft': [('readonly', False)]
-        }
+        },
     )
 
     name = fields.Char(
@@ -63,13 +63,21 @@ class environment(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
-        required=True
+        required=True,
+        readonly=True,
+        states={
+            'draft': [('readonly', False)]
+        },
     )
 
     environment_version_id = fields.Many2one(
         'infrastructure.environment_version',
         string='Version',
-        required=True
+        required=True,
+        readonly=True,
+        states={
+            'draft': [('readonly', False)]
+        },
     )
 
     note = fields.Html(
@@ -89,20 +97,24 @@ class environment(models.Model):
     state = fields.Selection(
         _states_,
         string="State",
-        default='draft'
+        default='draft',
     )
 
     environment_repository_ids = fields.One2many(
         'infrastructure.environment_repository',
         'environment_id',
-        string='Repositories'
+        string='Repositories',
     )
 
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         ondelete='cascade',
-        required=True
+        required=True,
+        readonly=True,
+        states={
+            'draft': [('readonly', False)]
+        },
     )
 
     instance_ids = fields.One2many(
@@ -116,8 +128,8 @@ class environment(models.Model):
 
     sources_path = fields.Char(
         string='Sources Path',
-        compute='_get_env_paths',
-        store=True,
+        # compute='_get_env_paths',
+        # store=True,
         readonly=True,
         required=True,
         states={
@@ -127,8 +139,8 @@ class environment(models.Model):
 
     backups_path = fields.Char(
         string='Backups Path',
-        compute='_get_env_paths',
-        store=True,
+        # compute='_get_env_paths',
+        # store=True,
         readonly=True,
         required=True,
         states={
@@ -138,8 +150,8 @@ class environment(models.Model):
 
     path = fields.Char(
         string='Path',
-        compute='_get_path',
-        store=True,
+        # compute='_get_path',
+        # store=True,
         readonly=True,
         required=True,
         states={
@@ -163,6 +175,11 @@ class environment(models.Model):
         compute='_get_databases'
     )
 
+    sever_copied = fields.Boolean(
+        string='Server Copied?',
+        compute='_get_sever_copied'
+    )
+
     _track = {
         'state': {
             'infrastructure.environment_draft':
@@ -173,6 +190,18 @@ class environment(models.Model):
             lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
         },
     }
+
+    @api.one
+    @api.depends(
+        'environment_repository_ids',
+        )
+    def _get_sever_copied(self):
+        sever_copied = False
+        servers = [
+            x for x in self.environment_repository_ids if x.server_repository_id.repository_id.is_server and x.path]
+        if servers:
+            sever_copied = True
+        self.sever_copied = sever_copied
 
     @api.one
     @api.depends('database_ids')
@@ -199,7 +228,46 @@ class environment(models.Model):
         return super(environment, self).unlink()
 
     @api.one
-    @api.depends('name', 'server_id.base_path')
+    @api.onchange('server_id')
+    def _get_number(self):
+        environments = self.search(
+            [('server_id', '=', self.server_id.id)],
+            order='number desc',
+            )
+        self.number = environments and environments[0].number + 1 or 10
+
+    # No funciona como debe
+    # @api.one
+    # @api.onchange('server_id', 'environment_version_id')
+    # def _get_repositories(self):
+    #     if not self.server_id or not self.environment_version_id:
+    #         return False
+    #     server_default_repositories = [
+    #         x for x in self.server_id.server_repository_ids if x.repository_id.default_in_new_env]
+    #     server_actual_repositories = [
+    #         x for x in self.environment_repository_ids]
+    #     server_new_repositories = list(
+    #         set(server_default_repositories) - set(server_actual_repositories))
+    #     server_rep_vals = []
+
+    #     default_branch_id = self.environment_version_id.default_branch_id.id
+    #     for server_repository in server_new_repositories:
+    #         branch_ids = server_repository.repository_id.branch_ids
+    #         repo_branch_ids = [
+    #             x.id for x in server_repository.repository_id.branch_ids]
+    #         branch_id = branch_ids and branch_ids.ids[0] or False
+    #         if default_branch_id and default_branch_id in repo_branch_ids:
+    #             branch_id = default_branch_id
+    #         vals = {
+    #             'server_repository_id': server_repository.id,
+    #             'branch_id': branch_id,
+    #             'environment_id': self.id,
+    #         }
+    #         server_rep_vals.append([0, False, vals])
+    #     self.environment_repository_ids = server_rep_vals
+
+    @api.one
+    @api.onchange('name', 'server_id')
     def _get_path(self):
         path = False
         if self.server_id.base_path and self.name:
@@ -207,7 +275,7 @@ class environment(models.Model):
         self.path = path
 
     @api.one
-    @api.depends('path')
+    @api.onchange('path')
     def _get_env_paths(self):
         sources_path = False
         backups_path = False
@@ -293,6 +361,17 @@ class environment(models.Model):
         self.make_env_paths()
         self.signal_workflow('sgn_to_active')
 
+    @api.multi
+    def delete(self):
+        if self.instance_ids:
+            raise Warning(_(
+                'You can not delete an environment that has instances'))
+        self.server_id.get_env()
+        paths = [self.sources_path, self.backups_path, self.path]
+        for path in paths:
+            sudo('rm -f -r ' + path)
+        self.signal_workflow('sgn_cancel')
+
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
         wf_service = netsvc.LocalService("workflow")
@@ -313,3 +392,51 @@ class environment(models.Model):
         ('sources_number', 'unique(number, server_id)',
             'Number must be unique per server!'),
     ]
+
+    @api.multi
+    def action_view_instances(self):
+        '''
+        This function returns an action that display a form or tree view
+        '''
+        instances = self.instance_ids.search(
+            [('environment_id', 'in', self.ids)])
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_instance_instances')
+
+        if not action:
+            return False
+        res = action.read()[0]
+        res['domain'] = [('id', 'in', instances.ids)]
+        if len(self) == 1:
+            res['context'] = {'default_environment_id': self.id}
+        if not len(instances.ids) > 1:
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+                'infrastructure.view_infrastructure_instance_form')
+            res['views'] = [(form_view_id, 'form')]
+            # if 1 then we send res_id, if 0 open a new form view
+            res['res_id'] = instances and instances.ids[0] or False
+        return res
+
+    @api.multi
+    def action_view_databases(self):
+        '''
+        This function returns an action that display a form or tree view
+        '''
+        databases = self.database_ids.search(
+            [('environment_id', 'in', self.ids)])
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_database_databases')
+
+        if not action:
+            return False
+        res = action.read()[0]
+        res['domain'] = [('id', 'in', databases.ids)]
+        if len(self) == 1:
+            res['context'] = {'default_server_id': self.id}
+        if not len(databases.ids) > 1:
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+                'infrastructure.view_infrastructure_instance_form')
+            res['views'] = [(form_view_id, 'form')]
+            # if 1 then we send res_id, if 0 open a new form view
+            res['res_id'] = databases and databases.ids[0] or False
+        return res

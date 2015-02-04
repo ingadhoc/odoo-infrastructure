@@ -242,6 +242,11 @@ class database(models.Model):
     )
 
     @api.one
+    @api.onchange('instance_id')
+    def _onchange_instance(self):
+        self.partner_id = self.instance_id.environment_id.partner_id
+
+    @api.one
     @api.depends('module_ids')
     def _get_modules(self):
         self.module_count = len(self.module_ids)

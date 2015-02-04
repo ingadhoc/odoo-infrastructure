@@ -16,6 +16,7 @@
                 <field name="xml_rpc_port" string="XML-RPC Port"/>
                 <field name="db_filter" string="DB filter"/>
                 <field name="user" string="User / Service File"/>
+                <field name="server_id"/>
             </group>
             <group string="By Object">
                 <field name="environment_id" string="Environment"/>
@@ -35,7 +36,6 @@
                 <button name="sgn_to_active"
                     states="draft"
                     string="to Active"
-                    class="oe_highlight"
                     />
                 <button name="action_wfk_set_draft"
                     type="object"
@@ -52,25 +52,33 @@
             </header>
             <sheet>
                 <div class="col-md-6">
-                    <h1>
-                        <field name="name" placeholder="Name..."/>
-                    </h1>
-                    <h2>
-                        <field name="number" placeholder="Number... (1 digits)"/>
+                    <h2 class="oe_inline">
+                        <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/>
                     </h2>
+                    <h1>
+                        <field name="name" default_focus="1" placeholder="Name..."/>
+                    </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_instance_id': id}">
+                    <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                         <field name="database_count" widget="statinfo"/>
                     </button>
-                    <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_service" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_service" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_service" attrs="{'invisible':[('state','!=','active')]}"/>
+                </div>
+                <div class="oe_right oe_button_box" name="action_buttons">
+                    <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_service" states="active"/>
+                    <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_service" states="active"/>
+                    <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_service" states="active"/>
+                    <button icon="fa-sun-o" type="object" string="Create / Update" class="oe_stat_button" help="Create or update User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" states="draft"/>
+                    <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
+<!--                     <button icon="fa-refresh" type="object" string="Update Conf" class="oe_stat_button" name="update_conf_file" states="active"/>
+                    <button icon="fa-refresh" type="object" string="Up. Nginx Site" class="oe_stat_button" name="update_nginx_site" states="active"/>
+                    <button icon="fa-refresh" type="object" string="Update Service" class="oe_stat_button" name="update_service_file" states="active"/> -->
+<!--                     <button icon="fa-play" type="object" string="Run On Start" class="oe_stat_button" name="run_on_start" states="active"/>
+                    <button icon="fa-stop" type="object" string="Stop On Start" class="oe_stat_button" name="stop_run_on_start" states="active"/> -->
                 </div>
                 <group>
                     <group>
-                        <field name="server_id" invisible="1"/>
-                        <field name="environment_id" invisible="1"/>
+                        <field name="number"/>
                         <field name="user"/>
                         <label for="admin_pass"/>
                             <div>
@@ -81,13 +89,14 @@
                                 <button name="show_passwd"
                                     string="⇒ View Password"
                                     type="object"
-                                    class="oe_link"/>
+                                    class="oe_link oe_read_only"/>
                             </div>
                         <field name="db_filter"/>
                         <field name="main_hostname" widget="url"/>
                     </group>
                     <group>
                         <field name="type"/>
+                        <field name="run_on_sys_boot"/>
                         <field name="xml_rpc_port"/>
                         <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
                         <field name="longpolling_port"/>
@@ -97,12 +106,6 @@
                 </group>
                 <notebook>
                     <page string="Configuration">
-                        <button icon="fa-sun-o" type="object" string="Create Instance" class="oe_stat_button" help="Create User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" attrs="{'invisible':[('state','!=','draft')]}"/>
-                        <button icon="fa-refresh" type="object" string="Update Conf" class="oe_stat_button" name="update_conf_file" attrs="{'invisible':[('state','!=','active')]}"/>
-                        <button icon="fa-refresh" type="object" string="Up. Nginx Site" class="oe_stat_button" name="update_nginx_site" attrs="{'invisible':[('state','!=','active')]}"/>
-                        <button icon="fa-refresh" type="object" string="Update Service" class="oe_stat_button" name="update_service_file" attrs="{'invisible':[('state','!=','active')]}"/>
-                        <button icon="fa-play" type="object" string="Run On Start" class="oe_stat_button" name="run_on_start" attrs="{'invisible':[('state','!=','active')]}"/>
-                        <button icon="fa-stop" type="object" string="Stop On Start" class="oe_stat_button" name="stop_run_on_start" attrs="{'invisible':[('state','!=','active')]}"/>
                         <group>
                             <group>
                                 <field name="module_load"/>

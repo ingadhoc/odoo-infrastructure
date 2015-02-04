@@ -40,7 +40,8 @@ class instance(models.Model):
     number = fields.Integer(
         string='Number',
         required=True,
-        default=1
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     display_name = fields.Char(
@@ -61,27 +62,35 @@ class instance(models.Model):
         [(u'secure', u'Secure'), (u'none_secure', u'None Secure')],
         string='Instance Type',
         required=True,
-        default='none_secure'
+        default='none_secure',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     db_filter = fields.Many2one(
         'infrastructure.db_filter',
         string='DB Filter',
-        required=True
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     limit_time_real = fields.Integer(
         string='Limit Time Real',
         required=True,
         default=120,
-        help='Maximum allowed Real time per request. The default odoo value is 120 but we use 300 to avoid some workers timeout error'
+        help='Maximum allowed Real time per request. The default odoo value is 120 but we use 300 to avoid some workers timeout error',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     db_maxconn = fields.Integer(
         string='DB Max connections',
         required=True,
         default=32,
-        help='Specify the the maximum number of physical connections to posgresql. Default odoo config is 64, we use 32.'
+        help='Specify the the maximum number of physical connections to posgresql. Default odoo config is 64, we use 32.',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     note = fields.Html(
@@ -95,12 +104,23 @@ class instance(models.Model):
     run_server_command = fields.Char(
         string='Run Server Command',
         required=True,
-        default='odoo.py'
+        default='odoo.py',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     proxy_mode = fields.Boolean(
         string='Proxy Mode?',
-        default=True
+        default=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+    )
+
+    run_on_sys_boot = fields.Boolean(
+        string='Run On System Boot?',
+        default=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     log_level = fields.Selection([
@@ -108,26 +128,36 @@ class instance(models.Model):
         (u'warn', 'warn'), (u'test', 'test'), (u'critical', 'critical'),
         (u'debug_sql', 'debug_sql'), (u'error', 'error'), (u'debug', 'debug'),
         (u'debug_rpc_answer', 'debug_rpc_answer')],
-        string='Log Level'
+        string='Log Level',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     workers = fields.Integer(
         string='Workers',
-        default=9
+        default=9,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     admin_pass = fields.Char(
         string='Admin Password',
         required=True,
-        default='admin'
+        default='admin',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     unaccent = fields.Boolean(
-        string='Enable Unaccent'
+        string='Enable Unaccent',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     module_load = fields.Char(
-        string='Load default modules'
+        string='Load default modules',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     main_hostname = fields.Char(
@@ -144,14 +174,18 @@ class instance(models.Model):
     instance_host_ids = fields.One2many(
         'infrastructure.instance_host',
         'instance_id',
-        string='Hosts'
+        string='Hosts',
+        readonly=True,
+        states={'draft': [('readonly', False)]}
     )
 
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
         ondelete='cascade',
-        required=True
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     database_ids = fields.One2many(
@@ -164,24 +198,24 @@ class instance(models.Model):
     addons_path = fields.Char(
         string='Addons Path',
         compute='_get_addons_path',
-        store=True,
-        readonly=False,
+        # store=True,
+        # readonly=False,
         required=True
     )
 
     user = fields.Char(
         string='User',
-        compute='_get_user',
-        store=True,
-        readonly=True,
+        # compute='_get_user',
+        # store=True,
         required=True,
+        readonly=True,
         states={'draft': [('readonly', False)]}
     )
 
     service_file = fields.Char(
         string='Service File Name',
-        compute='_get_user',
-        store=True,
+        # compute='_get_user',
+        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
@@ -189,8 +223,8 @@ class instance(models.Model):
 
     conf_file_path = fields.Char(
         string='Config. File Path',
-        compute='_get_paths',
-        store=True,
+        # compute='_get_paths',
+        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
@@ -198,8 +232,8 @@ class instance(models.Model):
 
     data_dir = fields.Char(
         string='Data Dir',
-        compute='_get_paths',
-        store=True,
+        # compute='_get_paths',
+        # store=True,
         readonly=True,
         required=False,
         states={'draft': [('readonly', False)]}
@@ -207,8 +241,8 @@ class instance(models.Model):
 
     logfile = fields.Char(
         string='Log File Path',
-        compute='_get_paths',
-        store=True,
+        # compute='_get_paths',
+        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
@@ -216,24 +250,27 @@ class instance(models.Model):
 
     xml_rpc_port = fields.Integer(
         string='XML-RPC Port',
-        compute='_get_ports',
-        store=True,
-        readonly=False,
+        # compute='_get_ports',
+        # store=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         required=True
     )
 
     xml_rpcs_port = fields.Integer(
         string='XML-RPCS Port',
-        compute='_get_ports',
-        store=True,
-        readonly=False
+        # compute='_get_ports',
+        # store=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     longpolling_port = fields.Integer(
         string='Longpolling Port',
-        compute='_get_ports',
-        store=True,
-        readonly=False
+        # compute='_get_ports',
+        # store=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     database_count = fields.Integer(
@@ -340,7 +377,16 @@ class instance(models.Model):
         self.addons_path = addons_path
 
     @api.one
-    @api.depends('name', 'environment_id', 'environment_id.name')
+    @api.onchange('environment_id')
+    def _onchange_environment(self):
+        instances = self.search(
+            [('environment_id', '=', self.environment_id.id)],
+            order='number desc',
+            )
+        self.number = instances and instances[0].number + 1 or 1
+
+    @api.one
+    @api.onchange('name', 'environment_id')
     def _get_user(self):
         user = False
         if self.name and self.environment_id.name:
@@ -349,11 +395,14 @@ class instance(models.Model):
         self.service_file = user
 
     @api.one
-    @api.depends('number', 'environment_id', 'environment_id.number')
-    def _get_ports(self):
+    @api.onchange('number', 'environment_id')
+    def _get_ports_and_ports(self):
         xml_rpc_port = False
         xml_rpcs_port = False
         longpolling_port = False
+        conf_file_path = False
+        logfile = False
+        data_dir = False
         if self.environment_id.number and self.number:
             prefix = str(self.environment_id.number) + str(self.number)
             xml_rpc_port = int(prefix + '1')
@@ -362,15 +411,6 @@ class instance(models.Model):
         self.xml_rpc_port = xml_rpc_port
         self.xml_rpcs_port = xml_rpcs_port
         self.longpolling_port = longpolling_port
-
-    @api.one
-    @api.depends('name', 'environment_id', 'environment_id.path',)
-    def _get_paths(self):
-        conf_file_path = False
-        logfile = False
-        data_dir = False
-        # TODO notar que aca se toma el valor del campo function y no el valor
-        # stored en el path, hay que arreglarlo
         if self.environment_id.path and self.name:
             conf_file_path = os.path.join(
                 self.environment_id.path, 'conf_' + self.name) + '.conf'
@@ -384,6 +424,19 @@ class instance(models.Model):
 
     # Actions
     @api.multi
+    def delete(self):
+        if self.database_ids:
+            raise Warning(_(
+                'You can not delete an instance that has databases'))
+        self.stop_service()
+        self.stop_run_on_start()
+        self.delete_service_file()
+        self.delete_nginx_site()
+        self.delete_user()
+        self.delete_pg_user()
+        self.signal_workflow('sgn_cancel')
+
+    @api.multi
     def create_instance(self):
         self.update_nginx_site()
         self.create_user()
@@ -391,7 +444,10 @@ class instance(models.Model):
         self.update_conf_file()
         self.update_service_file()
         self.start_service()
-        self.run_on_start()
+        if self.run_on_sys_boot:
+            self.run_on_start()
+        else:
+            self.stop_run_on_start()
         self.signal_workflow('sgn_to_active')
 
     @api.one
@@ -432,8 +488,6 @@ class instance(models.Model):
         command += ' --limit-time-real=' + str(self.limit_time_real)
         command += ' --db_maxconn=' + str(self.db_maxconn)
 
-        # TODO ver si no da error este parametro en algunas versiones de odoo y
-        # sacarlo
         if self.environment_id.environment_version_id.name in ('8.0', 'master'):
             if self.data_dir:
                 command += ' --data-dir=' + self.data_dir
@@ -463,6 +517,7 @@ class instance(models.Model):
         # TODO tal vez -r -w para database data
         try:
             sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
+            # TODO cambiar estos print por cosas en el log
             print
             print command
             print
@@ -472,10 +527,20 @@ class instance(models.Model):
             with shell_env(PYTHON_EGG_CACHE=eggs_dir):
                 sudo('chmod g+rw -R ' + self.environment_id.path)
                 sudo(command, user=self.user)
-        except:
-            raise except_orm(_('Error creating configuration file!'),
-            _("Try stopping the instance and then try again."))
+        except Exception, e:
+            raise Warning(_("Can not create/update configuration file, this is what we get: \n %s") % (
+                e))
         sed(self.conf_file_path, '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass, use_sudo=True)
+
+    @api.multi
+    def delete_service_file(self):
+        service_path = self.environment_id.server_id.service_path
+        service_file_path = os.path.join(service_path, self.service_file)
+        try:
+            sudo('rm ' + service_file_path)
+        except Exception, e:
+            raise Warning(_("Can not delete service file %s, this is what we get: \n %s") % (
+                service_file_path, e))
 
     @api.multi
     def update_service_file(self):
@@ -504,18 +569,20 @@ class instance(models.Model):
     @api.one
     def create_user(self):
         self.environment_id.server_id.get_env()
-        sudo('adduser --system --ingroup odoo ' + self.user)
-        # TODO Es probable que todo esto no lo neceistemos y lo podamos borrar
-        # user_home_path = '/home/%s/' % self.user
-        # try:
-        #     sudo('chmod 777 ' + user_home_path)
-        #     sudo('chown ' + self.user + ':odoo -R ' + user_home_path)
-        #     sudo("sudo usermod -a -G %s %s" % (
-        #         self.environment_id.server_id.instance_user_group, self.user))
-        # except:
-        #     raise Warning(_("Error changing group '%s' of user '%s'. \
-        #         Please verifify that user and group exists!") % (
-        #         self.environment_id.server_id.instance_user_group, self.user))
+        try:
+            sudo('adduser --system --ingroup odoo ' + self.user)
+        except Exception, e:
+            raise Warning(_("Can not create linux user %s, this is what we get: \n %s") % (
+                self.user, e))
+
+    @api.one
+    def delete_user(self):
+        self.environment_id.server_id.get_env()
+        try:
+            sudo('deluser %s' % self.user)
+        except Exception, e:
+            raise Warning(_("Can not delete linux user %s, this is what we get: \n %s") % (
+                self.user, e))
 
     @api.one
     def create_pg_user(self):
@@ -523,8 +590,18 @@ class instance(models.Model):
         # TODO si ya existe el usuario no habria que crearlo
         try:
             sudo('sudo -u postgres createuser -d -R -S ' + self.user)
-        except:
-            print 'PG user already exists'
+        except Exception, e:
+            raise Warning(_("Can not create postgres user %s, this is what we get: \n %s") % (
+                self.user, e))
+
+    @api.one
+    def delete_pg_user(self):
+        self.environment_id.server_id.get_env()
+        try:
+            sudo('dropuser %s' % self.user)
+        except Exception, e:
+            raise Warning(_("Can not delete postgres user %s, this is what we get: \n %s") % (
+                self.user, e))
 
     @api.one
     def start_service(self):
@@ -534,22 +611,51 @@ class instance(models.Model):
     @api.one
     def stop_service(self):
         self.environment_id.server_id.get_env()
-        sudo('service ' + self.service_file + ' stop')
+        try:
+            sudo('service ' + self.service_file + ' stop')
+        except Exception, e:
+            raise Warning(_("Could not stop service '%s', this is what we get: \n %s") % (
+                self.service_file, e))
 
     @api.one
     def restart_service(self):
         self.environment_id.server_id.get_env()
-        sudo('service ' + self.service_file + ' restart')
+        try:
+            sudo('service ' + self.service_file + ' restart')
+        except Exception, e:
+            raise Warning(_("Could not restart service '%s', this is what we get: \n %s") % (
+                self.service_file, e))
 
     @api.one
     def run_on_start(self):
         self.environment_id.server_id.get_env()
-        sudo('update-rc.d  ' + self.service_file + ' defaults')
-
+        try:
+            sudo('update-rc.d  ' + self.service_file + ' defaults')
+        except Exception, e:
+            raise Warning(_("Could not add service '%s' to run on start, this is what we get: \n %s") % (
+                self.service_file, e))
     @api.one
     def stop_run_on_start(self):
         self.environment_id.server_id.get_env()
-        sudo('update-rc.d  -f ' + self.service_file + ' remove')
+        try:
+            sudo('update-rc.d  -f ' + self.service_file + ' remove')
+        except Exception, e:
+            raise Warning(_("Could not stop service '%s' to run on start, this is what we get: \n %s") % (
+                self.service_file, e))
+
+    @api.one
+    def delete_nginx_site(self):
+        self.environment_id.server_id.get_env()
+        nginx_sites_path = self.environment_id.server_id.nginx_sites_path
+        nginx_site_file_path = os.path.join(
+            nginx_sites_path,
+            self.service_file
+        )
+        try:
+            sudo('rm -f %s' % nginx_site_file_path)
+        except Exception, e:
+            raise Warning(_("Could remove nginx site file '%s', this is what we get: \n %s") % (
+                nginx_site_file_path, e))
 
     @api.one
     def update_nginx_site(self):
@@ -610,6 +716,30 @@ class instance(models.Model):
 
         # Restart nginx
         self.environment_id.server_id.restart_nginx()
+
+    @api.multi
+    def action_view_databases(self):
+        '''
+        This function returns an action that display a form or tree view
+        '''
+        databases = self.database_ids.search(
+            [('instance_id', 'in', self.ids)])
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_database_databases')
+
+        if not action:
+            return False
+        res = action.read()[0]
+        res['domain'] = [('id', 'in', databases.ids)]
+        if len(self) == 1:
+            res['context'] = {'default_instance_id': self.id}
+        if not len(databases.ids) > 1:
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+                'infrastructure.view_infrastructure_instance_form')
+            res['views'] = [(form_view_id, 'form')]
+            # if 1 then we send res_id, if 0 open a new form view
+            res['res_id'] = databases and databases.ids[0] or False
+        return res
 
 # TODO llevar esto a un archivo y leerlo de alli
 nginx_long_polling_template = """

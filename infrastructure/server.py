@@ -47,7 +47,8 @@ class server(models.Model):
 
     ssh_port = fields.Char(
         string='SSH Port',
-        required=True
+        required=True,
+        default=22,
     )
 
     main_hostname = fields.Char(
@@ -56,11 +57,13 @@ class server(models.Model):
     )
 
     user_name = fields.Char(
-        string='User Name'
+        string='User Name',
+        required=True,
     )
 
     password = fields.Char(
-        string='Password'
+        string='Password',
+        required=True,
     )
 
     holder_id = fields.Many2one(
@@ -75,7 +78,7 @@ class server(models.Model):
         required=True
     )
 
-    user_id = fields.Many2one(
+    user_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
         required=True
@@ -90,6 +93,17 @@ class server(models.Model):
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases'
+    )
+
+    instance_ids = fields.One2many(
+        'infrastructure.instance',
+        'server_id',
+        string='Databases'
+    )
+
+    instance_count = fields.Integer(
+        string='# Instances',
+        compute='_get_instances'
     )
 
     software_data = fields.Html(
@@ -332,6 +346,11 @@ class server(models.Model):
         self.database_count = len(self.database_ids)
 
     @api.one
+    @api.depends('instance_ids')
+    def _get_instances(self):
+        self.instance_count = len(self.instance_ids)
+
+    @api.one
     def get_env(self):
         if not self.user_name:
             raise Warning(_('Not User Defined for the server'))
@@ -435,3 +454,75 @@ class server(models.Model):
 
         # Ensure the service is started
         started('postfix')
+
+    @api.multi
+    def action_view_environments(self):
+        '''
+        This function returns an action that display a form or tree view
+        '''
+        environments = self.environment_ids.search(
+            [('server_id', 'in', self.ids)])
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_environment_environments')
+
+        if not action:
+            return False
+        res = action.read()[0]
+        res['domain'] = [('id', 'in', environments.ids)]
+        if len(self) == 1:
+            res['context'] = {'default_server_id': self.id}
+        if not len(environments.ids) > 1:
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+                'infrastructure.view_infrastructure_environment_form')
+            res['views'] = [(form_view_id, 'form')]
+            # if 1 then we send res_id, if 0 open a new form view
+            res['res_id'] = environments and environments.ids[0] or False
+        return res
+
+    @api.multi
+    def action_view_instances(self):
+        '''
+        This function returns an action that display a form or tree view
+        '''
+        instances = self.instance_ids.search(
+            [('server_id', 'in', self.ids)])
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_instance_instances')
+
+        if not action:
+            return False
+        res = action.read()[0]
+        res['domain'] = [('id', 'in', instances.ids)]
+        if len(self) == 1:
+            res['context'] = {'default_server_id': self.id}
+        if not len(instances.ids) > 1:
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+                'infrastructure.view_infrastructure_instance_form')
+            res['views'] = [(form_view_id, 'form')]
+            # if 1 then we send res_id, if 0 open a new form view
+            res['res_id'] = instances and instances.ids[0] or False
+        return res
+
+    @api.multi
+    def action_view_databases(self):
+        '''
+        This function returns an action that display a form or tree view
+        '''
+        databases = self.database_ids.search(
+            [('server_id', 'in', self.ids)])
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_database_databases')
+
+        if not action:
+            return False
+        res = action.read()[0]
+        res['domain'] = [('id', 'in', databases.ids)]
+        if len(self) == 1:
+            res['context'] = {'default_server_id': self.id}
+        if not len(databases.ids) > 1:
+            form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+                'infrastructure.view_infrastructure_instance_form')
+            res['views'] = [(form_view_id, 'form')]
+            # if 1 then we send res_id, if 0 open a new form view
+            res['res_id'] = databases and databases.ids[0] or False
+        return res

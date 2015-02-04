@@ -35,7 +35,6 @@
                 <button name="sgn_to_active"
                     states="draft"
                     string="to Active"
-                    class="oe_highlight"
                     />
                 <button name="action_wfk_set_draft"
                     type="object"
@@ -51,26 +50,35 @@
                     />
             </header>
             <sheet string="environment">
-                <field name="server_id" invisible="1"/>
+                <field name="sever_copied" invisible="1"/>
                 <div class="col-md-6">
+                    <h2 class="oe_inline">
+                        <field name="server_id" class="oe_inline"/>
+                    </h2>
                     <h1>
-                        <field name="name" placeholder="Name...(ej. 'ingadhoc-80'"/>
+                        <field name="name" default_focus="1" placeholder="Name...(ej. 'ingadhoc-80'"/>
                         <field name="description" placeholder="Description..."/>
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_instance_instances)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_environment_id': id}">
+                    <button name="action_view_instances" icon="fa-th" type="object" class="oe_stat_button">
                         <field name="instance_count" widget="statinfo"/>
                     </button>
-                    <button name="%(infrastructure.action_infrastructure_database_databases)d" icon="fa-th" type="action" class="oe_stat_button" context="{'search_default_environment_id': id}">
+                    <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                         <field name="database_count" widget="statinfo"/>
                     </button>
+                </div>
+                <div class="oe_right oe_button_box" name="buttons_action">
+                    <button icon="fa-sun-o " type="object" string="Create Environment" class="oe_stat_button" help="Create Env, Source Path, Install Server and Install Pip Packages" name="create_environment" states="draft"/>
+                    <button icon="fa-refresh" type="object" string="Install Odoo" class="oe_stat_button" name="install_odoo" attrs="{'invisible':['|',('sever_copied', '=', False),('state', '!=', 'active')]}"/>
+                    <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="active" confirm="Environment will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
                 </div>
                 <group>
                     <group>
                         <field name="number" placeholder="(2 digits, >= 10)"/>
                         <field name="type"/>
                         <field name="environment_version_id"/>
+                        <field name="install_server_command"/>
                     </group>
                     <group>
                         <field name="path"/>
@@ -81,12 +89,7 @@
                 </group>
                 <notebook>
                     <page string="Configuration">
-                        <button icon="fa-sun-o " type="object" string="Create Environment" class="oe_stat_button" help="Create Env, Source Path, Install Server and Install Pip Packages" name="create_environment" attrs="{'invisible':[('state','!=','draft')]}"/>
-                        <button icon="fa-refresh" type="object" string="Install Odoo" class="oe_stat_button" name="install_odoo"/>
-                        <group col="1">
-                            <field name="install_server_command"/>
-                            <field name="environment_repository_ids"/>
-                        </group>
+                        <field name="environment_repository_ids"/>
                     </page>
                     <page string="Notes">
                         <field name="note"/>

@@ -51,7 +51,7 @@
     <field name="name">infrastructure.environment_repository.tree</field>
     <field name="model">infrastructure.environment_repository</field>
     <field name="arch" type="xml">
-        <tree string="environment_repository" editable="top">
+        <tree string="environment_repository" editable="bottom">
             <field name="server_repository_id" domain="[('server_id','=',server_id)]"/>
             <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
             <field name="path"/>
