@@ -59,34 +59,33 @@ class database(models.Model):
 
     name = fields.Char(
         string='Name',
-        readonly=True,
         required=True,
+        readonly=True,
         states={'draft': [('readonly', False)]},
         track_visibility='onchange'
     )
 
     partner_id = fields.Many2one(
         'res.partner',
-        string='Partner'
+        string='Partner',
+        required=True,
     )
 
     demo_data = fields.Boolean(
         string='Demo Data?',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        states={'draft': [('readonly', False)]},
     )
 
     note = fields.Html(
         string='Note'
     )
 
-    color = fields.Integer(
-        string='Color Index'
-    )
-
     smtp_server_id = fields.Many2one(
         'infrastructure.mailserver',
-        string='SMTP Server'
+        string='SMTP Server',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     domain_alias = fields.Char(
@@ -97,11 +96,15 @@ class database(models.Model):
     attachment_loc_type = fields.Selection(
         [(u'filesystem', 'filesystem'), (u'database', 'database')],
         string='Attachment Location Type',
-        default='filesystem'
+        default='filesystem',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     attachment_location = fields.Char(
-        string='Attachment Location'
+        string='Attachment Location',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     issue_date = fields.Date(
@@ -123,7 +126,9 @@ class database(models.Model):
         'infrastructure_database_ids_db_backup_policy_ids_rel',
         'database_id',
         'db_backup_policy_id',
-        string='Suggested Backup Policies'
+        string='Suggested Backup Policies',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     instance_id = fields.Many2one(
@@ -132,7 +137,7 @@ class database(models.Model):
         ondelete='cascade',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        required=True
+        required=True,
     )
 
     environment_id = fields.Many2one(
@@ -140,7 +145,7 @@ class database(models.Model):
         string='Environment',
         related='instance_id.environment_id',
         store=True,
-        readonly=True
+        readonly=True,
     )
 
     server_id = fields.Many2one(
@@ -148,28 +153,25 @@ class database(models.Model):
         string='Server',
         related='instance_id.environment_id.server_id',
         store=True,
-        readonly=True
+        readonly=True,
     )
 
     protected_db = fields.Boolean(
         string='Protected DB?',
         related='database_type_id.protect_db',
         store=True,
-        readonly=True
+        readonly=True,
     )
 
     color = fields.Integer(
         string='Color',
         related='database_type_id.color',
         store=True,
-        readonly=True
+        readonly=True,
     )
 
     deactivation_date = fields.Date(
         string='Deactivation Date',
-        compute='get_deact_date',
-        store=True,
-        readonly=False
     )
 
     backup_ids = fields.One2many(
@@ -204,6 +206,8 @@ class database(models.Model):
         help='When trying to connect to the database first we are going to try by using the instance password and then with thisone.',
         # required=True,
         default='admin',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         # deprecated=True,  # we use server admin pass to autheticate now
     )
 
@@ -223,17 +227,22 @@ class database(models.Model):
     )
 
     alias_prefix = fields.Char(
-        'Alias Prefix'
+        'Alias Prefix',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     alias_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
         string='Alias Hostname',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     alias_hostname_wildcard = fields.Boolean(
         related='alias_hostname_id.wildcard',
         string='Wildcard?',
+        readonly=True,
     )
 
     module_count = fields.Integer(
@@ -268,7 +277,7 @@ class database(models.Model):
     def get_mailgate_path(self):
         env_rep = self.env['infrastructure.environment_repository'].search([
             ('server_repository_id.repository_id.is_server', '=', True),
-            ('environment_id', '=', self.instance_id.environment_id.id)],)
+            ('environment_id', '=', self.instance_id.environment_id.id)])
         mailgate_path = _('Not base path found for mail module')
         for path in literal_eval(env_rep.addons_paths):
             if 'openerp' not in path and 'addons'in path:
@@ -322,7 +331,7 @@ class database(models.Model):
             self.db_backup_policy_ids = self.database_type_id.db_backup_policy_ids
 
     @api.one
-    @api.depends('database_type_id', 'issue_date')
+    @api.onchange('database_type_id', 'issue_date')
     def get_deact_date(self):
         deactivation_date = False
         if self.issue_date and self.database_type_id.auto_deactivation_days:

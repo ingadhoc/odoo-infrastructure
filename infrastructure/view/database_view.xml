@@ -8,17 +8,20 @@
     <field name="name">infrastructure.database.select</field>
     <field name="model">infrastructure.database</field>
     <field name="arch" type="xml">
-        <search string="database" version="7.0">
-            <group string="By Attribute">
-                <field name="database_type_id" string="Type"/>
-                <field name="name" string="Name"/>
-                <field name="demo_data" string="Demo Data?"/>
-            </group>
-            <group string="By Object">
-                <field name="partner_id" string="Partner"/>
-                <field name="instance_id" string="Instance"/>
-                <field name="environment_id" string="Server"/>
-                <field name="server_id" string="Server"/>
+        <search string="database">
+            <field name="name"/>
+            <field name="demo_data"/>
+            <field name="partner_id"/>
+            <field name="database_type_id"/>
+            <field name="server_id"/>
+            <field name="environment_id"/>
+            <field name="instance_id"/>
+            <group expand="0" string="Group By...">
+                <filter string="Partner" context="{'group_by':'partner_id'}"/>
+                <filter string="Type" context="{'group_by':'database_type_id'}"/>
+                <filter string="Server" context="{'group_by':'server_id'}"/>
+                <filter string="Environment" context="{'group_by':'environment_id'}"/>
+                <filter string="Instance" context="{'group_by':'instance_id'}"/>
             </group>
         </search>
     </field>
@@ -29,7 +32,7 @@
     <field name="name">infrastructure.database.form</field>
     <field name="model">infrastructure.database</field>
     <field name="arch" type="xml">
-        <form string="database" version="7.0">
+        <form string="database">
             <field name="id" invisible="1"/>
             <header>
                 <button name="action_wfk_set_draft"
@@ -74,20 +77,22 @@
                     <button name="%(infrastructure.action_infrastructure_database_module)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_database_id': id,'search_default_installed': 1}">
                         <field name="module_count" widget="statinfo"/>
                     </button>
-                    <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="action_backup_now" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" attrs="{'invisible':[('state','!=','draft')]}"/>
-                    <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" attrs="{'invisible':[('state','!=','active')]}"/>
-                    <button type="object" string="Kill Connections" class="oe_stat_button" name="kill_db_connection" attrs="{'invisible':[('state','!=','active')]}"/>
+                </div>
+                <div class="oe_right oe_button_box" name="buttons_action">
+                    <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
+                    <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="action_backup_now" states="active"/>
+                    <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" states="active"/>
+                    <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
+                    <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active"/>
+                    <!-- <button type="object" string="Kill Connections" class="oe_stat_button" name="kill_db_connection" attrs="{'invisible':[('state','!=','active')]}"/> -->
                 </div>
                  <group>
                     <group>
-                        <field name="demo_data"/>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
                     </group>
                     <group>
+                        <field name="demo_data"/>
                         <label for="admin_password"/>
                             <div>
                                 <field
@@ -164,10 +169,12 @@
             colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active', 'deactivated', 'maintenance'); red:state in ()"
             >
             <field name="message_unread" invisible="1"/>
-            <field name="database_type_id"/>
             <field name="name"/>
+            <field name="database_type_id"/>
             <field name="partner_id"/>
             <field name="demo_data"/>
+            <field name="server_id"/>
+            <field name="environment_id" invisible="1"/>
             <field name="instance_id"/>
             <field name="state"/>
         </tree>

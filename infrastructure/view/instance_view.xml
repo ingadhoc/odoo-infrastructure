@@ -8,18 +8,18 @@
     <field name="name">infrastructure.instance.select</field>
     <field name="model">infrastructure.instance</field>
     <field name="arch" type="xml">
-        <search string="instance" version="7.0">
-            <group string="By Attribute">
-                <field name="number" string="Number"/>
-                <field name="name" string="Name"/>
-                <field name="type" string="Instance Type"/>
-                <field name="xml_rpc_port" string="XML-RPC Port"/>
-                <field name="db_filter" string="DB filter"/>
-                <field name="user" string="User / Service File"/>
-                <field name="server_id"/>
-            </group>
-            <group string="By Object">
-                <field name="environment_id" string="Environment"/>
+        <search string="instance">
+            <field name="number"/>
+            <field name="name"/>
+            <field name="type"/>
+            <field name="xml_rpc_port"/>
+            <field name="db_filter"/>
+            <field name="user"/>
+            <field name="server_id"/>
+            <field name="environment_id"/>
+            <group expand="0" string="Group By...">
+                <filter string="Server" context="{'group_by':'server_id'}"/>
+                <filter string="Environment" context="{'group_by':'environment_id'}"/>
             </group>
         </search>
     </field>
@@ -30,7 +30,7 @@
     <field name="name">infrastructure.instance.form</field>
     <field name="model">infrastructure.instance</field>
     <field name="arch" type="xml">
-        <form string="instance" version="7.0">
+        <form string="instance">
             <field name="id" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
@@ -151,12 +151,12 @@
             colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
             >
             <field name="message_unread" invisible="1"/>
+            <field name="display_name"/>
             <field name="number"/>
-            <field name="name"/>
-            <field name="type"/>
             <field name="xml_rpc_port"/>
             <field name="db_filter"/>
             <field name="user"/>
+            <field name="server_id"/>
             <field name="environment_id"/>
             <field name="state" />
         </tree>

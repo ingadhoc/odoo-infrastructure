@@ -8,7 +8,7 @@
     <field name="name">infrastructure.database.backup.tree</field>
     <field name="model">infrastructure.database.backup</field>
     <field name="arch" type="xml">
-        <tree string="Database Backups">
+        <tree string="Database Backups" create="false">
             <field name="name"/>
             <field name="create_date"/>
             <button

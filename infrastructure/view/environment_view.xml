@@ -8,17 +8,18 @@
     <field name="name">infrastructure.environment.select</field>
     <field name="model">infrastructure.environment</field>
     <field name="arch" type="xml">
-        <search string="environment" version="7.0">
-            <group string="By Attribute">
-                <field name="number" string="Number"/>
-                <field name="name" string="Name"/>
-                <field name="type" string="Type"/>
-                <field name="description" string="Description"/>
-                <field name="partner_id" string="Partner"/>
-                <field name="environment_version_id" string="Version"/>
-            </group>
-            <group string="By object">
-                <field name="server_id" string="Server"/>
+        <search string="environment">
+            <field name="number"/>
+            <field name="name"/>
+            <field name="type"/>
+            <field name="description"/>
+            <field name="partner_id"/>
+            <field name="environment_version_id"/>
+            <field name="server_id"/>
+            <group expand="0" string="Group By...">
+                <filter string="Partner" context="{'group_by':'partner_id'}"/>
+                <filter string="Environment Version" context="{'group_by':'environment_version_id'}"/>
+                <filter string="Server" context="{'group_by':'server_id'}"/>
             </group>
         </search>
     </field>
@@ -29,7 +30,7 @@
     <field name="name">infrastructure.environment.form</field>
     <field name="model">infrastructure.environment</field>
     <field name="arch" type="xml">
-        <form string="environment" version="7.0">
+        <form string="environment">
             <field name="id" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
@@ -114,8 +115,8 @@
                 colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
                 >
                 <field name="message_unread" invisible="1"/>
-                <field name="number"/>
                 <field name="name"/>
+                <field name="number"/>
                 <field name="type"/>
                 <field name="description"/>
                 <field name="partner_id"/>
@@ -159,13 +160,6 @@
     </kanban>
   </field>
 </record>
-
-<!-- TODO hacerla linda vista kanban y agregar aqui abajo-->
-    <!-- <record id="infrastructure.action_infrastructure_environment_environments" model="ir.actions.act_window"> -->
-        <!-- <field name="view_mode">tree,form</field> -->
-        <!-- <field name="view_mode">kanban,tree,form</field> -->
-        <!-- <field name="view_id" ref=""/> -->
-    <!-- </record> -->
 
 <record id="action_infrastructure_environment_environments" model="ir.actions.act_window">
     <field name="name">Environments</field>

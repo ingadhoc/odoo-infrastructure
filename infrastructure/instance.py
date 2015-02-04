@@ -735,7 +735,7 @@ class instance(models.Model):
             res['context'] = {'default_instance_id': self.id}
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
-                'infrastructure.view_infrastructure_instance_form')
+                'infrastructure.view_infrastructure_database_form')
             res['views'] = [(form_view_id, 'form')]
             # if 1 then we send res_id, if 0 open a new form view
             res['res_id'] = databases and databases.ids[0] or False

@@ -37,12 +37,12 @@ class server(models.Model):
 
     name = fields.Char(
         string='Name',
-        required=True
+        required=True,
     )
 
     ip_address = fields.Char(
         string='IP Address',
-        required=True
+        required=True,
     )
 
     ssh_port = fields.Char(
@@ -53,7 +53,7 @@ class server(models.Model):
 
     main_hostname = fields.Char(
         string='Main Hostname',
-        required=True
+        required=True,
     )
 
     user_name = fields.Char(
@@ -69,69 +69,69 @@ class server(models.Model):
     holder_id = fields.Many2one(
         'res.partner',
         string='Holder',
-        required=True
+        required=True,
     )
 
     owner_id = fields.Many2one(
         'res.partner',
         string='Owner',
-        required=True
+        required=True,
     )
 
-    user_by_id = fields.Many2one(
+    used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
-        required=True
+        required=True,
     )
 
     database_ids = fields.One2many(
         'infrastructure.database',
         'server_id',
-        string='Databases'
+        string='Databases',
     )
 
     database_count = fields.Integer(
         string='# Databases',
-        compute='_get_databases'
+        compute='_get_databases',
     )
 
     instance_ids = fields.One2many(
         'infrastructure.instance',
         'server_id',
-        string='Databases'
+        string='Databases',
     )
 
     instance_count = fields.Integer(
         string='# Instances',
-        compute='_get_instances'
+        compute='_get_instances',
     )
 
     software_data = fields.Html(
-        string='Software Data'
+        string='Software Data',
     )
 
     hardware_data = fields.Html(
-        string='Hardware Data'
+        string='Hardware Data',
     )
 
     contract_data = fields.Html(
-        string='Contract Data'
+        string='Contract Data',
     )
 
     note = fields.Html(
-        string='Note'
+        string='Note',
     )
 
     base_path = fields.Char(
         string='Base path',
-        readonly=True,
         required=True,
+        readonly=True,
         states={'draft': [('readonly', False)]},
-        default='/opt/odoo'
+        default='/opt/odoo',
     )
 
     color = fields.Integer(
-        string='Color Index'
+        string='Color Index',
     )
 
     sources_path = fields.Char(
@@ -139,7 +139,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='/opt/odoo/sources'
+        default='/opt/odoo/sources',
     )
 
     service_path = fields.Char(
@@ -147,7 +147,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/init.d'
+        default='/etc/init.d',
     )
 
     instance_user_group = fields.Char(
@@ -155,7 +155,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='odoo'
+        default='odoo',
     )
 
     nginx_log_path = fields.Char(
@@ -163,7 +163,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='/var/log/nginx'
+        default='/var/log/nginx',
     )
 
     nginx_sites_path = fields.Char(
@@ -171,7 +171,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/nginx/sites-enabled'
+        default='/etc/nginx/sites-enabled',
     )
 
     nginx_sites_path = fields.Char(
@@ -179,7 +179,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/nginx/sites-enabled'
+        default='/etc/nginx/sites-enabled',
     )
 
     postgres_superuser = fields.Char(
@@ -188,13 +188,13 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='odoo'
+        default='odoo',
     )
 
     postgres_superuser_pass = fields.Char(
         string='Postgres Superuser Pwd',
         help="Postgres Superuser Password. You can record and existing one or create a new one with an installation command",
-        # readonly=True, Esperando a que esten seteadas todas las claves
+        readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
     )
@@ -202,85 +202,87 @@ class server(models.Model):
     gdrive_account = fields.Char(
         string='Gdrive Account',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        states={'draft': [('readonly', False)]},
     )
 
     gdrive_passw = fields.Char(
         string='Gdrive Password',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        states={'draft': [('readonly', False)]},
     )
 
     gdrive_space = fields.Char(
-        string='Gdrive Space'
+        string='Gdrive Space',
     )
 
     open_ports = fields.Char(
-        string='Open Ports'
+        string='Open Ports',
     )
 
     requires_vpn = fields.Boolean(
-        string='Requires VPN?'
+        string='Requires VPN?',
     )
 
     state = fields.Selection(
         _states_,
         string="State",
-        default='draft'
+        default='draft',
     )
 
     server_service_ids = fields.One2many(
         'infrastructure.server_service',
         'server_id',
-        string='Services'
+        string='Services',
     )
 
     server_repository_ids = fields.One2many(
         'infrastructure.server_repository',
         'server_id',
-        string='server_repository_ids'
+        string='server_repository_ids',
     )
 
     hostname_ids = fields.One2many(
         'infrastructure.server_hostname',
         'server_id',
-        string='Hostnames'
+        string='Hostnames',
     )
 
     change_ids = fields.One2many(
         'infrastructure.server_change',
         'server_id',
-        string='Changes'
+        string='Changes',
     )
 
     environment_ids = fields.One2many(
         'infrastructure.environment',
         'server_id',
         string='Environments',
-        context={'from_server': True}
+        context={'from_server': True},
     )
 
     server_configuration_id = fields.Many2one(
         'infrastructure.server_configuration',
         string='Server Config.',
-        required=True
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
     )
 
     install_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         string='Installation Commands',
-        related="server_configuration_id.install_command_ids"
+        related="server_configuration_id.install_command_ids",
     )
 
     maint_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         string='Maintenance Commands',
-        related="server_configuration_id.maint_command_ids"
+        related="server_configuration_id.maint_command_ids",
     )
 
     environment_count = fields.Integer(
         string='# Environment',
-        compute='_get_environments'
+        compute='_get_environments',
     )
 
     local_alias_path = fields.Char(
@@ -289,7 +291,7 @@ class server(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/aliases'
+        default='/etc/aliases',
     )
 
     virtual_alias_path = fields.Char(
@@ -298,7 +300,7 @@ class server(models.Model):
         required=True,
         help='Virtual Alias Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
-        default='/etc/postfix/virtual_aliases'
+        default='/etc/postfix/virtual_aliases',
     )
 
     virtual_domains_regex_path = fields.Char(
@@ -307,12 +309,12 @@ class server(models.Model):
         required=True,
         help='Virtual Domain Regex Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
-        default='/etc/postfix/virtual_domains_regex'
+        default='/etc/postfix/virtual_domains_regex',
     )
 
     postfix_hostname = fields.Char(
         string='Postfix Hostname',
-        # readonly=True, esperando a que esten todos completados
+        readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
     )
@@ -521,7 +523,7 @@ class server(models.Model):
             res['context'] = {'default_server_id': self.id}
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
-                'infrastructure.view_infrastructure_instance_form')
+                'infrastructure.view_infrastructure_database_form')
             res['views'] = [(form_view_id, 'form')]
             # if 1 then we send res_id, if 0 open a new form view
             res['res_id'] = databases and databases.ids[0] or False
