@@ -43,9 +43,6 @@
                     />
                 <field name="url_example"/>
                 <field name="db_name_example"/>
-                <field name="db_backup_policy_ids"
-                    widget="many2many_tags"
-                    />
              </group>
             </sheet>
         </form>

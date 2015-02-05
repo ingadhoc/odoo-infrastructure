@@ -2,52 +2,5 @@
 <openerp>
 <data noupdate="0">
 
-<record forcecreate="True" id="ir_cron_db_backup_hourly" model="ir.cron">
-    <field name="name">DB Backup Hourly</field>
-    <field name="interval_number">4</field>
-    <field name="interval_type">hours</field>
-    <field name="numbercall">-1</field>
-    <field eval="False" name="doall"/>
-    <field name="model">infrastructure.database</field>
-    <field name="function">_cron_db_backup</field>
-    <field name="args">('hourly',)</field>
-</record>
-
-<record forcecreate="True" id="ir_cron_db_backup_daily" model="ir.cron">
-    <field name="name">DB Backup Daily</field>
-    <field name="interval_number">1</field>
-    <field name="interval_type">days</field>
-    <field name="nextcall" eval="datetime.strftime(datetime.today()+timedelta(days=1),'%Y-%m-%d 04:00:00')"/>
-    <field name="numbercall">-1</field>
-    <field eval="False" name="doall"/>
-    <field name="model">infrastructure.database</field>
-    <field name="function">_cron_db_backup</field>
-    <field name="args">('daily',)</field>
-</record>
-
-<record forcecreate="True" id="ir_cron_db_backup_weekly" model="ir.cron">
-    <field name="name">DB Backup Weekly</field>
-    <field name="interval_number">1</field>
-    <field name="interval_type">weeks</field>
-    <field name="nextcall" eval="datetime.strftime(datetime.today()+timedelta(days=1),'%Y-%m-%d 05:00:00')"/>
-    <field name="numbercall">-1</field>
-    <field eval="False" name="doall"/>
-    <field name="model">infrastructure.database</field>
-    <field name="function">_cron_db_backup</field>
-    <field name="args">('weekly',)</field>
-</record>
-
-<record forcecreate="True" id="ir_cron_db_backup_monthly" model="ir.cron">
-    <field name="name">DB Backup Monthly</field>
-    <field name="interval_number">1</field>
-    <field name="interval_type">months</field>
-    <field name="nextcall" eval="datetime.strftime(datetime.today()+timedelta(days=1),'%Y-%m-%d 06:00:00')"/>
-    <field name="numbercall">-1</field>
-    <field eval="False" name="doall"/>
-    <field name="model">infrastructure.database</field>
-    <field name="function">_cron_db_backup</field>
-    <field name="args">('monthly',)</field>
-</record>
-
 </data>
 </openerp>

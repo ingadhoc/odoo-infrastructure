@@ -122,16 +122,6 @@ class database(models.Model):
         default='draft'
     )
 
-    db_backup_policy_ids = fields.Many2many(
-        'infrastructure.db_backup_policy',
-        'infrastructure_database_ids_db_backup_policy_ids_rel',
-        'database_id',
-        'db_backup_policy_id',
-        string='Suggested Backup Policies',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-    )
-
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
@@ -341,7 +331,7 @@ class database(models.Model):
     def onchange_database_type_id(self):
         if self.database_type_id:
             self.name = self.database_type_id.prefix + '_'
-            self.db_backup_policy_ids = self.database_type_id.db_backup_policy_ids
+            # TODO send suggested backup data
 
     @api.one
     @api.onchange('database_type_id', 'issue_date')

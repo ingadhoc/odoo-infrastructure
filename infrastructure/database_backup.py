@@ -28,17 +28,10 @@ class database_backup(models.Model):
         required=True
     )
 
-    # TODO name se debe componer con prefijo de backup policy, nombre bd y datetime de creacion
     name = fields.Char(
         string='Name',
         readonly=True,
         required=True
-    )
-
-    db_backup_policy_id = fields.Many2one(
-        'infrastructure.db_backup_policy',
-        string='Backup Policy',
-        readonly=True
     )
 
     @api.one
