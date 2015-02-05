@@ -162,7 +162,10 @@ class instance(models.Model):
 
     main_hostname = fields.Char(
         string='Main Hostname',
-        required=True
+        required=True,
+        help="Specified the port if port different from 80. For eg you can use: \
+        * ingadho.com\
+        * ingadhoc.com:8069"
     )
 
     state = fields.Selection(

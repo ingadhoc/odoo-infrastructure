@@ -11,6 +11,7 @@ from erppeek import Client
 from openerp.exceptions import Warning
 from ast import literal_eval
 import os
+import base64
 
 
 class database(models.Model):
@@ -249,6 +250,15 @@ class database(models.Model):
         string='# Modules',
         compute='_get_modules'
     )
+    daily_backup = fields.Boolean(
+        string='Daily Backups?',
+    )
+    weekly_backup = fields.Boolean(
+        string='Weekly Backups?',
+    )
+    monthly_backup = fields.Boolean(
+        string='Monthly Backups?',
+    )
 
     @api.one
     @api.onchange('instance_id')
@@ -279,10 +289,11 @@ class database(models.Model):
             ('server_repository_id.repository_id.is_server', '=', True),
             ('environment_id', '=', self.instance_id.environment_id.id)])
         mailgate_path = _('Not base path found for mail module')
-        for path in literal_eval(env_rep.addons_paths):
-            if 'openerp' not in path and 'addons'in path:
-                mailgate_path = os.path.join(
-                    path, 'mail/static/scripts/openerp_mailgate.py')
+        if env_rep.addons_paths:
+            for path in literal_eval(env_rep.addons_paths):
+                if 'openerp' not in path and 'addons'in path:
+                    mailgate_path = os.path.join(
+                        path, 'mail/static/scripts/openerp_mailgate.py')
         self.mailgate_path = mailgate_path
 
     @api.one
@@ -349,17 +360,20 @@ class database(models.Model):
 
 # DATABASE CRUD
 
-    @api.one
-    def get_sock(self):
+    @api.multi
+    def get_sock(self, service='db'):
+        self.ensure_one()
         # base_url = self.instance_id.environment_id.server_id.main_hostname
         base_url = self.instance_id.main_hostname
-        server_port = 80
+        # server_port = 80
         # server_port = self.instance_id.xml_rpc_port
-        rpc_db_url = 'http://%s:%d/xmlrpc/db' % (base_url, server_port)
+        # rpc_db_url = 'http://%s:%d/xmlrpc/db' % (base_url, server_port)
+        rpc_db_url = 'http://%s/xmlrpc/%s' % (base_url, service)
         return xmlrpclib.ServerProxy(rpc_db_url)
 
     @api.one
     def create_db(self):
+        """Funcion que utliza erpeek para crear bds"""
         client = self.get_client(not_database=True)
         client.create_database(
             self.instance_id.admin_pass,
@@ -373,7 +387,8 @@ class database(models.Model):
 
     @api.one
     def drop_db(self):
-        sock = self.get_sock()[0]
+        """Funcion que utiliza ws nativos de odoo para eliminar db"""
+        sock = self.get_sock()
         try:
             sock.drop(self.instance_id.admin_pass, self.name)
         except:
@@ -385,11 +400,16 @@ class database(models.Model):
 
     @api.one
     def dump_db(self):
+        """Funcion que utiliza ws nativos de odoo para hacer backup de bd"""
         raise Warning(_('Not Implemented yet'))
         # TODO arreglar esto para que devuelva el archivo y lo descargue
-        sock = self.get_sock()[0]
+        sock = self.get_sock()
         try:
-            return sock.dump(self.instance_id.admin_pass, self.name)
+            backup_file = open('backup.dump', 'wb')
+            backup_file.write(base64.b64decode(
+                sock.dump(self.instance_id.admin_pass, self.name)))
+            # return sock.dump(self.instance_id.admin_pass, self.name)
+            backup_file.close()
         except:
             raise Warning(
                 _('Unable to dump Database. If you are working in an \
@@ -397,9 +417,65 @@ class database(models.Model):
                     restarting service.'))
 
     @api.one
+    def migrate_db(self):
+        """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
+        sock = self.get_sock()
+        try:
+            return sock.migrate_databases(
+                self.instance_id.admin_pass, [self.name])
+        except:
+            raise Warning(
+                _('Unable to migrate Database. If you are working in an \
+                    instance with "workers" then you can try \
+                    restarting service.'))
+
+    @api.one
+    def rename_db(self):
+        """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
+        raise Warning(_('Not Implemented yet'))
+        sock = self.get_sock()
+        new_name = 'pepito' #implementar esto
+        try:
+            return sock.rename(
+                self.instance_id.admin_pass, self.name, new_name)
+        except:
+            raise Warning(
+                _('Unable to Rename Database. If you are working in an \
+                    instance with "workers" then you can try \
+                    restarting service.'))
+
+    @api.one
+    def restore_db(self):
+        """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
+        raise Warning(_('Not Implemented yet'))
+        # TODO implementar
+        sock = self.get_sock()
+        f = file('/home/chosco/back/backup.dump', 'r')
+        data_b64 = base64.encodestring(f.read())
+        f.close()
+        try:
+            return sock.restore(
+                self.instance_id.admin_pass, self.name, data_b64)
+        except:
+            raise Warning(
+                _('Unable to migrate Database. If you are working in an \
+                    instance with "workers" then you can try \
+                    restarting service.'))
+
+    @api.one
+    def exist_db(self, database_name):
+        """Funcion que utiliza ws nativos de odoo"""
+        sock = self.get_sock()
+        if sock.db_exist():
+            return True
+        else:
+            return False
+
+    @api.one
     def duplicate_db(self, new_database_name):
-        new_db = self.copy({'name': new_database_name})
-        sock = self.get_sock()[0]
+        """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
+        sock = self.get_sock()
+        self.kill_db_connection()
         try:
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
@@ -408,16 +484,29 @@ class database(models.Model):
                 _('Unable to duplicate Database. If you are working in \
                     an instance with "workers" then you can try \
                     restarting service.'))
+        new_db = self.copy({'name': new_database_name})
         new_db.signal_workflow('sgn_to_active')
         # TODO retornar accion de ventana a la bd creada
 
+    @api.multi
+    def get_version(self):
+        """Funcion que utiliza ws nativos de odoo"""
+        sock = self.get_sock('common')
+        return sock.version()
+
     @api.one
     def kill_db_connection(self):
+        client = self.get_client()
         self.server_id.get_env()
-        psql_command = "/SELECT pg_terminate_backend(pg_stat_activity.procpid)\
-         FROM pg_stat_activity WHERE pg_stat_activity.datname = '"
-        psql_command += self.name + " AND procpid <> pg_backend_pid();"
-        sudo('psql -U postgres -c ' + psql_command)
+        modules = ['database_tools']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(
+                    _("You can not kill connections if module '%s' is not installed in the database") % (module))
+
+        self_db_id = client.model('ir.model.data').xmlid_to_res_id(
+            'database_tools.db_self_database')
+        client.model('db.database').drop_con(self_db_id)
 
 # Database connection helper
     @api.multi
@@ -426,7 +515,7 @@ class database(models.Model):
         try:
             if not_database:
                 return Client(
-                    'http://%s:%d' % (self.instance_id.main_hostname, 80))
+                    'http://%s' % (self.instance_id.main_hostname))
         except Exception, e:
             raise except_orm(
                 _("Unable to Connect to Database."),
@@ -435,7 +524,7 @@ class database(models.Model):
         # First try to connect using instance pass
         try:
             return Client(
-                'http://%s:%d' % (self.instance_id.main_hostname, 80),
+                'http://%s' % (self.instance_id.main_hostname),
                 db=self.name,
                 user='admin',
                 password=self.instance_id.admin_pass)
@@ -443,7 +532,7 @@ class database(models.Model):
         except:
             try:
                 return Client(
-                    'http://%s:%d' % (self.instance_id.main_hostname, 80),
+                    'http://%s' % (self.instance_id.main_hostname),
                     db=self.name,
                     user='admin',
                     password=self.admin_password)
@@ -536,14 +625,34 @@ class database(models.Model):
             )
 
     @api.one
+    def config_backups(self):
+        self.server_id.get_env()
+        client = self.get_client()
+        modules = ['database_tools']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(
+                    _("You can not configure backups if module '%s' is not installed in the database") % (module))
+
+        # Configure backups
+        self_db_id = client.model('ir.model.data').xmlid_to_res_id(
+            'database_tools.db_self_database')
+        vals = {
+            'backups_path': os.path.join(
+                self.instance_id.environment_id.backups_path, self.name),
+            'daily_backup': self.daily_backup,
+            'weekly_backup': self.weekly_backup,
+            'monthly_backup': self.monthly_backup,
+        }
+        client.model('db.database').write([self_db_id], vals)
+
+    @api.one
     def config_catchall(self):
         self.server_id.get_env()
         client = self.get_client()
         modules = ['auth_server_admin_passwd_passkey', 'mail']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-            # if module not in client.modules(name=module,
-            # installed=True)['installed']:
                 raise Warning(
                     _("You can not configure catchall if module '%s' is not installed in the database") % (module))
         if not self.local_alias:
@@ -596,100 +705,101 @@ class database(models.Model):
     #                 pass
 
 # DATABASE back ups
-    def _cron_db_backup(self, cr, uid, policy, context=None):
-        """"""
-        # Search for the backup policy having 'policy' as backup prefix
-        backup_policy_obj = self.pool['infrastructure.db_backup_policy']
-        backup_policy_id = backup_policy_obj.search(
-            cr, uid, [('backup_prefix', '=', policy)], context=context)[0]
+# This functionality is depreciated
+    # def _cron_db_backup(self, cr, uid, policy, context=None):
+    #     """"""
+    #     # Search for the backup policy having 'policy' as backup prefix
+    #     backup_policy_obj = self.pool['infrastructure.db_backup_policy']
+    #     backup_policy_id = backup_policy_obj.search(
+    #         cr, uid, [('backup_prefix', '=', policy)], context=context)[0]
 
-        # Search for databases using that backup policy
-        backup_policy = backup_policy_obj.browse(
-            cr, uid, backup_policy_id, context=None)
-        databases = backup_policy.database_ids
+    #     # Search for databases using that backup policy
+    #     backup_policy = backup_policy_obj.browse(
+    #         cr, uid, backup_policy_id, context=None)
+    #     databases = backup_policy.database_ids
 
-        # Backup each database
-        for database in databases:
-            database.backup_now(backup_policy_id)
+    #     # Backup each database
+    #     for database in databases:
+    #         database.backup_now(backup_policy_id)
 
-    @api.one
-    def action_backup_now(self):
-        return self.backup_now()
+    # @api.one
+    # def action_backup_now(self):
+    #     return self.backup_now()
 
-    @api.one
-    def backup_now(self, backup_policy_id=False):
-        """"""
-        now = datetime.now().strftime('%Y%m%d_%H%M%S')
+    # @api.one
+    # def backup_now(self, backup_policy_id=False):
+    #     """"""
+    #     now = datetime.now().strftime('%Y%m%d_%H%M%S')
 
-        if not backup_policy_id:
-            policy_name = 'manual'
-        else:
-            backup_policy = self.env['infrastructure.db_backup_policy'].search(
-                [('id', '=', backup_policy_id)])
-            policy_name = backup_policy.backup_prefix
+    #     if not backup_policy_id:
+    #         policy_name = 'manual'
+    #     else:
+    #         backup_policy = self.env['infrastructure.db_backup_policy'].search(
+    #             [('id', '=', backup_policy_id)])
+    #         policy_name = backup_policy.backup_prefix
 
-        dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
+    #     dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
 
-        backups_path = self.instance_id.environment_id.backups_path
+    #     backups_path = self.instance_id.environment_id.backups_path
 
-        dump_file = path.join(backups_path, dump_name)
+    #     dump_file = path.join(backups_path, dump_name)
 
-        cmd = 'pg_dump %s --format=c --compress 9 --file=%s' % (
-            self.name,
-            dump_file
-        )
+    #     cmd = 'pg_dump %s --format=c --compress 9 --file=%s' % (
+    #         self.name,
+    #         dump_file
+    #     )
 
-        values = {
-            'database_id': self.id,
-            'name': dump_name,
-            'create_date': datetime.now(),
-            'db_backup_policy_id': backup_policy_id
-        }
+    #     values = {
+    #         'database_id': self.id,
+    #         'name': dump_name,
+    #         'create_date': datetime.now(),
+    #         'db_backup_policy_id': backup_policy_id
+    #     }
 
-        try:
-            self.server_id.get_env()
-            user = self.instance_id.user
+    #     try:
+    #         self.server_id.get_env()
+    #         user = self.instance_id.user
 
-            if not exists(backups_path, use_sudo=True):
-                sudo(
-                    'mkdir -m a=rwx -p ' + backups_path, user=user, group='odoo')
+    #         if not exists(backups_path, use_sudo=True):
+    #             sudo(
+    #                 'mkdir -m a=rwx -p ' + backups_path, user=user, group='odoo')
 
-            sudo(cmd, user='postgres')
-            self.backup_ids.create(values)
-            self.message_post(
-                subject=_('Backup Status'),
-                body=_('Completed Successfully'),
-                type='comment',
-                subtype='mt_backup_ok'
-            )
+    #         sudo(cmd, user='postgres')
+    #         self.backup_ids.create(values)
+    #         self.message_post(
+    #             subject=_('Backup Status'),
+    #             body=_('Completed Successfully'),
+    #             type='comment',
+    #             subtype='mt_backup_ok'
+    #         )
 
-        except Exception, e:
-            if policy_name == 'manual':
-                raise except_orm(
-                    _("Unable to backup '%s' database") % self.name,
-                    _('Command output: %s') % e
-                )
-            else:
-                self.message_post(
-                    subject=_('Backup Status'),
-                    body=_('Backup Failed: %s' % e),
-                    type='notification',
-                    subtype='mt_backup_fail'
-                )
+    #     except Exception, e:
+    #         if policy_name == 'manual':
+    #             raise except_orm(
+    #                 _("Unable to backup '%s' database") % self.name,
+    #                 _('Command output: %s') % e
+    #             )
+    #         else:
+    #             self.message_post(
+    #                 subject=_('Backup Status'),
+    #                 body=_('Backup Failed: %s' % e),
+    #                 type='notification',
+    #                 subtype='mt_backup_fail'
+    #             )
 
-        except SystemExit:
-            if policy_name == 'manual':
-                raise except_orm(
-                    _("Unable to backup '%s' database") % self.name,
-                    _('Unknown System Error')
-                )
-            else:
-                self.message_post(
-                    subject=_('Backup Status'),
-                    body=_('Backup Failed: Unknown System Error'),
-                    type='notification',
-                    subtype='mt_backup_fail'
-                )
+    #     except SystemExit:
+    #         if policy_name == 'manual':
+    #             raise except_orm(
+    #                 _("Unable to backup '%s' database") % self.name,
+    #                 _('Unknown System Error')
+    #             )
+    #         else:
+    #             self.message_post(
+    #                 subject=_('Backup Status'),
+    #                 body=_('Backup Failed: Unknown System Error'),
+    #                 type='notification',
+    #                 subtype='mt_backup_fail'
+    #            )
 
 # WORKFLOW
     def action_wfk_set_draft(self, cr, uid, ids, *args):

@@ -93,6 +93,11 @@
                     </group>
                     <group>
                         <field name="demo_data"/>
+                        <field name="daily_backup"/>
+                        <field name="daily_backup"/>
+                        <field name="weekly_backup"/>
+                        <field name="monthly_backup"/>
+                        <button class="oe_link oe_inline" type="object" name="config_backups" states="active" string="Config Backups"/>
                         <label for="admin_password"/>
                             <div>
                                 <field
