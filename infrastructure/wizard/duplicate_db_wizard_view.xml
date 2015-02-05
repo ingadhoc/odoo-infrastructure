@@ -9,9 +9,10 @@
         <form string="Duplicate DB">
             <group>
                 <field name="new_db_name"/>
-                <field name="change_user"/>
-                <field name="server_id" attrs="{'invisible':[('change_user','=',False)],'invisible':[('change_user','=',True)]}" />
-                <field name="instance_id" attrs="{'invisible':[('change_user','=',False)],'required':[('change_user','=',True)]}" domain="[('server_id','=',server_id)]"/>
+                <field name="backups_enable"/>
+                <!-- <field name="change_user"/> -->
+<!--                 <field name="server_id" attrs="{'invisible':[('change_user','=',False)],'invisible':[('change_user','=',True)]}" /> -->
+                <!-- <field name="instance_id" attrs="{'invisible':[('change_user','=',False)],'required':[('change_user','=',True)]}" domain="[('server_id','=',server_id)]"/> -->
             </group>
             <footer>
                 <button name="duplicate_db" string="Duplicate" type="object" class="oe_highlight"/>

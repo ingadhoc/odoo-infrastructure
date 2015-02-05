@@ -259,6 +259,8 @@ class database(models.Model):
     monthly_backup = fields.Boolean(
         string='Monthly Backups?',
     )
+    backups_enable = fields.Boolean(
+        'Backups Enable')
 
     @api.one
     @api.onchange('instance_id')
@@ -434,7 +436,7 @@ class database(models.Model):
         """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
         raise Warning(_('Not Implemented yet'))
         sock = self.get_sock()
-        new_name = 'pepito' #implementar esto
+        new_name = 'pepito'  # implementar esto
         try:
             return sock.rename(
                 self.instance_id.admin_pass, self.name, new_name)
@@ -472,19 +474,23 @@ class database(models.Model):
             return False
 
     @api.one
-    def duplicate_db(self, new_database_name):
+    def duplicate_db(self, new_database_name, backups_enable):
         """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
+        client = self.get_client()
         sock = self.get_sock()
+        new_db = self.copy({
+            'name': new_database_name,
+            'backups_enable': backups_enable
+            })
         self.kill_db_connection()
         try:
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
-        except:
+            client.model('db.database').backups_state(
+                new_database_name, backups_enable)
+        except Exception, e:
             raise Warning(
-                _('Unable to duplicate Database. If you are working in \
-                    an instance with "workers" then you can try \
-                    restarting service.'))
-        new_db = self.copy({'name': new_database_name})
+                _('Unable to duplicate Database. This is what we get:\n%s') % (e))
         new_db.signal_workflow('sgn_to_active')
         # TODO retornar accion de ventana a la bd creada
 
@@ -685,121 +691,6 @@ class database(models.Model):
         sudo('postmap /etc/postfix/virtual_aliases')
         sudo('newaliases')
         sudo('/etc/init.d/postfix restart')
-    # TODO implementar cambio de usuario de postgres al duplicar una bd o de manera manual.
-    # Al parecer da error por el parametro que se alamcena database.uuid
-    # Para eso podemos ver todo el docigo que esta en db.py, sobre todo esta parte:
-    #     registry = openerp.modules.registry.RegistryManager.new(db)
-    #     with registry.cursor() as cr:
-    #         if copy:
-    # if it's a copy of a database, force generation of a new dbuuid
-    #             registry['ir.config_parameter'].init(cr, force=True)
-    #         if filestore_path:
-    #             filestore_dest = registry['ir.attachment']._filestore(cr, SUPERUSER_ID)
-    #             shutil.move(filestore_path, filestore_dest)
-
-    #         if openerp.tools.config['unaccent']:
-    #             try:
-    #                 with cr.savepoint():
-    #                     cr.execute("CREATE EXTENSION unaccent")
-    #             except psycopg2.Error:
-    #                 pass
-
-# DATABASE back ups
-# This functionality is depreciated
-    # def _cron_db_backup(self, cr, uid, policy, context=None):
-    #     """"""
-    #     # Search for the backup policy having 'policy' as backup prefix
-    #     backup_policy_obj = self.pool['infrastructure.db_backup_policy']
-    #     backup_policy_id = backup_policy_obj.search(
-    #         cr, uid, [('backup_prefix', '=', policy)], context=context)[0]
-
-    #     # Search for databases using that backup policy
-    #     backup_policy = backup_policy_obj.browse(
-    #         cr, uid, backup_policy_id, context=None)
-    #     databases = backup_policy.database_ids
-
-    #     # Backup each database
-    #     for database in databases:
-    #         database.backup_now(backup_policy_id)
-
-    # @api.one
-    # def action_backup_now(self):
-    #     return self.backup_now()
-
-    # @api.one
-    # def backup_now(self, backup_policy_id=False):
-    #     """"""
-    #     now = datetime.now().strftime('%Y%m%d_%H%M%S')
-
-    #     if not backup_policy_id:
-    #         policy_name = 'manual'
-    #     else:
-    #         backup_policy = self.env['infrastructure.db_backup_policy'].search(
-    #             [('id', '=', backup_policy_id)])
-    #         policy_name = backup_policy.backup_prefix
-
-    #     dump_name = '%s_%s_%s.sql' % (policy_name, self.name, now)
-
-    #     backups_path = self.instance_id.environment_id.backups_path
-
-    #     dump_file = path.join(backups_path, dump_name)
-
-    #     cmd = 'pg_dump %s --format=c --compress 9 --file=%s' % (
-    #         self.name,
-    #         dump_file
-    #     )
-
-    #     values = {
-    #         'database_id': self.id,
-    #         'name': dump_name,
-    #         'create_date': datetime.now(),
-    #         'db_backup_policy_id': backup_policy_id
-    #     }
-
-    #     try:
-    #         self.server_id.get_env()
-    #         user = self.instance_id.user
-
-    #         if not exists(backups_path, use_sudo=True):
-    #             sudo(
-    #                 'mkdir -m a=rwx -p ' + backups_path, user=user, group='odoo')
-
-    #         sudo(cmd, user='postgres')
-    #         self.backup_ids.create(values)
-    #         self.message_post(
-    #             subject=_('Backup Status'),
-    #             body=_('Completed Successfully'),
-    #             type='comment',
-    #             subtype='mt_backup_ok'
-    #         )
-
-    #     except Exception, e:
-    #         if policy_name == 'manual':
-    #             raise except_orm(
-    #                 _("Unable to backup '%s' database") % self.name,
-    #                 _('Command output: %s') % e
-    #             )
-    #         else:
-    #             self.message_post(
-    #                 subject=_('Backup Status'),
-    #                 body=_('Backup Failed: %s' % e),
-    #                 type='notification',
-    #                 subtype='mt_backup_fail'
-    #             )
-
-    #     except SystemExit:
-    #         if policy_name == 'manual':
-    #             raise except_orm(
-    #                 _("Unable to backup '%s' database") % self.name,
-    #                 _('Unknown System Error')
-    #             )
-    #         else:
-    #             self.message_post(
-    #                 subject=_('Backup Status'),
-    #                 body=_('Backup Failed: Unknown System Error'),
-    #                 type='notification',
-    #                 subtype='mt_backup_fail'
-    #            )
 
 # WORKFLOW
     def action_wfk_set_draft(self, cr, uid, ids, *args):

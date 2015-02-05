@@ -62,16 +62,14 @@
             </header>
             <sheet string="database">
                 <div class="col-md-6">
-                    <h2 class="oe_inline">
-                        <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/> / <field name="instance_id" class="oe_inline"/>
-                    </h2>
-                    <h1>
-                        <field name="database_type_id" default_focus="1" placeholder="Type..."/>
-                        <field name="name" placeholder="Name..."/>
-                    </h1>
                     <h2>
+                        <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/> / <field name="instance_id" class="oe_inline"/>
                         <field name="partner_id" placeholder="Partner..."/>
                     </h2>
+                    <field name="database_type_id" class="oe_edit_only" default_focus="1" placeholder="Type..."/>
+                    <h1>
+                        <field name="name" placeholder="Name..."/>
+                    </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
                     <button name="%(infrastructure.action_infrastructure_database_module)d" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_database_id': id,'search_default_installed': 1}">
@@ -84,20 +82,22 @@
                     <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" states="active"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active"/>
-                    <!-- <button type="object" string="Kill Connections" class="oe_stat_button" name="kill_db_connection" attrs="{'invisible':[('state','!=','active')]}"/> -->
                 </div>
                  <group>
                     <group>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
+                        <label for="backups_enable"/>
+                        <div class="oe_inline">
+                            <field name="backups_enable"/><button class="oe_read_only oe_link" type="object" name="config_backups" states="active" string="Config Backups"/>
+                        </div>
+                        <label string=""/>
+                        <div class="oe_link" attrs="{'invisible':[('backups_enable','=',False)]}">
+                            <field name="daily_backup" /><label for="daily_backup" string="Daily"/> - <field name="weekly_backup"/><label for="daily_backup" string="Weekcly"/> - <field name="monthly_backup"/><label for="monthly_backup" string="Monthly"/>
+                        </div>
                     </group>
                     <group>
                         <field name="demo_data"/>
-                        <field name="daily_backup"/>
-                        <field name="daily_backup"/>
-                        <field name="weekly_backup"/>
-                        <field name="monthly_backup"/>
-                        <button class="oe_link oe_inline" type="object" name="config_backups" states="active" string="Config Backups"/>
                         <label for="admin_password"/>
                             <div>
                                 <field

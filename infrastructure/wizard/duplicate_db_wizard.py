@@ -13,6 +13,7 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
     change_user = fields.Boolean(string='Change Instance?')
     server_id = fields.Many2one('infrastructure.server', string='Server')
     instance_id = fields.Many2one('infrastructure.instance', string='Instance')
+    backups_enable = fields.Boolean('Backups Enable on new DB?')
 
     @api.one
     def duplicate_db(self):
@@ -26,4 +27,4 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
         databases = self.env['infrastructure.database'].search(
             [('id', 'in', active_ids)])
         for database in databases:
-            database.duplicate_db(self.new_db_name)
+            database.duplicate_db(self.new_db_name, self.backups_enable)
