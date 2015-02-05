@@ -128,7 +128,7 @@
 <!--                     <page string="Backups" name="backup_ids">
                         <field name="backup_ids"/>
                     </page> -->
-<!--                     <page string="Base Modules" name="base_module_ids">
+                    <page string="Base Modules" name="base_module_ids">
                         <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
                         <button type="object" name="install_base_modules" string="Install Modules"/>
                         <field name="base_module_ids" context="{'database_id':id}">
@@ -139,7 +139,7 @@
                                 <field name="state"/>
                             </tree>
                         </field>
-                    </page> -->
+                    </page>
                     <page string="Modules" name="module_ids">
                         <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
                         <field name="module_ids"/>
