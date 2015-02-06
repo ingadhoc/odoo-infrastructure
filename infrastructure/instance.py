@@ -8,6 +8,7 @@ from fabric.contrib.files import exists, append, sed
 from ast import literal_eval
 import os
 import re
+from fabric.api import settings
 
 
 class instance(models.Model):
@@ -456,6 +457,7 @@ class instance(models.Model):
     @api.one
     def update_conf_file(self):
         self.environment_id.server_id.get_env()
+        self.stop_service()
         # TODO: chequear si el servicio esta levantado y bajarlo,
         # si estaba levantado volver a iniciarlo
         # self.stop_service()
@@ -589,10 +591,14 @@ class instance(models.Model):
 
     @api.one
     def create_pg_user(self):
+        # TODO ver como hacer en los distintos lugares para que si fabric da un error lo almacenen en algun lugar, de hecho lo ideal seria ir guardando en una variable publica todo el log y guardarlo despues de ejecutar todo
         self.environment_id.server_id.get_env()
-        # TODO si ya existe el usuario no habria que crearlo
+        result = sudo('sudo -u postgres createuser -d -R -S ' + self.user)
         try:
-            sudo('sudo -u postgres createuser -d -R -S ' + self.user)
+            if not result.succeeded:
+                print 'result1', result
+            else:
+                print 'result2', result
         except Exception, e:
             raise Warning(_("Can not create postgres user %s, this is what we get: \n %s") % (
                 self.user, e))
@@ -614,11 +620,14 @@ class instance(models.Model):
     @api.one
     def stop_service(self):
         self.environment_id.server_id.get_env()
-        try:
-            sudo('service ' + self.service_file + ' stop')
-        except Exception, e:
-            raise Warning(_("Could not stop service '%s', this is what we get: \n %s") % (
-                self.service_file, e))
+        result = sudo('service ' + self.service_file + ' stop')
+        if result.succeeded:
+            print 'result1', result
+        else:
+            print 'result2', result
+        # except Exception, e:
+        #     raise Warning(_("Could not stop service '%s', this is what we get: \n %s") % (
+        #         self.service_file, e))
 
     @api.one
     def restart_service(self):

@@ -194,6 +194,8 @@ class environment(models.Model):
     @api.one
     @api.depends(
         'environment_repository_ids',
+        'environment_repository_ids.path',
+        'environment_repository_ids.server_repository_id.repository_id.is_server',
         )
     def _get_sever_copied(self):
         sever_copied = False

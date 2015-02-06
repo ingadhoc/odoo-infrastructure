@@ -359,6 +359,7 @@ class server(models.Model):
         if not self.password:
             raise Warning(_('Not Password Defined for the server'))
         env.user = self.user_name
+        env.warn_only = True
         env.password = self.password
         env.host_string = self.main_hostname
         env.port = self.ssh_port
