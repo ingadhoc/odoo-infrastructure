@@ -186,7 +186,6 @@ class server(models.Model):
         string='Postgres Superuser',
         help="Postgres Superuser. You can record and existing one or create a new one with an installation command",
         readonly=True,
-        required=True,
         states={'draft': [('readonly', False)]},
         default='odoo',
     )
@@ -195,7 +194,6 @@ class server(models.Model):
         string='Postgres Superuser Pwd',
         help="Postgres Superuser Password. You can record and existing one or create a new one with an installation command",
         readonly=True,
-        required=True,
         states={'draft': [('readonly', False)]},
     )
 
@@ -315,7 +313,6 @@ class server(models.Model):
     postfix_hostname = fields.Char(
         string='Postfix Hostname',
         readonly=True,
-        required=True,
         states={'draft': [('readonly', False)]},
     )
 

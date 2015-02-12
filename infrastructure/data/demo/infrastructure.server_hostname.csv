@@ -1,4 +1,4 @@
-id,name,server_id/id,wildcard
-inf_server_host_1,example01.com,inf_server_srv02,True
-inf_server_host_2,example02.com,inf_server_srv01,True
-inf_server_host_3,example03.com,inf_server_srv02,True
+id,name,server_id/id,wildcard,domain_regex
+inf_server_host_1,example01.com,inf_server_srv02,True,/[@.]example01\.com$/
+inf_server_host_2,example02.com,inf_server_srv01,True,/[@.]example02\.com$/
+inf_server_host_3,example03.com,inf_server_srv02,True,/[@.]example03\.com$/
