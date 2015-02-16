@@ -9,6 +9,9 @@ from ast import literal_eval
 import os
 import re
 from fabric.api import settings
+import logging
+import fabtools
+_logger = logging.getLogger(__name__)
 
 
 class instance(models.Model):
@@ -375,7 +378,7 @@ class instance(models.Model):
                     for addon_path in literal_eval(repository.addons_paths):
                         addons_path.append(addon_path)
         except:
-            print 'error al querer calcular el addons_path'
+            _logger.error("Error trying to get addons path")
         if not addons_path:
             addons_path = '[]'
         self.addons_path = addons_path
@@ -442,6 +445,7 @@ class instance(models.Model):
 
     @api.multi
     def create_instance(self):
+        _logger.info("Creating Instance")
         self.update_nginx_site()
         self.create_user()
         self.create_pg_user()
@@ -456,6 +460,7 @@ class instance(models.Model):
 
     @api.one
     def update_conf_file(self):
+        _logger.info("Updating conf file")
         self.environment_id.server_id.get_env()
         self.stop_service()
         # TODO: chequear si el servicio esta levantado y bajarlo,
@@ -522,10 +527,7 @@ class instance(models.Model):
         # TODO tal vez -r -w para database data
         try:
             sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
-            # TODO cambiar estos print por cosas en el log
-            print
-            print command
-            print
+            _logger.info("Running command: %s" % command)
             eggs_dir = '/home/%s/.python-eggs' % self.user
             if not exists(eggs_dir, use_sudo=True):
                 sudo('mkdir %s' % eggs_dir, user=self.user)
@@ -539,6 +541,7 @@ class instance(models.Model):
 
     @api.multi
     def delete_service_file(self):
+        _logger.info("Deleting service file")
         service_path = self.environment_id.server_id.service_path
         service_file_path = os.path.join(service_path, self.service_file)
         try:
@@ -549,6 +552,7 @@ class instance(models.Model):
 
     @api.multi
     def update_service_file(self):
+        _logger.info("Updating service file")
         # Build file
         daemon = os.path.join(
             self.environment_id.path, 'bin', self.run_server_command)
@@ -573,6 +577,7 @@ class instance(models.Model):
 
     @api.one
     def create_user(self):
+        _logger.info("Creating unix user")
         self.environment_id.server_id.get_env()
         try:
             sudo('adduser --system --ingroup odoo ' + self.user)
@@ -582,6 +587,7 @@ class instance(models.Model):
 
     @api.one
     def delete_user(self):
+        _logger.info("Deleting unix user")
         self.environment_id.server_id.get_env()
         try:
             sudo('deluser %s' % self.user)
@@ -591,26 +597,25 @@ class instance(models.Model):
 
     @api.one
     def create_pg_user(self):
-        # TODO ver como hacer en los distintos lugares para que si fabric da un error lo almacenen en algun lugar, de hecho lo ideal seria ir guardando en una variable publica todo el log y guardarlo despues de ejecutar todo
-        self.environment_id.server_id.get_env()
-        result = sudo('sudo -u postgres createuser -d -R -S ' + self.user)
-        try:
-            if not result.succeeded:
-                print 'result1', result
-            else:
-                print 'result2', result
-        except Exception, e:
-            raise Warning(_("Can not create postgres user %s, this is what we get: \n %s") % (
-                self.user, e))
+        if not fabtools.postgres.user_exists(self.user):
+            _logger.info("Creating pg User")
+            self.environment_id.server_id.get_env()
+            try:
+                sudo('sudo -u postgres createuser -d -R -S ' + self.user)
+            except Exception, e:
+                raise Warning(_("Can not create postgres user %s, this is what we get: \n %s") % (
+                    self.user, e))
 
     @api.one
     def delete_pg_user(self):
-        self.environment_id.server_id.get_env()
-        try:
-            sudo('dropuser %s' % self.user)
-        except Exception, e:
-            raise Warning(_("Can not delete postgres user %s, this is what we get: \n %s") % (
-                self.user, e))
+        if fabtools.postgres.user_exists(self.user):
+            _logger.info("Deleting pg User")
+            self.environment_id.server_id.get_env()
+            try:
+                sudo('dropuser %s' % self.user)
+            except Exception, e:
+                raise Warning(_("Can not delete postgres user %s, this is what we get: \n %s") % (
+                    self.user, e))
 
     @api.one
     def start_service(self):
@@ -621,16 +626,19 @@ class instance(models.Model):
     def stop_service(self):
         self.environment_id.server_id.get_env()
         result = sudo('service ' + self.service_file + ' stop')
-        if result.succeeded:
-            print 'result1', result
-        else:
-            print 'result2', result
+        # TODO arreglar aca
+        # if result.succeeded:
+
+        #     print 'result1', result
+        # else:
+        #     print 'result2', result
         # except Exception, e:
         #     raise Warning(_("Could not stop service '%s', this is what we get: \n %s") % (
         #         self.service_file, e))
 
     @api.one
     def restart_service(self):
+        _logger.info("Restarting Service")
         self.environment_id.server_id.get_env()
         try:
             sudo('service ' + self.service_file + ' restart')
@@ -640,6 +648,7 @@ class instance(models.Model):
 
     @api.one
     def run_on_start(self):
+        _logger.info("Adding run on start")
         self.environment_id.server_id.get_env()
         try:
             sudo('update-rc.d  ' + self.service_file + ' defaults')
@@ -648,6 +657,7 @@ class instance(models.Model):
                 self.service_file, e))
     @api.one
     def stop_run_on_start(self):
+        _logger.info("Stopping run on start")
         self.environment_id.server_id.get_env()
         try:
             sudo('update-rc.d  -f ' + self.service_file + ' remove')
@@ -657,6 +667,7 @@ class instance(models.Model):
 
     @api.one
     def delete_nginx_site(self):
+        _logger.info("Deleting conf file")
         self.environment_id.server_id.get_env()
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         nginx_site_file_path = os.path.join(
@@ -671,6 +682,7 @@ class instance(models.Model):
 
     @api.one
     def update_nginx_site(self):
+        _logger.info("Updating nginx site")
         self.environment_id.server_id.get_env()
         if self.type == 'none_secure':
             listen_port = 80
@@ -727,7 +739,7 @@ class instance(models.Model):
         sudo('chmod 777 ' + nginx_site_file_path)
 
         # Restart nginx
-        self.environment_id.server_id.restart_nginx()
+        self.environment_id.server_id.reload_nginx()
 
     @api.multi
     def action_view_databases(self):

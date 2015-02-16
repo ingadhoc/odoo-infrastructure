@@ -8,6 +8,8 @@ from fabric.contrib.files import append
 from fabric.api import *
 from fabtools.deb import is_installed, preseed_package, install
 from fabtools.require.service import started
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class server(models.Model):
@@ -359,7 +361,8 @@ class server(models.Model):
         if not self.password:
             raise Warning(_('Not Password Defined for the server'))
         env.user = self.user_name
-        env.warn_only = True
+        # env.warn_only = True
+        # env.warn_only = False
         env.password = self.password
         env.host_string = self.main_hostname
         env.port = self.ssh_port
@@ -396,12 +399,24 @@ class server(models.Model):
 
     @api.multi
     def restart_nginx(self):
+        _logger.info("Restarting nginx")
         self.get_env()
         try:
             sudo('service nginx restart')
         except:
             raise except_orm(
                 _('Could Not Restart Service!'),
+                _("Check if service is installed!"))
+
+    @api.multi
+    def reload_nginx(self):
+        _logger.info("Reloading nginx")
+        self.get_env()
+        try:
+            sudo('nginx -s reload')
+        except:
+            raise except_orm(
+                _('Could Not Reload Service!'),
                 _("Check if service is installed!"))
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
