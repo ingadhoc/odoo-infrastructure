@@ -462,7 +462,12 @@ class instance(models.Model):
     def update_conf_file(self, force_no_workers=False):
         _logger.info("Updating conf file")
         self.environment_id.server_id.get_env()
-        self.stop_service()
+        try:
+            self.stop_service()
+            start_service = True
+        except:
+            start_service = False
+
         # TODO: chequear si el servicio esta levantado y bajarlo,
         # si estaba levantado volver a iniciarlo
         # self.stop_service()
@@ -492,7 +497,8 @@ class instance(models.Model):
 
         if addons_path:
             command += ' --addons-path=' + addons_path
-        command += ' --db-filter=' + self.db_filter.rule
+        # agregamos ' para que no de error con ciertos dominios
+        command += ' --db-filter=' + "'%s'" % self.db_filter.rule
         command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
         command += ' --logfile=' + self.logfile
         command += ' --limit-time-real=' + str(self.limit_time_real)
@@ -539,7 +545,10 @@ class instance(models.Model):
         except Exception, e:
             raise Warning(_("Can not create/update configuration file, this is what we get: \n %s") % (
                 e))
+        # TODO cambiar esto por el webservice que permite cambiar el admin pass
         sed(self.conf_file_path, '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass, use_sudo=True)
+        if start_service:
+            self.start_service()
 
     @api.multi
     def delete_service_file(self):
@@ -622,21 +631,21 @@ class instance(models.Model):
     @api.one
     def start_service(self):
         self.environment_id.server_id.get_env()
-        sudo('service ' + self.service_file + ' start')
+        self.stop_service()
+        # TODO no anda este verificador de fabric seguramente porque el servicio esta mal, habria que mejroarlo robando lo nuevo de odoo
+        # if not fabtools.service.is_running(self.service_file):
+        fabtools.service.start(self.service_file)
+        # service.started(self.service_file)
+        # sudo('service ' + self.service_file + ' start')
 
     @api.one
     def stop_service(self):
         self.environment_id.server_id.get_env()
-        result = sudo('service ' + self.service_file + ' stop')
-        # TODO arreglar aca
-        # if result.succeeded:
-
-        #     print 'result1', result
-        # else:
-        #     print 'result2', result
-        # except Exception, e:
-        #     raise Warning(_("Could not stop service '%s', this is what we get: \n %s") % (
-        #         self.service_file, e))
+        # if fabtools.service.is_running(self.service_file):
+        fabtools.service.stop(self.service_file)
+        # sudo('service ' + self.service_file + ' stop')
+        # TODO probar bajar con fabtools pero me daba error
+        # service.stopped(self.service_file)
 
     @api.one
     def restart_service(self):
