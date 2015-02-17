@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, SUPERUSER_ID, netsvc, _
 from openerp.exceptions import except_orm
-import xmlrpclib
+import xmlrpclib, socket
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from fabric.api import sudo
@@ -12,6 +12,9 @@ from openerp.exceptions import Warning
 from ast import literal_eval
 import os
 import base64
+import logging
+import fabtools
+_logger = logging.getLogger(__name__)
 
 
 class database(models.Model):
@@ -353,15 +356,35 @@ class database(models.Model):
 # DATABASE CRUD
 
     @api.multi
-    def get_sock(self, service='db'):
+    def get_sock(self, service='db', max_attempts=5):
         self.ensure_one()
-        # base_url = self.instance_id.environment_id.server_id.main_hostname
         base_url = self.instance_id.main_hostname
-        # server_port = 80
-        # server_port = self.instance_id.xml_rpc_port
-        # rpc_db_url = 'http://%s:%d/xmlrpc/db' % (base_url, server_port)
         rpc_db_url = 'http://%s/xmlrpc/%s' % (base_url, service)
-        return xmlrpclib.ServerProxy(rpc_db_url)
+        sock = xmlrpclib.ServerProxy(rpc_db_url)
+
+        # try connection
+        connected = False
+        attempts = 0
+        while not connected and attempts < max_attempts:
+            attempts += 1
+            _logger.info("Connecting, attempt number: %i" % attempts)
+            try:
+                sock._()   # Call a fictive method.
+            except xmlrpclib.Fault:
+                # connected to the server and the method doesn't exist which is expected.
+                _logger.info("Connected to socket")
+                connected = True
+                pass
+            except socket.error:
+                _logger.info("Could not connect to socket")
+                pass
+            except:
+                # Tuve que agregar este porque el error no me era atrapado arriba
+                _logger.info("Connecting3")
+                pass
+        if not connected:
+            raise Warning(_("Could not connect to socket '%s'") % (rpc_db_url))
+        return sock
 
     @api.one
     def create_db(self):
@@ -384,10 +407,17 @@ class database(models.Model):
         try:
             sock.drop(self.instance_id.admin_pass, self.name)
         except:
-            raise Warning(
-                _('Unable to drop Database. If you are working in an \
+            # If we get an error we try restarting the service
+            try:
+                self.instance_id.restart_service()
+                # we ask again for sock and try to connect waiting for service start
+                sock = self.get_sock(max_attempts=1000)
+                sock.drop(self.instance_id.admin_pass, self.name)
+            except Exception, e:
+                raise Warning(
+                    _('Unable to drop Database. If you are working in an \
                     instance with "workers" then you can try \
-                    restarting service.'))
+                    restarting service. This is what we get:\n%s') % (e))
         self.signal_workflow('sgn_cancel')
 
     @api.one
@@ -466,23 +496,67 @@ class database(models.Model):
     @api.one
     def duplicate_db(self, new_database_name, backups_enable):
         """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
-        client = self.get_client()
         sock = self.get_sock()
+        client = self.get_client()
         new_db = self.copy({
             'name': new_database_name,
             'backups_enable': backups_enable
             })
-        self.kill_db_connection()
         try:
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
             client.model('db.database').backups_state(
                 new_database_name, backups_enable)
-        except Exception, e:
-            raise Warning(
-                _('Unable to duplicate Database. This is what we get:\n%s') % (e))
+        except:
+            # If we get an error we try duplicating restarting service without workers
+            try:
+                # TODO borrar esto. tratamos solo reiniciando pero da error
+                # self.instance_id.restart_service()
+                # sock = self.get_sock(max_attempts=100)
+                # sock.duplicate_database(
+                #     self.instance_id.admin_pass, self.name, new_database_name)
+                # client.model('db.database').backups_state(
+                #     new_database_name, backups_enable)
+                # restart the instance without workers
+                instance = self.instance_id
+                instance.update_conf_file(force_no_workers=True)
+                instance.start_service()
+                # we ask again for sock and try to connect waiting for service start
+                sock = self.get_sock(max_attempts=1000)
+                sock.duplicate_database(
+                    self.instance_id.admin_pass, self.name, new_database_name)
+                client.model('db.database').backups_state(
+                    new_database_name, backups_enable)
+                # restart the instance with default config
+                instance.update_conf_file()
+                instance.start_service()
+            except Exception, e:
+                raise Warning(
+                    _('Unable to duplicate Database. This is what we get:\n%s') % (e))
         new_db.signal_workflow('sgn_to_active')
         # TODO retornar accion de ventana a la bd creada
+
+    # TODO ver si borramos esta Funcion vieja que usaba el kill de odoo tools
+    # @api.one
+    # def duplicate_db(self, new_database_name, backups_enable):
+    #     """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
+    #     client = self.get_client()
+    #     sock = self.get_sock()
+    #     new_db = self.copy({
+    #         'name': new_database_name,
+    #         'backups_enable': backups_enable
+    #         })
+    #     self.kill_db_connection()
+    #     try:
+    #         sock.duplicate_database(
+    #             self.instance_id.admin_pass, self.name, new_database_name)
+    #         client.model('db.database').backups_state(
+    #             new_database_name, backups_enable)
+    #     except Exception, e:
+    #         raise Warning(
+    #             _('Unable to duplicate Database. This is what we get:\n%s') % (e))
+    #     new_db.signal_workflow('sgn_to_active')
+    #     # TODO retornar accion de ventana a la bd creada
 
     @api.multi
     def get_version(self):
