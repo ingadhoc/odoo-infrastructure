@@ -459,7 +459,7 @@ class instance(models.Model):
         self.signal_workflow('sgn_to_active')
 
     @api.one
-    def update_conf_file(self):
+    def update_conf_file(self, force_no_workers=False):
         _logger.info("Updating conf file")
         self.environment_id.server_id.get_env()
         self.stop_service()
@@ -513,7 +513,9 @@ class instance(models.Model):
         if self.proxy_mode:
             command += ' --proxy-mode'
 
-        if self.workers:
+        if force_no_workers:
+            command += ' --workers=' + '0'
+        elif self.workers:
             command += ' --workers=' + str(self.workers)
 
         if self.type == 'secure':
