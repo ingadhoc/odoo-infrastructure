@@ -52,6 +52,12 @@ class database(models.Model):
         },
     }
 
+    @api.model
+    def _get_base_modules(self):
+        base_modules = self.env['infrastructure.base.module'].search([
+            ('default_on_new_db', '=', True)])
+        return [(6, _, base_modules.ids)]
+
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
         string='Database Type',
@@ -160,13 +166,6 @@ class database(models.Model):
         'database_id',
         string='Modules',
     )
-
-    @api.model
-    def _get_base_modules(self):
-        base_modules = self.env['infrastructure.base.module'].search([
-            ('default_on_new_db', '=', True)])
-        return [(6, _, base_modules.ids)]
-
     base_module_ids = fields.Many2many(
         'infrastructure.base.module',
         'infrastructure_database_ids_base_module_rel',
@@ -175,7 +174,6 @@ class database(models.Model):
         string='Base Modules',
         default=_get_base_modules,
     )
-
     admin_password = fields.Char(
         string='Admin Password',
         help='When trying to connect to the database first we are going to try by using the instance password and then with thisone.',
@@ -185,22 +183,18 @@ class database(models.Model):
         states={'draft': [('readonly', False)]},
         # deprecated=True,  # we use server admin pass to autheticate now
     )
-
     virtual_alias = fields.Char(
         string='Virtual Alias',
         compute='get_aliases',
     )
-
     local_alias = fields.Char(
         string='Local Alias',
         compute='get_aliases',
     )
-
     mailgate_path = fields.Char(
         string='Mailgate Path',
         compute='get_mailgate_path',
     )
-
     alias_prefix = fields.Char(
         'Alias Prefix',
         # readonly=True,
@@ -215,14 +209,12 @@ class database(models.Model):
         # states={'draft': [('readonly', False)]},
         copy=False,
     )
-
     alias_hostname_wildcard = fields.Boolean(
         related='alias_hostname_id.wildcard',
         string='Wildcard?',
         readonly=True,
         copy=False,
     )
-
     module_count = fields.Integer(
         string='# Modules',
         compute='_get_modules',

@@ -116,19 +116,12 @@
                         </div>
                         <label for="catchall_enable"/>
                         <div class="oe_inline">
-                            <!-- <field name="catchall_enable"/><button class="oe_link oe_read_only" type="object" name="config_catchall" string="Config Catchall"/> -->
                             <field name="catchall_enable"/><button class="oe_link oe_read_only" type="object" name="config_catchall" attrs="{'invisible':['|',('state','!=','active'),('catchall_enable','=',False)]}" string="Config Catchall"/>
                         </div>
-                        <!-- <label string=""/> -->
-                        <!-- <div attrs="{'invisible':[('catchall_enable','=',False)]}"> -->
                         <field name="alias_hostname_id" attrs="{'invisible':[('catchall_enable','=',False)],'required':[('catchall_enable','=',True)]}" domain="[('server_id','=',server_id)]"/>
                         <field name="alias_prefix" attrs="{'invisible':['|',('catchall_enable','=',False),('alias_hostname_wildcard','=',False)],'required':[('alias_hostname_wildcard','=',True),('catchall_enable','=',True)]}"/>
                         <field name="domain_alias" attrs="{'invisible':[('catchall_enable','=',False)]}"/>
                         <field name="alias_hostname_wildcard" attrs="{'invisible':[('catchall_enable','=',False)]}" invisible="1"/>
-                        <!-- <label for="domain_alias"/> -->
-                        <!-- <div class="oe_inline"> -->
-                            <!-- <field name="domain_alias" class="oe_inline"/> -->
-                        <!-- </div> -->
                     </group>
                  </group>
                 <notebook>
