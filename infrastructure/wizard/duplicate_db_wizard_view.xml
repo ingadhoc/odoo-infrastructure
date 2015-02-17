@@ -8,6 +8,7 @@
      <field name="arch" type="xml">
         <form string="Duplicate DB">
             <group>
+                <field name="database_type_id"/>
                 <field name="new_db_name"/>
                 <field name="backups_enable"/>
                 <!-- <field name="change_user"/> -->

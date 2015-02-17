@@ -112,6 +112,7 @@ class database(models.Model):
     issue_date = fields.Date(
         string='Issue Data',
         copy=False,
+        default=fields.Date.context_today,
     )
     deactivation_date = fields.Date(
         string='Deactivation Date',
@@ -476,13 +477,15 @@ class database(models.Model):
             return False
 
     @api.one
-    def duplicate_db(self, new_database_name, backups_enable):
+    def duplicate_db(self, new_database_name, backups_enable, database_type):
         """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
         sock = self.get_sock()
         client = self.get_client()
         new_db = self.copy({
             'name': new_database_name,
-            'backups_enable': backups_enable
+            'backups_enable': backups_enable,
+            'issue_date': fields.Date.context_today,
+            'database_type_id': database_type.id,
             })
         try:
             sock.duplicate_database(
