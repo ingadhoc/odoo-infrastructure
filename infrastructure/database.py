@@ -58,9 +58,9 @@ class database(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='onchange'
+        track_visibility='onchange',
+        copy=False,
     )
-
     name = fields.Char(
         string='Name',
         required=True,
@@ -68,35 +68,29 @@ class database(models.Model):
         states={'draft': [('readonly', False)]},
         track_visibility='onchange'
     )
-
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
         required=True,
     )
-
     demo_data = fields.Boolean(
         string='Demo Data?',
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-
     note = fields.Html(
         string='Note'
     )
-
     smtp_server_id = fields.Many2one(
         'infrastructure.mailserver',
         string='SMTP Server',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        # readonly=True,
+        # states={'draft': [('readonly', False)]},
     )
-
     domain_alias = fields.Char(
         string='Domain Alias',
         compute='get_domain_alias',
     )
-
     attachment_loc_type = fields.Selection(
         [(u'filesystem', 'filesystem'), (u'database', 'database')],
         string='Attachment Location Type',
@@ -104,27 +98,24 @@ class database(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-
     attachment_location = fields.Char(
         string='Attachment Location',
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-
     issue_date = fields.Date(
-        string='Issue Data'
+        string='Issue Data',
+        copy=False,
     )
-
     deactivation_date = fields.Date(
-        string='Deactivation Date'
+        string='Deactivation Date',
+        copy=False,
     )
-
     state = fields.Selection(
         _states_,
         'State',
         default='draft'
     )
-
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
@@ -133,7 +124,6 @@ class database(models.Model):
         states={'draft': [('readonly', False)]},
         required=True,
     )
-
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
@@ -141,7 +131,6 @@ class database(models.Model):
         store=True,
         readonly=True,
     )
-
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
@@ -149,31 +138,23 @@ class database(models.Model):
         store=True,
         readonly=True,
     )
-
     protected_db = fields.Boolean(
         string='Protected DB?',
         related='database_type_id.protect_db',
         store=True,
         readonly=True,
     )
-
     color = fields.Integer(
         string='Color',
         related='database_type_id.color',
         store=True,
         readonly=True,
     )
-
-    deactivation_date = fields.Date(
-        string='Deactivation Date',
-    )
-
     backup_ids = fields.One2many(
         'infrastructure.database.backup',
         'database_id',
         string='Backups',
     )
-
     module_ids = fields.One2many(
         'infrastructure.database.module',
         'database_id',
@@ -222,26 +203,29 @@ class database(models.Model):
 
     alias_prefix = fields.Char(
         'Alias Prefix',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        # readonly=True,
+        # states={'draft': [('readonly', False)]},
+        copy=False,
     )
 
     alias_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
         string='Alias Hostname',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        # readonly=True,
+        # states={'draft': [('readonly', False)]},
+        copy=False,
     )
 
     alias_hostname_wildcard = fields.Boolean(
         related='alias_hostname_id.wildcard',
         string='Wildcard?',
         readonly=True,
+        copy=False,
     )
 
     module_count = fields.Integer(
         string='# Modules',
-        compute='_get_modules'
+        compute='_get_modules',
     )
     daily_backup = fields.Boolean(
         string='Daily Backups?',
@@ -253,7 +237,13 @@ class database(models.Model):
         string='Monthly Backups?',
     )
     backups_enable = fields.Boolean(
-        'Backups Enable')
+        'Backups Enable',
+        copy=False,
+    )
+    catchall_enable = fields.Boolean(
+        'Catchall Enable',
+        copy=False,
+    )
 
     @api.one
     @api.onchange('instance_id')

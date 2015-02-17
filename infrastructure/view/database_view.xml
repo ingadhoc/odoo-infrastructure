@@ -104,7 +104,7 @@
                             <field name="backups_enable"/><button class="oe_read_only oe_link" type="object" name="config_backups" states="active" string="Config Backups"/>
                         </div>
                         <label string=""/>
-                        <div class="oe_link" attrs="{'invisible':[('backups_enable','=',False)]}">
+                        <div attrs="{'invisible':[('backups_enable','=',False)]}">
                             <field name="daily_backup" /><label for="daily_backup" string="Daily"/> - <field name="weekly_backup"/><label for="daily_backup" string="Weekcly"/> - <field name="monthly_backup"/><label for="monthly_backup" string="Monthly"/>
                         </div>
                     </group>
@@ -112,16 +112,23 @@
                         <label for="smtp_server_id"/>
                         <div class="oe_inline">
                             <field name="smtp_server_id" class="oe_inline"/>
-                            <button class="oe_link oe_inline oe_read_only" type="object" name="upload_mail_server_config" attrs="{'invisible':[('smtp_server_id','=',False)]}" string="Upload Config"/>
+                            <button class="oe_link oe_inline oe_read_only" type="object" name="upload_mail_server_config" attrs="{'invisible':['|',('state','!=','active'),('smtp_server_id','=',False)]}" string="Upload Config"/>
                         </div>
-                        <field name="alias_hostname_id" domain="[('server_id','=',server_id)]"/>
-                        <field name="alias_prefix" attrs="{'invisible':[('alias_hostname_wildcard','=',False)]}"/>
-                        <field name="alias_hostname_wildcard" invisible="1"/>
-                        <label for="domain_alias"/>
+                        <label for="catchall_enable"/>
                         <div class="oe_inline">
-                            <field name="domain_alias" class="oe_inline"/>
-                            <button class="oe_link oe_inline oe_read_only" type="object" name="config_catchall" attrs="{'invisible':[('domain_alias','=',False)]}" string="Config Catchall"/>
+                            <!-- <field name="catchall_enable"/><button class="oe_link oe_read_only" type="object" name="config_catchall" string="Config Catchall"/> -->
+                            <field name="catchall_enable"/><button class="oe_link oe_read_only" type="object" name="config_catchall" attrs="{'invisible':['|',('state','!=','active'),('catchall_enable','=',False)]}" string="Config Catchall"/>
                         </div>
+                        <!-- <label string=""/> -->
+                        <!-- <div attrs="{'invisible':[('catchall_enable','=',False)]}"> -->
+                        <field name="alias_hostname_id" attrs="{'invisible':[('catchall_enable','=',False)],'required':[('catchall_enable','=',True)]}" domain="[('server_id','=',server_id)]"/>
+                        <field name="alias_prefix" attrs="{'invisible':['|',('catchall_enable','=',False),('alias_hostname_wildcard','=',False)],'required':[('alias_hostname_wildcard','=',True),('catchall_enable','=',True)]}"/>
+                        <field name="domain_alias" attrs="{'invisible':[('catchall_enable','=',False)]}"/>
+                        <field name="alias_hostname_wildcard" attrs="{'invisible':[('catchall_enable','=',False)]}" invisible="1"/>
+                        <!-- <label for="domain_alias"/> -->
+                        <!-- <div class="oe_inline"> -->
+                            <!-- <field name="domain_alias" class="oe_inline"/> -->
+                        <!-- </div> -->
                     </group>
                  </group>
                 <notebook>
