@@ -402,7 +402,7 @@ class instance(models.Model):
         self.service_file = user
 
     @api.one
-    @api.onchange('number', 'environment_id')
+    @api.onchange('name', 'number', 'environment_id')
     def _get_ports_and_ports(self):
         xml_rpc_port = False
         xml_rpcs_port = False
