@@ -476,15 +476,16 @@ class database(models.Model):
         else:
             return False
 
-    @api.one
+    @api.multi
     def duplicate_db(self, new_database_name, backups_enable, database_type):
         """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
+        self.ensure_one()
         sock = self.get_sock()
         client = self.get_client()
         new_db = self.copy({
             'name': new_database_name,
             'backups_enable': backups_enable,
-            'issue_date': fields.Date.context_today,
+            'issue_date': fields.Date.today(),
             'database_type_id': database_type.id,
             })
         try:
@@ -515,11 +516,24 @@ class database(models.Model):
                 # restart the instance with default config
                 instance.update_conf_file()
                 instance.start_service()
+                # TODo agregar aca releer los modulos y demas en la nueva bd
             except Exception, e:
                 raise Warning(
                     _('Unable to duplicate Database. This is what we get:\n%s') % (e))
         new_db.signal_workflow('sgn_to_active')
-        # TODO retornar accion de ventana a la bd creada
+
+        # devolvemos la accion de la nueva bd creada
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_database_databases')
+        if not action:
+            return False
+        res = action.read()[0]
+        # res['domain'] = [('id', 'in', databases.ids)]
+        form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+            'infrastructure.view_infrastructure_database_form')
+        res['views'] = [(form_view_id, 'form')]
+        res['res_id'] = new_db.id
+        return res
 
     # TODO ver si borramos esta Funcion vieja que usaba el kill de odoo tools
     # @api.one
