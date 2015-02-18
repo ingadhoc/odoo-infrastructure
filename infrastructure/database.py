@@ -404,6 +404,10 @@ class database(models.Model):
         self.signal_workflow('sgn_cancel')
 
     @api.one
+    def action_backup_now(self):
+        raise Warning(_('Not Implemented yet'))
+
+    @api.one
     def dump_db(self):
         """Funcion que utiliza ws nativos de odoo para hacer backup de bd"""
         raise Warning(_('Not Implemented yet'))
