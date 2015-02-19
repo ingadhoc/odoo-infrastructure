@@ -439,37 +439,36 @@ class database(models.Model):
                     restarting service.'))
 
     @api.one
-    def rename_db(self):
+    def rename_db(self, new_name):
         """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
-        raise Warning(_('Not Implemented yet'))
         sock = self.get_sock()
-        new_name = 'pepito'  # implementar esto
         try:
-            return sock.rename(
-                self.instance_id.admin_pass, self.name, new_name)
+            sock.rename(self.instance_id.admin_pass, self.name, new_name)
         except:
             raise Warning(
                 _('Unable to Rename Database. If you are working in an \
                     instance with "workers" then you can try \
                     restarting service.'))
+        self.name = new_name
 
-    @api.one
-    def restore_db(self):
-        """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
-        raise Warning(_('Not Implemented yet'))
-        # TODO implementar
-        sock = self.get_sock()
-        f = file('/home/chosco/back/backup.dump', 'r')
-        data_b64 = base64.encodestring(f.read())
-        f.close()
-        try:
-            return sock.restore(
-                self.instance_id.admin_pass, self.name, data_b64)
-        except:
-            raise Warning(
-                _('Unable to migrate Database. If you are working in an \
-                    instance with "workers" then you can try \
-                    restarting service.'))
+# TODO borrar esta funcion que va en database backup
+    # @api.one
+    # def restore_db(self):
+    #     """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
+    #     raise Warning(_('Not Implemented yet'))
+    #     # TODO implementar
+    #     sock = self.get_sock()
+    #     f = file('/home/chosco/back/backup.dump', 'r')
+    #     data_b64 = base64.encodestring(f.read())
+    #     f.close()
+    #     try:
+    #         return sock.restore(
+    #             self.instance_id.admin_pass, self.name, data_b64)
+    #     except:
+    #         raise Warning(
+    #             _('Unable to migrate Database. If you are working in an \
+    #                 instance with "workers" then you can try \
+    #                 restarting service.'))
 
     @api.one
     def exist_db(self, database_name):
@@ -495,8 +494,6 @@ class database(models.Model):
         try:
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
-            client.model('db.database').backups_state(
-                new_database_name, backups_enable)
         except:
             # If we get an error we try duplicating restarting service without workers
             try:
@@ -524,6 +521,8 @@ class database(models.Model):
             except Exception, e:
                 raise Warning(
                     _('Unable to duplicate Database. This is what we get:\n%s') % (e))
+        client.model('db.database').backups_state(
+            new_database_name, backups_enable)
         new_db.signal_workflow('sgn_to_active')
 
         # devolvemos la accion de la nueva bd creada
@@ -614,6 +613,42 @@ class database(models.Model):
                     _("Unable to Connect to Database."),
                     _('Error: %s') % e
                 )
+
+# Backups management
+
+    @api.one
+    def update_backups_data(self):
+        client = self.get_client()
+        self_db_id = client.model('ir.model.data').xmlid_to_res_id(
+            'database_tools.db_self_database')
+        backups_data = client.read(
+            'db.database.backup', [('database_id', '=', self_db_id)])
+        fields = [
+            'id',
+            'database_id/.id',
+            'date',
+            'name',
+            'path',
+            'type',
+            ]
+        rows = []
+        for backup in backups_data:
+            row = [
+                'db_%i_backup_%i' % (self.id, backup['id']),
+                self.id,
+                backup['date'],
+                backup['name'],
+                backup['path'],
+                backup['type'],
+            ]
+            rows.append(row)
+        self.env['infrastructure.database.backup'].load(fields, rows)
+
+        # remove removed backups
+        self_backups = [x.name for x in self.backup_ids]
+        remote_backups = [x['name'] for x in backups_data]
+        removed_backups = list(set(remote_backups) - set(self_backups))
+        self.backup_ids.search([('name', 'in', removed_backups)]).unlink()
 
 # Modules management
     @api.one

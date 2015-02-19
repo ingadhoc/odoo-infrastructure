@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from openerp import fields, api, _
-from openerp.osv import osv
+from openerp import fields, api, _, models
 from openerp.exceptions import Warning
 
 
-class infrastructure_restore_database_wizard(osv.osv_memory):
+class infrastructure_restore_database_wizard(models.TransientModel):
     _name = "infrastructure.restore_database.wizard"
     _description = "Infrastructure Restore Database Wizard"
 
@@ -42,13 +41,11 @@ class infrastructure_restore_database_wizard(osv.osv_memory):
         default=_get_database_backup,
         readonly=True
     )
-
     create_date = fields.Datetime(
         string='Created On',
         default=_get_create_date,
         readonly=True,
     )
-
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
@@ -56,7 +53,6 @@ class infrastructure_restore_database_wizard(osv.osv_memory):
         required=True,
         readonly=False
     )
-
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
@@ -64,7 +60,6 @@ class infrastructure_restore_database_wizard(osv.osv_memory):
         required=True,
         readonly=False
     )
-
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
@@ -72,7 +67,6 @@ class infrastructure_restore_database_wizard(osv.osv_memory):
         required=True,
         readonly=False
     )
-
     database_id = fields.Many2one(
         'infrastructure.database',
         string='Database',
@@ -80,11 +74,24 @@ class infrastructure_restore_database_wizard(osv.osv_memory):
         required=True,
         readonly=False,
     )
-
     overwrite_active = fields.Boolean(
         string='Overwrite Active Database?',
         default=False
     )
+    backups_enable = fields.Boolean(
+        'Backups Enable on new DB?'
+    )
+
+    @api.one
+    @api.onchange('environment_id')
+    def change_environment(self):
+        self.instance_id = False
+        self.database_id = False
+
+    @api.one
+    @api.onchange('instance_id')
+    def change_instance(self):
+        self.database_id = False
 
     @api.one
     def restore_database(self):
@@ -95,5 +102,6 @@ class infrastructure_restore_database_wizard(osv.osv_memory):
         dumps = self.env['infrastructure.database.backup'].search(
             [('id', 'in', active_ids)])
         for dump in dumps:
-            dump.restore(self.database_id, self.overwrite_active)
+            dump.restore(
+                self.database_id, self.overwrite_active, self.backups_enable)
         return True

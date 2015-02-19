@@ -10,7 +10,8 @@
             <group>
                 <field name="database_backup_id"/>
                 <field name="create_date"/>
-                <field name="server_id"/>
+                <!-- TODO let choose server and change restore method -->
+                <field name="server_id" invisible="1"/>
                 <field name="environment_id"
                     domain="[('server_id','=',server_id)]"/>
                 <field name="instance_id"
@@ -18,6 +19,7 @@
                 <field name="database_id"
                     domain="[('instance_id','=',instance_id)]" context="{'default_instance_id': instance_id}"/>
                 <field name="overwrite_active"/>
+                <field name="backups_enable"/>
             </group>
             <footer>
                 <button name="restore_database" string="Restore" type="object" class="oe_highlight"/>

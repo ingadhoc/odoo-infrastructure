@@ -3,14 +3,40 @@
 <openerp>
 <data>
 
+<!-- FORM VIEW -->
+<record id="view_infrastructure_database_backup_form" model="ir.ui.view">
+    <field name="name">infrastructure.database.backup.form</field>
+    <field name="model">infrastructure.database.backup</field>
+    <field name="arch" type="xml">
+        <form string="Databases">
+            <header>
+            <button
+                string="Restore Database"
+                type="action"
+                name="%(action_infrastructure_restore_database_wizard)d"
+                help="Restore Database" context="{'search_default_database_backup_id': active_id}"/>
+            </header>
+            <sheet>
+                <group>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="path"/>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
 <!-- TREEVIEW -->
 <record id="view_infrastructure_database_backup_tree" model="ir.ui.view">
     <field name="name">infrastructure.database.backup.tree</field>
     <field name="model">infrastructure.database.backup</field>
     <field name="arch" type="xml">
-        <tree string="Database Backups" create="false">
+        <tree string="Database Backups">
+            <field name="date"/>
             <field name="name"/>
-            <field name="create_date"/>
+            <field name="type"/>
             <button
                 string="Restore Database"
                 icon="gtk-go-up"

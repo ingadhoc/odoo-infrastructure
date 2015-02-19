@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_rename_database_wizard_view" model="ir.ui.view">
+     <field name="name">Rename Database Wizard</field>
+     <field name="model">infrastructure.rename_database.name</field>
+     <field name="arch" type="xml">
+        <form string="Rename Database">
+            <group>
+                <field name="name"/>
+            </group>
+            <footer>
+                <button name="action_confirm" string="Rename" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_rename_database_wizard" model="ir.actions.act_window">
+     <field name="name">Rename Database Wizard</field>
+     <field name="res_model">infrastructure.rename_database.name</field>
+     <field name="type">ir.actions.act_window</field>
+     <field name="view_type">form</field>
+     <field name="view_mode">tree,form</field>
+     <field name="view_id" ref="infrastructure_rename_database_wizard_view"/>
+     <field name="context">{}</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>

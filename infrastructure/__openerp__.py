@@ -13,6 +13,7 @@
         u'wizard/duplicate_db_wizard_view.xml',
         u'wizard/change_db_passwd_wizard_view.xml',
         u'wizard/restore_database_wizard_view.xml',
+        u'wizard/rename_db_wizard_view.xml',
         u'security/infrastructure_group.xml',
         u'view/infrastructure_menuitem.xml',
         u'view/base_module_view.xml',

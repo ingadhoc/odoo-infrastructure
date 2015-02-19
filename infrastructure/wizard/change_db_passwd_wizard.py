@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from openerp import fields, api, _
-from openerp.osv import osv
+from openerp import fields, api, _, models
 from openerp.exceptions import Warning
 
 
-class infrastructure_change_db_passwd_wizard(osv.osv_memory):
+class infrastructure_change_db_passwd_wizard(models.TransientModel):
     _name = "infrastructure.change_db_passwd.wizard"
     _description = "Infrastructure Change Database Password Wizard"
 

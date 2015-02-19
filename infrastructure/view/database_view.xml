@@ -82,6 +82,7 @@
                     <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" states="active"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active"/>
+                    <button icon="fa-pencil" type="action" string="Rename" class="oe_stat_button" name="%(action_infrastructure_rename_database_wizard)d" states="active"/>
                 </div>
                  <group>
                     <group>
@@ -125,9 +126,10 @@
                     </group>
                  </group>
                 <notebook>
-<!--                     <page string="Backups" name="backup_ids">
+                    <page string="Backups" name="backup_ids">
+                        <button type="object" name="update_backups_data" string="Update Backups Data"/>
                         <field name="backup_ids"/>
-                    </page> -->
+                    </page>
                     <page string="Base Modules" name="base_module_ids">
                         <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
                         <button type="object" name="install_base_modules" string="Install Modules"/>
