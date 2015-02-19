@@ -448,11 +448,18 @@ class database(models.Model):
         sock = self.get_sock()
         try:
             sock.rename(self.instance_id.admin_pass, self.name, new_name)
-        except Exception, e:
-            raise Warning(
-                _('Unable to rename Database. If you are working in an \
-                instance with "workers" then you can try \
-                restarting service. This is what we get:\n%s') % (e))
+        except:
+            # If we get an error we try restarting the service
+            try:
+                self.instance_id.restart_service()
+                # we ask again for sock and try to connect waiting for start
+                sock = self.get_sock(max_attempts=1000)
+                sock.drop(self.instance_id.admin_pass, self.name)
+            except Exception, e:
+                raise Warning(
+                    _('Unable to rename Database. If you are working in an \
+                    instance with "workers" then you can try \
+                    restarting service. This is what we get:\n%s') % (e))
         self.name = new_name
 
 # TODO borrar esta funcion que va en database backup
