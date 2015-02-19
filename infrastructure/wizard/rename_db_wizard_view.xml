@@ -9,6 +9,7 @@
         <form string="Rename Database">
             <group>
                 <field name="name"/>
+                <field name="database_type_id"/>
             </group>
             <footer>
                 <button name="action_confirm" string="Rename" type="object" class="oe_highlight"/>

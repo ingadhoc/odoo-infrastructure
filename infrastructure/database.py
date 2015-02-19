@@ -372,6 +372,7 @@ class database(models.Model):
     @api.one
     def create_db(self):
         """Funcion que utliza erpeek para crear bds"""
+        _logger.info("Creating db '%s'" % (self.name))
         client = self.get_client(not_database=True)
         client.create_database(
             self.instance_id.admin_pass,
@@ -386,6 +387,7 @@ class database(models.Model):
     @api.one
     def drop_db(self):
         """Funcion que utiliza ws nativos de odoo para eliminar db"""
+        _logger.info("Dropping db '%s'" % (self.name))
         sock = self.get_sock()
         try:
             sock.drop(self.instance_id.admin_pass, self.name)
@@ -419,36 +421,38 @@ class database(models.Model):
                 sock.dump(self.instance_id.admin_pass, self.name)))
             # return sock.dump(self.instance_id.admin_pass, self.name)
             backup_file.close()
-        except:
+        except Exception, e:
             raise Warning(
                 _('Unable to dump Database. If you are working in an \
-                    instance with "workers" then you can try \
-                    restarting service.'))
+                instance with "workers" then you can try \
+                restarting service. This is what we get:\n%s') % (e))
 
     @api.one
     def migrate_db(self):
         """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
+        _logger.info("Migrating db '%s'" % (self.name))
         sock = self.get_sock()
         try:
             return sock.migrate_databases(
                 self.instance_id.admin_pass, [self.name])
-        except:
+        except Exception, e:
             raise Warning(
                 _('Unable to migrate Database. If you are working in an \
-                    instance with "workers" then you can try \
-                    restarting service.'))
+                instance with "workers" then you can try \
+                restarting service. This is what we get:\n%s') % (e))
 
     @api.one
     def rename_db(self, new_name):
         """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
+        _logger.info("Rennaming db '%s' to '%s'" % (self.name, new_name))
         sock = self.get_sock()
         try:
             sock.rename(self.instance_id.admin_pass, self.name, new_name)
-        except:
+        except Exception, e:
             raise Warning(
-                _('Unable to Rename Database. If you are working in an \
-                    instance with "workers" then you can try \
-                    restarting service.'))
+                _('Unable to rename Database. If you are working in an \
+                instance with "workers" then you can try \
+                restarting service. This is what we get:\n%s') % (e))
         self.name = new_name
 
 # TODO borrar esta funcion que va en database backup
