@@ -302,8 +302,10 @@ class instance(models.Model):
             'Longpolling Port must be unique per server!'),
         ('logfile_uniq', 'unique(logfile, server_id)',
             'Log File Path must be unique per server!'),
-        # ('data_dir_uniq', 'unique(data_dir, server_id)',
-        #     'Data Dir must be unique per server!'),
+        ('user_uniq', 'unique(user, server_id)',
+            'User must be unique per server!'),
+        ('data_dir_uniq', 'unique(data_dir, server_id)',
+            'Data Dir must be unique per server!'),
         ('conf_file_path_uniq', 'unique(conf_file_path, server_id)',
             'Config. File Path must be unique per server!'),
         ('service_file_uniq', 'unique(service_file, server_id)',
@@ -439,9 +441,8 @@ class instance(models.Model):
         self.stop_run_on_start()
         self.delete_service_file()
         self.delete_nginx_site()
-        # TODO por ahora no borramos este user y el de postgres por si hay dos instancias que usen el mismo usuario. Va a depender de si seguimos con esta posibilidad o no.
-        # self.delete_user()
-        # self.delete_pg_user()
+        self.delete_user()
+        self.delete_pg_user()
         self.signal_workflow('sgn_cancel')
 
     @api.multi

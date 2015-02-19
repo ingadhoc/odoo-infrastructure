@@ -64,7 +64,6 @@
                 <div class="col-md-6">
                     <h2>
                         <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/> / <field name="instance_id" class="oe_inline"/>
-                        <field name="partner_id" placeholder="Partner..."/>
                     </h2>
                     <field name="database_type_id" class="oe_edit_only" default_focus="1" placeholder="Type..."/>
                     <h1>
@@ -86,6 +85,7 @@
                 </div>
                  <group>
                     <group>
+                        <field name="partner_id"/>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
                         <field name="demo_data"/>
