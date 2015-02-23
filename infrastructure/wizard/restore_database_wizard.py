@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-
-from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp import fields, api, models
 
 
 class infrastructure_restore_database_wizard(models.TransientModel):
@@ -9,11 +7,8 @@ class infrastructure_restore_database_wizard(models.TransientModel):
     _description = "Infrastructure Restore Database Wizard"
 
     def _get_database_backup(self):
-        dump_id = self.env.context.get('active_ids', False)
-        if dump_id:
-            d = self.env['infrastructure.database.backup'].browse(dump_id[0])
-            return d
-        return False
+        dump_id = self.env.context.get('active_id', False)
+        return self.env['infrastructure.database.backup'].browse(dump_id)
 
     def _get_create_date(self):
         d = self._get_database_backup()
@@ -67,17 +62,21 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         required=True,
         readonly=False
     )
-    database_id = fields.Many2one(
-        'infrastructure.database',
-        string='Database',
-        default=_get_database_id,
+    database_type_id = fields.Many2one(
+        'infrastructure.database_type',
+        string='Database Type',
         required=True,
-        readonly=False,
     )
-    overwrite_active = fields.Boolean(
-        string='Overwrite Active Database?',
-        default=False
-    )
+    new_db_name = fields.Char(
+        string='New db Name',
+        required=True
+        )
+    # TODO ver si incorporamos la posibilidad de que se sobreescriba a la misma bd en la que estamos parados
+    # el tema es que actualmente usamos dicha bd para restaurar a traves de database_tools por lo cual no andaria
+    # overwrite_active = fields.Boolean(
+    #     string='Overwrite Active Database?',
+    #     default=False
+    # )
     backups_enable = fields.Boolean(
         'Backups Enable on new DB?'
     )
@@ -86,22 +85,15 @@ class infrastructure_restore_database_wizard(models.TransientModel):
     @api.onchange('environment_id')
     def change_environment(self):
         self.instance_id = False
-        self.database_id = False
 
-    @api.one
-    @api.onchange('instance_id')
-    def change_instance(self):
-        self.database_id = False
+    @api.onchange('database_type_id')
+    def onchange_database_type_id(self):
+        if self.database_type_id:
+            self.new_db_name = self.database_type_id.prefix + '_'
+            # TODO send suggested backup data
 
     @api.one
     def restore_database(self):
-        active_ids = self.env.context.get('active_ids', False)
-        if not active_ids:
-            raise Warning(
-                _("Cannot restore database, no active_ids on context"))
-        dumps = self.env['infrastructure.database.backup'].search(
-            [('id', 'in', active_ids)])
-        for dump in dumps:
-            dump.restore(
-                self.database_id, self.overwrite_active, self.backups_enable)
+        self.database_backup_id.restore(
+            self.new_db_name, self.backups_enable, self.database_type_id)
         return True

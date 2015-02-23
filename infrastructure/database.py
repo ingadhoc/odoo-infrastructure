@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, SUPERUSER_ID, netsvc, _
 from openerp.exceptions import except_orm
-import xmlrpclib, socket
+import xmlrpclib
+import socket
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from fabric.api import sudo
 from fabric.contrib.files import exists, append, sed
-from os import path
 from erppeek import Client
 from openerp.exceptions import Warning
 from ast import literal_eval
 import os
 import base64
 import logging
-import fabtools
 _logger = logging.getLogger(__name__)
 
 
@@ -508,13 +507,6 @@ class database(models.Model):
         except:
             # If we get an error we try duplicating restarting service without workers
             try:
-                # TODO borrar esto. tratamos solo reiniciando pero da error
-                # self.instance_id.restart_service()
-                # sock = self.get_sock(max_attempts=100)
-                # sock.duplicate_database(
-                #     self.instance_id.admin_pass, self.name, new_database_name)
-                # client.model('db.database').backups_state(
-                #     new_database_name, backups_enable)
                 # restart the instance without workers
                 instance = self.instance_id
                 instance.update_conf_file(force_no_workers=True)

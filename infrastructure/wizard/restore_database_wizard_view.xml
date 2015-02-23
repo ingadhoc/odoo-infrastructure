@@ -10,15 +10,13 @@
             <group>
                 <field name="database_backup_id"/>
                 <field name="create_date"/>
-                <!-- TODO let choose server and change restore method -->
-                <field name="server_id" invisible="1"/>
-                <field name="environment_id"
-                    domain="[('server_id','=',server_id)]"/>
-                <field name="instance_id"
-                    domain="[('environment_id','=',environment_id)]"/>
-                <field name="database_id"
-                    domain="[('instance_id','=',instance_id)]" context="{'default_instance_id': instance_id}"/>
-                <field name="overwrite_active"/>
+                <!-- TODO todavia no implemetamos mover a otra instance, server, etc -->
+                <!-- <field name="server_id"/> -->
+                <!-- <field name="environment_id" domain="[('server_id','=',server_id)]"/> -->
+                <!-- <field name="instance_id" domain="[('environment_id','=',environment_id)]"/> -->
+                <field name="database_type_id"/>
+                <field name="new_db_name"/>
+                <!-- <field name="overwrite_active"/> -->
                 <field name="backups_enable"/>
             </group>
             <footer>

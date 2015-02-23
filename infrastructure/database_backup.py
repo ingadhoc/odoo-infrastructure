@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _
-# from openerp.exceptions import except_orm
-# from fabric.api import cd, sudo, settings
-# from fabric.context_managers import hide
-# from fabric.operations import get, put
-# from os import path
 import os
-import base64
 
 
 class database_backup(models.Model):
@@ -44,27 +38,39 @@ class database_backup(models.Model):
     )
 
     @api.one
-    def restore(self, target_database, overwrite_active, backups_enable):
+    def restore(self, new_database_name, backups_enable, database_type):
+        # TODO cuando implementemos el ws que permita restaurar desde un path podemos restaurar en otra isntancia, por ahora solo restauramos en la misma instancia
         # TODO ver si hacemos un overwrite si hay que borrarla antes
-        new_database_name = target_database.name
-        f = file(os.path.join(self.path, self.name), 'r')
-        data_b64 = base64.encodestring(f.read())
-        f.close()
-        sock = self.target_database.get_sock()
+        client = self.database_id.get_client()
+        source_path = os.path.join(self.path, self.name)
         try:
-            print 'target_database.instance_id.admin_pass', target_database.instance_id.admin_pass
-            print 'new_database_name', new_database_name
-            print 'data_b64', data_b64
-            # sock.restore(
-            #     target_database.instance_id.admin_pass,
-            #     new_database_name, data_b64)
+            # TODO ver como podemos mejorar esto sin que quede esperando o aumentar el timeout
+            client.model('db.database.backup').restore_from_path(
+                source_path, new_database_name, backups_enable)
         except Exception, e:
             raise Warning(_(
                 'Unable to restore bd %s, this is what we get: \n %s') % (
                 new_database_name, e))
-        # client = self.target_database.get_client()
-        # client.model('db.database').backups_state(
-        #     new_database_name, backups_enable)
+        new_db = self.copy({
+            'name': new_database_name,
+            'backups_enable': backups_enable,
+            'issue_date': fields.Date.today(),
+            'database_type_id': database_type.id,
+            })
+        new_db.signal_workflow('sgn_to_active')
+
+        # devolvemos la accion de la nueva bd creada
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_database_databases')
+        if not action:
+            return False
+        res = action.read()[0]
+        # res['domain'] = [('id', 'in', databases.ids)]
+        form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+            'infrastructure.view_infrastructure_database_form')
+        res['views'] = [(form_view_id, 'form')]
+        res['res_id'] = new_db.id
+        return res
 
 # TODO tomar de esta vieja funcion lo que permite restaurar en otro servidor
     # @api.one
@@ -101,6 +107,7 @@ class database_backup(models.Model):
 
     #         source_server.get_env()
 
+    #         # TODO en vez de hacer un get y un put tal vez se pueda pasar de un server a otro
     #         if source_server != target_server:
     #             tmp_path = '/tmp/'
     #             local_file = get(dump_file, tmp_path)
