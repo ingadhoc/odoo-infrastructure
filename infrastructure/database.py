@@ -645,7 +645,7 @@ class database(models.Model):
                 backup['type'],
             ]
             rows.append(row)
-        self.env['infrastructure.database.backup'].imp_fields(fields, rows)
+        self.env['infrastructure.database.backup'].load(imp_fields, rows)
 
         # remove removed backups
         self_backups = [x.name for x in self.backup_ids]

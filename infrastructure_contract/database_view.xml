@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+<!-- SEARCHVIEW -->
+<record id="view_infrastructure_database_filter" model="ir.ui.view">
+    <field name="name">infrastructure.database.select</field>
+    <field name="model">infrastructure.database</field>
+    <field name="inherit_id" ref="infrastructure.view_infrastructure_database_filter"/>
+    <field name="arch" type="xml">
+        <group position="before">
+            <field name="contract_id"/>
+        </group>
+    </field>
+</record>
+
+<!-- FORMVIEW -->
+<record id="view_infrastructure_database_form" model="ir.ui.view">
+    <field name="name">infrastructure.database.form</field>
+    <field name="model">infrastructure.database</field>
+    <field name="inherit_id" ref="infrastructure.view_infrastructure_database_form"/>
+    <field name="arch" type="xml">
+        <field name="partner_id" position="after">
+            <label for="contract_id"/>
+            <div>
+                <field
+                    name="contract_id"
+                    class="oe_inline"/>
+                <button name="upload_contract_data"
+                    string="⇒ Upload Contract"
+                    type="object"
+                    class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/>
+            </div>
+        </field>
+    </field>
+</record>
+
+</data>
+</openerp>
