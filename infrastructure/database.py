@@ -626,7 +626,7 @@ class database(models.Model):
             'database_tools.db_self_database')
         backups_data = client.read(
             'db.database.backup', [('database_id', '=', self_db_id)])
-        fields = [
+        imp_fields = [
             'id',
             'database_id/.id',
             'date',
@@ -645,7 +645,7 @@ class database(models.Model):
                 backup['type'],
             ]
             rows.append(row)
-        self.env['infrastructure.database.backup'].load(fields, rows)
+        self.env['infrastructure.database.backup'].imp_fields(fields, rows)
 
         # remove removed backups
         self_backups = [x.name for x in self.backup_ids]
@@ -713,7 +713,7 @@ class database(models.Model):
             self.smtp_server_id.smtp_port,
             self.smtp_server_id.smtp_user,
         ]]
-        fields = [
+        imp_fields = [
             'id',
             'name',
             'sequence',
@@ -727,7 +727,7 @@ class database(models.Model):
         client = self.get_client()
         try:
             mail_server_obj = client.model('ir.mail_server')
-            return mail_server_obj.load(fields, rows)
+            return mail_server_obj.load(imp_fields, rows)
 
         except Exception, e:
             raise except_orm(

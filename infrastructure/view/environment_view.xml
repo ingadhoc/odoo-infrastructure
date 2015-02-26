@@ -90,7 +90,7 @@
                 </group>
                 <notebook>
                     <page string="Configuration">
-                        <field name="environment_repository_ids" attrs="{'readonly':[('sever_copied','=',False)]}"/>
+                        <field name="environment_repository_ids" context="{'default_server_id': server_id}" attrs="{'readonly':[('sever_copied','=',False)]}"/>
                     </page>
                     <page string="Notes">
                         <field name="note"/>
