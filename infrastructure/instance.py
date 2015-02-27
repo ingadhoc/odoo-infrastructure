@@ -630,7 +630,7 @@ class instance(models.Model):
             _logger.info("Deleting pg User")
             self.environment_id.server_id.get_env()
             try:
-                sudo('dropuser %s' % self.user)
+                sudo('sudo -u postgres dropuser %s' % self.user)
             except Exception, e:
                 raise Warning(_("Can not delete postgres user %s, this is what we get: \n %s") % (
                     self.user, e))
