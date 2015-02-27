@@ -11,7 +11,7 @@ from fabric.contrib.files import exists, append, sed
 from ast import literal_eval
 import os
 import re
-from fabric.api import settings
+from fabric.api import settings, env
 import logging
 import fabtools
 _logger = logging.getLogger(__name__)
@@ -642,7 +642,9 @@ class instance(models.Model):
         self.stop_service()
         # TODO no anda este verificador de fabric seguramente porque el servicio esta mal, habria que mejroarlo robando lo nuevo de odoo
         # if not fabtools.service.is_running(self.service_file):
+        env.warn_only = True
         fabtools.service.start(self.service_file)
+        env.warn_only = False
         # service.started(self.service_file)
         # sudo('service ' + self.service_file + ' start')
 
@@ -651,7 +653,9 @@ class instance(models.Model):
         _logger.info("Stopping Service")
         self.environment_id.server_id.get_env()
         # if fabtools.service.is_running(self.service_file):
+        env.warn_only = True
         fabtools.service.stop(self.service_file)
+        env.warn_only = False
         # sudo('service ' + self.service_file + ' stop')
         # TODO probar bajar con fabtools pero me daba error
         # service.stopped(self.service_file)
