@@ -565,8 +565,8 @@ class instance(models.Model):
         try:
             sudo('rm ' + service_file_path)
         except Exception, e:
-            raise Warning(_("Can not delete service file %s, this is what we get: \n %s") % (
-                service_file_path, e))
+            _logger.warning(("Could delete service file '%s', this is what we get: \n %s") % (
+                self.service_file, e))
 
     @api.multi
     def update_service_file(self):
@@ -703,8 +703,8 @@ class instance(models.Model):
         try:
             sudo('rm -f %s' % nginx_site_file_path)
         except Exception, e:
-            raise Warning(_("Could remove nginx site file '%s', this is what we get: \n %s") % (
-                nginx_site_file_path, e))
+            _logger.warning(("Could remove nginx site file '%s', this is what we get: \n %s") % (
+                self.service_file, e))
 
     @api.one
     def update_nginx_site(self):
