@@ -679,14 +679,16 @@ class instance(models.Model):
         except Exception, e:
             raise Warning(_("Could not add service '%s' to run on start, this is what we get: \n %s") % (
                 self.service_file, e))
+
     @api.one
     def stop_run_on_start(self):
         _logger.info("Stopping run on start")
         self.environment_id.server_id.get_env()
         try:
             sudo('update-rc.d  -f ' + self.service_file + ' remove')
+        # we dont raise and exception, jus print on logg
         except Exception, e:
-            raise Warning(_("Could not stop service '%s' to run on start, this is what we get: \n %s") % (
+            _logger.warning(("Could not stop service '%s' to run on start, this is what we get: \n %s") % (
                 self.service_file, e))
 
     @api.one
