@@ -5,7 +5,7 @@ from openerp.exceptions import except_orm, Warning
 from fabric.api import env, reboot
 # from fabric.api import env, sudo, reboot
 # utilizamos nuestro custom sudo que da un warning
-from .server import custom_sudo as sudo
+# import custom_sudo as sudo
 from fabric.contrib.files import append
 # For postfix
 from fabric.api import *
@@ -27,6 +27,8 @@ def custom_sudo(command, user=False):
             "Can not run command:\n%s\nThis is what we get:\n%s") % (
             res.real_command, res.stdout))
     return res
+
+sudo = custom_sudo
 
 
 class server(models.Model):
