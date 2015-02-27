@@ -610,7 +610,7 @@ class instance(models.Model):
         try:
             sudo('deluser %s' % self.user)
         except Exception, e:
-            raise Warning(_("Can not delete linux user %s, this is what we get: \n %s") % (
+            _logger.warning(("Can not delete linux user %s, this is what we get: \n %s") % (
                 self.user, e))
 
     @api.one
