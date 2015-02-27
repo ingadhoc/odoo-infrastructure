@@ -10,11 +10,11 @@
     <field name="arch" type="xml">
         <search string="instance">
             <field name="number"/>
-            <field name="name"/>
-            <field name="type"/>
+            <field name="display_name"/>
             <field name="xml_rpc_port"/>
-            <field name="db_filter"/>
             <field name="user"/>
+            <field name="type"/>
+            <field name="db_filter"/>
             <field name="server_id"/>
             <field name="environment_id"/>
             <group expand="0" string="Group By...">

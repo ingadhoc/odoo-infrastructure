@@ -3,6 +3,7 @@ from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, sudo, reboot
+# from fabric.api import env, sudo, reboot
 from fabric.contrib.files import append
 # For postfix
 from fabric.api import *
@@ -10,6 +11,20 @@ from fabtools.deb import is_installed, preseed_package, install
 from fabtools.require.service import started
 import logging
 _logger = logging.getLogger(__name__)
+
+
+def custom_sudo(command, user=False):
+    env.warn_only = True
+    if user:
+        res = sudo(command, user=user)
+    else:
+        res = sudo(command)
+    env.warn_only = False
+    if res.failed:
+        raise Warning(_(
+            "Can not run command:\n%s\nThis is what we get:\n%s") % (
+            res.real_command, res.stdout))
+    return res
 
 
 class server(models.Model):
