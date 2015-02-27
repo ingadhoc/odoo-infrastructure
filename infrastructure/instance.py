@@ -376,6 +376,7 @@ class instance(models.Model):
         'environment_id.environment_repository_ids.addons_paths'
     )
     def _get_addons_path(self):
+        _logger.info("Getting Addons Path")
         addons_path = []
         try:
             for repository in self.environment_id.environment_repository_ids:
@@ -437,6 +438,7 @@ class instance(models.Model):
     # Actions
     @api.multi
     def delete(self):
+        _logger.info("Deleting Instance")
         if self.database_ids:
             raise Warning(_(
                 'You can not delete an instance that has databases'))
@@ -635,6 +637,7 @@ class instance(models.Model):
 
     @api.one
     def start_service(self):
+        _logger.info("Starting Service")
         self.environment_id.server_id.get_env()
         self.stop_service()
         # TODO no anda este verificador de fabric seguramente porque el servicio esta mal, habria que mejroarlo robando lo nuevo de odoo
@@ -645,6 +648,7 @@ class instance(models.Model):
 
     @api.one
     def stop_service(self):
+        _logger.info("Stopping Service")
         self.environment_id.server_id.get_env()
         # if fabtools.service.is_running(self.service_file):
         fabtools.service.stop(self.service_file)
