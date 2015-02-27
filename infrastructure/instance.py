@@ -4,8 +4,9 @@ from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import shell_env
-from .server import custom_sudo as sudo
 # from fabric.api import sudo, shell_env
+# utilizamos nuestro custom sudo que da un warning
+from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from ast import literal_eval
 import os

@@ -5,7 +5,9 @@ import xmlrpclib
 import socket
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-from fabric.api import sudo
+# from fabric.api import sudo
+# utilizamos nuestro custom sudo que da un warning
+from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from erppeek import Client
 from openerp.exceptions import Warning
