@@ -28,8 +28,6 @@ def custom_sudo(command, user=False):
             res.real_command, res.stdout))
     return res
 
-sudo = custom_sudo
-
 
 class server(models.Model):
 
@@ -407,7 +405,7 @@ class server(models.Model):
     def restart_postgres(self):
         self.get_env()
         try:
-            sudo('service postgres restart')
+            custom_sudo('service postgres restart')
         except:
             raise except_orm(
                 _('Could Not Restart Service!'),
@@ -418,7 +416,7 @@ class server(models.Model):
         _logger.info("Restarting nginx")
         self.get_env()
         try:
-            sudo('service nginx restart')
+            custom_sudo('service nginx restart')
         except:
             raise except_orm(
                 _('Could Not Restart Service!'),
@@ -429,7 +427,7 @@ class server(models.Model):
         _logger.info("Reloading nginx")
         self.get_env()
         try:
-            sudo('nginx -s reload')
+            custom_sudo('nginx -s reload')
         except:
             raise except_orm(
                 _('Could Not Reload Service!'),
