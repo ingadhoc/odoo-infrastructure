@@ -15,6 +15,8 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+# TODO deberiamos cambiar esto por los metodos propios de fabtools para
+# gestionar errores asi tmb, por ejemplo, lo toma fabtools y otros comandos
 def custom_sudo(command, user=False):
     env.warn_only = True
     if user:

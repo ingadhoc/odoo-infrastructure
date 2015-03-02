@@ -517,8 +517,8 @@ class database(models.Model):
                 sock = self.get_sock(max_attempts=1000)
                 sock.duplicate_database(
                     self.instance_id.admin_pass, self.name, new_database_name)
-                client.model('db.database').backups_state(
-                    new_database_name, backups_enable)
+                # client.model('db.database').backups_state(
+                #     new_database_name, backups_enable)
                 # restart the instance with default config
                 instance.update_conf_file()
                 instance.start_service()
@@ -624,6 +624,11 @@ class database(models.Model):
     @api.one
     def update_backups_data(self):
         client = self.get_client()
+        modules = ['database_tools']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(
+                    _("You can not Update Backups Data if module '%s' is not installed in the database") % (module))
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
         backups_data = client.read(
