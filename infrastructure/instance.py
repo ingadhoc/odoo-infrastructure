@@ -86,7 +86,16 @@ class instance(models.Model):
         string='Limit Time Real',
         required=True,
         default=120,
-        help='Maximum allowed Real time per request. The default odoo value is 120 but we use 300 to avoid some workers timeout error',
+        help='Maximum allowed Real time per request. The default odoo value is 120 but sometimes we use 300 to avoid some workers timeout error',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+    )
+
+    limit_time_cpu = fields.Integer(
+        string='Limit Time CPU',
+        required=True,
+        default=120,
+        help='Maximum allowed CPU time per request. The default odoo value is 60 but sometimes we use 120 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
@@ -509,6 +518,7 @@ class instance(models.Model):
         command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
         command += ' --logfile=' + self.logfile
         command += ' --limit-time-real=' + str(self.limit_time_real)
+        command += ' --limit-time-cpu=' + str(self.limit_time_cpu)
         command += ' --db_maxconn=' + str(self.db_maxconn)
 
         if self.environment_id.environment_version_id.name in ('8.0', 'master'):
