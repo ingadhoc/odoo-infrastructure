@@ -17,10 +17,15 @@ _logger = logging.getLogger(__name__)
 
 # TODO deberiamos cambiar esto por los metodos propios de fabtools para
 # gestionar errores asi tmb, por ejemplo, lo toma fabtools y otros comandos
-def custom_sudo(command, user=False):
+def custom_sudo(command, user=False, group=False):
+    # TODO esto habria que pasrlo con *args, **kwargs
     env.warn_only = True
-    if user:
+    if user and group:
+        res = sudo(command, user=user, group=group)
+    elif user:
         res = sudo(command, user=user)
+    elif group:
+        res = sudo(command, group=group)
     else:
         res = sudo(command)
     env.warn_only = False
@@ -91,18 +96,21 @@ class server(models.Model):
         'res.partner',
         string='Holder',
         required=True,
+        help='Partner that you should contact related to server service.'
     )
 
     owner_id = fields.Many2one(
         'res.partner',
         string='Owner',
         required=True,
+        help='Owner of the server, the one you should contacto to make changes on, for example, hardware.'
     )
 
     used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
         required=True,
+        help='Partner that can contact you and ask for changes on server configuration'
     )
 
     database_ids = fields.One2many(
