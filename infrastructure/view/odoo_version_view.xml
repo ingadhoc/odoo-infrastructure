@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- infrastructure.odoo_version -->
+<openerp>
+<data>
+
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_odoo_version_filter" model="ir.ui.view">
+    <field name="name">infrastructure.odoo_version.select</field>
+    <field name="model">infrastructure.odoo_version</field>
+    <field name="arch" type="xml">
+        <search string="odoo_version">
+            <field name="name"/>
+            <field name="default_branch_id"/>
+        </search>
+    </field>
+</record>
+
+<!-- FORMVIEW -->
+<record id="view_infrastructure_odoo_version_form" model="ir.ui.view">
+    <field name="name">infrastructure.odoo_version.form</field>
+    <field name="model">infrastructure.odoo_version</field>
+    <field name="arch" type="xml">
+        <form string="odoo_version">
+            <header>
+            </header>
+            <sheet string="odoo_version">
+             <group>
+                <field name="name"/>
+                <field name="sufix"/>
+                <field name="default_branch_id"/>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_odoo_version_tree" model="ir.ui.view">
+    <field name="name">infrastructure.odoo_version.tree</field>
+    <field name="model">infrastructure.odoo_version</field>
+    <field name="arch" type="xml">
+        <tree string="odoo_version">
+            <field name="name"/>
+            <field name="sufix"/>
+            <field name="default_branch_id"/>
+        </tree>
+    </field>
+</record>
+
+<record id="action_infrastructure_odoo_version_odoo_versions" model="ir.actions.act_window">
+    <field name="name">Environment Versions</field>
+    <field name="res_model">infrastructure.odoo_version</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_infrastructure_odoo_version_tree"/>
+    <field name="search_view_id" ref="view_infrastructure_odoo_version_filter"/>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    name="Environment Versions"
+    id="menu_odoo_versions"
+    sequence="20"
+    action="action_infrastructure_odoo_version_odoo_versions"
+    parent="menu_serv__env_and_inst"
+    groups="group_manager"
+    />
+
+</data>
+</openerp>

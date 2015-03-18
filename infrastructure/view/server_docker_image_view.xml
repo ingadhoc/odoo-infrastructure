@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- FORMVIEW -->
+<record id="view_infrastructure_server_docker_image_form" model="ir.ui.view">
+    <field name="name">infrastructure.server_docker_image.form</field>
+    <field name="model">infrastructure.server_docker_image</field>
+    <field name="arch" type="xml">
+        <form string="Server Docker Image">
+            <header>
+                <button string="Pull Image"
+                    icon="gtk-go-down"
+                    type="object"
+                    name="pull_image"/>
+            </header>
+            <sheet>
+             <group>
+                <field name="docker_image_id"/>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_server_docker_image_tree" model="ir.ui.view">
+    <field name="name">infrastructure.server_docker_image.tree</field>
+    <field name="model">infrastructure.server_docker_image</field>
+    <field name="arch" type="xml">
+        <tree string="Server Docker Image" editable="bottom">
+            <field name="docker_image_id"/>
+            <button string="Pull Image"
+                icon="gtk-go-down"
+                type="object"
+                name="pull_image"/>
+            <button string="Pull Image Detached"
+                icon="gtk-go-down"
+                type="object"
+                name="pull_image_detached"/>
+        </tree>
+    </field>
+</record>
+
+</data>
+</openerp>

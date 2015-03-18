@@ -386,7 +386,8 @@ class database(models.Model):
         """Funcion que utliza erpeek para crear bds"""
         _logger.info("Creating db '%s'" % (self.name))
         client = self.get_client(not_database=True)
-        lang = self.databaset_type_id.install_lang_id and self.databaset_type_id.install_lang_id.code or'en_US'
+        db_type = self.database_type_id
+        lang = db_type.install_lang_id and db_type.install_lang_id.code or 'en_US'
         client.create_database(
             self.instance_id.admin_pass,
             self.name,

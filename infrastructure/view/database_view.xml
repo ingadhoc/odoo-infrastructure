@@ -97,7 +97,7 @@
                                 type="object"
                                 class="oe_link oe_read_only"/>
                         </div>
-                        <label for="main_hostname"/>
+                        <field name="main_hostname"/>
                     </group>
                     <group>
                         <field name="demo_data"/>

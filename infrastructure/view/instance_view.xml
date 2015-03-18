@@ -105,11 +105,20 @@
                         <field name="workers"/>
                     </group>
                     <group attrs="{'invisible':[('env_type','!=','docker')]}">
-                        <field name="odoo_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}"/>
-                        <field name="pg_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}"/>
+                        <label for="odoo_image_id"/>
+                        <div class="address_format">
+                            <field name="odoo_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 75%" />
+                            <field name="odoo_image_tag_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 24%" />
+                        </div>
+                        <label for="pg_image_id"/>
+                        <div class="address_format">
+                            <field name="pg_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 75%" />
+                            <field name="pg_image_tag_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 24%" />
+                        </div>
                         <field name="odoo_container"/>
                         <field name="pg_container"/>
-                        <button type="object" string="Remove Containers" class="oe_link" name="remove_containers" states="draft" confirm="Remove Containers in Order To Create New Ones"/>
+                        <!-- TODO ver si agregamos o no este boton de remove containers -->
+                        <!-- <button type="object" string="Remove Containers" class="oe_link" name="remove_containers" states="draft" confirm="Remove Containers in Order To Create New Ones"/> -->
                     </group>
                     <group attrs="{'invisible':[('env_type','=','docker')]}">
                         <field name="user" attrs="{'required':[('env_type','!=','docker')]}"/>

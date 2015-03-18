@@ -44,10 +44,6 @@ class instance(models.Model):
         },
     }
 
-    @api.model
-    def get_database_type_id(self):
-        return self.env['infrastructure.database_type'].search([], limit=1)
-
     number = fields.Integer(
         string='Number',
         required=True,
@@ -61,7 +57,6 @@ class instance(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         track_visibility='onchange',
-        default=get_database_type_id,
         copy=False,
     )
     display_name = fields.Char(
@@ -239,7 +234,7 @@ class instance(models.Model):
         string='User',
         # compute='_get_user',
         # store=True,
-        required=True,
+        # required=True,
         # readonly=True,
         states={'draft': [('readonly', False)]}
     )
@@ -372,11 +367,26 @@ class instance(models.Model):
         domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'odoo')]",
         states={'draft': [('readonly', False)]}
     )
+    odoo_image_tag_id = fields.Many2one(
+        'infrastructure.docker_image.tag',
+        string='Tag',
+        readonly=True,
+        domain="[('docker_image_id', '=', odoo_image_id)]",
+        states={'draft': [('readonly', False)]}
+    )
     pg_image_id = fields.Many2one(
         'infrastructure.docker_image',
         string='Postgres Image',
         readonly=True,
-        domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'postgresql')]",
+        domain="[('odoo_image_ids', '=', odoo_image_id)]",
+        # domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'postgresql')]",
+        states={'draft': [('readonly', False)]}
+    )
+    pg_image_tag_id = fields.Many2one(
+        'infrastructure.docker_image.tag',
+        string='Tag',
+        readonly=True,
+        domain="[('docker_image_id', '=', pg_image_id)]",
         states={'draft': [('readonly', False)]}
     )
     odoo_container = fields.Char(
@@ -535,13 +545,46 @@ class instance(models.Model):
     @api.one
     @api.onchange('environment_id')
     def _onchange_environment(self):
+        # Get same env instances for database type and instance number
         instances = self.search(
             [('environment_id', '=', self.environment_id.id)],
             order='number desc',
             )
+        actual_db_type_ids = [x.database_type_id.id for x in instances]
         self.number = instances and instances[0].number + 1 or 1
+        self.database_type_id = self.env[
+            'infrastructure.database_type'].search(
+                [('id', '!=', actual_db_type_ids)],
+                limit=1
+                )
+
+        # Set workers
         number_of_processors = self.environment_id.server_id.number_of_processors
         self.workers = (number_of_processors * 2) + 1
+
+        # get docker images
+        docker_image_ids = [
+            x.docker_image_id.id for x in self.environment_id.server_id.server_docker_image_ids]
+        docker_images = self.env['infrastructure.docker_image']
+        odoo_images = docker_images.search([
+            ('service', '=', 'odoo'),
+            ('id', 'in', docker_image_ids),
+            ('odoo_version_id', '=', self.environment_id.odoo_version_id.id)
+            ], limit=1)
+        self.odoo_image_id = odoo_images
+
+    @api.one
+    @api.onchange('odoo_image_id')
+    def _onchange_docker_image(self):
+        tags = self.odoo_image_id.tag_ids
+        pg_images = self.odoo_image_id.pg_image_ids
+        self.odoo_image_tag_id = tags and tags[0] or False
+        self.pg_image_id = pg_images and pg_images[0] or False
+
+    @api.one
+    @api.onchange('pg_image_id')
+    def _onchange_pg_image(self):
+        self.pg_image_tag_id = self.pg_image_id.tag_ids
 
     @api.one
     @api.onchange('name', 'environment_id')
@@ -1042,7 +1085,7 @@ class instance(models.Model):
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         nginx_site_file_path = os.path.join(
             nginx_sites_path,
-            self.service_file
+            self.display_name
         )
         try:
             sudo('rm -f %s' % nginx_site_file_path)
@@ -1073,10 +1116,10 @@ class instance(models.Model):
 
         acces_log = os.path.join(
             self.environment_id.server_id.nginx_log_path,
-            'access_' + re.sub('[-]', '_', self.service_file))
+            'access_' + re.sub('[-]', '_', self.display_name))
         error_log = os.path.join(
             self.environment_id.server_id.nginx_log_path,
-            'error_' + re.sub('[-]', '_', self.service_file))
+            'error_' + re.sub('[-]', '_', self.display_name))
         xmlrpc_port = self.xml_rpc_port
 
         nginx_long_polling = ''
@@ -1106,7 +1149,7 @@ class instance(models.Model):
         # Check if file already exists and delete it
         nginx_site_file_path = os.path.join(
             nginx_sites_path,
-            self.service_file
+            self.display_name
         )
         if exists(nginx_site_file_path, use_sudo=True):
             sudo('rm ' + nginx_site_file_path)

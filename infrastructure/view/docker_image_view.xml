@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<menuitem
+    id="menu_docker"
+    sequence="10"
+    name="Docker"
+    parent="menu_configuration"
+    groups="group_manager"
+    />
+
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_docker_image" model="ir.ui.view">
+    <field name="name">infrastructure.docker_image.select</field>
+    <field name="model">infrastructure.docker_image</field>
+    <field name="arch" type="xml">
+        <search string="Docker Image">
+            <field name="name"/>
+            <field name="service"/>
+            <field name="pull_name"/>
+        </search>
+    </field>
+</record>
+
+<!-- FORMVIEW -->
+<record id="view_infrastructure_docker_image_form" model="ir.ui.view">
+    <field name="name">infrastructure.docker_image.form</field>
+    <field name="model">infrastructure.docker_image</field>
+    <field name="arch" type="xml">
+        <form string="Docker Image">
+            <header>
+            </header>
+            <sheet>
+             <group>
+                <field name="name"/>
+                <field name="service"/>
+                <field name="prefix"/>
+                <field name="pull_name"/>
+                <field name="odoo_version_id" attrs="{'invisible':[('service', '!=', 'odoo')],'required':[('service', '=', 'odoo')]}"/>
+                <field name="pg_image_ids" widget="many2many_tags" attrs="{'invisible':[('service', '!=', 'odoo')],'required':[('service', '=', 'odoo')]}"/>
+                <field name="tag_ids">
+                    <tree editable="top">
+                        <field name="sequence" widget="handle"/>
+                        <field name="name"/>
+                    </tree>
+                </field>
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_docker_image_tree" model="ir.ui.view">
+    <field name="name">infrastructure.docker_image.tree</field>
+    <field name="model">infrastructure.docker_image</field>
+    <field name="arch" type="xml">
+        <tree string="docker_image">
+            <field name="name"/>
+            <field name="service"/>
+            <field name="prefix"/>
+            <field name="pull_name"/>
+        </tree>
+    </field>
+</record>
+
+<record id="action_infrastructure_docker_image" model="ir.actions.act_window">
+    <field name="name">Docker Images</field>
+    <field name="res_model">infrastructure.docker_image</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[]</field>
+</record>
+
+<menuitem
+    id="menu_docker_images"
+    sequence="100"
+    action="action_infrastructure_docker_image"
+    parent="menu_docker"
+    />
+
+</data>
+</openerp>
