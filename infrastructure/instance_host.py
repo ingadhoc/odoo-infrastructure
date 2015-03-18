@@ -4,6 +4,7 @@ from openerp import models, fields, api
 
 
 class instance_host(models.Model):
+
     """"""
     # TODO name should be readonly but it does not save the value
     # , for now we keep it writable
@@ -21,6 +22,7 @@ class instance_host(models.Model):
         string='Subdomain'
     )
 
+    # TODO borrar esto
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
         string='Database Type'
@@ -47,6 +49,14 @@ class instance_host(models.Model):
         related='instance_id.environment_id.server_id',
         store=True,
         readonly=True
+    )
+
+    type = fields.Selection(
+        [('main', 'Main'),
+         ('redirect_to_main', 'Redirect To Main'),
+         ('other', 'Other')],
+        string='Main?',
+        default='main',
     )
 
     wildcard = fields.Boolean(

@@ -8,7 +8,7 @@
     <field name="name">infrastructure.environment_repository.select</field>
     <field name="model">infrastructure.environment_repository</field>
     <field name="arch" type="xml">
-        <search string="environment_repository" version="7.0">
+        <search string="environment_repository">
             <group string="By Attribute">
                 <field name="server_repository_id" string="Server Repository"/>
                 <field name="branch_id" string="Specific Branch"/>
@@ -26,7 +26,7 @@
     <field name="name">infrastructure.environment_repository.form</field>
     <field name="model">infrastructure.environment_repository</field>
     <field name="arch" type="xml">
-        <form string="environment_repository" version="7.0">
+        <form string="environment_repository">
             <header>
             </header>
             <sheet string="environment_repository">

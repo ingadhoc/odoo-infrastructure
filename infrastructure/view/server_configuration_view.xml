@@ -8,12 +8,9 @@
     <field name="name">infrastructure.server_configuration.select</field>
     <field name="model">infrastructure.server_configuration</field>
     <field name="arch" type="xml">
-        <search string="server_configuration" version="7.0">
-            <group string="By Attribute">
-                <field name="name" string="Name"/>
-            </group>
-            <group string="By object">
-            </group>
+        <search string="server_configuration">
+            <field name="name"/>
+            <field name="distrib_codename"/>
         </search>
     </field>
 </record>
@@ -23,12 +20,13 @@
     <field name="name">infrastructure.server_configuration.form</field>
     <field name="model">infrastructure.server_configuration</field>
     <field name="arch" type="xml">
-        <form string="server_configuration" version="7.0">
+        <form string="server_configuration">
             <header>
             </header>
             <sheet string="server_configuration">
              <group>
                 <field name="name"/>
+                <field name="distrib_codename"/>
                 <field name="install_command_ids"/>
              </group>
             </sheet>
@@ -43,6 +41,7 @@
     <field name="arch" type="xml">
         <tree string="server_configuration">
             <field name="name"/>
+            <field name="distrib_codename"/>
         </tree>
     </field>
 </record>

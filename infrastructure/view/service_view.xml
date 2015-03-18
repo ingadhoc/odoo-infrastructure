@@ -8,7 +8,7 @@
     <field name="name">infrastructure.service.select</field>
     <field name="model">infrastructure.service</field>
     <field name="arch" type="xml">
-        <search string="service" version="7.0">
+        <search string="service">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
             </group>
@@ -23,7 +23,7 @@
     <field name="name">infrastructure.service.form</field>
     <field name="model">infrastructure.service</field>
     <field name="arch" type="xml">
-        <form string="service" version="7.0">
+        <form string="service">
             <header>
             </header>
             <sheet string="service">

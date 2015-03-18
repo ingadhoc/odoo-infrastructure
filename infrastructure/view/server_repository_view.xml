@@ -8,7 +8,7 @@
     <field name="name">infrastructure.server_repository.select</field>
     <field name="model">infrastructure.server_repository</field>
     <field name="arch" type="xml">
-        <search string="server_repository" version="7.0">
+        <search string="server_repository">
             <group string="By Attribute">
                 <field name="repository_id" string="Repository"/>
                 <field name="path" string="Path"/>
@@ -24,7 +24,7 @@
     <field name="name">infrastructure.server_repository.form</field>
     <field name="model">infrastructure.server_repository</field>
     <field name="arch" type="xml">
-        <form string="server_repository" version="7.0">
+        <form string="server_repository">
             <header>
             </header>
             <sheet string="server_repository">

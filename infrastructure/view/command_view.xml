@@ -8,7 +8,7 @@
     <field name="name">infrastructure.command.select</field>
     <field name="model">infrastructure.command</field>
     <field name="arch" type="xml">
-        <search string="command" version="7.0">
+        <search string="command">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
                 <field name="command" string="Command"/>
@@ -24,7 +24,7 @@
     <field name="name">infrastructure.command.form</field>
     <field name="model">infrastructure.command</field>
     <field name="arch" type="xml">
-        <form string="command" version="7.0">
+        <form string="command">
             <header>
             </header>
             <sheet string="command">

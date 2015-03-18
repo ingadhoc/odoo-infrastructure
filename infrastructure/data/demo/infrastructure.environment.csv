@@ -1,4 +1,4 @@
-id,server_id/id,name,number,partner_id/id,environment_version_id/id,path,sources_path,backups_path,type
+id,server_id/id,name,number,partner_id/id,odoo_version_id/id,path,sources_path,backups_path,type
 inv_env_customer01-61,inf_server_srv01,customer01-61,20,inf_partner_customer01,inf_env_version_1,/opt/oerpenv/customer01-61,/opt/oerpenv/customer01-61/sources,/opt/oerpenv/customer01-61/backups,virtualenv
 inv_env_customer02-61,inf_server_srv01,customer02-61,21,inf_partner_customer02,inf_env_version_1,/opt/oerpenv/customer02-61,/opt/oerpenv/customer02-61/sources,/opt/oerpenv/customer02-61/backups,virtualenv
 inv_env_customer03-70,inf_server_srv02,customer03-70,20,base.partner_root,inf_env_version_2,/opt/oerpenv/customer03-61,/opt/oerpenv/customer03-70/sources,/opt/oerpenv/customer03-70/backups,virtualenv

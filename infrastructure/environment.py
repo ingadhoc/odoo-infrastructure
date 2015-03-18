@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import string
 from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
@@ -13,10 +13,6 @@ import os
 class environment(models.Model):
 
     """"""
-    # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder
-    # volver si no existe el path ni el source path y si no existen ambienets
-    # activos
-
     _name = 'infrastructure.environment'
     _description = 'environment'
     _inherit = ['ir.needaction_mixin', 'mail.thread']
@@ -48,14 +44,16 @@ class environment(models.Model):
     )
 
     type = fields.Selection(
-        [(u'virtualenv', u'Virtualenv'), (u'oerpenv', u'Oerpenv')],
+        [(u'virtualenv', u'Virtualenv'),
+         (u'docker', u'Docker'),
+         (u'oerpenv', u'Oerpenv')],
         string='Type',
         readonly=True,
         required=True,
         states={
             'draft': [('readonly', False)]
         },
-        default='virtualenv'
+        default='docker'
     )
 
     description = fields.Char(
@@ -72,8 +70,8 @@ class environment(models.Model):
         },
     )
 
-    environment_version_id = fields.Many2one(
-        'infrastructure.environment_version',
+    odoo_version_id = fields.Many2one(
+        'infrastructure.odoo_version',
         string='Version',
         required=True,
         readonly=True,
@@ -92,7 +90,6 @@ class environment(models.Model):
 
     install_server_command = fields.Char(
         string='Install Server Command',
-        required=True,
         default='python setup.py install'
     )
 
@@ -193,6 +190,10 @@ class environment(models.Model):
         },
     }
 
+    @api.multi
+    def repositories_pull_clone_and_checkout(self):
+        self.environment_repository_ids.repository_pull_clone_and_checkout()
+
     @api.one
     @api.depends(
         'environment_repository_ids',
@@ -240,35 +241,18 @@ class environment(models.Model):
             )
         self.number = environments and environments[0].number + 1 or 10
 
-    # No funciona como debe
-    # @api.one
-    # @api.onchange('server_id', 'environment_version_id')
-    # def _get_repositories(self):
-    #     if not self.server_id or not self.environment_version_id:
-    #         return False
-    #     server_default_repositories = [
-    #         x for x in self.server_id.server_repository_ids if x.repository_id.default_in_new_env]
-    #     server_actual_repositories = [
-    #         x for x in self.environment_repository_ids]
-    #     server_new_repositories = list(
-    #         set(server_default_repositories) - set(server_actual_repositories))
-    #     server_rep_vals = []
-
-    #     default_branch_id = self.environment_version_id.default_branch_id.id
-    #     for server_repository in server_new_repositories:
-    #         branch_ids = server_repository.repository_id.branch_ids
-    #         repo_branch_ids = [
-    #             x.id for x in server_repository.repository_id.branch_ids]
-    #         branch_id = branch_ids and branch_ids.ids[0] or False
-    #         if default_branch_id and default_branch_id in repo_branch_ids:
-    #             branch_id = default_branch_id
-    #         vals = {
-    #             'server_repository_id': server_repository.id,
-    #             'branch_id': branch_id,
-    #             'environment_id': self.id,
-    #         }
-    #         server_rep_vals.append([0, False, vals])
-    #     self.environment_repository_ids = server_rep_vals
+    @api.one
+    @api.onchange('partner_id', 'odoo_version_id')
+    def _get_name(self):
+        name = False
+        if self.partner_id and self.odoo_version_id:
+            partner_name = self.partner_id.commercial_partner_id.name
+            sufix = self.odoo_version_id.sufix
+            name = '%s-%s' % (partner_name, sufix)
+            valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+            name = ''.join(c for c in name if c in valid_chars)
+            name = name.replace(' ', '').lower()
+        self.name = name
 
     @api.one
     @api.onchange('name', 'server_id')
@@ -298,8 +282,28 @@ class environment(models.Model):
                     _("It seams that the environment already exists \
                         because there is a folder '%s'") % (self.path))
             sudo('virtualenv ' + self.path)
-        else:
+        elif self.type == 'oerpenv':
             raise Warning(_("Type '%s' not implemented yet.") % (self.type))
+
+    @api.multi
+    def add_repositories(self):
+        branch_id = self.odoo_version_id.default_branch_id.id
+        server_actual_repository_ids = [
+            x.server_repository_id.id for x in self.environment_repository_ids]
+        repositories = self.env['infrastructure.server_repository'].search([
+            ('repository_id.default_in_new_env', '=', 'True'),
+            ('server_id', '=', self.server_id.id),
+            ('repository_id.branch_ids', '=', branch_id),
+            ('id', 'not in', server_actual_repository_ids),
+            ])
+
+        for server_repository in repositories:
+            vals = {
+                'server_repository_id': server_repository.id,
+                'branch_id': branch_id,
+                'environment_id': self.id,
+            }
+            self.environment_repository_ids.create(vals)
 
     @api.one
     def make_env_paths(self):
@@ -363,6 +367,7 @@ class environment(models.Model):
     def create_environment(self):
         self.make_environment()
         self.make_env_paths()
+        self.add_repositories()
         self.signal_workflow('sgn_to_active')
 
     @api.multi

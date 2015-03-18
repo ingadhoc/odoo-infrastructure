@@ -13,7 +13,10 @@ class server_configuration(models.Model):
         string='Name',
         required=True
     )
-
+    distrib_codename = fields.Char(
+        string='Distribution Codename',
+        required=True
+    )
     install_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         'server_configuration_id',
@@ -21,13 +24,11 @@ class server_configuration(models.Model):
         context={'default_type': 'installation'},
         domain=[('type', '=', 'installation')]
     )
-
     server_ids = fields.One2many(
         'infrastructure.server',
         'server_configuration_id',
         string='server_ids'
     )
-
     maint_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         'server_configuration_id',

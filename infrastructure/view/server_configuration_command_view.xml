@@ -8,7 +8,7 @@
     <field name="name">infrastructure.server_configuration_command.select</field>
     <field name="model">infrastructure.server_configuration_command</field>
     <field name="arch" type="xml">
-        <search string="server_configuration_command" version="7.0">
+        <search string="server_configuration_command">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
                 <field name="command" string="Command"/>
@@ -24,7 +24,7 @@
     <field name="name">infrastructure.server_configuration_command.form</field>
     <field name="model">infrastructure.server_configuration_command</field>
     <field name="arch" type="xml">
-        <form string="server_configuration_command" version="7.0">
+        <form string="server_configuration_command">
             <header>
             </header>
             <sheet string="server_configuration_command">

@@ -8,7 +8,7 @@
     <field name="name">infrastructure.db_filter.select</field>
     <field name="model">infrastructure.db_filter</field>
     <field name="arch" type="xml">
-        <search string="db_filter" version="7.0">
+        <search string="db_filter">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
                 <field name="rule" string="Rule"/>
@@ -24,7 +24,7 @@
     <field name="name">infrastructure.db_filter.form</field>
     <field name="model">infrastructure.db_filter</field>
     <field name="arch" type="xml">
-        <form string="db_filter" version="7.0">
+        <form string="db_filter">
             <header>
             </header>
             <sheet string="db_filter">

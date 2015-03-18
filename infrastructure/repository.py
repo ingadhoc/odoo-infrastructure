@@ -56,7 +56,6 @@ class repository(models.Model):
     default_in_new_env = fields.Boolean(
         string='Default in new Environment?',
         help="Not implemented yet",
-        readonly=True,
     )
 
     install_server_command = fields.Char(

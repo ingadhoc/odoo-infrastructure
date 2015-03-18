@@ -9,6 +9,7 @@ from fabric.api import env, reboot
 from fabric.contrib.files import append
 # For postfix
 from fabric.api import *
+import fabtools
 from fabtools.deb import is_installed, preseed_package, install
 from fabtools.require.service import started
 import logging
@@ -17,7 +18,7 @@ _logger = logging.getLogger(__name__)
 
 # TODO deberiamos cambiar esto por los metodos propios de fabtools para
 # gestionar errores asi tmb, por ejemplo, lo toma fabtools y otros comandos
-def custom_sudo(command, user=False, group=False):
+def custom_sudo(command, user=False, group=False, dont_raise=False):
     # TODO esto habria que pasrlo con *args, **kwargs
     env.warn_only = True
     if user and group:
@@ -28,11 +29,16 @@ def custom_sudo(command, user=False, group=False):
         res = sudo(command, group=group)
     else:
         res = sudo(command)
-    env.warn_only = False
     if res.failed:
-        raise Warning(_(
-            "Can not run command:\n%s\nThis is what we get:\n%s") % (
-            res.real_command, res.stdout))
+        if dont_raise:
+            _logger.warning((
+                "Can not run command:\n%s\nThis is what we get:\n%s") % (
+                res.real_command, unicode(res.stdout, 'utf-8')))
+        else:
+            raise Warning(_(
+                "Can not run command:\n%s\nThis is what we get:\n%s") % (
+                res.real_command, unicode(res.stdout, 'utf-8')))
+    env.warn_only = False
     return res
 
 
@@ -64,136 +70,120 @@ class server(models.Model):
     name = fields.Char(
         string='Name',
         required=True,
-    )
-
+        )
     ip_address = fields.Char(
         string='IP Address',
         required=True,
-    )
-
+        )
     ssh_port = fields.Char(
         string='SSH Port',
         required=True,
         default=22,
-    )
-
+        )
     main_hostname = fields.Char(
         string='Main Hostname',
         required=True,
-    )
-
+        )
     user_name = fields.Char(
         string='User Name',
         required=True,
-    )
-
+        )
+    number_of_processors = fields.Integer(
+        string='Number of Processors',
+        required=True,
+        help="This is used to suggest instance workers qty, you can get this information with: grep processor /proc/cpuinfo | wc -l",
+        )
     password = fields.Char(
         string='Password',
         required=True,
-    )
-
+        )
     holder_id = fields.Many2one(
         'res.partner',
         string='Holder',
         required=True,
         help='Partner that you should contact related to server service.'
-    )
-
+        )
     owner_id = fields.Many2one(
         'res.partner',
         string='Owner',
         required=True,
         help='Owner of the server, the one you should contacto to make changes on, for example, hardware.'
-    )
-
+        )
     used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
         required=True,
         help='Partner that can contact you and ask for changes on server configuration'
-    )
-
+        )
     database_ids = fields.One2many(
         'infrastructure.database',
         'server_id',
         string='Databases',
-    )
-
+        )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases',
-    )
-
+        )
     instance_ids = fields.One2many(
         'infrastructure.instance',
         'server_id',
         string='Databases',
-    )
-
+        )
     instance_count = fields.Integer(
         string='# Instances',
         compute='_get_instances',
-    )
-
+        )
     software_data = fields.Html(
         string='Software Data',
-    )
+        )
 
     hardware_data = fields.Html(
         string='Hardware Data',
-    )
-
+        )
     contract_data = fields.Html(
         string='Contract Data',
-    )
-
+        )
     note = fields.Html(
         string='Note',
-    )
-
+        )
     base_path = fields.Char(
         string='Base path',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo',
-    )
-
+        )
     color = fields.Integer(
         string='Color Index',
-    )
-
+        )
     sources_path = fields.Char(
         string='Sources Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/sources',
-    )
-
-    service_path = fields.Char(
-        string='Service Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
-        default='/etc/init.d',
-    )
-
+        )
     instance_user_group = fields.Char(
         string='Instance Users Group',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='odoo',
-    )
-
+        )
     nginx_log_path = fields.Char(
         string='Nginx Log Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/var/log/nginx',
-    )
+        )
+    nginx_sites_path = fields.Char(
+        string='Nginx Sites Path',
+        readonly=True,
+        required=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/nginx/sites-enabled',
+        )
 
     nginx_sites_path = fields.Char(
         string='Nginx Sites Path',
@@ -201,117 +191,96 @@ class server(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/sites-enabled',
-    )
-
-    nginx_sites_path = fields.Char(
-        string='Nginx Sites Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
-        default='/etc/nginx/sites-enabled',
-    )
-
+        )
     postgres_superuser = fields.Char(
         string='Postgres Superuser',
         help="Postgres Superuser. You can record and existing one or create a new one with an installation command",
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='odoo',
-    )
-
+        )
     postgres_superuser_pass = fields.Char(
         string='Postgres Superuser Pwd',
         help="Postgres Superuser Password. You can record and existing one or create a new one with an installation command",
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     gdrive_account = fields.Char(
         string='Gdrive Account',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     gdrive_passw = fields.Char(
         string='Gdrive Password',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     gdrive_space = fields.Char(
         string='Gdrive Space',
-    )
-
+        )
     open_ports = fields.Char(
         string='Open Ports',
-    )
-
+        )
     requires_vpn = fields.Boolean(
         string='Requires VPN?',
-    )
-
+        )
     state = fields.Selection(
         _states_,
         string="State",
         default='draft',
-    )
-
+        )
     server_service_ids = fields.One2many(
         'infrastructure.server_service',
         'server_id',
         string='Services',
-    )
-
+        )
     server_repository_ids = fields.One2many(
         'infrastructure.server_repository',
         'server_id',
         string='server_repository_ids',
-    )
-
+        )
+    server_docker_image_ids = fields.One2many(
+        'infrastructure.server_docker_image',
+        'server_id',
+        string='Docker Images',
+        )
     hostname_ids = fields.One2many(
         'infrastructure.server_hostname',
         'server_id',
         string='Hostnames',
-    )
-
+        )
     change_ids = fields.One2many(
         'infrastructure.server_change',
         'server_id',
         string='Changes',
-    )
-
+        )
     environment_ids = fields.One2many(
         'infrastructure.environment',
         'server_id',
         string='Environments',
         context={'from_server': True},
-    )
-
+        )
     server_configuration_id = fields.Many2one(
         'infrastructure.server_configuration',
         string='Server Config.',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     install_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         string='Installation Commands',
         related="server_configuration_id.install_command_ids",
-    )
-
+        )
     maint_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         string='Maintenance Commands',
         related="server_configuration_id.maint_command_ids",
-    )
-
+        )
     environment_count = fields.Integer(
         string='# Environment',
         compute='_get_environments',
-    )
-
+        )
     local_alias_path = fields.Char(
         string='Local Aliases Path',
         help='Local Alias Path For Catch All Configuration',
@@ -319,8 +288,7 @@ class server(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/aliases',
-    )
-
+        )
     virtual_alias_path = fields.Char(
         string='Virtual Aliases Path',
         readonly=True,
@@ -328,8 +296,7 @@ class server(models.Model):
         help='Virtual Alias Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
         default='/etc/postfix/virtual_aliases',
-    )
-
+        )
     virtual_domains_regex_path = fields.Char(
         string='Virtual Domain Regex Path',
         readonly=True,
@@ -337,13 +304,12 @@ class server(models.Model):
         help='Virtual Domain Regex Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
         default='/etc/postfix/virtual_domains_regex',
-    )
-
+        )
     postfix_hostname = fields.Char(
         string='Postfix Hostname',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
+        )
 
     _sql_constraints = [
         ('name_uniq', 'unique(name)',
@@ -393,18 +359,31 @@ class server(models.Model):
         return env
 
     @api.one
+    def test_and_get_data(self):
+        """ Test connection and check server data"""
+        self.get_env()
+        server_codename = fabtools.system.distrib_codename()
+        server_conf_codename = self.server_configuration_id.distrib_codename
+        if server_codename != server_conf_codename:
+            raise Warning(_("Server Codename is not the and Server configuration mismatch\
+                * Server Codename: %s\
+                * Server Configuration Codename: %s\
+                ") % (server_codename, server_conf_codename))
+        self.number_of_processors = fabtools.system.cpus()
+
+    @api.one
     def show_passwd(self):
         raise except_orm(
             _("Password for user '%s':") % self.user_name,
             _("%s") % self.password
-        )
+            )
 
     @api.one
     def show_pg_passwd(self):
         raise except_orm(
             _("Password for pg user '%s':") % self.postgres_superuser,
             _("%s") % self.postgres_superuser_pass
-        )
+            )
 
     @api.multi
     def reboot_server(self):

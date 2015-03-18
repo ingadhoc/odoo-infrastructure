@@ -8,13 +8,10 @@
     <field name="name">infrastructure.database_type.select</field>
     <field name="model">infrastructure.database_type</field>
     <field name="arch" type="xml">
-        <search string="database_type" version="7.0">
-            <group string="By Attribute">
-                <field name="name" string="Name"/>
-                <field name="prefix" string="Prefix"/>
-            </group>
-            <group string="By object">
-            </group>
+        <search string="database_type">
+            <field name="name"/>
+            <field name="prefix"/>
+            <field name="type"/>
         </search>
     </field>
 </record>
@@ -24,25 +21,21 @@
     <field name="name">infrastructure.database_type.form</field>
     <field name="model">infrastructure.database_type</field>
     <field name="arch" type="xml">
-        <form string="database_type" version="7.0">
+        <form string="database_type">
             <header>
             </header>
             <sheet string="database_type">
              <group>
+                <field name="type"/>
                 <field name="name"/>
                 <field name="prefix"/>
                 <field name="url_prefix"/>
-                <field name="automatic_drop"/>
-                <field name="automatic_drop_days"
-                    attrs="{'invisible':[('automatic_drop','!=',True)],'required':[('automatic_drop','=',True)]}"
-                    />
-                <field name="protect_db"/>
-                <field name="automatic_deactivation"/>
-                <field name="auto_deactivation_days"
-                    attrs="{'invisible':[('automatic_deactivation','!=',True)],'required':[('automatic_deactivation','=',True)]}"
-                    />
-                <field name="url_example"/>
-                <field name="db_name_example"/>
+                <field name="auto_deactivation_days"/>
+                <field name="auto_drop_days"/>
+                <field name="install_lang_id"/>
+                <field name="instance_admin_pass"/>
+                <field name="db_admin_pass"/>
+                <field name="db_filter"/>
              </group>
             </sheet>
         </form>
@@ -55,13 +48,14 @@
     <field name="model">infrastructure.database_type</field>
     <field name="arch" type="xml">
         <tree string="database_type">
+            <field name="sequence" widget="handle"/>
+            <field name="type"/>
             <field name="name"/>
             <field name="prefix"/>
             <field name="url_prefix"/>
-            <field name="automatic_drop"/>
-            <field name="protect_db"/>
-            <field name="automatic_deactivation"/>
             <field name="auto_deactivation_days"/>
+            <field name="auto_drop_days"/>
+            <field name="install_lang_id"/>
         </tree>
     </field>
 </record>

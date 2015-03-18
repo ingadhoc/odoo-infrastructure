@@ -9,17 +9,20 @@
     <field name="model">infrastructure.instance</field>
     <field name="arch" type="xml">
         <search string="instance">
-            <field name="number"/>
             <field name="display_name"/>
+            <field name="main_hostname"/>
+            <field name="number"/>
             <field name="xml_rpc_port"/>
             <field name="user"/>
-            <field name="type"/>
+            <!-- <field name="type"/> -->
+            <field name="database_type_id"/>
             <field name="db_filter"/>
             <field name="server_id"/>
             <field name="environment_id"/>
             <group expand="0" string="Group By...">
                 <filter string="Server" context="{'group_by':'server_id'}"/>
                 <filter string="Environment" context="{'group_by':'environment_id'}"/>
+                <filter string="Type" context="{'group_by':'database_type_id'}"/>
             </group>
         </search>
     </field>
@@ -32,6 +35,9 @@
     <field name="arch" type="xml">
         <form string="instance">
             <field name="id" invisible="1"/>
+            <field name="name" invisible="1"/>
+            <field name="env_type" invisible="1"/>
+            <field name="docker_image_ids" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
                     states="draft"
@@ -56,7 +62,8 @@
                         <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/>
                     </h2>
                     <h1>
-                        <field name="name" default_focus="1" placeholder="Name..."/>
+                        <field name="database_type_id" default_focus="1" placeholder="Type..."/>
+                        <!-- <field name="name" default_focus="1" placeholder="Name..."/> -->
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
@@ -79,7 +86,6 @@
                 <group>
                     <group>
                         <field name="number"/>
-                        <field name="user"/>
                         <label for="admin_pass"/>
                             <div>
                                 <field
@@ -91,43 +97,61 @@
                                     type="object"
                                     class="oe_link oe_read_only"/>
                             </div>
+                        <!-- TODO esta opcin la vamos a borrar -->
+                        <!-- <field name="run_on_sys_boot"/> -->
+                        <!-- TODO agregar funcionalidad para esto -->
                         <field name="db_filter"/>
-                        <field name="main_hostname" widget="url"/>
+                        <field name="unaccent"/>
+                        <field name="workers"/>
                     </group>
-                    <group>
-                        <field name="type"/>
-                        <field name="run_on_sys_boot"/>
-                        <field name="xml_rpc_port"/>
-                        <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
-                        <field name="longpolling_port"/>
-                        <field name="limit_time_real"/>
-                        <field name="limit_time_cpu"/>
-                        <field name="db_maxconn"/>
+                    <group attrs="{'invisible':[('env_type','!=','docker')]}">
+                        <field name="odoo_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}"/>
+                        <field name="pg_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}"/>
+                        <field name="odoo_container"/>
+                        <field name="pg_container"/>
+                        <button type="object" string="Remove Containers" class="oe_link" name="remove_containers" states="draft" confirm="Remove Containers in Order To Create New Ones"/>
+                    </group>
+                    <group attrs="{'invisible':[('env_type','=','docker')]}">
+                        <field name="user" attrs="{'required':[('env_type','!=','docker')]}"/>
+                        <field name="service_file" attrs="{'required':[('env_type','!=','docker')]}"/>
+                        <field name="run_server_command" attrs="{'required':[('env_type','!=','docker')]}"/>
                     </group>
                 </group>
                 <notebook>
                     <page string="Configuration">
-                        <group>
-                            <group>
-                                <field name="module_load"/>
-                                <field name="run_server_command"/>
-                                <field name="unaccent"/>
-                                <field name="proxy_mode"/>
-                                <field name="workers"/>
-                            </group>
-                            <group>
-                                <field name="conf_file_path"/>
-                                <field name="logfile"/>
-                                <field name="data_dir"/>
-                                <field name="service_file"/>
-                            </group>
+                        <group colspan="4">
+                            <field name="main_hostname" widget="url"/>
+                            <field name="type" invisible="1"/>
+                            <field name="addons_path"/>
                         </group>
-                        <label for="addons_path"/>
-                        <field name="addons_path"/>
+                        <!-- <label for="addons_path"/> -->
                         <!-- con este widget no funciona bien de una -->
                         <!-- <field name="instance_host_ids" widget="many2many_tags"/> -->
                         <label for="instance_host_ids"/>
                         <field name="instance_host_ids"/>
+                    </page>
+                    <page string="Advanced Conf">
+                        <group>
+                            <group>
+                                <field name="module_load"/>
+                                <field name="xml_rpc_port"/>
+                                <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
+                                <field name="longpolling_port"/>
+                                <field name="limit_time_real"/>
+                                <field name="limit_time_cpu"/>
+                                <field name="db_maxconn"/>
+                                <field name="proxy_mode"/>
+                            </group>
+                            <group>
+                                <field name="base_path"/>
+                                <field name="pg_data_path"/>
+                                <field name="sources_path"/>
+                                <field name="conf_path"/>
+                                <field name="conf_file_path"/>
+                                <field name="logfile"/>
+                                <field name="data_dir"/>
+                            </group>
+                        </group>
                     </page>
                     <page string="Notes">
                         <field name="note"/>
@@ -152,11 +176,10 @@
             colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
             >
             <field name="message_unread" invisible="1"/>
-            <field name="display_name"/>
             <field name="number"/>
-            <field name="xml_rpc_port"/>
-            <field name="db_filter"/>
-            <field name="user"/>
+            <field name="database_type_id"/>
+            <field name="display_name"/>
+            <field name="main_hostname" widget="url"/>
             <field name="server_id"/>
             <field name="environment_id"/>
             <field name="state" />

@@ -13,7 +13,6 @@ class repository_branch(models.Model):
         string='Name',
         required=True
     )
-
     repository_ids = fields.Many2many(
         'infrastructure.repository',
         'infrastructure_repository_ids_branch_ids_rel',

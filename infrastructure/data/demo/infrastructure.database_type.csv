@@ -1,7 +1,7 @@
-id,name,prefix,automatic_drop,automatic_drop_days,protect_db,automatic_deactivation,auto_deactivation_days,color,url_prefix,url_example,db_name_example
-inf_db_typ_upgr,Upgrade Test,upg,False,,False,False,,,upg,upg.customer.example.com,upg_customer
-inf_db_typ_train,Test & Training,test,False,,False,False,,,test,test.customer.example.com,test_customer
-inf_db_typ_prod,Production,prod,False,,True,False,,,,customer.example.com,prod_customer
-inf_db_typ_migr,Migration,mig,False,,True,False,,,mig,mig.customer.example.com,mig_customer
-inf_db_typ_trou,Support & Troubleshooting,sup,True,7,False,False,,,sup,sup.customer.example.com,sup_customer
-inf_db_typ_trial,Trial,prod,False,,True,True,30,,,customer.example.com,prod_customer
+id,name,prefix,automatic_drop,automatic_drop_days,protect_db,automatic_deactivation,auto_deactivation_days,color,url_prefix
+inf_db_typ_upgr,Upgrade Test,upg,False,,False,False,,,upg
+inf_db_typ_train,Test & Training,test,False,,False,False,,,test
+inf_db_typ_prod,Production,prod,False,,True,False,,,
+inf_db_typ_migr,Migration,mig,False,,True,False,,,mig
+inf_db_typ_trou,Support & Troubleshooting,sup,True,7,False,False,,,sup
+inf_db_typ_trial,Trial,prod,False,,True,True,30,,

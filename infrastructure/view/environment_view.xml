@@ -14,11 +14,11 @@
             <field name="type"/>
             <field name="description"/>
             <field name="partner_id"/>
-            <field name="environment_version_id"/>
+            <field name="odoo_version_id"/>
             <field name="server_id"/>
             <group expand="0" string="Group By...">
                 <filter string="Partner" context="{'group_by':'partner_id'}"/>
-                <filter string="Environment Version" context="{'group_by':'environment_version_id'}"/>
+                <filter string="Environment Version" context="{'group_by':'odoo_version_id'}"/>
                 <filter string="Server" context="{'group_by':'server_id'}"/>
             </group>
         </search>
@@ -57,8 +57,10 @@
                         <field name="server_id" class="oe_inline"/>
                     </h2>
                     <h1>
-                        <field name="name" default_focus="1" placeholder="Name...(ej. 'ingadhoc-80'"/>
-                        <field name="description" placeholder="Description..."/>
+                        <field name="partner_id" default_focus="1" placeholder="Partner..."/>
+                        <field name="odoo_version_id" placeholder="Environment Version..."/>
+                        <!-- <field name="name" default_focus="1" placeholder="Name...(ej. 'ingadhoc-80'"/> -->
+                        <!-- <field name="description" placeholder="Description..."/> -->
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
@@ -76,21 +78,32 @@
                 </div>
                 <group>
                     <group>
-                        <field name="number" placeholder="(2 digits, >= 10)"/>
-                        <field name="partner_id"/>
-                        <field name="type"/>
-                        <field name="environment_version_id"/>
+<!--                         <field name="partner_id"/>
+                        <field name="odoo_version_id"/> -->
+                        <field name="name"/>
+                        <field name="description"/>
                     </group>
                     <group>
-                        <field name="install_server_command"/>
-                        <field name="path"/>
-                        <field name="sources_path"/>
-                        <field name="backups_path"/>
+                        <field name="number"/>
+                        <field name="type"/>
                     </group>
                 </group>
                 <notebook>
-                    <page string="Configuration">
+                    <page string="Repositories">
+                        <button string="Pull, Clone to Env. and Checkout all Repositoires"
+                            icon="gtk-go-down"
+                            type="object"
+                            states="active"
+                            name="repositories_pull_clone_and_checkout"/>
                         <field name="environment_repository_ids" context="{'default_server_id': server_id}" states="active"/>
+                    </page>
+                    <page string="Advanced Conf.">
+                        <group>
+                            <field name="install_server_command" attrs="{'invisible':[('type','=','docker')],'required':[('type','!=','docker')]}"/>
+                            <field name="path"/>
+                            <field name="sources_path"/>
+                            <field name="backups_path"/>
+                        </group>
                     </page>
                     <page string="Notes">
                         <field name="note"/>
@@ -115,12 +128,12 @@
                 colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
                 >
                 <field name="message_unread" invisible="1"/>
-                <field name="name"/>
                 <field name="number"/>
                 <field name="type"/>
+                <field name="odoo_version_id"/>
+                <field name="name"/>
                 <field name="description"/>
                 <field name="partner_id"/>
-                <field name="environment_version_id"/>
                 <field name="server_id"/>
                 <field name="state"/>
             </tree>
@@ -136,7 +149,7 @@
       <field name="name"/>
       <field name="partner_id"/>
       <field name="description"/>
-      <field name="environment_version_id"/>
+      <field name="odoo_version_id"/>
       <templates>
         <t t-name="kanban-box">
             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click">
@@ -152,7 +165,7 @@
                 <div class="oe_kanban_content">
                     <h4 class="text-center"><strong><field name="name"/></strong></h4>
                     <div class="oe_clear"></div>
-                    <field name="environment_version_id"/>
+                    <field name="odoo_version_id"/>
                 </div>
             </div>
         </t>

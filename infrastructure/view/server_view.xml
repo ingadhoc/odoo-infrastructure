@@ -79,21 +79,31 @@
                 </div>
                 <group>
                     <group>
-                        <field name="ip_address"/>
+                        <label for="ip_address"/>
+                        <div>
+                            <field
+                                name="ip_address"
+                                class="oe_inline"/>
+                            <button name="test_and_get_data"
+                                string="⇒ Test and get Data"
+                                help="Test connection, check distribution and get processors data"
+                                type="object"
+                                class="oe_link oe_read_only"/>
+                        </div>
                         <field name="ssh_port"/>
                         <field name="requires_vpn"/>
                         <field name="user_name"/>
                         <label for="password"/>
-                            <div>
-                                <field
-                                    name="password"
-                                    password="True"
-                                    class="oe_inline"/>
-                                <button name="show_passwd"
-                                    string="⇒ View Password"
-                                    type="object"
-                                    class="oe_link oe_read_only"/>
-                            </div>
+                        <div>
+                            <field
+                                name="password"
+                                password="True"
+                                class="oe_inline"/>
+                            <button name="show_passwd"
+                                string="⇒ View Password"
+                                type="object"
+                                class="oe_link oe_read_only"/>
+                        </div>
                     </group>
                     <group>
                         <field name="base_path"/>
@@ -104,40 +114,59 @@
                     </group>
                 </group>
                 <notebook>
-                    <page string="More Info">
+                    <page string="Gral. Info">
                         <group>
                             <group>
-                                <field name="sources_path"/>
-                                <field name="service_path"/>
-                                <field name="nginx_sites_path"/>
-                                <field name="nginx_log_path"/>
-                                <field name="local_alias_path"/>
-                                <field name="virtual_alias_path"/>
-                                <field name="virtual_domains_regex_path"/>
+                                <field name="number_of_processors"/>
                                 <field name="postfix_hostname"/>
-                                <field name="postgres_superuser"/>
-                                <label for="password"/>
-                                    <div>
-                                        <field
-                                            name="postgres_superuser_pass"
-                                            password="True"
-                                            class="oe_inline"/>
-                                        <button name="show_pg_passwd"
-                                            string="⇒ View Password"
-                                            type="object"
-                                            class="oe_link oe_read_only"/>
-                                    </div>
+                                <field name="open_ports"/>
                             </group>
                             <group>
-                                <field name="open_ports"/>
                                 <field name="gdrive_account"/>
                                 <field name="gdrive_passw"/>
                                 <field name="gdrive_space"/>
                             </group>
                         </group>
                     </page>
+                    <page string="Advance Info">
+                        <group>
+                            <group>
+                                <field name="sources_path"/>
+                                <field name="nginx_sites_path"/>
+                                <field name="nginx_log_path"/>
+                                <field name="local_alias_path"/>
+                            </group>
+                            <group>
+                                <field name="virtual_alias_path"/>
+                                <field name="virtual_domains_regex_path"/>
+                                <field name="postgres_superuser"/>
+                                <label for="postgres_superuser_pass"/>
+                                <div>
+                                    <field
+                                        name="postgres_superuser_pass"
+                                        password="True"
+                                        class="oe_inline"/>
+                                    <button name="show_pg_passwd"
+                                        string="⇒ View Password"
+                                        type="object"
+                                        class="oe_link oe_read_only"/>
+                                </div>
+                            </group>
+                        </group>
+                    </page>
                     <page string="Repositories">
                        <field name="server_repository_ids"/>
+                    </page>
+                    <page string="Docker Images">
+                       <field name="server_docker_image_ids"/>
+                    </page>
+                    <page string="Installation">
+                        <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
+                        <field name="install_command_ids" context="{'server_id':id}"/>
+                    </page>
+                    <page string="Hostnames">
+                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
+                       <field name="hostname_ids"/>
                     </page>
                     <page string="Changes">
                        <field name="change_ids"/>
@@ -150,14 +179,6 @@
                            <field name="note"/>
                        </group>
                    </page>
-                    <page string="Installation">
-                        <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
-                        <field name="install_command_ids" context="{'server_id':id}"/>
-                    </page>
-                    <page string="Hostnames">
-                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
-                       <field name="hostname_ids"/>
-                    </page>
                </notebook>
             </sheet>
             <div class="oe_chatter">

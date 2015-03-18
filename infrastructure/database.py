@@ -21,10 +21,6 @@ _logger = logging.getLogger(__name__)
 class database(models.Model):
 
     """"""
-    # TODO agregar campos calculados
-    # Cantidad de usuarios
-    # Modulos instalados
-    # Ultimo acceso
     _name = 'infrastructure.database'
     _description = 'database'
     _inherit = ['ir.needaction_mixin', 'mail.thread']
@@ -118,6 +114,18 @@ class database(models.Model):
     deactivation_date = fields.Date(
         string='Deactivation Date',
         copy=False,
+        help='Depending on type it could be onl informative or could be automatically deactivated on this date',
+    )
+    drop_date = fields.Date(
+        string='Drop Date',
+        copy=False,
+        help='Depending on type it could be onl informative or could be automatically dropped on this date',
+    )
+    advance_type = fields.Selection(
+        related='database_type_id.type',
+        string='Type',
+        readonly=True,
+        store=True,
     )
     state = fields.Selection(
         _states_,
@@ -146,16 +154,10 @@ class database(models.Model):
         store=True,
         readonly=True,
     )
-    protected_db = fields.Boolean(
-        string='Protected DB?',
-        related='database_type_id.protect_db',
-        store=True,
-        readonly=True,
-    )
-    color = fields.Integer(
-        string='Color',
-        related='database_type_id.color',
-        store=True,
+    main_hostname = fields.Char(
+        string='Main Hostname',
+        related='instance_id.main_hostname',
+        widget='url',
         readonly=True,
     )
     backup_ids = fields.One2many(
@@ -179,9 +181,8 @@ class database(models.Model):
     admin_password = fields.Char(
         string='Admin Password',
         help='When trying to connect to the database first we are going to try by using the instance password and then with thisone.',
-        # required=True,
-        default='admin',
         readonly=True,
+        required=True,
         states={'draft': [('readonly', False)]},
         # deprecated=True,  # we use server admin pass to autheticate now
     )
@@ -203,7 +204,6 @@ class database(models.Model):
         # states={'draft': [('readonly', False)]},
         copy=False,
     )
-
     alias_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
         string='Alias Hostname',
@@ -243,6 +243,7 @@ class database(models.Model):
     @api.onchange('instance_id')
     def _onchange_instance(self):
         self.partner_id = self.instance_id.environment_id.partner_id
+        self.database_type_id = self.instance_id.database_type_id
 
     @api.one
     @api.depends('module_ids')
@@ -262,7 +263,7 @@ class database(models.Model):
         self.domain_alias = domain_alias
 
     @api.one
-    @api.depends()
+    @api.depends('instance_id')
     def get_mailgate_path(self):
         env_rep = self.env['infrastructure.environment_repository'].search([
             ('server_repository_id.repository_id.is_server', '=', True),
@@ -276,7 +277,7 @@ class database(models.Model):
         self.mailgate_path = mailgate_path
 
     @api.one
-    @api.depends()
+    @api.depends('virtual_alias', 'local_alias', 'instance_id')
     def get_aliases(self):
         virtual_alias = False
         local_alias = False
@@ -314,21 +315,31 @@ class database(models.Model):
                     or cancelled.'))
         return super(database, self).unlink()
 
-    @api.onchange('database_type_id')
+    @api.onchange('database_type_id', 'instance_id')
     def onchange_database_type_id(self):
-        if self.database_type_id:
-            self.name = self.database_type_id.prefix + '_'
-            # TODO send suggested backup data
+        if self.database_type_id and self.instance_id:
+            self.name = ('%s_%s') % (
+                self.database_type_id.prefix,
+                self.instance_id.environment_id.name.replace('-', '_')
+                )
+            self.admin_password = self.database_type_id.db_admin_pass or self.instance_id.name
 
     @api.one
     @api.onchange('database_type_id', 'issue_date')
     def get_deact_date(self):
         deactivation_date = False
-        if self.issue_date and self.database_type_id.auto_deactivation_days:
-            deactivation_date = (datetime.strptime(
-                self.issue_date, '%Y-%m-%d') + relativedelta(
-                days=self.database_type_id.auto_deactivation_days))
+        drop_date = False
+        if self.issue_date:
+            if self.database_type_id.auto_deactivation_days:
+                deactivation_date = (datetime.strptime(
+                    self.issue_date, '%Y-%m-%d') + relativedelta(
+                    days=self.database_type_id.auto_deactivation_days))
+            if self.database_type_id.auto_drop_days:
+                drop_date = (datetime.strptime(
+                    self.issue_date, '%Y-%m-%d') + relativedelta(
+                    days=self.database_type_id.auto_drop_days))
         self.deactivation_date = deactivation_date
+        self.drop_date = drop_date
 
     @api.one
     def show_passwd(self):
@@ -375,11 +386,12 @@ class database(models.Model):
         """Funcion que utliza erpeek para crear bds"""
         _logger.info("Creating db '%s'" % (self.name))
         client = self.get_client(not_database=True)
+        lang = self.databaset_type_id.install_lang_id and self.databaset_type_id.install_lang_id.code or'en_US'
         client.create_database(
             self.instance_id.admin_pass,
             self.name,
             demo=self.demo_data,
-            lang='en_US',
+            lang=lang,
             user_password=self.admin_password or 'admin')
         client = self.get_client()
         self.update_modules_data()

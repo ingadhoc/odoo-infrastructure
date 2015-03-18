@@ -70,7 +70,7 @@ class environment_repository(models.Model):
     @api.one
     @api.onchange('server_repository_id')
     def change_server_repository(self):
-        default_branch_id = self.environment_id.environment_version_id.default_branch_id.id
+        default_branch_id = self.environment_id.odoo_version_id.default_branch_id.id
         repo_branch_ids = [
             x.id for x in self.server_repository_id.repository_id.branch_ids]
         if default_branch_id and default_branch_id in repo_branch_ids:
@@ -174,6 +174,6 @@ class environment_repository(models.Model):
                 sudo(
                     activate_environment_command + pip_packages_install_command
                 )
-        else:
+        elif self.environment_id.type == 'oerpenv':
             raise Warning(_("Type '%s' not implemented yet.") %
                           (self.environment_id.type))

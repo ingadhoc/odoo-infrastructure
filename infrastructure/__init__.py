@@ -9,7 +9,7 @@ import database_module
 import db_filter
 import environment
 import environment_repository
-import environment_version
+import odoo_version
 import instance
 import instance_host
 import mailserver
@@ -25,4 +25,6 @@ import server_repository
 import server_service
 import service
 import service_command
+import docker_image
+import server_docker_image
 import wizard

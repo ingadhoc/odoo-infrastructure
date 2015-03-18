@@ -8,7 +8,7 @@
     <field name="name">infrastructure.server_change.select</field>
     <field name="model">infrastructure.server_change</field>
     <field name="arch" type="xml">
-        <search string="server_change" version="7.0">
+        <search string="server_change">
             <group string="By Attribute">
             <field name="name" string="Summary"/>
             <field name="date" string="Date"/>
@@ -26,7 +26,7 @@
     <field name="name">infrastructure.server_change.form</field>
     <field name="model">infrastructure.server_change</field>
     <field name="arch" type="xml">
-        <form string="server_change" version="7.0">
+        <form string="server_change">
             <header>
             </header>
             <sheet string="server_change">

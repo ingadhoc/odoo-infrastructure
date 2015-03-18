@@ -8,7 +8,7 @@
     <field name="name">infrastructure.repository_branch.select</field>
     <field name="model">infrastructure.repository_branch</field>
     <field name="arch" type="xml">
-        <search string="repository_branch" version="7.0">
+        <search string="repository_branch">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
             </group>
@@ -23,7 +23,7 @@
     <field name="name">infrastructure.repository_branch.form</field>
     <field name="model">infrastructure.repository_branch</field>
     <field name="arch" type="xml">
-        <form string="repository_branch" version="7.0">
+        <form string="repository_branch">
             <header>
             </header>
             <sheet string="repository_branch">

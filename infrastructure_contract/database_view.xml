@@ -20,7 +20,7 @@
     <field name="model">infrastructure.database</field>
     <field name="inherit_id" ref="infrastructure.view_infrastructure_database_form"/>
     <field name="arch" type="xml">
-        <field name="partner_id" position="after">
+        <field name="demo_data" position="before">
             <label for="contract_id"/>
             <div>
                 <field

@@ -8,7 +8,7 @@
     <field name="name">infrastructure.server_hostname.select</field>
     <field name="model">infrastructure.server_hostname</field>
     <field name="arch" type="xml">
-        <search string="server_hostname" version="7.0">
+        <search string="server_hostname">
             <group string="By Attribute">
                 <field name="name" string="Name"/>
                 <field name="wildcard" string="Wild Card"/>
@@ -24,7 +24,7 @@
     <field name="name">infrastructure.server_hostname.form</field>
     <field name="model">infrastructure.server_hostname</field>
     <field name="arch" type="xml">
-        <form string="server_hostname" version="7.0">
+        <form string="server_hostname">
             <header>
             </header>
             <sheet string="server_hostname">

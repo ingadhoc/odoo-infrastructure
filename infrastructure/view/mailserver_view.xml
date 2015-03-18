@@ -8,7 +8,7 @@
     <field name="name">infrastructure.mailserver.select</field>
     <field name="model">infrastructure.mailserver</field>
     <field name="arch" type="xml">
-        <search string="mailserver" version="7.0">
+        <search string="mailserver">
             <group string="By Attribute">
             </group>
             <group string="By object">

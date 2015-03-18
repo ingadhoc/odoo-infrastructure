@@ -8,13 +8,9 @@
     <field name="name">infrastructure.instance_host.select</field>
     <field name="model">infrastructure.instance_host</field>
     <field name="arch" type="xml">
-        <search string="instance_host" version="7.0">
-            <group string="By Attribute">
-                <field name="server_hostname_id" string="Server Hostname"/>
-                <field name="subdomain" string="Subdomain"/>
-            </group>
-            <group string="By object">
-            </group>
+        <search string="instance_host">
+            <field name="server_hostname_id" string="Server Hostname"/>
+            <field name="subdomain" string="Subdomain"/>
         </search>
     </field>
 </record>
@@ -24,7 +20,7 @@
     <field name="name">infrastructure.instance_host.form</field>
     <field name="model">infrastructure.instance_host</field>
     <field name="arch" type="xml">
-        <form string="instance_host" version="7.0">
+        <form string="instance_host">
             <header>
             </header>
             <sheet string="instance_host">
@@ -35,10 +31,12 @@
                 <field name="subdomain"
                     attrs="{'invisible':[('wildcard','!=',True)]}"
                     />
-                <field name="database_type_id"/>
+                <!-- TODO borrar esto -->
+                <!-- <field name="database_type_id"/> -->
                 <field name="wildcard"
                     invisible="True"
                     />
+                <field name="type"/>
                 <field name="name"/>
              </group>
             </sheet>
@@ -52,6 +50,7 @@
     <field name="model">infrastructure.instance_host</field>
     <field name="arch" type="xml">
         <tree string="instance_host">
+            <field name="type"/>
             <field name="server_hostname_id"/>
             <field name="subdomain"/>
             <field name="name"/>
