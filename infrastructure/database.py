@@ -374,6 +374,7 @@ class database(models.Model):
             user_password=self.admin_password or 'admin')
         client = self.get_client()
         self.update_modules_data()
+        self.install_base_modules()
         self.signal_workflow('sgn_to_active')
 
     @api.one
@@ -699,7 +700,7 @@ class database(models.Model):
             'state']
 
         client.model('ir.module.module').update_list()
-        modules_data = client.read(
+        modules_data = client.export_data(
             'ir.module.module', modules_domain, fields)
 
         modules_domain.append(('database_id', '=', self.id))

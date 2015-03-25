@@ -11,23 +11,22 @@ class database(models.Model):
     name = fields.Char(
         'Name',
         required=True,
-    )
+        )
     shortdesc = fields.Char(
         'Module Name',
         required=True,
-    )
+        )
     author = fields.Char(
         'Author',
         required=True,
-    )
+        )
     default_on_new_db = fields.Boolean(
         string='Default on New Database',
         default=True,
-    )
-
+        )
     sequence = fields.Integer(
         'Sequence',
-    )
+        )
     state = fields.Selection([
         ('not_available', 'Not Available'),
         ('uninstallable', 'Not Installable'),
@@ -39,7 +38,7 @@ class database(models.Model):
         ],
         'Status',
         compute='get_state',
-    )
+        )
 
     @api.one
     def get_state(self):
