@@ -34,21 +34,6 @@ class database(models.Model):
 
     _mail_post_access = 'read'
 
-    _track = {
-        'state': {
-            'infrastructure.database_draft':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-            'infrastructure.database_maintenance':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'maintenance',
-            'infrastructure.database_active':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-            'infrastructure.database_deactivated':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'deactivated',
-            'infrastructure.database_cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
-        },
-    }
-
     @api.model
     def _get_base_modules(self):
         base_modules = self.env['infrastructure.base.module'].search([

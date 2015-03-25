@@ -153,17 +153,6 @@ class environment(models.Model):
         compute='_get_sever_copied'
         )
 
-    # _track = {
-    #     'state': {
-    #         'infrastructure.environment_draft':
-    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-    #         'infrastructure.environment_active':
-    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-    #         'infrastructure.environment_cancel':
-    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
-    #     },
-    # }
-
     @api.multi
     def repositories_pull_clone_and_checkout(self):
         self.environment_repository_ids.repository_pull_clone_and_checkout()

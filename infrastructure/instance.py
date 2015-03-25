@@ -33,17 +33,6 @@ class instance(models.Model):
         ('cancel', 'Cancel'),
     ]
 
-    # _track = {
-    #     'state': {
-    #         'infrastructure.instance_draft':
-    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-    #         'infrastructure.instance_active':
-    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-    #         'infrastructure.instance_cancel':
-    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
-    #     },
-    # }
-
     number = fields.Integer(
         string='Number',
         required=True,
