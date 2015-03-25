@@ -33,8 +33,28 @@
                 <field name="auto_deactivation_days"/>
                 <field name="auto_drop_days"/>
                 <field name="install_lang_id"/>
-                <field name="instance_admin_pass"/>
-                <field name="db_admin_pass"/>
+                <label for="instance_admin_pass"/>
+                <div>
+                    <field
+                        name="instance_admin_pass"
+                        password="True"
+                        class="oe_inline"/>
+                    <button name="show_instance_admin_pass"
+                        string="⇒ View Password"
+                        type="object"
+                        class="oe_link oe_read_only"/>
+                </div>
+                <label for="db_admin_pass"/>
+                <div>
+                    <field
+                        name="db_admin_pass"
+                        password="True"
+                        class="oe_inline"/>
+                    <button name="show_db_admin_pass"
+                        string="⇒ View Password"
+                        type="object"
+                        class="oe_link oe_read_only"/>
+                </div>
                 <field name="db_filter"/>
              </group>
             </sheet>

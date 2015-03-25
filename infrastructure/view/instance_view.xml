@@ -88,16 +88,16 @@
                     <group>
                         <field name="number"/>
                         <label for="admin_pass"/>
-                            <div>
-                                <field
-                                    name="admin_pass"
-                                    password="True"
-                                    class="oe_inline"/>
-                                <button name="show_passwd"
-                                    string="⇒ View Password"
-                                    type="object"
-                                    class="oe_link oe_read_only"/>
-                            </div>
+                        <div>
+                            <field
+                                name="admin_pass"
+                                password="True"
+                                class="oe_inline"/>
+                            <button name="show_passwd"
+                                string="⇒ View Password"
+                                type="object"
+                                class="oe_link oe_read_only"/>
+                        </div>
                         <field name="db_filter"/>
                         <field name="unaccent"/>
                         <field name="workers"/>

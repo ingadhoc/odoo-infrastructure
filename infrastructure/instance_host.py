@@ -51,7 +51,7 @@ class instance_host(models.Model):
             'Name must be unique per server!'),
     ]
 
-    @api.onchange('server_hostname_id', 'subdomain', 'database_type_id')
+    @api.onchange('server_hostname_id', 'subdomain', 'instance_id')
     def _get_name(self):
         if self.server_hostname_id.wildcard:
             if self.subdomain:
@@ -60,6 +60,6 @@ class instance_host(models.Model):
                 name = '*' + '.' + self.server_hostname_id.name
         else:
             name = self.server_hostname_id.name
-        if self.database_type_id.url_prefix:
-            name = self.database_type_id.url_prefix + '.' + name
+        if self.instance_id.database_type_id.url_prefix:
+            name = self.instance_id.database_type_id.url_prefix + '.' + name
         self.name = name

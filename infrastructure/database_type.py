@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, tools
+from openerp import models, fields, tools, api, _
+from openerp.exceptions import Warning
 
 
 class database_type(models.Model):
@@ -70,3 +71,11 @@ class database_type(models.Model):
         string='DB Filter',
         help='It will be used as default on Instances',
         )
+
+    @api.multi
+    def show_instance_admin_pass(self):
+        raise Warning(_("Password: '%s'") % self.instance_admin_pass)
+
+    @api.multi
+    def show_db_admin_pass(self):
+        raise Warning(_("Password: '%s'") % self.db_admin_pass)

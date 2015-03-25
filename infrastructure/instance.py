@@ -156,6 +156,7 @@ class instance(models.Model):
         'instance_id',
         string='Hosts',
         readonly=True,
+        required=True,
         states={'draft': [('readonly', False)]}
         )
     environment_id = fields.Many2one(
