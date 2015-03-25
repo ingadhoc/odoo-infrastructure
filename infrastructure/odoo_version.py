@@ -7,7 +7,8 @@ class odoo_version(models.Model):
     """"""
 
     _name = 'infrastructure.odoo_version'
-    _description = 'odoo_version'
+    _description = 'Odoo Version'
+    _order = 'sequence'
 
     # _odoo_versions_ = [
     #     ('6.1', 'OpenERP 6.1'),
@@ -23,6 +24,9 @@ class odoo_version(models.Model):
         # _odoo_versions_,
         string='Name',
         required=True
+    )
+    sequence = fields.Integer(
+        string='Sequence',
     )
     default_branch_id = fields.Many2one(
         'infrastructure.repository_branch',

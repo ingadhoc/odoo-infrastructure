@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm
-from fabric.api import cd, settings
-# utilizamos nuestro custom sudo que da un warning
+from fabric.api import cd
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists
 import os
@@ -20,18 +18,16 @@ class server_repository(models.Model):
         'infrastructure.repository',
         string='Repository',
         required=True
-    )
-
+        )
     path = fields.Char(
         string='Path'
-    )
-
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='server_id',
         ondelete='cascade',
         required=True
-    )
+        )
 
     @api.one
     def get_repository(self):
@@ -45,14 +41,8 @@ class server_repository(models.Model):
         if not path:
             path = self.path
         if not path or not exists(path, use_sudo=True):
-            # raise except_orm(
-            #      _('No Repository Folder!'),
-            #      _("Please check that the especified path '%s' exists \
-            #         in order to download for first time!") % path
-            #      )
             cmd = 'git clone %s %s' % (self.repository_id.url, path)
             try:
-                # sudo(cmd, user=self.server_id.user_name, group='odoo')
                 sudo(cmd, user='odoo', group='odoo')
             except SystemExit, e:
                 raise except_orm(

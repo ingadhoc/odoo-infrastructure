@@ -5,21 +5,21 @@
 <record id="infrastructure.environment_draft" model="mail.message.subtype">
     <field name="name">Draft</field>
     <field name="res_model">infrastructure.environment</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Draft</field>
 </record>
 
 <record id="infrastructure.environment_active" model="mail.message.subtype">
     <field name="name">Active</field>
     <field name="res_model">infrastructure.environment</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Active</field>
 </record>
 
 <record id="infrastructure.environment_cancel" model="mail.message.subtype">
     <field name="name">Cancel</field>
     <field name="res_model">infrastructure.environment</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Cancel</field>
 </record>
 

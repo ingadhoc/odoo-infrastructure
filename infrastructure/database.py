@@ -63,75 +63,75 @@ class database(models.Model):
         states={'draft': [('readonly', False)]},
         track_visibility='onchange',
         copy=False,
-    )
+        )
     name = fields.Char(
         string='Name',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         track_visibility='onchange'
-    )
+        )
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
         required=True,
-    )
+        )
     demo_data = fields.Boolean(
         string='Demo Data?',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
+        )
     note = fields.Html(
         string='Note'
-    )
+        )
     smtp_server_id = fields.Many2one(
         'infrastructure.mailserver',
         string='SMTP Server',
         # readonly=True,
         # states={'draft': [('readonly', False)]},
-    )
+        )
     domain_alias = fields.Char(
         string='Domain Alias',
         compute='get_domain_alias',
-    )
+        )
     attachment_loc_type = fields.Selection(
         [(u'filesystem', 'filesystem'), (u'database', 'database')],
         string='Attachment Location Type',
         default='filesystem',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
+        )
     attachment_location = fields.Char(
         string='Attachment Location',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
+        )
     issue_date = fields.Date(
         string='Issue Data',
         copy=False,
         default=fields.Date.context_today,
-    )
+        )
     deactivation_date = fields.Date(
         string='Deactivation Date',
         copy=False,
         help='Depending on type it could be onl informative or could be automatically deactivated on this date',
-    )
+        )
     drop_date = fields.Date(
         string='Drop Date',
         copy=False,
         help='Depending on type it could be onl informative or could be automatically dropped on this date',
-    )
+        )
     advance_type = fields.Selection(
         related='database_type_id.type',
         string='Type',
         readonly=True,
         store=True,
-    )
+        )
     state = fields.Selection(
         _states_,
         'State',
         default='draft'
-    )
+        )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
@@ -139,37 +139,37 @@ class database(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         required=True,
-    )
+        )
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
         related='instance_id.environment_id',
         store=True,
         readonly=True,
-    )
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         related='instance_id.environment_id.server_id',
         store=True,
         readonly=True,
-    )
+        )
     main_hostname = fields.Char(
         string='Main Hostname',
         related='instance_id.main_hostname',
-        widget='url',
         readonly=True,
-    )
+        )
     backup_ids = fields.One2many(
         'infrastructure.database.backup',
         'database_id',
         string='Backups',
-    )
+        readonly=True,
+        )
     module_ids = fields.One2many(
         'infrastructure.database.module',
         'database_id',
         string='Modules',
-    )
+        )
     base_module_ids = fields.Many2many(
         'infrastructure.base.module',
         'infrastructure_database_ids_base_module_rel',
@@ -177,7 +177,7 @@ class database(models.Model):
         'base_module_id',
         string='Base Modules',
         default=_get_base_modules,
-    )
+        )
     admin_password = fields.Char(
         string='Admin Password',
         help='When trying to connect to the database first we are going to try by using the instance password and then with thisone.',
@@ -185,59 +185,59 @@ class database(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         # deprecated=True,  # we use server admin pass to autheticate now
-    )
+        )
     virtual_alias = fields.Char(
         string='Virtual Alias',
         compute='get_aliases',
-    )
+        )
     local_alias = fields.Char(
         string='Local Alias',
         compute='get_aliases',
-    )
+        )
     mailgate_path = fields.Char(
         string='Mailgate Path',
         compute='get_mailgate_path',
-    )
+        )
     alias_prefix = fields.Char(
         'Alias Prefix',
         # readonly=True,
         # states={'draft': [('readonly', False)]},
         copy=False,
-    )
+        )
     alias_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
         string='Alias Hostname',
         # readonly=True,
         # states={'draft': [('readonly', False)]},
         copy=False,
-    )
+        )
     alias_hostname_wildcard = fields.Boolean(
         related='alias_hostname_id.wildcard',
         string='Wildcard?',
         readonly=True,
         copy=False,
-    )
+        )
     module_count = fields.Integer(
         string='# Modules',
         compute='_get_modules',
-    )
+        )
     daily_backup = fields.Boolean(
         string='Daily Backups?',
-    )
+        )
     weekly_backup = fields.Boolean(
         string='Weekly Backups?',
-    )
+        )
     monthly_backup = fields.Boolean(
         string='Monthly Backups?',
-    )
+        )
     backups_enable = fields.Boolean(
         'Backups Enable',
         copy=False,
-    )
+        )
     catchall_enable = fields.Boolean(
         'Catchall Enable',
         copy=False,
-    )
+        )
 
     @api.one
     @api.onchange('instance_id')
@@ -265,15 +265,20 @@ class database(models.Model):
     @api.one
     @api.depends('instance_id')
     def get_mailgate_path(self):
-        env_rep = self.env['infrastructure.environment_repository'].search([
-            ('server_repository_id.repository_id.is_server', '=', True),
-            ('environment_id', '=', self.instance_id.environment_id.id)])
-        mailgate_path = _('Not base path found for mail module')
-        if env_rep.addons_paths:
-            for path in literal_eval(env_rep.addons_paths):
-                if 'openerp' not in path and 'addons'in path:
-                    mailgate_path = os.path.join(
-                        path, 'mail/static/scripts/openerp_mailgate.py')
+        # TODO tal vez mas adelante podemos borrar la segunda opcion ya que  usariamos la primera
+        # Aunque tal vez haya que traer uno u otro segun la version de odoo
+        if self.server_id.mailgate_file:
+            mailgate_path = self.server_id.mailgate_file
+        else:
+            env_rep = self.env['infrastructure.environment_repository'].search([
+                ('server_repository_id.repository_id.is_server', '=', True),
+                ('environment_id', '=', self.instance_id.environment_id.id)])
+            mailgate_path = _('Not base path found for mail module')
+            if env_rep.addons_paths:
+                for path in literal_eval(env_rep.addons_paths):
+                    if 'openerp' not in path and 'addons'in path:
+                        mailgate_path = os.path.join(
+                            path, 'mail/static/scripts/openerp_mailgate.py')
         self.mailgate_path = mailgate_path
 
     @api.one
@@ -321,7 +326,7 @@ class database(models.Model):
             self.name = ('%s_%s') % (
                 self.database_type_id.prefix,
                 self.instance_id.environment_id.name.replace('-', '_')
-                )
+                    )
             self.admin_password = self.database_type_id.db_admin_pass or self.instance_id.name
 
     @api.one
@@ -346,7 +351,7 @@ class database(models.Model):
         raise except_orm(
             _("Password:"),
             _("%s") % self.admin_password
-        )
+            )
 
 # DATABASE CRUD
 
@@ -386,8 +391,7 @@ class database(models.Model):
         """Funcion que utliza erpeek para crear bds"""
         _logger.info("Creating db '%s'" % (self.name))
         client = self.get_client(not_database=True)
-        db_type = self.database_type_id
-        lang = db_type.install_lang_id and db_type.install_lang_id.code or 'en_US'
+        lang = self.database_type_id.install_lang_id or 'en_US'
         client.create_database(
             self.instance_id.admin_pass,
             self.name,
@@ -421,7 +425,20 @@ class database(models.Model):
 
     @api.one
     def action_backup_now(self):
-        raise Warning(_('Not Implemented yet'))
+        client = self.get_client()
+        try:
+            self_db_id = client.model('ir.model.data').xmlid_to_res_id(
+                'database_tools.db_self_database')
+            res = client.model('db.database').database_backup(self_db_id)[0]
+        except Exception, e:
+                raise Warning(_('Could not make backup!\
+                    This is what we get %s' % e))
+        if res.get('backup_name', False):
+            raise Warning(_(
+                'Backup %s succesfully created!' % res['backup_name']))
+        else:
+            raise Warning(_('Could not make backup!\
+                This is what we get %s' % res.get('error', '')))
 
     @api.one
     def dump_db(self):
@@ -610,7 +627,7 @@ class database(models.Model):
             raise except_orm(
                 _("Unable to Connect to Database."),
                 _('Error: %s') % e
-            )
+                )
         # First try to connect using instance pass
         try:
             return Client(
@@ -630,7 +647,7 @@ class database(models.Model):
                 raise except_orm(
                     _("Unable to Connect to Database."),
                     _('Error: %s') % e
-                )
+                    )
 
 # Backups management
 
@@ -678,7 +695,12 @@ class database(models.Model):
     def install_base_modules(self):
         client = self.get_client()
         for module in self.base_module_ids:
-            client.install(module.name)
+            try:
+                client.install(module.name)
+            except Exception, e:
+                _logger.warning(
+                    "Unable to install module %s. This is what we get %s." % (
+                    module.name, e))
         module_names = [x.name for x in self.base_module_ids]
         self.update_modules_data(
             modules_domain=[('name', 'in', module_names)])
@@ -753,7 +775,7 @@ class database(models.Model):
             raise except_orm(
                 _("Unable to Upload SMTP Config."),
                 _('Error: %s') % e
-            )
+                )
 
     @api.one
     def config_backups(self):
@@ -768,14 +790,17 @@ class database(models.Model):
         # Configure backups
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
-        vals = {
-            'backups_path': os.path.join(
-                self.instance_id.environment_id.backups_path, self.name),
-            'daily_backup': self.daily_backup,
-            'weekly_backup': self.weekly_backup,
-            'monthly_backup': self.monthly_backup,
-        }
-        client.model('db.database').write([self_db_id], vals)
+        if self.backups_enable:
+            vals = {
+                'backups_path': os.path.join(
+                    self.instance_id.environment_id.backups_path, self.name),
+                'daily_backup': self.daily_backup,
+                'weekly_backup': self.weekly_backup,
+                'monthly_backup': self.monthly_backup,
+            }
+            client.model('db.database').write([self_db_id], vals)
+        client.model('db.database').backups_state(
+            self.name, self.backups_enable)
 
     @api.one
     def config_catchall(self):

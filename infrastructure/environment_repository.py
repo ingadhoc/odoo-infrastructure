@@ -22,50 +22,43 @@ class environment_repository(models.Model):
         'infrastructure.server_repository',
         string='Server Repository',
         required=True
-    )
-
+        )
     branch_id = fields.Many2one(
         'infrastructure.repository_branch',
         string='Specific Branch',
         required=True
-    )
-
+        )
     path = fields.Char(
         string='Path'
-    )
-
+        )
     addons_paths = fields.Char(
         string='Addons Path',
         required=True,
         default='[]'
-    )
-
+        )
     branch_ids = fields.Many2one(
         'infrastructure.repository_branch',
         string='branch_ids',
         readonly=True
-    )
-
+        )
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='environment_id',
         ondelete='cascade',
         required=True
-    )
-
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         related='environment_id.server_id',
         required=False,
-    )
-
+        )
     branch_ids = fields.Many2many(
         'infrastructure.repository_branch',
         string='Branches',
         related='server_repository_id.repository_id.branch_ids',
         readonly=True
-    )
+        )
 
     @api.one
     @api.onchange('server_repository_id')
@@ -139,7 +132,7 @@ class environment_repository(models.Model):
                 self.environment_id.sources_path,
                 os.path.basename(
                     os.path.normpath(self.server_repository_id.path))
-                )
+                    )
             if exists(path, use_sudo=True):
                 self.update_repository(path)
                 self.path = path
@@ -173,7 +166,7 @@ class environment_repository(models.Model):
                     pip_packages
                 sudo(
                     activate_environment_command + pip_packages_install_command
-                )
+                    )
         elif self.environment_id.type == 'oerpenv':
             raise Warning(_("Type '%s' not implemented yet.") %
                           (self.environment_id.type))

@@ -63,6 +63,7 @@
                     </h2>
                     <h1>
                         <field name="database_type_id" default_focus="1" placeholder="Type..."/>
+                        <field name="main_hostname" widget="url"/>
                         <!-- <field name="name" default_focus="1" placeholder="Name..."/> -->
                     </h1>
                 </div>
@@ -129,7 +130,6 @@
                 <notebook>
                     <page string="Configuration">
                         <group colspan="4">
-                            <field name="main_hostname" widget="url"/>
                             <field name="type" invisible="1"/>
                             <field name="addons_path"/>
                         </group>

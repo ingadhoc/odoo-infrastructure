@@ -19,6 +19,13 @@
     <field name="kind">function</field>
 </record>
 
+<record id="a_0E13_1383" model="workflow.activity">
+    <field name="wkf_id" ref="server_untitle_wkf"/>
+    <field name="name">To Install</field>
+    <field name="action">write({'state':'to_install'})</field>
+    <field name="kind">function</field>
+</record>
+
 <record id="a_0E13_1381" model="workflow.activity">
     <field name="wkf_id" ref="server_untitle_wkf"/>
     <field name="name">Active</field>
@@ -42,8 +49,22 @@
     <field name="condition">True</field>
 </record>
 
-<record id="t_0E13_1385" model="workflow.transition">
+<record id="t_0E13_1387" model="workflow.transition">
+    <field name="act_from" ref="a_0E13_1383"/>
+    <field name="act_to" ref="a_0E13_1382"/>
+    <field name="signal">sgn_cancel</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_0E13_1388" model="workflow.transition">
     <field name="act_from" ref="a_0E13_1380"/>
+    <field name="act_to" ref="a_0E13_1383"/>
+    <field name="signal">sgn_to_install</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="t_0E13_1385" model="workflow.transition">
+    <field name="act_from" ref="a_0E13_1383"/>
     <field name="act_to" ref="a_0E13_1381"/>
     <field name="signal">sgn_to_active</field>
     <field name="condition">True</field>

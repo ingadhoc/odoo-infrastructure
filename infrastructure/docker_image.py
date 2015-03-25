@@ -28,7 +28,7 @@ class infrastructure_docker_image(models.Model):
         )
     odoo_version_id = fields.Many2one(
         'infrastructure.odoo_version',
-        'Version',
+        'Odoo Version',
         )
     service = fields.Selection(
         [('odoo', 'Odoo'), ('postgresql', 'Postgresql'), ('other', 'Other')],

@@ -8,7 +8,7 @@
     <field name="name">infrastructure.odoo_version.select</field>
     <field name="model">infrastructure.odoo_version</field>
     <field name="arch" type="xml">
-        <search string="odoo_version">
+        <search string="Odoo Version">
             <field name="name"/>
             <field name="default_branch_id"/>
         </search>
@@ -20,7 +20,7 @@
     <field name="name">infrastructure.odoo_version.form</field>
     <field name="model">infrastructure.odoo_version</field>
     <field name="arch" type="xml">
-        <form string="odoo_version">
+        <form string="Odoo Version">
             <header>
             </header>
             <sheet string="odoo_version">
@@ -39,7 +39,8 @@
     <field name="name">infrastructure.odoo_version.tree</field>
     <field name="model">infrastructure.odoo_version</field>
     <field name="arch" type="xml">
-        <tree string="odoo_version">
+        <tree string="Odoo Version">
+            <field name="sequence" widget="handle"/>
             <field name="name"/>
             <field name="sufix"/>
             <field name="default_branch_id"/>
@@ -48,7 +49,7 @@
 </record>
 
 <record id="action_infrastructure_odoo_version_odoo_versions" model="ir.actions.act_window">
-    <field name="name">Environment Versions</field>
+    <field name="name">Odoo Versions</field>
     <field name="res_model">infrastructure.odoo_version</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
@@ -58,7 +59,7 @@
 </record>
 
 <menuitem
-    name="Environment Versions"
+    name="Odoo Versions"
     id="menu_odoo_versions"
     sequence="20"
     action="action_infrastructure_odoo_version_odoo_versions"

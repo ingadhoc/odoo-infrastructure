@@ -33,8 +33,13 @@
         <form string="server">
             <field name="id" invisible="1"/>
             <header>
-                <button name="sgn_to_active"
+                <button name="sgn_to_install"
                     states="draft"
+                    string="to Install"
+                    class="oe_highlight"
+                    />
+                <button name="sgn_to_active"
+                    states="to_install"
                     string="to Active"
                     class="oe_highlight"
                     />
@@ -44,7 +49,7 @@
                     string="to Draft"
                     />
                 <button name="sgn_cancel"
-                    states="active"
+                    states="to_install,active"
                     string="Cancel"
                     />
                 <field name="state" widget="statusbar"
@@ -73,25 +78,26 @@
                     </button>
                 </div>
                 <div class="oe_right oe_button_box" name="action_buttons">
-                    <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server" confirm="Are you sure you want to reboot the server?" states="active"/>
-                    <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart nxginx?" states="active"/>
-                    <button name="restart_postgres" icon="fa-refresh" string="Restart Postgres" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart postgres?" states="active"/>
+                    <button icon="fa-sun-o " type="object" string="Activate" class="oe_stat_button" help="Test connection, check distribution, get processors data and activate" name="get_data_and_activate" states="draft"/>
+                    <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server" confirm="Are you sure you want to reboot the server?" states="to_install,active"/>
+                    <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart nxginx?" states="to_install,active"/>
+                    <!-- TODO remove this as we are no longer using postgres in server -->
+                    <!-- <button name="restart_postgres" icon="fa-refresh" string="Restart Postgres" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart postgres?" states="to_install,active"/> -->
                 </div>
                 <group>
                     <group>
-                        <label for="ip_address"/>
+                        <label for="ssh_port"/>
                         <div>
                             <field
-                                name="ip_address"
+                                name="ssh_port"
                                 class="oe_inline"/>
-                            <button name="test_and_get_data"
-                                string="⇒ Test and get Data"
-                                help="Test connection, check distribution and get processors data"
+                            <button name="test_connection"
+                                string="⇒ Test Connection"
                                 type="object"
                                 class="oe_link oe_read_only"/>
                         </div>
-                        <field name="ssh_port"/>
-                        <field name="requires_vpn"/>
+                        <!-- TODO ver a donde mandamos esta opcion y que hacemos con la misma -->
+                        <!-- <field name="requires_vpn"/> -->
                         <field name="user_name"/>
                         <label for="password"/>
                         <div>
@@ -106,8 +112,6 @@
                         </div>
                     </group>
                     <group>
-                        <field name="base_path"/>
-                        <field name="instance_user_group"/>
                         <field name="holder_id"/>
                         <field name="owner_id"/>
                         <field name="used_by_id"/>
@@ -117,9 +121,11 @@
                     <page string="Gral. Info">
                         <group>
                             <group>
-                                <field name="number_of_processors"/>
                                 <field name="postfix_hostname"/>
-                                <field name="open_ports"/>
+                                <!-- <field name="open_ports"/> -->
+                                <field name="http_port"/>
+                                <field name="https_port"/>
+                                <field name="smtp_port"/>
                             </group>
                             <group>
                                 <field name="gdrive_account"/>
@@ -131,12 +137,16 @@
                     <page string="Advance Info">
                         <group>
                             <group>
+                                <field name="ip_address"/>
+                                <field name="base_path"/>
                                 <field name="sources_path"/>
+                                <field name="mailgate_file"/>
                                 <field name="nginx_sites_path"/>
                                 <field name="nginx_log_path"/>
                                 <field name="local_alias_path"/>
                             </group>
                             <group>
+                                <field name="instance_user_group"/>
                                 <field name="virtual_alias_path"/>
                                 <field name="virtual_domains_regex_path"/>
                                 <field name="postgres_superuser"/>
@@ -151,33 +161,34 @@
                                         type="object"
                                         class="oe_link oe_read_only"/>
                                 </div>
+                                <field name="number_of_processors"/>
                             </group>
                         </group>
                     </page>
-                    <page string="Repositories">
-                       <field name="server_repository_ids"/>
-                    </page>
-                    <page string="Docker Images">
-                       <field name="server_docker_image_ids"/>
-                    </page>
-                    <page string="Installation">
+                    <page string="Installation" states="to_install">
                         <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
                         <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
-                    <page string="Hostnames">
+                    <page string="Repositories" states="active">
+                       <field name="server_repository_ids"/>
+                    </page>
+                    <page string="Docker Images" states="active">
+                       <field name="server_docker_image_ids"/>
+                    </page>
+                    <page string="Hostnames" states="active">
                         <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
                        <field name="hostname_ids"/>
                     </page>
-                    <page string="Changes">
+                    <page string="Changes" states="active">
                        <field name="change_ids"/>
                     </page>
                     <page string="Data">
-                        <group col="1">
-                           <field name="software_data"/>
-                           <field name="hardware_data"/>
-                           <field name="contract_data"/>
+                        <!-- <group col="1"> -->
+                           <!-- <field name="software_data"/> -->
+                           <!-- <field name="hardware_data"/> -->
+                           <!-- <field name="contract_data"/> -->
                            <field name="note"/>
-                       </group>
+                       <!-- </group> -->
                    </page>
                </notebook>
             </sheet>

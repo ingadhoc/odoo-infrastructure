@@ -19,50 +19,44 @@ class repository(models.Model):
     sequence = fields.Integer(
         string='Sequence'
     )
-
     name = fields.Char(
         string='Name',
         required=True
     )
-
     directory = fields.Char(
         string='Directory',
         required=True
     )
-
     type = fields.Selection(
         [(u'git', 'git')],
         string='Type',
         required=True
     )
-
     addons_subdirectory = fields.Char(
         string='Addons Subdirectory'
     )
-
     url = fields.Char(
         string='URL',
         required=True
     )
-
     pip_packages = fields.Char(
         string='PIP Packages'
     )
-
     is_server = fields.Boolean(
         string='Is Server?'
     )
-
     default_in_new_env = fields.Boolean(
         string='Default in new Environment?',
         help="Not implemented yet",
     )
-
+    server_wide_modules = fields.Char(
+        string='Server Wide Modules',
+        help="Modules to be load in intance. Eg. web,web_kanban",
+    )
     install_server_command = fields.Char(
         string='Install Server Command',
         default='python setup.py install'
     )
-
     branch_ids = fields.Many2many(
         'infrastructure.repository_branch',
         'infrastructure_repository_ids_branch_ids_rel',
@@ -70,7 +64,6 @@ class repository(models.Model):
         'repository_branch_id',
         string='Branches'
     )
-
     _order = "sequence"
 
     @api.one

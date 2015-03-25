@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields
+from openerp import models, fields, tools
 
 
 class database_type(models.Model):
@@ -54,10 +54,8 @@ class database_type(models.Model):
     auto_deactivation_days = fields.Integer(
         string='Automatic Deactivation Days'
     )
-    install_lang_id = fields.Many2many(
-        'res.lang',
-        domain=['|', ('active', '=', False), ('active', '=', False)],
-        widget='selection',
+    install_lang_id = fields.Selection(
+        tools.scan_languages(),
         string='Install Language',
     )
     instance_admin_pass = fields.Char(

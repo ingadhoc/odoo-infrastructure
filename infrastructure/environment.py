@@ -24,25 +24,23 @@ class environment(models.Model):
         ('cancel', 'Cancel'),
     ]
 
+    @api.model
+    def get_odoo_version(self):
+        return self.env['infrastructure.odoo_version'].search([], limit=1)
+
     number = fields.Integer(
         string='Number',
         required=True,
         readonly=True,
-        states={
-            'draft': [('readonly', False)]
-        },
-    )
-
+        states={'draft': [('readonly', False)]},
+        )
     name = fields.Char(
         string='Name',
         readonly=True,
         required=True,
         size=16,
-        states={
-            'draft': [('readonly', False)]
-        },
-    )
-
+        states={'draft': [('readonly', False)]},
+        )
     type = fields.Selection(
         [(u'virtualenv', u'Virtualenv'),
          (u'docker', u'Docker'),
@@ -50,72 +48,55 @@ class environment(models.Model):
         string='Type',
         readonly=True,
         required=True,
-        states={
-            'draft': [('readonly', False)]
-        },
+        states={'draft': [('readonly', False)]},
         default='docker'
-    )
-
+        )
     description = fields.Char(
         string='Description'
-    )
-
+        )
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
         required=True,
         readonly=True,
-        states={
-            'draft': [('readonly', False)]
-        },
-    )
-
+        states={'draft': [('readonly', False)]},
+        )
     odoo_version_id = fields.Many2one(
         'infrastructure.odoo_version',
-        string='Version',
+        string='Odoo Version',
         required=True,
         readonly=True,
-        states={
-            'draft': [('readonly', False)]
-        },
-    )
-
+        default=get_odoo_version,
+        states={'draft': [('readonly', False)]},
+        )
     note = fields.Html(
         string='Note'
-    )
-
+        )
     color = fields.Integer(
         string='Color Index'
-    )
-
+        )
     install_server_command = fields.Char(
         string='Install Server Command',
         default='python setup.py install'
-    )
-
+        )
     state = fields.Selection(
         _states_,
         string="State",
         default='draft',
-    )
-
+        )
     environment_repository_ids = fields.One2many(
         'infrastructure.environment_repository',
         'environment_id',
         string='Repositories',
-    )
-
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         ondelete='cascade',
         required=True,
         readonly=True,
-        states={
-            'draft': [('readonly', False)]
-        },
-    )
-
+        states={'draft': [('readonly', False)]},
+        )
     instance_ids = fields.One2many(
         'infrastructure.instance',
         'environment_id',
@@ -123,8 +104,7 @@ class environment(models.Model):
         context={
             'from_environment': True
         }
-    )
-
+        )
     sources_path = fields.Char(
         string='Sources Path',
         # compute='_get_env_paths',
@@ -134,8 +114,7 @@ class environment(models.Model):
         states={
             'draft': [('readonly', False)]
         }
-    )
-
+        )
     backups_path = fields.Char(
         string='Backups Path',
         # compute='_get_env_paths',
@@ -145,8 +124,7 @@ class environment(models.Model):
         states={
             'draft': [('readonly', False)]
         }
-    )
-
+        )
     path = fields.Char(
         string='Path',
         # compute='_get_path',
@@ -156,39 +134,35 @@ class environment(models.Model):
         states={
             'draft': [('readonly', False)]
         }
-    )
-
+        )
     instance_count = fields.Integer(
         string='# Instances',
         compute='_get_instances'
-    )
-
+        )
     database_ids = fields.One2many(
         'infrastructure.database',
         'environment_id',
         string='Databases'
-    )
-
+        )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases'
-    )
-
+        )
     sever_copied = fields.Boolean(
         string='Server Copied?',
         compute='_get_sever_copied'
-    )
+        )
 
-    _track = {
-        'state': {
-            'infrastructure.environment_draft':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-            'infrastructure.environment_active':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-            'infrastructure.environment_cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
-        },
-    }
+    # _track = {
+    #     'state': {
+    #         'infrastructure.environment_draft':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
+    #         'infrastructure.environment_active':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
+    #         'infrastructure.environment_cancel':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+    #     },
+    # }
 
     @api.multi
     def repositories_pull_clone_and_checkout(self):
@@ -199,7 +173,7 @@ class environment(models.Model):
         'environment_repository_ids',
         'environment_repository_ids.path',
         'environment_repository_ids.server_repository_id.repository_id.is_server',
-        )
+            )
     def _get_sever_copied(self):
         sever_copied = False
         servers = [
@@ -238,7 +212,7 @@ class environment(models.Model):
         environments = self.search(
             [('server_id', '=', self.server_id.id)],
             order='number desc',
-            )
+                )
         self.number = environments and environments[0].number + 1 or 10
 
     @api.one

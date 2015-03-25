@@ -6,12 +6,14 @@ from fabric.api import env, reboot
 # from fabric.api import env, sudo, reboot
 # utilizamos nuestro custom sudo que da un warning
 # import custom_sudo as sudo
-from fabric.contrib.files import append
+from fabric.contrib.files import append, upload_template
 # For postfix
 from fabric.api import *
 import fabtools
 from fabtools.deb import is_installed, preseed_package, install
 from fabtools.require.service import started
+import socket
+import sys, os
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -52,20 +54,21 @@ class server(models.Model):
 
     _states_ = [
         ('draft', 'Draft'),
+        ('to_install', 'To Install'),
         ('active', 'Active'),
         ('cancel', 'Cancel'),
     ]
 
-    _track = {
-        'state': {
-            'infrastructure.server_draft':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-            'infrastructure.server_active':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-            'infrastructure.server_cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
-        },
-    }
+    # _track = {
+    #     'state': {
+    #         'infrastructure.server_draft':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
+    #         'infrastructure.server_active':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
+    #         'infrastructure.server_cancel':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+    #     },
+    # }
 
     name = fields.Char(
         string='Name',
@@ -73,12 +76,39 @@ class server(models.Model):
         )
     ip_address = fields.Char(
         string='IP Address',
-        required=True,
+        readonly=True,
         )
-    ssh_port = fields.Char(
+    ssh_port = fields.Integer(
         string='SSH Port',
         required=True,
+        help='Port used for ssh connection to the server',
         default=22,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    smtp_port = fields.Integer(
+        string='SMTP Port',
+        help='Port used for incoming emails',
+        required=True,
+        default=22,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    http_port = fields.Integer(
+        string='HTTP Port',
+        required=True,
+        default=80,
+        help='Port used to access odoo via web browser',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    https_port = fields.Integer(
+        string='HTTPS Port',
+        required=True,
+        default=443,
+        help='Port used to access odoo via web browser over ssl',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     main_hostname = fields.Char(
         string='Main Hostname',
@@ -87,32 +117,42 @@ class server(models.Model):
     user_name = fields.Char(
         string='User Name',
         required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     number_of_processors = fields.Integer(
         string='Number of Processors',
-        required=True,
+        readonly=True,
         help="This is used to suggest instance workers qty, you can get this information with: grep processor /proc/cpuinfo | wc -l",
         )
     password = fields.Char(
         string='Password',
         required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     holder_id = fields.Many2one(
         'res.partner',
         string='Holder',
         required=True,
-        help='Partner that you should contact related to server service.'
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        help='Partner that you should contact related to server service.',
         )
     owner_id = fields.Many2one(
         'res.partner',
         string='Owner',
         required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         help='Owner of the server, the one you should contacto to make changes on, for example, hardware.'
         )
     used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
         required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         help='Partner that can contact you and ask for changes on server configuration'
         )
     database_ids = fields.One2many(
@@ -133,13 +173,15 @@ class server(models.Model):
         string='# Instances',
         compute='_get_instances',
         )
+    # TODO remove this field
     software_data = fields.Html(
         string='Software Data',
         )
-
+    # TODO remove this field
     hardware_data = fields.Html(
         string='Hardware Data',
         )
+    # TODO remove this field
     contract_data = fields.Html(
         string='Contract Data',
         )
@@ -152,6 +194,10 @@ class server(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo',
+        )
+    mailgate_file = fields.Char(
+        string='Mailgate File',
+        readonly=True,
         )
     color = fields.Integer(
         string='Color Index',
@@ -272,6 +318,7 @@ class server(models.Model):
         string='Installation Commands',
         related="server_configuration_id.install_command_ids",
         )
+    # TODO borrar esto que no usamos
     maint_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         string='Maintenance Commands',
@@ -346,30 +393,96 @@ class server(models.Model):
 
     @api.one
     def get_env(self):
-        if not self.user_name:
-            raise Warning(_('Not User Defined for the server'))
-        if not self.password:
-            raise Warning(_('Not Password Defined for the server'))
+        # TODO ver si usamos env.keepalive = True para timeouts the nginx ()
         env.user = self.user_name
-        # env.warn_only = True
-        # env.warn_only = False
         env.password = self.password
         env.host_string = self.main_hostname
         env.port = self.ssh_port
         return env
 
     @api.one
-    def test_and_get_data(self):
-        """ Test connection and check server data"""
-        self.get_env()
+    def check_service_exist(self, port):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            s.settimeout(1)
+            s.connect((self.main_hostname, port))
+            s.close()
+        except:
+            raise Warning(_(
+                'Could not connect to port %s.\n\
+                * Check connection with: "telnet %s %s"\n\
+                * You can also connect to server and check ports with "%s"\n\
+                * You can try opening port with %s\n\
+                * If still can not connect, contact server admin') % (
+                port,
+                port, self.main_hostname,
+                "sudo netstat -plnt |grep :%s" % port,
+                "sudo ufw allow %s/tcp" % port,
+                ))
+        else:
+            _logger.info("Connection to port %s successfully established")
+        return True
+
+    @api.one
+    def get_data_and_activate(self):
+        """ Check server data"""
+        self.test_connection(no_prompt=True)
         server_codename = fabtools.system.distrib_codename()
         server_conf_codename = self.server_configuration_id.distrib_codename
+        self.ip_address = socket.gethostbyname(self.main_hostname)
         if server_codename != server_conf_codename:
-            raise Warning(_("Server Codename is not the and Server configuration mismatch\
-                * Server Codename: %s\
-                * Server Configuration Codename: %s\
+            raise Warning(_("Server Codename is not the and Server configuration mismatch\n\
+                * Server Codename: %s\n\
+                * Server Configuration Codename: %s\n\
                 ") % (server_codename, server_conf_codename))
         self.number_of_processors = fabtools.system.cpus()
+        self.add_repositories()
+        self.add_images()
+        self.signal_workflow('sgn_to_install')
+
+    @api.one
+    def test_connection(self, no_prompt=False):
+        """ Ugly way we find to check the connection"""
+        self.get_env()
+        self.check_service_exist(self.http_port)
+        # TODO activate https check, we are not using it yet
+        # self.check_service_exist(self.https_port)
+        self.check_service_exist(self.smtp_port)
+        env.abort_on_prompts = True
+        try:
+            sudo('ls')
+        except:
+            raise Warning(_(
+                'Could not connect to host. Please check credentials'))
+        if no_prompt:
+            return True
+        raise Warning(_(
+            'Connection successful!'))
+
+    @api.multi
+    def add_repositories(self):
+        repositories = self.env['infrastructure.repository'].search([
+            ('default_in_new_env', '=', 'True'),
+            ('id', 'not in', self.server_repository_ids.ids),
+            ])
+        for repository in repositories:
+            vals = {
+                'repository_id': repository.id,
+                'server_id': self.id,
+            }
+            self.server_repository_ids.create(vals)
+
+    @api.multi
+    def add_images(self):
+        images = self.env['infrastructure.docker_image'].search([
+            ('id', 'not in', self.server_docker_image_ids.ids),
+            ])
+        for image in images:
+            vals = {
+                'docker_image_id': image.id,
+                'server_id': self.id,
+            }
+            self.server_docker_image_ids.create(vals)
 
     @api.one
     def show_passwd(self):
@@ -395,10 +508,9 @@ class server(models.Model):
         self.get_env()
         try:
             custom_sudo('service postgres restart')
-        except:
-            raise except_orm(
-                _('Could Not Restart Service!'),
-                _("Check if service is installed!"))
+        except Exception, e:
+            raise Warning(
+                _('Could Not Restart Postgresql! This is what we get: \n %s') % (e))
 
     @api.multi
     def restart_nginx(self):
@@ -406,10 +518,9 @@ class server(models.Model):
         self.get_env()
         try:
             custom_sudo('service nginx restart')
-        except:
-            raise except_orm(
-                _('Could Not Restart Service!'),
-                _("Check if service is installed!"))
+        except Exception, e:
+            raise Warning(
+                _('Could Not Restart Nginx! This is what we get: \n %s') % (e))
 
     @api.multi
     def reload_nginx(self):
@@ -417,10 +528,9 @@ class server(models.Model):
         self.get_env()
         try:
             custom_sudo('nginx -s reload')
-        except:
-            raise except_orm(
-                _('Could Not Reload Service!'),
-                _("Check if service is installed!"))
+        except Exception, e:
+            raise Warning(
+                _('Could Not Reload Nginx! This is what we get: \n %s') % (e))
 
     def action_wfk_set_draft(self, cr, uid, ids, *args):
         self.write(cr, uid, ids, {'state': 'draft'})
@@ -443,6 +553,33 @@ class server(models.Model):
                 domain.domain_regex,
                 use_sudo=True,)
 
+    @api.one
+    def copy_mailgate_file(self):
+        self.get_env()
+        local_mailgate_file = os.path.join(
+            self.module_path(),
+            'static/scripts/openerp_mailgate.py')
+        try:
+            res = upload_template(
+                local_mailgate_file, self.base_path, use_sudo=True)
+        except Exception, e:
+            raise Warning(_(
+                "Can not run upload mailgate file:\n\
+                This is what we get:\n%s") % e)
+        self.mailgate_file = res and res[0] or False
+
+    @api.model
+    def we_are_frozen(self):
+        # All of the modules are built-in to the interpreter, e.g., by py2exe
+        return hasattr(sys, "frozen")
+
+    @api.model
+    def module_path(self):
+        encoding = sys.getfilesystemencoding()
+        if self.we_are_frozen():
+            return os.path.dirname(unicode(sys.executable, encoding))
+        return os.path.dirname(unicode(__file__, encoding))
+
 # Install POSTFIX (TODO tal vez llevar a server service o hacer de otra manera)
     @api.one
     def install_postfix(self):
@@ -461,6 +598,7 @@ class server(models.Model):
 
         """
         self.get_env()
+        self.copy_mailgate_file()
         # Ensure the package is installed
         if not is_installed('postfix'):
             print 'self.postfix_hostname', self.postfix_hostname
@@ -472,6 +610,13 @@ class server(models.Model):
                         self.postfix_hostname),)
             })
             install('postfix')
+
+        # Update postfix conf
+        custom_sudo("postconf -e 'virtual_alias_domains = regexp:%s'" % self.virtual_domains_regex_path)
+        custom_sudo("postconf -e 'virtual_alias_maps = hash:%s'" % self.virtual_alias_path)
+
+        # Restart postfix
+        custom_sudo('service postfix restart')
 
         # Ensure the service is started
         started('postfix')

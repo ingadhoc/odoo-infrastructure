@@ -33,16 +33,16 @@ class instance(models.Model):
         ('cancel', 'Cancel'),
     ]
 
-    _track = {
-        'state': {
-            'infrastructure.instance_draft':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
-            'infrastructure.instance_active':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
-            'infrastructure.instance_cancel':
-            lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
-        },
-    }
+    # _track = {
+    #     'state': {
+    #         'infrastructure.instance_draft':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'draft',
+    #         'infrastructure.instance_active':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'active',
+    #         'infrastructure.instance_cancel':
+    #         lambda self, cr, uid, obj, ctx=None: obj['state'] == 'cancel',
+    #     },
+    # }
 
     number = fields.Integer(
         string='Number',
@@ -179,8 +179,9 @@ class instance(models.Model):
 
     module_load = fields.Char(
         string='Load default modules',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        compute='_get_module_load',
+        # readonly=True,
+        # states={'draft': [('readonly', False)]},
     )
 
     main_hostname = fields.Char(
@@ -506,6 +507,14 @@ class instance(models.Model):
 
 # Calculated fields
     @api.one
+    @api.depends('environment_id')
+    def _get_module_load(self):
+        module_load = ','.join(
+            [x.server_repository_id.repository_id.server_wide_modules for x in self.environment_id.environment_repository_ids if x.server_repository_id.repository_id.server_wide_modules])
+        if module_load:
+            self.module_load = 'web,web_kanban,' + module_load
+
+    @api.one
     @api.depends('database_ids')
     def _get_databases(self):
         self.database_count = len(self.database_ids)
@@ -554,7 +563,7 @@ class instance(models.Model):
         self.number = instances and instances[0].number + 1 or 1
         self.database_type_id = self.env[
             'infrastructure.database_type'].search(
-                [('id', '!=', actual_db_type_ids)],
+                [('id', 'not in', actual_db_type_ids)],
                 limit=1
                 )
 
@@ -832,6 +841,7 @@ class instance(models.Model):
                 if self.data_dir:
                     command += ' --data-dir=/var/lib/odoo/'
 
+        # TODO ver que esta opcion todavia no se almacena ni se lee desde el conf, por eso la estamos llevando en el servicio
         if self.module_load:
             command += ' --load=' + self.module_load
 
@@ -923,10 +933,13 @@ class instance(models.Model):
         if self.env_type == 'docker':
             service_file_path = os.path.join(
                 '/etc/init', self.odoo_container + '.conf')
+            run_odoo_command = '%s -- ' % self.run_odoo_command()
+            if self.module_load:
+                run_odoo_command += ' --load=' + self.module_load
             service_content = template_upstar_file % (
                 self.odoo_container,
                 'and started %s' % self.pg_container,
-                self.run_odoo_command(),
+                run_odoo_command,
                 'rm -f %s' % self.odoo_container
                 )
         else:
@@ -1107,7 +1120,10 @@ class instance(models.Model):
 
         server_names = [
             x.name for x in self.instance_host_ids if x.type != 'redirect_to_main']
-        redirect_server_names = ['www.' + x for x in server_names]
+        # TODO ver si dejamos esto o lo borramos, queremos que sea flexible desde el usuario
+        # aunque vimos que preferentemente se va a configurar www como principal
+        redirect_server_names = []
+        # redirect_server_names = ['www.' + x for x in server_names]
         redirect_server_names += [
             x.name for x in self.instance_host_ids if x.type == 'redirect_to_main']
 
@@ -1127,16 +1143,23 @@ class instance(models.Model):
         if self.longpolling_port:
             nginx_long_polling = nginx_long_polling_template % (
                 self.longpolling_port)
-
         nginx_site_file = nginx_site_template % (
-            ' '.join(redirect_server_names),
-            self.main_hostname,
             listen_port, ' '.join(server_names),
             acces_log,
             error_log,
             xmlrpc_port,
             nginx_long_polling
-        )
+            )
+
+        # Add redirections if exists
+        if redirect_server_names:
+            nginx_site_file = "%s\n%s" % (
+                nginx_redirect_template % (
+                    ' '.join(redirect_server_names),
+                    self.main_hostname,
+                    ),
+                nginx_site_file,
+                )
 
         # Check nginx sites-enabled directory exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
@@ -1186,16 +1209,18 @@ class instance(models.Model):
         return res
 
 # TODO llevar esto a un archivo y leerlo de alli
+nginx_redirect_template = """
+server   {
+        server_name %s;
+        rewrite  ^/(.*)$  http://%s/$1 permanent;
+}
+"""
 nginx_long_polling_template = """
     location /longpolling {
         proxy_pass   http://127.0.0.1:%i;
     }
 """
 nginx_site_template = """
-server   {
-        server_name %s;
-        rewrite  ^/(.*)$  http://%s/$1 permanent;
-}
 server {
         listen %i;
         server_name %s;

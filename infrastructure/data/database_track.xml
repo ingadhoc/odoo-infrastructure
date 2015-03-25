@@ -5,35 +5,35 @@
 <record id="infrastructure.database_draft" model="mail.message.subtype">
     <field name="name">Draft</field>
     <field name="res_model">infrastructure.database</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Draft</field>
 </record>
 
 <record id="infrastructure.database_maintenance" model="mail.message.subtype">
     <field name="name">Maintenance</field>
     <field name="res_model">infrastructure.database</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Maintenance</field>
 </record>
 
 <record id="infrastructure.database_active" model="mail.message.subtype">
     <field name="name">Active</field>
     <field name="res_model">infrastructure.database</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Active</field>
 </record>
 
 <record id="infrastructure.database_deactivated" model="mail.message.subtype">
     <field name="name">Deactivated</field>
     <field name="res_model">infrastructure.database</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Deactivated</field>
 </record>
 
 <record id="infrastructure.database_cancel" model="mail.message.subtype">
     <field name="name">Cancel</field>
     <field name="res_model">infrastructure.database</field>
-    <field name="default" eval="True"/>
+    <field name="default" eval="False"/>
     <field name="description">Cancel</field>
 </record>
 
