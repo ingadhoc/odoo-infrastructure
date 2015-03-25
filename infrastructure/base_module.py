@@ -18,7 +18,6 @@ class database(models.Model):
         )
     author = fields.Char(
         'Author',
-        required=True,
         )
     default_on_new_db = fields.Boolean(
         string='Default on New Database',

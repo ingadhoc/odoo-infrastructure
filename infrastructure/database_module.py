@@ -27,7 +27,6 @@ class database(models.Model):
         ],
         'Status',
         readonly=True,
-        required=True,
         compute=False,
     )
     installed_version = fields.Char(

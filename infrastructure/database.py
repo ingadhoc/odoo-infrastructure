@@ -682,36 +682,63 @@ class database(models.Model):
 
     @api.one
     def action_update_modules_data(self):
-        self.update_modules_data()
+        self.update_modules_data(update_list=True)
 
-    def update_modules_data(self, modules_domain=None):
+    def update_modules_data(self, modules_domain=None, update_list=False):
+        # Used for test
+        # modules_domain = [('name', '=', 'sale')]
         if not modules_domain:
             modules_domain = []
+
         client = self.get_client()
         fields = [
+            'name',
             'sequence',
             'author',
             'auto_install',
             'installed_version',
             'latest_version',
             'published_version',
-            'name',
             'shortdesc',
             'state']
 
-        client.model('ir.module.module').update_list()
-        modules_data = client.export_data(
-            'ir.module.module', modules_domain, fields)
+        module_ids = client.model('ir.module.module').search(modules_domain)
 
-        modules_domain.append(('database_id', '=', self.id))
-        self.env['infrastructure.database.module'].search(
-            modules_domain).unlink()
+        if update_list:
+            client.model('ir.module.module').update_list()
+
+        exp_modules_data = client.model('ir.module.module').read(
+            module_ids, fields)
 
         vals = {'database_id': self.id}
-        for module in modules_data:
-            for field in fields:
-                vals[field] = module[field]
-            self.env['infrastructure.database.module'].create(vals)
+
+        imp_modules_data = []
+        # construimos y agregamos los identificadores al princio
+        for exp_module in exp_modules_data:
+            # TODO seguro que esto lo podemos hacer mejor con un iterkeys o algo asi
+            # simulamos un modulo con el . para hacer un unlink
+            module_name = 'infra_db_%i' % 160
+            vals = [
+                '%s.%s' % (module_name, exp_module['name']),
+                self.id,
+                exp_module['name'],
+                exp_module['sequence'],
+                exp_module['author'],
+                str(exp_module['auto_install']),
+                exp_module['installed_version'],
+                exp_module['latest_version'],
+                exp_module['published_version'],
+                exp_module['shortdesc'],
+                exp_module['state'],
+                ]
+            imp_modules_data.append(vals)
+        # LOAD data
+        self.env['infrastructure.database.module'].load(
+            ['id', 'database_id/.id'] + fields, imp_modules_data, context={'default_noupdate': True})
+
+        # Remove old data
+        res = self.env['ir.model.data']._process_end([module_name])
+        return res
 
 # MAIL server and catchall configurations
     @api.one
