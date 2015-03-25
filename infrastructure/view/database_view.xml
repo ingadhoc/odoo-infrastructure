@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- infrastructure.database -->
 <openerp>
 <data>
 
@@ -113,8 +112,6 @@
                             <label for="backups_enable"/>
                             <div class="oe_inline">
                                 <field name="backups_enable"/><button class="oe_read_only oe_link" type="object" name="config_backups" states='active' string="Config Backups"/>
-                                <!-- Lo mostramos tmb si esta desabilitado para desactivar backups -->
-                                <!-- <field name="backups_enable"/><button class="oe_read_only oe_link" type="object" name="config_backups" attrs="{'invisible':['|',('state','!=','active'),('backups_enable','=',False)]}" string="Config Backups"/> -->
                             </div>
                             <label string=""/>
                             <div attrs="{'invisible':[('backups_enable','=',False)]}">

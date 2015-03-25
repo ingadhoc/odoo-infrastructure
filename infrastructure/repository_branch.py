@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields
 
 
@@ -12,11 +11,11 @@ class repository_branch(models.Model):
     name = fields.Char(
         string='Name',
         required=True
-    )
+        )
     repository_ids = fields.Many2many(
         'infrastructure.repository',
         'infrastructure_repository_ids_branch_ids_rel',
         'repository_branch_id',
         'repository_id',
         string='repository_ids'
-    )
+        )

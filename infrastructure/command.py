@@ -9,24 +9,16 @@ class command(models.Model):
 
     _name = 'infrastructure.command'
     _description = 'command'
+    _order = "sequence"
 
-    sequence = fields.Integer(string='sequence')
-
-    type = fields.Selection(
-        [(u'installation', 'installation'), (u'maintenance', 'maintenance')],
-        string='Type',
-        required=True,
-        default='maintenance'
-    )
-
+    sequence = fields.Integer(
+        string='sequence'
+        )
     name = fields.Char(
         string='Name',
         required=True
-    )
-
+        )
     command = fields.Text(
         string='Command',
         required=True
-    )
-
-    _order = "sequence"
+        )

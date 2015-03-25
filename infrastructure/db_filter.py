@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from openerp.exceptions import Warning
 from openerp import models, fields
 
 
@@ -12,9 +11,8 @@ class db_filter(models.Model):
     name = fields.Char(
         string='Name',
         required=True
-    )
-
+        )
     rule = fields.Char(
         string='Rule',
         required=True
-    )
+        )

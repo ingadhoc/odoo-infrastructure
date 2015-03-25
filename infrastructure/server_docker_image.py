@@ -16,13 +16,13 @@ class server_docker_image(models.Model):
         'infrastructure.docker_image',
         'Docker Image',
         required=True,
-    )
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         'Server',
         required=True,
         ondelete='cascade',
-    )
+        )
 
     @api.multi
     def pull_image(self, context=None, detached=False):

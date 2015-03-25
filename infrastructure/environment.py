@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 import string
-from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 from fabric.api import cd
-# utilizamos nuestro custom sudo que da un warning
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists
 import os
@@ -101,39 +99,25 @@ class environment(models.Model):
         'infrastructure.instance',
         'environment_id',
         string='Instances',
-        context={
-            'from_environment': True
-        }
+        context={'from_environment': True},
         )
     sources_path = fields.Char(
         string='Sources Path',
-        # compute='_get_env_paths',
-        # store=True,
         readonly=True,
         required=True,
-        states={
-            'draft': [('readonly', False)]
-        }
+        states={'draft': [('readonly', False)]},
         )
     backups_path = fields.Char(
         string='Backups Path',
-        # compute='_get_env_paths',
-        # store=True,
         readonly=True,
         required=True,
-        states={
-            'draft': [('readonly', False)]
-        }
+        states={'draft': [('readonly', False)]},
         )
     path = fields.Char(
         string='Path',
-        # compute='_get_path',
-        # store=True,
         readonly=True,
         required=True,
-        states={
-            'draft': [('readonly', False)]
-        }
+        states={'draft': [('readonly', False)]},
         )
     instance_count = fields.Integer(
         string='# Instances',
@@ -195,7 +179,6 @@ class environment(models.Model):
                     draft or cancelled.'))
         return super(environment, self).unlink()
 
-    @api.one
     @api.onchange('server_id')
     def _get_number(self):
         environments = self.search(
@@ -204,7 +187,6 @@ class environment(models.Model):
                 )
         self.number = environments and environments[0].number + 1 or 10
 
-    @api.one
     @api.onchange('partner_id', 'odoo_version_id')
     def _get_name(self):
         name = False
@@ -214,10 +196,9 @@ class environment(models.Model):
             name = '%s-%s' % (partner_name, sufix)
             valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
             name = ''.join(c for c in name if c in valid_chars)
-            name = name.replace(' ', '').lower()
+            name = name.replace(' ', '').replace('.', '').lower()
         self.name = name
 
-    @api.one
     @api.onchange('name', 'server_id')
     def _get_path(self):
         path = False
@@ -225,7 +206,6 @@ class environment(models.Model):
             path = os.path.join(self.server_id.base_path, self.name)
         self.path = path
 
-    @api.one
     @api.onchange('path')
     def _get_env_paths(self):
         sources_path = False
@@ -300,8 +280,6 @@ class environment(models.Model):
 
     @api.one
     def install_odoo(self):
-        # TODO agregar que si ya existe openerp tal vez haya que borrar y
-        # volver a crearlo
         if self.type == 'virtualenv':
             self.server_id.get_env()
             environment_repository = self.check_repositories()

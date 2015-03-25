@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, SUPERUSER_ID, netsvc, _
+from openerp import models, fields, api, SUPERUSER_ID, _
 from openerp.exceptions import except_orm
 import xmlrpclib
 import socket
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-# from fabric.api import sudo
-# utilizamos nuestro custom sudo que da un warning
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from erppeek import Client
@@ -72,8 +70,6 @@ class database(models.Model):
     smtp_server_id = fields.Many2one(
         'infrastructure.mailserver',
         string='SMTP Server',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
         )
     domain_alias = fields.Char(
         string='Domain Alias',
@@ -169,7 +165,6 @@ class database(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        # deprecated=True,  # we use server admin pass to autheticate now
         )
     virtual_alias = fields.Char(
         string='Virtual Alias',
@@ -185,15 +180,11 @@ class database(models.Model):
         )
     alias_prefix = fields.Char(
         'Alias Prefix',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
         copy=False,
         )
     alias_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
         string='Alias Hostname',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
         copy=False,
         )
     alias_hostname_wildcard = fields.Boolean(
@@ -224,7 +215,6 @@ class database(models.Model):
         copy=False,
         )
 
-    @api.one
     @api.onchange('instance_id')
     def _onchange_instance(self):
         self.partner_id = self.instance_id.environment_id.partner_id
@@ -314,7 +304,6 @@ class database(models.Model):
                     )
             self.admin_password = self.database_type_id.db_admin_pass or self.instance_id.name
 
-    @api.one
     @api.onchange('database_type_id', 'issue_date')
     def get_deact_date(self):
         deactivation_date = False

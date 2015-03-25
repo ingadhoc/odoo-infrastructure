@@ -1,14 +1,11 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import cd
-# utilizamos nuestro custom sudo que da un warning
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists
 import os
 from ast import literal_eval
-# TODO implement log_Event new login method
 
 
 class environment_repository(models.Model):
@@ -60,15 +57,12 @@ class environment_repository(models.Model):
         readonly=True
         )
 
-    @api.one
     @api.onchange('server_repository_id')
     def change_server_repository(self):
         default_branch_id = self.environment_id.odoo_version_id.default_branch_id.id
         repo_branch_ids = [
             x.id for x in self.server_repository_id.repository_id.branch_ids]
         if default_branch_id and default_branch_id in repo_branch_ids:
-            # default_branch_id = self.server_repository_id.default_branch_id
-            # if default_branch_id in self.server_repository_id.branch_ids
             self.branch_id = default_branch_id
 
     @api.one

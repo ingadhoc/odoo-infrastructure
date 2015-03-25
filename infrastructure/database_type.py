@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, tools
 
 
@@ -12,19 +11,19 @@ class database_type(models.Model):
     sequence = fields.Integer(
         'Sequence',
         default=10,
-    )
+        )
     name = fields.Char(
         string='Name',
         required=True
-    )
+        )
     prefix = fields.Char(
         string='Prefix',
         required=True,
         size=4
-    )
+        )
     url_prefix = fields.Char(
         string='URL Prefix'
-    )
+        )
     type = fields.Selection(
         [('normal', 'Normal'),
          ('protected', 'Protected'),
@@ -44,30 +43,30 @@ class database_type(models.Model):
         )
     color = fields.Integer(
         string='Color'
-    )
+        )
     auto_drop_days = fields.Integer(
         string='Automatic Drop Days'
-    )
+        )
     protect_db = fields.Boolean(
         string='Protect Databases?'
-    )
+        )
     auto_deactivation_days = fields.Integer(
         string='Automatic Deactivation Days'
-    )
+        )
     install_lang_id = fields.Selection(
         tools.scan_languages(),
         string='Install Language',
-    )
+        )
     instance_admin_pass = fields.Char(
         'Instance Admin Password',
         help='It will be used as default on Instance Admin Password, if not value defined instance name will be suggested',
-    )
+        )
     db_admin_pass = fields.Char(
         'DB Admin Password',
         help='It will be used as default on Database Admin Password, if not value defined instance name will be suggested',
-    )
+        )
     db_filter = fields.Many2one(
         'infrastructure.db_filter',
         string='DB Filter',
         help='It will be used as default on Instances',
-    )
+        )

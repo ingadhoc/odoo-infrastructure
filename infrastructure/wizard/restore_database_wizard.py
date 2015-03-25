@@ -81,7 +81,6 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         'Backups Enable on new DB?'
     )
 
-    @api.one
     @api.onchange('environment_id')
     def change_environment(self):
         self.instance_id = False

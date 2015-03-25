@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
-
-from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import shell_env
-# from fabric.api import sudo, shell_env
-# utilizamos nuestro custom sudo que da un warning
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from ast import literal_eval
 import os
 import re
-from fabric.api import settings, env
+from fabric.api import env
 import logging
 import fabtools
 _logger = logging.getLogger(__name__)
@@ -20,9 +16,7 @@ _logger = logging.getLogger(__name__)
 class instance(models.Model):
 
     """"""
-    # TODO agregar bloqueo de volver a estado cancel. Solo se debe poder
-    # volver si no existe el path ni el source path y si no existen ambienets
-    # activo
+
     _name = 'infrastructure.instance'
     _rec_name = 'display_name'
     _description = 'instance'
@@ -38,7 +32,7 @@ class instance(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
+        )
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
         string='Database Type',
@@ -47,7 +41,7 @@ class instance(models.Model):
         states={'draft': [('readonly', False)]},
         track_visibility='onchange',
         copy=False,
-    )
+        )
     display_name = fields.Char(
         'Name',
         compute='get_display_name',
@@ -58,8 +52,7 @@ class instance(models.Model):
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        # default='main',
-    )
+        )
     type = fields.Selection(
         [(u'secure', u'Secure'), (u'none_secure', u'None Secure')],
         string='Instance Type',
@@ -67,16 +60,14 @@ class instance(models.Model):
         default='none_secure',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     db_filter = fields.Many2one(
         'infrastructure.db_filter',
         string='DB Filter',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     limit_time_real = fields.Integer(
         string='Limit Time Real',
         required=True,
@@ -84,8 +75,7 @@ class instance(models.Model):
         help='Maximum allowed Real time per request. The default odoo value is 120 but sometimes we use 300 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     limit_time_cpu = fields.Integer(
         string='Limit Time CPU',
         required=True,
@@ -93,8 +83,7 @@ class instance(models.Model):
         help='Maximum allowed CPU time per request. The default odoo value is 60 but sometimes we use 120 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     db_maxconn = fields.Integer(
         string='DB Max connections',
         required=True,
@@ -102,39 +91,26 @@ class instance(models.Model):
         help='Specify the the maximum number of physical connections to posgresql. Default odoo config is 64, we use 32.',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     note = fields.Html(
         string='Note'
-    )
-
+        )
     color = fields.Integer(
         string='Color Index'
-    )
-
+        )
     run_server_command = fields.Char(
         string='Run Server Command',
         required=True,
         default='odoo.py',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     proxy_mode = fields.Boolean(
         string='Proxy Mode?',
         default=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
-    # TODO borrar esta opcion, que sea asi por defecto
-    run_on_sys_boot = fields.Boolean(
-        string='Run On System Boot?',
-        default=True,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-    )
-
+        )
     log_level = fields.Selection([
         (u'info', 'info'), (u'debug_rpc', 'debug_rpc'),
         (u'warn', 'warn'), (u'test', 'test'), (u'critical', 'critical'),
@@ -143,59 +119,45 @@ class instance(models.Model):
         string='Log Level',
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     workers = fields.Integer(
         string='Workers',
         default=0,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     admin_pass = fields.Char(
         string='Admin Password',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     unaccent = fields.Boolean(
         string='Enable Unaccent',
         readonly=True,
         default=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     module_load = fields.Char(
         string='Load default modules',
         compute='_get_module_load',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]},
-    )
-
+        )
     main_hostname = fields.Char(
         string='Main Hostname',
         compute='_get_main_hostname',
-        # required=True,
-        # help="Specified the port if port different from 80. For eg you can use: \
-        # * ingadho.com\
-        # * ingadhoc.com:8069"
-    )
-
+        )
     state = fields.Selection(
         _states_,
         string="State",
         default='draft'
-    )
-
+        )
     instance_host_ids = fields.One2many(
         'infrastructure.instance_host',
         'instance_id',
         string='Hosts',
         readonly=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
@@ -203,194 +165,141 @@ class instance(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     database_ids = fields.One2many(
         'infrastructure.database',
         'instance_id',
         string='Databases',
         context={'from_instance': True}
-    )
-
+        )
     addons_path = fields.Char(
         string='Addons Path',
         compute='_get_addons_path',
-        # store=True,
-        # readonly=False,
-        required=True
-    )
-
+        )
     user = fields.Char(
         string='User',
-        # compute='_get_user',
-        # store=True,
-        # required=True,
-        # readonly=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     service_file = fields.Char(
         string='Service Name',
-        # compute='_get_user',
-        # store=True,
         readonly=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     base_path = fields.Char(
         string='Base Path',
-        # compute='_get_paths',
-        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
-    )
-
+       )
     conf_path = fields.Char(
         string='Config. Path',
-        # compute='_get_paths',
-        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     pg_data_path = fields.Char(
         string='Pg Data Path',
-        # compute='_get_paths',
-        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     conf_file_path = fields.Char(
         string='Config. File Path',
-        # compute='_get_paths',
-        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
-    )
-
+       )
     data_dir = fields.Char(
         string='Data Dir',
-        # compute='_get_paths',
-        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     logfile = fields.Char(
         string='Log File Path',
-        # compute='_get_paths',
-        # store=True,
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]}
-    )
-
+        )
     xml_rpc_port = fields.Integer(
         string='XML-RPC Port',
-        # compute='_get_ports',
-        # store=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         required=True
-    )
-
+        )
     xml_rpcs_port = fields.Integer(
         string='XML-RPCS Port',
-        # compute='_get_ports',
-        # store=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     longpolling_port = fields.Integer(
         string='Longpolling Port',
-        # compute='_get_ports',
-        # store=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-    )
-
+        )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases'
-    )
-
+        )
     sources_path = fields.Char(
         string='Sources Path',
-        # compute='_get_env_paths',
-        # store=True,
         readonly=True,
         required=True,
-        states={
-            'draft': [('readonly', False)]
-        }
-    )
-
+        states={'draft': [('readonly', False)]}
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         related='environment_id.server_id',
         store=True,
         readonly=True
-    )
+        )
     docker_image_ids = fields.Many2many(
         'infrastructure.docker_image',
         string='Docker Images',
         compute='_get_docker_images',
-    )
+        )
     env_type = fields.Selection(
         related='environment_id.type',
         string='Environment Type',
-        # store=True,
         readonly=True
-    )
+        )
     odoo_image_id = fields.Many2one(
         'infrastructure.docker_image',
         string='Odoo Image',
         readonly=True,
         domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'odoo')]",
         states={'draft': [('readonly', False)]}
-    )
+        )
     odoo_image_tag_id = fields.Many2one(
         'infrastructure.docker_image.tag',
         string='Tag',
         readonly=True,
         domain="[('docker_image_id', '=', odoo_image_id)]",
         states={'draft': [('readonly', False)]}
-    )
+        )
     pg_image_id = fields.Many2one(
         'infrastructure.docker_image',
         string='Postgres Image',
         readonly=True,
         domain="[('odoo_image_ids', '=', odoo_image_id)]",
-        # domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'postgresql')]",
         states={'draft': [('readonly', False)]}
-    )
+        )
     pg_image_tag_id = fields.Many2one(
         'infrastructure.docker_image.tag',
         string='Tag',
         readonly=True,
         domain="[('docker_image_id', '=', pg_image_id)]",
         states={'draft': [('readonly', False)]}
-    )
+        )
     odoo_container = fields.Char(
         string='Odoo Container',
         compute='get_container_names',
-        # readonly=True,
-        # states={'draft': [('readonly', False)]}
-    )
+        )
     pg_container = fields.Char(
         string='Postgresql Container',
-        # readonly=True,
         compute='get_container_names',
-        # states={'draft': [('readonly', False)]}
-    )
+        )
 
     _sql_constraints = [
         ('xml_rpc_port_uniq', 'unique(xml_rpc_port, server_id)',
@@ -422,7 +331,6 @@ class instance(models.Model):
     def _get_main_hostname(self):
         main_host = self.instance_host_ids.filtered(
             lambda r: r.type == 'main')
-        # main_host = self.instance_host_ids.filtered("type='main'")
         if not main_host:
             main_host = self.instance_host_ids.filtered(
                 lambda r: r.type == 'other')
@@ -460,12 +368,7 @@ class instance(models.Model):
         self.odoo_container = 'odoo-' + self.display_name
         self.pg_container = 'db-' + self.display_name
 
-    @api.one
-    def get_user(self):
-        """"""
-        raise NotImplementedError
-
-    @api.one
+    @api.multi
     def show_passwd(self):
         raise except_orm(
             _("Password for user '%s':") % self.user,
@@ -539,7 +442,6 @@ class instance(models.Model):
             addons_path = '[]'
         self.addons_path = addons_path
 
-    @api.one
     @api.onchange('environment_id')
     def _onchange_environment(self):
         # Get same env instances for database type and instance number
@@ -570,7 +472,6 @@ class instance(models.Model):
             ], limit=1)
         self.odoo_image_id = odoo_images
 
-    @api.one
     @api.onchange('odoo_image_id')
     def _onchange_docker_image(self):
         tags = self.odoo_image_id.tag_ids
@@ -578,12 +479,10 @@ class instance(models.Model):
         self.odoo_image_tag_id = tags and tags[0] or False
         self.pg_image_id = pg_images and pg_images[0] or False
 
-    @api.one
     @api.onchange('pg_image_id')
     def _onchange_pg_image(self):
         self.pg_image_tag_id = self.pg_image_id.tag_ids
 
-    @api.one
     @api.onchange('name', 'environment_id')
     def _get_user(self):
         user = False
@@ -592,7 +491,6 @@ class instance(models.Model):
         self.user = user
         self.service_file = user
 
-    @api.one
     @api.onchange('name', 'number', 'environment_id')
     def _get_ports_and_ports(self):
         xml_rpc_port = False
@@ -631,7 +529,7 @@ class instance(models.Model):
         self.logfile = logfile
         self.data_dir = data_dir
 
-    # Actions
+# Actions
     @api.multi
     def delete(self):
         _logger.info("Deleting Instance")
@@ -668,7 +566,7 @@ class instance(models.Model):
             self.run_on_start()
         self.signal_workflow('sgn_to_active')
 
-    @api.one
+    @api.multi
     def remove_containers(self):
         self.environment_id.server_id.get_env()
         for container in [self.odoo_container, self.pg_container]:
@@ -705,14 +603,9 @@ class instance(models.Model):
             ))
         return command
 
-    @api.one
-    def run_odoo_container(self):
-        command = self.run_odoo_command()
-        sudo('docker %s' % command)
-        _logger.info("Running docker command: %s" % command)
-
     @api.multi
     def run_pg_command(self):
+        # TODO esta funcion deberia recorrer varios y devolver varios o ser one
         command = (
             '%s \
             -v %s:/var/lib/postgresql/data \
@@ -726,24 +619,19 @@ class instance(models.Model):
             ))
         return command
 
-    @api.one
-    def run_pg_container(self):
-        command = self.run_pg_command()
-        sudo('docker %s' % command)
-        _logger.info("Running docker command: %s" % command)
-
-    @api.one
+    @api.multi
     def delete_paths(self):
         _logger.info("Deleting path and subpath of: %s " % self.base_path)
         self.environment_id.server_id.get_env()
         sudo('rm -r %s' % self.base_path, dont_raise=True)
 
-    @api.one
+    @api.multi
     def make_paths(self):
+        """ Creamos todo los paths con 777 salvo el de posgreses que dejamos
+        que se cree solo porque si no no anda por ser inseguro
+        """
         _logger.info("Creating paths")
         self.environment_id.server_id.get_env()
-        # el path de postgres dejamos que se cree solo para que no les ponga
-        # 777 de permisos porque da error
         paths = [
             self.base_path,
             self.sources_path,
@@ -779,20 +667,8 @@ class instance(models.Model):
             sudo('rm ' + self.conf_file_path)
 
         # Build addons path
-        # Todo usar ', '.join
-        # addons_path = False
         addons_paths = literal_eval(self.addons_path)
-        # for path in addons_paths:
-        #     # path.replace
         addons_path = ','.join(addons_paths)
-        # for addon_path in literal_eval(self.addons_path):
-        #     if not exists(addon_path, use_sudo=True):
-        #         raise except_orm(_('Addons path does not exist!'),
-        #                          _("Addons path '%s' does not exists. \
-        #                             Please create it first!") % (addon_path))
-        #     if not addons_path:
-        #         addons_path = addon_path
-        #     addons_path += ',' + addon_path
 
         # Construimos commando
         if self.env_type == 'docker':
@@ -809,7 +685,6 @@ class instance(models.Model):
             command += ' --addons-path=' + addons_path
         # agregamos ' para que no de error con ciertos dominios
         command += ' --db-filter=' + "'%s'" % self.db_filter.rule
-        # TODO ver para ambientes de docker que hacemos con el log
         if self.env_type != 'docker':
             command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
             command += ' --logfile=' + self.logfile
@@ -849,15 +724,8 @@ class instance(models.Model):
         else:
             command += ' --no-xmlrpcs'
 
-        # TODO --cert-file and --pkey-file
-        # TODO ver de agregar --log-db=LOG_DB
-        # TODO check that user exists
-        # TODO tal vez -r -w para database data
         try:
             if self.env_type == 'docker':
-                print 'command'
-                print 'command'
-                print 'command', command
                 sudo(command)
             else:
                 sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
@@ -897,6 +765,7 @@ class instance(models.Model):
 
     @api.multi
     def update_pg_service_file(self):
+        # TODO esta funcion deberia recorrer varios
         _logger.info("Updating Postgresql service file")
         service_path = '/etc/init'
         service_file_path = os.path.join(
@@ -916,6 +785,7 @@ class instance(models.Model):
 
     @api.multi
     def update_service_file(self):
+        # TODO esta funcion deberia recorrer varios
         _logger.info("Updating service file")
 
         if self.env_type == 'docker':
@@ -1001,13 +871,9 @@ class instance(models.Model):
         _logger.info("Starting Service %s " % service)
         self.environment_id.server_id.get_env()
         self.stop_service()
-        # TODO no anda este verificador de fabric seguramente porque el servicio esta mal, habria que mejroarlo robando lo nuevo de odoo
-        # if not fabtools.service.is_running(self.service_file):
         env.warn_only = True
         fabtools.service.start(service)
         env.warn_only = False
-        # service.started(self.service_file)
-        # sudo('service ' + self.service_file + ' start')
 
     @api.one
     def stop_service(self):
@@ -1018,13 +884,9 @@ class instance(models.Model):
 
         _logger.info("Stopping Service %s " % service)
         self.environment_id.server_id.get_env()
-        # if fabtools.service.is_running(self.service_file):
         env.warn_only = True
         fabtools.service.stop(service)
         env.warn_only = False
-        # sudo('service ' + self.service_file + ' stop')
-        # TODO probar bajar con fabtools pero me daba error
-        # service.stopped(self.service_file)
 
     @api.one
     def restart_service(self):
@@ -1074,7 +936,6 @@ class instance(models.Model):
         self.environment_id.server_id.get_env()
         try:
             sudo('update-rc.d  -f ' + self.service_file + ' remove')
-        # we dont raise and exception, jus print on logg
         except Exception, e:
             _logger.warning(("Could not stop service '%s' to run on start, this is what we get: \n %s") % (
                 self.service_file, e))

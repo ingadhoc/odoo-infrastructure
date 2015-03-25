@@ -164,6 +164,11 @@
                         <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
                     <page string="Repositories" states="active">
+                        <button string="Get and Update all Repositoires"
+                            icon="gtk-go-down"
+                            type="object"
+                            states="active"
+                            name="get_update_repositories"/>
                        <field name="server_repository_ids"/>
                     </page>
                     <page string="Docker Images" states="active">

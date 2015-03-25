@@ -245,11 +245,6 @@ class server(models.Model):
         string="State",
         default='draft',
         )
-    server_service_ids = fields.One2many(
-        'infrastructure.server_service',
-        'server_id',
-        string='Services',
-        )
     server_repository_ids = fields.One2many(
         'infrastructure.server_repository',
         'server_id',
@@ -327,7 +322,6 @@ class server(models.Model):
             'Server Name must be unique!'),
     ]
 
-    @api.one
     @api.onchange('main_hostname')
     def change_main_hostname(self):
         if not self.postfix_hostname:
@@ -411,6 +405,10 @@ class server(models.Model):
         argumento adicional que se confunde con el context
         """
         self.test_connection()
+
+    @api.multi
+    def get_update_repositories(self):
+        self.server_repository_ids.get_update_repository()
 
     @api.multi
     def test_connection(self, no_prompt=False):
@@ -569,7 +567,6 @@ class server(models.Model):
         self.copy_mailgate_file()
         # Ensure the package is installed
         if not is_installed('postfix'):
-            print 'self.postfix_hostname', self.postfix_hostname
             preseed_package('postfix', {
                 'postfix/main_mailer_type': ('select', 'Internet Site'),
                 'postfix/mailname': ('string', self.postfix_hostname),

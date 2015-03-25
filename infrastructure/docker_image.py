@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, _
-from openerp.exceptions import except_orm, Warning
-import logging
-_logger = logging.getLogger(__name__)
+from openerp import models, fields
 
 
 class infrastructure_docker_image(models.Model):
@@ -32,7 +29,7 @@ class infrastructure_docker_image(models.Model):
         )
     service = fields.Selection(
         [('odoo', 'Odoo'), ('postgresql', 'Postgresql'), ('other', 'Other')],
-        string='Servicce',
+        string='Service',
         default='odoo',
         required=True,
         )

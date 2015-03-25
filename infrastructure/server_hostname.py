@@ -17,12 +17,10 @@ class server_hostname(models.Model):
     name = fields.Char(
         string='Name',
         required=True
-    )
-
+        )
     wildcard = fields.Boolean(
         string='Wild Card'
-    )
-
+        )
     domain_regex = fields.Char(
         string='Domain Regex',
         required=True,
@@ -30,16 +28,14 @@ class server_hostname(models.Model):
         For domains use something like '/(.*)tuukan\.com$/'
         For wildcards use something line '/[@.]domain\.com\.ar$/'
         """
-    )
-
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         ondelete='cascade',
         required=True
-    )
+        )
 
-    @api.one
     @api.onchange('wildcard', 'name')
     def _get_domain_regex(self):
         domain_regex = False

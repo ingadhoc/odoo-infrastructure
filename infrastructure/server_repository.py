@@ -5,6 +5,8 @@ from fabric.api import cd
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists
 import os
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class server_repository(models.Model):
@@ -31,12 +33,12 @@ class server_repository(models.Model):
 
     @api.one
     def get_repository(self):
-        print 'Getting repository'
+        _logger.info('Getting repository %s' % self.repository_id.name)
         self.path = self.repository_id.get_repository(self.server_id)[0]
 
     @api.one
     def update_repository(self, path=False):
-        print 'Updating repository'
+        _logger.info('Updating repository %s' % self.repository_id.name)
         self.server_id.get_env()
         if not path:
             path = self.path

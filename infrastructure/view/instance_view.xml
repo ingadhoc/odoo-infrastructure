@@ -98,9 +98,6 @@
                                     type="object"
                                     class="oe_link oe_read_only"/>
                             </div>
-                        <!-- TODO esta opcin la vamos a borrar -->
-                        <!-- <field name="run_on_sys_boot"/> -->
-                        <!-- TODO agregar funcionalidad para esto -->
                         <field name="db_filter"/>
                         <field name="unaccent"/>
                         <field name="workers"/>

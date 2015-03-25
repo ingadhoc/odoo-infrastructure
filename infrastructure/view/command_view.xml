@@ -9,12 +9,8 @@
     <field name="model">infrastructure.command</field>
     <field name="arch" type="xml">
         <search string="command">
-            <group string="By Attribute">
-                <field name="name" string="Name"/>
-                <field name="command" string="Command"/>
-            </group>
-            <group string="By object">
-            </group>
+            <field name="name"/>
+            <field name="command"/>
         </search>
     </field>
 </record>
