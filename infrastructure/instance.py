@@ -472,12 +472,11 @@ class instance(models.Model):
             _("%s") % self.admin_pass
         )
 
-    def action_wfk_set_draft(self, cr, uid, ids, *args):
-        self.write(cr, uid, ids, {'state': 'draft'})
-        wf_service = netsvc.LocalService("workflow")
-        for obj_id in ids:
-            wf_service.trg_delete(uid, 'infrastructure.instance', obj_id, cr)
-            wf_service.trg_create(uid, 'infrastructure.instance', obj_id, cr)
+    @api.multi
+    def action_wfk_set_draft(self):
+        self.write({'state': 'draft'})
+        self.delete_workflow()
+        self.create_workflow()
         return True
 
     @api.one

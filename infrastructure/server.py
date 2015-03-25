@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
-from openerp import netsvc
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, reboot
-# from fabric.api import env, sudo, reboot
-# utilizamos nuestro custom sudo que da un warning
-# import custom_sudo as sudo
 from fabric.contrib.files import append, upload_template
-# For postfix
 from fabric.api import *
 import fabtools
 from fabtools.deb import is_installed, preseed_package, install
 from fabtools.require.service import started
 import socket
-import sys, os
+import sys
+import os
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -162,18 +158,6 @@ class server(models.Model):
         string='# Instances',
         compute='_get_instances',
         )
-    # TODO remove this field
-    software_data = fields.Html(
-        string='Software Data',
-        )
-    # TODO remove this field
-    hardware_data = fields.Html(
-        string='Hardware Data',
-        )
-    # TODO remove this field
-    contract_data = fields.Html(
-        string='Contract Data',
-        )
     note = fields.Html(
         string='Note',
         )
@@ -253,9 +237,6 @@ class server(models.Model):
     gdrive_space = fields.Char(
         string='Gdrive Space',
         )
-    open_ports = fields.Char(
-        string='Open Ports',
-        )
     requires_vpn = fields.Boolean(
         string='Requires VPN?',
         )
@@ -306,12 +287,6 @@ class server(models.Model):
         'infrastructure.server_configuration_command',
         string='Installation Commands',
         related="server_configuration_id.install_command_ids",
-        )
-    # TODO borrar esto que no usamos
-    maint_command_ids = fields.One2many(
-        'infrastructure.server_configuration_command',
-        string='Maintenance Commands',
-        related="server_configuration_id.maint_command_ids",
         )
     environment_count = fields.Integer(
         string='# Environment',
@@ -380,9 +355,10 @@ class server(models.Model):
     def _get_instances(self):
         self.instance_count = len(self.instance_ids)
 
-    @api.one
+    @api.multi
     def get_env(self):
         # TODO ver si usamos env.keepalive = True para timeouts the nginx ()
+        self.ensure_one()
         env.user = self.user_name
         env.password = self.password
         env.host_string = self.main_hostname
@@ -412,7 +388,7 @@ class server(models.Model):
             _logger.info("Connection to port %s successfully established")
         return True
 
-    @api.one
+    @api.multi
     def get_data_and_activate(self):
         """ Check server data"""
         self.test_connection(no_prompt=True)
@@ -429,7 +405,14 @@ class server(models.Model):
         self.add_images()
         self.signal_workflow('sgn_to_install')
 
-    @api.one
+    @api.multi
+    def action_test_connection(self):
+        """Tenemos que crear esta funcion porque test_connection tiene un
+        argumento adicional que se confunde con el context
+        """
+        self.test_connection()
+
+    @api.multi
     def test_connection(self, no_prompt=False):
         """ Ugly way we find to check the connection"""
         self.get_env()
@@ -473,15 +456,17 @@ class server(models.Model):
             }
             self.server_docker_image_ids.create(vals)
 
-    @api.one
+    @api.multi
     def show_passwd(self):
+        self.ensure_one()
         raise except_orm(
             _("Password for user '%s':") % self.user_name,
             _("%s") % self.password
             )
 
-    @api.one
+    @api.multi
     def show_pg_passwd(self):
+        self.ensure_one()
         raise except_orm(
             _("Password for pg user '%s':") % self.postgres_superuser,
             _("%s") % self.postgres_superuser_pass
@@ -521,28 +506,23 @@ class server(models.Model):
             raise Warning(
                 _('Could Not Reload Nginx! This is what we get: \n %s') % (e))
 
-    def action_wfk_set_draft(self, cr, uid, ids, *args):
-        self.write(cr, uid, ids, {'state': 'draft'})
-        wf_service = netsvc.LocalService("workflow")
-        for obj_id in ids:
-            wf_service.trg_delete(uid, 'infrastructure.server', obj_id, cr)
-            wf_service.trg_create(uid, 'infrastructure.server', obj_id, cr)
+    @api.multi
+    def action_wfk_set_draft(self):
+        self.write({'state': 'draft'})
+        self.delete_workflow()
+        self.create_workflow()
         return True
 
-    @api.one
+    @api.multi
     def add_to_virtual_domains(self):
         self.get_env()
-        # TODO remove this
-        # booelan values as unaccent
-        # if exists(self.virtual_domains_regex_path, use_sudo=True):
-        #     sudo('rm ' + self.virtual_domains_regex_path)
         for domain in self.hostname_ids:
             append(
                 self.virtual_domains_regex_path,
                 domain.domain_regex,
                 use_sudo=True,)
 
-    @api.one
+    @api.multi
     def copy_mailgate_file(self):
         self.get_env()
         local_mailgate_file = os.path.join(
@@ -569,8 +549,7 @@ class server(models.Model):
             return os.path.dirname(unicode(sys.executable, encoding))
         return os.path.dirname(unicode(__file__, encoding))
 
-# Install POSTFIX (TODO tal vez llevar a server service o hacer de otra manera)
-    @api.one
+    @api.multi
     def install_postfix(self):
     # def install_postfix(mailname):
         """
