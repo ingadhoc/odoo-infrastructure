@@ -85,6 +85,11 @@ class infrastructure_restore_database_wizard(models.TransientModel):
     def change_environment(self):
         self.instance_id = False
 
+    @api.onchange('instance_id')
+    def change_environment(self):
+        if self.instance_id:
+            self.database_type_id = self.instance_id.database_type_id
+
     @api.onchange('database_type_id')
     def onchange_database_type_id(self):
         if self.database_type_id:
@@ -94,5 +99,6 @@ class infrastructure_restore_database_wizard(models.TransientModel):
     @api.one
     def restore_database(self):
         self.database_backup_id.restore(
-            self.new_db_name, self.backups_enable, self.database_type_id)
+            self.instance_id, self.new_db_name,
+            self.backups_enable, self.database_type_id)
         return True

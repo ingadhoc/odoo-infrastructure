@@ -154,6 +154,7 @@
                                 <field name="sources_path"/>
                                 <field name="conf_path"/>
                                 <field name="conf_file_path"/>
+                                <field name="backups_path"/>
                                 <field name="logfile"/>
                                 <field name="data_dir"/>
                             </group>

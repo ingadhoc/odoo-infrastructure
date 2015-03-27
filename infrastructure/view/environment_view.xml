@@ -97,7 +97,6 @@
                             <field name="install_server_command" attrs="{'invisible':[('type','=','docker')],'required':[('type','!=','docker')]}"/>
                             <field name="path"/>
                             <field name="sources_path"/>
-                            <field name="backups_path"/>
                         </group>
                     </page>
                     <page string="Notes">

@@ -168,9 +168,17 @@ class server(models.Model):
         states={'draft': [('readonly', False)]},
         default='/opt/odoo',
         )
+    backups_path = fields.Char(
+        string='Backups Path',
+        readonly=True,
+        required=True,
+        default='/opt/odoo/backups',
+        states={'draft': [('readonly', False)]},
+        )
     mailgate_file = fields.Char(
         string='Mailgate File',
         readonly=True,
+        help='Mailgate File is Copided to Server and Computed when installing postfix'
         )
     color = fields.Integer(
         string='Color Index',
@@ -431,9 +439,11 @@ class server(models.Model):
 
     @api.multi
     def add_repositories(self):
+        actual_repositories = [
+            x.repository_id.id for x in self.server_repository_ids]
         repositories = self.env['infrastructure.repository'].search([
             ('default_in_new_env', '=', 'True'),
-            ('id', 'not in', self.server_repository_ids.ids),
+            ('id', 'not in', actual_repositories),
             ])
         for repository in repositories:
             vals = {
@@ -444,8 +454,10 @@ class server(models.Model):
 
     @api.multi
     def add_images(self):
+        actual_docker_images = [
+            x.docker_image_id.id for x in self.server_docker_image_ids]
         images = self.env['infrastructure.docker_image'].search([
-            ('id', 'not in', self.server_docker_image_ids.ids),
+            ('id', 'not in', actual_docker_images),
             ])
         for image in images:
             vals = {
@@ -528,7 +540,9 @@ class server(models.Model):
             'static/scripts/openerp_mailgate.py')
         try:
             res = upload_template(
-                local_mailgate_file, self.base_path, use_sudo=True)
+                local_mailgate_file, self.base_path,
+                use_sudo=True,
+                mode=0777)
         except Exception, e:
             raise Warning(_(
                 "Can not run upload mailgate file:\n\

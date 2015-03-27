@@ -24,6 +24,11 @@ class server_docker_image(models.Model):
         ondelete='cascade',
         )
 
+    _sql_constraints = [
+        ('image_uniq', 'unique(docker_image_id, server_id)',
+            'Docker Image Must be Unique per server'),
+    ]
+
     @api.multi
     def pull_image(self, context=None, detached=False):
         """ Tuvimos que ponerle el context porque desde la vista lo pasa sin

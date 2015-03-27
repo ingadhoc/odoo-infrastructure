@@ -31,6 +31,11 @@ class server_repository(models.Model):
         required=True
         )
 
+    _sql_constraints = [
+        ('image_uniq', 'unique(repository_id, server_id)',
+            'Repository Must be Unique per server'),
+    ]
+
     @api.one
     def get_repository(self):
         _logger.info('Getting repository %s' % self.repository_id.name)

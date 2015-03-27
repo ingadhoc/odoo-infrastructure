@@ -210,6 +210,12 @@ class instance(models.Model):
         required=True,
         states={'draft': [('readonly', False)]}
        )
+    backups_path = fields.Char(
+        string='Backups Path',
+        readonly=True,
+        # required=True, TODO make require after instances updated
+        states={'draft': [('readonly', False)]},
+        )
     data_dir = fields.Char(
         string='Data Dir',
         readonly=True,
@@ -499,6 +505,7 @@ class instance(models.Model):
         longpolling_port = False
         conf_path = False
         conf_file_path = False
+        backups_path = False
         base_path = False
         pg_data_path = False
         logfile = False
@@ -517,12 +524,18 @@ class instance(models.Model):
                 self.environment_id.path, self.name)
             conf_path = os.path.join(base_path, 'config')
             pg_data_path = os.path.join(base_path, 'postgresql')
+            backups_path = os.path.join(
+                self.server_id.backups_path,
+                self.environment_id.name,
+                self.name,
+                )
             conf_file_path = os.path.join(conf_path, 'openerp-server.conf')
             logfile = os.path.join(base_path, 'odoo.log')
             data_dir = os.path.join(base_path, 'data_dir')
             sources_path = os.path.join(base_path, 'sources')
         self.pg_data_path = pg_data_path
         self.pg_data_path = pg_data_path
+        self.backups_path = backups_path
         self.conf_path = conf_path
         self.sources_path = sources_path
         self.base_path = base_path
@@ -587,6 +600,7 @@ class instance(models.Model):
             -v %s:/etc/odoo \
             -v %s:/mnt/extra-addons \
             -v %s:/var/lib/odoo \
+            -v %s:%s \
             --link %s:db \
             --name %s \
             %s \
@@ -598,6 +612,8 @@ class instance(models.Model):
                 self.environment_id.sources_path,
                 # TODO agregar el sources de la instance
                 self.data_dir,
+                self.server_id.backups_path,
+                self.server_id.backups_path,
                 self.pg_container,
                 self.odoo_container,
                 self.odoo_image_id.pull_name,
@@ -638,6 +654,7 @@ class instance(models.Model):
             self.sources_path,
             self.conf_path,
             self.data_dir,
+            self.backups_path,
             ]
         for path in paths:
             if exists(path, use_sudo=True):

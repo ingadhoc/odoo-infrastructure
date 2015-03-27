@@ -15,7 +15,8 @@ class database_backup(models.Model):
         'infrastructure.database',
         string='Database',
         readonly=True,
-        required=True
+        required=True,
+        ondelete='cascade',
     )
     date = fields.Datetime(
         string='Date',
@@ -45,15 +46,30 @@ class database_backup(models.Model):
         # TODO ver si hacemos un overwrite si hay que borrarla antes
         source_path = os.path.join(self.path, self.name)
         try:
-            request = 'http://%s/restore_db/%s/%s/%s/%s' % (
-                instance.main_hostname,
-                instance.admin_pass,
-                source_path,
-                new_database_name,
-                str(backups_enable),
-                )
-            res = requests.get(request)
-            # res = requests.get(request, auth=('user', 'pass'))
+            # Esto era con html
+            # print '1111111111'
+            # request = 'http://%s/restore_db/%s/%s/%s/%s' % (
+            #     instance.main_hostname,
+            #     instance.admin_pass,
+            #     source_path,
+            #     new_database_name,
+            #     str(backups_enable),
+            #     )
+            # print '222222', request
+            # res = requests.get(request)
+            # print 'res', res
+            import json
+            import urllib2
+            data = {
+                    'ids': [12, 3, 4, 5, 6],
+                    'file_path': 'asdasda',
+            }
+            req = urllib2.Request(
+                'http://%s/restore_db' % instance.main_hostname)
+            req.add_header('Content-Type', 'application/json')
+
+            response = urllib2.urlopen(req, json.dumps(data))
+            print 'response', response
         except Exception, e:
             raise Warning(_(
                 'Unable to restore bd %s, this is what we get: \n %s') % (

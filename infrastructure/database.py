@@ -685,8 +685,6 @@ class database(models.Model):
         self.update_modules_data(update_list=True)
 
     def update_modules_data(self, modules_domain=None, update_list=False):
-        # Used for test
-        # modules_domain = [('name', '=', 'sale')]
         if not modules_domain:
             modules_domain = []
 
@@ -736,9 +734,10 @@ class database(models.Model):
         self.env['infrastructure.database.module'].load(
             ['id', 'database_id/.id'] + fields, imp_modules_data, context={'default_noupdate': True})
 
-        # Remove old data
-        res = self.env['ir.model.data']._process_end([module_name])
-        return res
+        # Remove old data only if not modules_domain
+        if not modules_domain:
+            res = self.env['ir.model.data']._process_end([module_name])
+            return res
 
 # MAIL server and catchall configurations
     @api.one
@@ -795,7 +794,7 @@ class database(models.Model):
         if self.backups_enable:
             vals = {
                 'backups_path': os.path.join(
-                    self.instance_id.environment_id.backups_path, self.name),
+                    self.instance_id.backups_path, self.name),
                 'daily_backup': self.daily_backup,
                 'weekly_backup': self.weekly_backup,
                 'monthly_backup': self.monthly_backup,

@@ -107,12 +107,6 @@ class environment(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         )
-    backups_path = fields.Char(
-        string='Backups Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
-        )
     path = fields.Char(
         string='Path',
         readonly=True,
@@ -209,12 +203,9 @@ class environment(models.Model):
     @api.onchange('path')
     def _get_env_paths(self):
         sources_path = False
-        backups_path = False
         if self.path:
             sources_path = os.path.join(self.path, 'sources')
-            backups_path = os.path.join(self.path, 'backups')
         self.sources_path = sources_path
-        self.backups_path = backups_path
 
     @api.one
     def make_environment(self):
@@ -255,10 +246,6 @@ class environment(models.Model):
             raise Warning(_("Folder '%s' already exists") %
                           (self.sources_path))
         sudo('mkdir -p ' + self.sources_path)
-        if exists(self.backups_path, use_sudo=True):
-            raise Warning(_("Folder '%s' already exists") %
-                          (self.backups_path))
-        sudo('mkdir -p ' + self.backups_path)
 
     @api.one
     @api.returns('infrastructure.environment_repository')
@@ -317,7 +304,7 @@ class environment(models.Model):
             raise Warning(_(
                 'You can not delete an environment that has instances'))
         self.server_id.get_env()
-        paths = [self.sources_path, self.backups_path, self.path]
+        paths = [self.sources_path, self.path]
         for path in paths:
             sudo('rm -f -r ' + path)
         self.signal_workflow('sgn_cancel')

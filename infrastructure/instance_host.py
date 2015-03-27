@@ -60,6 +60,6 @@ class instance_host(models.Model):
                 name = '*' + '.' + self.server_hostname_id.name
         else:
             name = self.server_hostname_id.name
-        if self.instance_id.database_type_id.url_prefix:
+        if self.instance_id.database_type_id.url_prefix and name:
             name = self.instance_id.database_type_id.url_prefix + '.' + name
         self.name = name

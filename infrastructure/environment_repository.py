@@ -57,6 +57,11 @@ class environment_repository(models.Model):
         readonly=True
         )
 
+    _sql_constraints = [
+        ('repository_uniq', 'unique(server_repository_id, environment_id)',
+            'Repository Must be Unique per Environment'),
+    ]
+
     @api.onchange('server_repository_id')
     def change_server_repository(self):
         default_branch_id = self.environment_id.odoo_version_id.default_branch_id.id

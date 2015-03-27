@@ -10,10 +10,10 @@
             <group>
                 <field name="database_backup_id"/>
                 <field name="create_date"/>
-                <!-- TODO todavia no implemetamos mover a otra instance, server, etc -->
-                <!-- <field name="server_id"/> -->
-                <!-- <field name="environment_id" domain="[('server_id','=',server_id)]"/> -->
-                <!-- <field name="instance_id" domain="[('environment_id','=',environment_id)]"/> -->
+                <!-- TODO todavia no implemetamos mover a otra environment y server-->
+                <field name="server_id" readonly="1" />
+                <field name="environment_id" readonly="1" domain="[('server_id','=',server_id)]"/>
+                <field name="instance_id" domain="[('environment_id','=',environment_id)]"/>
                 <field name="database_type_id"/>
                 <field name="new_db_name"/>
                 <!-- <field name="overwrite_active"/> -->
