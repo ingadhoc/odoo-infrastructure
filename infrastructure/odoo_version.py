@@ -16,6 +16,7 @@ class odoo_version(models.Model):
         )
     sequence = fields.Integer(
         string='Sequence',
+        default=10,
         )
     default_branch_id = fields.Many2one(
         'infrastructure.repository_branch',

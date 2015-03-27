@@ -25,6 +25,7 @@ class database(models.Model):
         )
     sequence = fields.Integer(
         'Sequence',
+        default=10,
         )
     state = fields.Selection([
         ('not_available', 'Not Available'),

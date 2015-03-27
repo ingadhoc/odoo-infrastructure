@@ -17,7 +17,8 @@ class repository(models.Model):
     _description = 'repository'
 
     sequence = fields.Integer(
-        string='Sequence'
+        string='Sequence',
+        default=10,
     )
     name = fields.Char(
         string='Name',

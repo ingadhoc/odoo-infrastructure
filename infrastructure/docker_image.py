@@ -62,6 +62,7 @@ class infrastructure_docker_image_tag(models.Model):
         )
     sequence = fields.Integer(
         'Name',
+        default=10,
         )
     docker_image_id = fields.Many2one(
         'infrastructure.docker_image',

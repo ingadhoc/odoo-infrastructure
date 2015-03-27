@@ -12,7 +12,8 @@ class command(models.Model):
     _order = "sequence"
 
     sequence = fields.Integer(
-        string='sequence'
+        string='sequence',
+        default=10,
         )
     name = fields.Char(
         string='Name',
