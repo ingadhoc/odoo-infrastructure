@@ -144,7 +144,7 @@ class database(models.Model):
         'infrastructure.database.backup',
         'database_id',
         string='Backups',
-        readonly=True,
+        # readonly=True, # TODO activar cuando arreglemos esto de que no me esta borrando automaticamente los backups entonces no la puedo borrar
         )
     module_ids = fields.One2many(
         'infrastructure.database.module',

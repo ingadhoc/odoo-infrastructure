@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<openerp>
+<data>
+
+<record model="ir.ui.view" id="view_infrastructure_database_form">
+    <field name="name">infrastructure.database.form</field>
+    <field name="model">infrastructure.database</field>
+    <field name="inherit_id" ref="infrastructure.view_infrastructure_database_form"/>
+    <field name="arch" type="xml">
+        <div name="buttons">
+            <button name="%(project_issue.project_issue_categ_act0)d" states="active" icon="fa-bug" type="action" class="oe_inline oe_stat_button" context="{'search_default_database_id': id}">
+                <field name="issue_count" widget="statinfo"/>
+            </button>
+        </div>
+    </field>
+</record>
+
+</data>
+</openerp>

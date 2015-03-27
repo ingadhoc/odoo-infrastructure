@@ -20,6 +20,7 @@
     'images': [],
     'data': [
         'project_issue_view.xml',
+        'database_view.xml',
     ],
     'demo': [],
     'test': [],

@@ -1,5 +1,4 @@
- #-*- coding: utf-8 -*-
-
+# -*- coding: utf-8 -*-
 from openerp import models, fields
 
 
@@ -11,6 +10,11 @@ class project_issue(models.Model):
         'infrastructure.database',
         string='Database'
     )
-
-
-project_issue()
+    db_user = fields.Char(
+        string='DB User',
+        help='User that has the issue',
+    )
+    db_company = fields.Char(
+        string='DB Company',
+        help='Company user is using when having the issue',
+    )

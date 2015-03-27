@@ -14,23 +14,22 @@ class database_backup(models.Model):
     database_id = fields.Many2one(
         'infrastructure.database',
         string='Database',
-        readonly=True,
         required=True,
         ondelete='cascade',
     )
     date = fields.Datetime(
         string='Date',
-        readonly=True,
+        # readonly=True,
         required=True
     )
     name = fields.Char(
         string='Name',
-        readonly=True,
+        # readonly=True,
         required=True
     )
     path = fields.Char(
         string='Path',
-        readonly=True,
+        # readonly=True,
         required=True
     )
     type = fields.Selection(
