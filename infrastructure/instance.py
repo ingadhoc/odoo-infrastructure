@@ -71,8 +71,8 @@ class instance(models.Model):
     limit_time_real = fields.Integer(
         string='Limit Time Real',
         required=True,
-        default=120,
-        help='Maximum allowed Real time per request. The default odoo value is 120 but sometimes we use 300 to avoid some workers timeout error',
+        default=240,
+        help='Maximum allowed Real time per request. The default odoo value is 120 but sometimes we use 240 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )

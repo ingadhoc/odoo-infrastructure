@@ -75,7 +75,7 @@ class server(models.Model):
         string='SMTP Port',
         help='Port used for incoming emails',
         required=True,
-        default=22,
+        default=25,
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -374,17 +374,19 @@ class server(models.Model):
             s.settimeout(1)
             s.connect((self.main_hostname, port))
             s.close()
-        except:
+        except Exception, e:
             raise Warning(_(
                 'Could not connect to port %s.\n\
                 * Check connection with: "telnet %s %s"\n\
                 * You can also connect to server and check ports with "%s"\n\
                 * You can try opening port with %s\n\
-                * If still can not connect, contact server admin') % (
+                * If still can not connect, contact server admin\n\
+                This is what we get:\n%s') % (
                 port,
-                port, self.main_hostname,
+                self.main_hostname, port,
                 "sudo netstat -plnt |grep :%s" % port,
                 "sudo ufw allow %s/tcp" % port,
+                e,
                 ))
         else:
             _logger.info("Connection to port %s successfully established")

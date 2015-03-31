@@ -160,7 +160,7 @@
                             </group>
                         </group>
                     </page>
-                    <page string="Installation" states="to_install">
+                    <page string="Installation" states="to_install,active">
                         <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
                         <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
