@@ -111,7 +111,7 @@
                         <group>
                             <label for="backups_enable"/>
                             <div class="oe_inline">
-                                <field name="backups_enable"/><button class="oe_read_only oe_link" type="object" name="config_backups" states='active' string="Config Backups"/>
+                                <field name="backups_enable"/><button class="oe_link" type="object" name="config_backups" states='active' string="Config Backups"/>
                             </div>
                             <label string=""/>
                             <div attrs="{'invisible':[('backups_enable','=',False)]}">
@@ -126,11 +126,11 @@
                             <label for="smtp_server_id"/>
                             <div class="oe_inline">
                                 <field name="smtp_server_id" class="oe_inline"/>
-                                <button class="oe_link oe_inline oe_read_only" type="object" name="upload_mail_server_config" attrs="{'invisible':['|',('state','!=','active'),('smtp_server_id','=',False)]}" string="Upload Config"/>
+                                <button class="oe_link oe_inline" type="object" name="upload_mail_server_config" attrs="{'invisible':['|',('state','!=','active'),('smtp_server_id','=',False)]}" string="Upload Config"/>
                             </div>
                             <label for="catchall_enable"/>
                             <div class="oe_inline">
-                                <field name="catchall_enable"/><button class="oe_link oe_read_only" type="object" name="config_catchall" attrs="{'invisible':['|',('state','!=','active'),('catchall_enable','=',False)]}" string="Config Catchall"/>
+                                <field name="catchall_enable"/><button class="oe_link" type="object" name="config_catchall" attrs="{'invisible':['|',('state','!=','active'),('catchall_enable','=',False)]}" string="Config Catchall"/>
                             </div>
                             <field name="alias_hostname_id" attrs="{'invisible':[('catchall_enable','=',False)],'required':[('catchall_enable','=',True)]}" domain="[('server_id','=',server_id)]"/>
                             <field name="alias_prefix" attrs="{'invisible':['|',('catchall_enable','=',False),('alias_hostname_wildcard','=',False)],'required':[('alias_hostname_wildcard','=',True),('catchall_enable','=',True)]}"/>

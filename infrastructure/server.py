@@ -374,19 +374,17 @@ class server(models.Model):
             s.settimeout(1)
             s.connect((self.main_hostname, port))
             s.close()
-        except Exception, e:
+        except:
             raise Warning(_(
                 'Could not connect to port %s.\n\
                 * Check connection with: "telnet %s %s"\n\
                 * You can also connect to server and check ports with "%s"\n\
                 * You can try opening port with %s\n\
-                * If still can not connect, contact server admin\n\
-                This is what we get:\n%s') % (
+                * If still can not connect, contact server admin\n') % (
                 port,
                 self.main_hostname, port,
                 "sudo netstat -plnt |grep :%s" % port,
                 "sudo ufw allow %s/tcp" % port,
-                e,
                 ))
         else:
             _logger.info("Connection to port %s successfully established")
@@ -424,10 +422,13 @@ class server(models.Model):
     def test_connection(self, no_prompt=False):
         """ Ugly way we find to check the connection"""
         self.get_env()
-        self.check_service_exist(self.http_port)
-        # TODO activate https check, we are not using it yet
-        # self.check_service_exist(self.https_port)
-        self.check_service_exist(self.smtp_port)
+        # if draft state do no test http and smtp because perhups they are
+        # not installed
+        if self.state != 'draft':
+            self.check_service_exist(self.http_port)
+            # TODO activate https check, we are not using it yet
+            # self.check_service_exist(self.https_port)
+            self.check_service_exist(self.smtp_port)
         env.abort_on_prompts = True
         try:
             sudo('ls')
