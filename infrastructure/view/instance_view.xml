@@ -136,6 +136,19 @@
                         <label for="instance_host_ids"/>
                         <field name="instance_host_ids"/>
                     </page>
+                    <page string="Repositories">
+                        <button string="Add default repositories"
+                            type="object"
+                            name="add_repositories"/>
+                        <button string="Pull, Clone to Inst. and Checkout all Repositoires"
+                            icon="gtk-go-down"
+                            type="object"
+                            states="active"
+                            name="repositories_pull_clone_and_checkout"/>
+                        <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}"/>
+                        <field name="sources_instance_repository_ids" attrs="{'invisible': [('sources_from_id','=',False)]}"/>
+                        <field name="instance_repository_ids" attrs="{'invisible': [('sources_from_id','!=',False)]}" context="{'default_server_id': server_id}"/>
+                    </page>
                     <page string="Advanced Conf">
                         <group>
                             <group>

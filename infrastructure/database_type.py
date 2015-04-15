@@ -42,6 +42,13 @@ class database_type(models.Model):
         required=True,
         default='normal'
         )
+    sources_from_id = fields.Many2one(
+        'infrastructure.database_type',
+        string='Sources From',
+        help='If none is selected sources are cloned from host, if you want to\
+        clone them from other instance, choose the databse type from where the\
+        sources are going to be clone',
+        )
     color = fields.Integer(
         string='Color'
         )
@@ -70,6 +77,16 @@ class database_type(models.Model):
         'infrastructure.db_filter',
         string='DB Filter',
         help='It will be used as default on Instances',
+        )
+    workers = fields.Selection(
+        [('clasic_rule', 'Clasic Rule'), ('fix_number', 'Fix Number')],
+        string='Workers Filter',
+        required=True,
+        default='clasic_rule',
+        help='Clasic Rule means workers = server_processors * 2 + 1'
+        )
+    workers_number = fields.Integer(
+        'Workers Number',
         )
 
     @api.multi

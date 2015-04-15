@@ -98,6 +98,43 @@ class instance(models.Model):
     color = fields.Integer(
         string='Color Index'
         )
+    instance_repository_ids = fields.One2many(
+        'infrastructure.instance_repository',
+        'instance_id',
+        string='Repositories',
+        )
+    # other_instance_repository_ids = fields.Many2many(
+    #     compute='get_other_instance_repository_ids',
+    #     string='Other Instance Repositories'
+    #     )
+    sources_from_id = fields.Many2one(
+        'infrastructure.instance',
+        compute='get_sources_from',
+        string='Other Instance Repositories'
+        )
+    sources_instance_repository_ids = fields.One2many(
+        'infrastructure.instance_repository',
+        related='sources_from_id.instance_repository_ids',
+        string='Other Instance Repositories'
+        )
+
+    @api.one
+    @api.depends('database_type_id')
+    def get_sources_from(self):
+        sources_from_id = False
+        db_type = self.database_type_id
+        if db_type.sources_from_id:
+            sources_from_id = self.search([
+                ('database_type_id', '=', db_type.sources_from_id.id),
+                ('environment_id', '=', self.environment_id.id),
+                ], limit=1)
+        self.sources_from_id = sources_from_id
+
+    # @api.one
+    # @api.depends('database_type_id')
+    # def get_other_instance_repository_ids(self):
+    #     self.other_instance_repository_ids = self.env['infrastructure.database_type']
+
     run_server_command = fields.Char(
         string='Run Server Command',
         required=True,
@@ -408,7 +445,7 @@ class instance(models.Model):
     @api.depends('environment_id')
     def _get_module_load(self):
         module_load = ','.join(
-            [x.server_repository_id.repository_id.server_wide_modules for x in self.environment_id.environment_repository_ids if x.server_repository_id.repository_id.server_wide_modules])
+            [x.server_repository_id.repository_id.server_wide_modules for x in self.instance_repository_ids if x.server_repository_id.repository_id.server_wide_modules])
         if module_load:
             self.module_load = 'web,web_kanban,' + module_load
 
@@ -417,8 +454,34 @@ class instance(models.Model):
     def _get_databases(self):
         self.database_count = len(self.database_ids)
 
+    @api.multi
+    def repositories_pull_clone_and_checkout(self):
+        self.instance_repository_ids.repository_pull_clone_and_checkout()
+
+    @api.multi
+    def add_repositories(self):
+        branch_id = self.environment_id.odoo_version_id.default_branch_id.id
+        instance_actual_repository_ids = [
+            x.server_repository_id.id for x in self.instance_repository_ids]
+        repositories = self.env['infrastructure.server_repository'].search([
+            ('repository_id.default_in_new_env', '=', 'True'),
+            ('server_id', '=', self.server_id.id),
+            ('repository_id.branch_ids', '=', branch_id),
+            ('id', 'not in', instance_actual_repository_ids),
+            ])
+
+        for server_repository in repositories:
+            vals = {
+                'server_repository_id': server_repository.id,
+                'branch_id': branch_id,
+                'instance_id': self.id,
+            }
+            self.instance_repository_ids.create(vals)
+
     @api.one
     @api.depends(
+        'instance_repository_ids',
+        'instance_repository_ids.addons_paths',
         'environment_id',
         'environment_id.environment_repository_ids',
         'environment_id.environment_repository_ids.addons_paths'
@@ -428,7 +491,7 @@ class instance(models.Model):
         _logger.info("Getting Addons Path")
         addons_path = []
         if self.env_type == 'docker':
-            for path in self.environment_id.environment_repository_ids:
+            for path in self.instance_repository_ids:
                 repository = path.server_repository_id.repository_id
                 addons_path.append(
                     os.path.join(
@@ -449,7 +512,7 @@ class instance(models.Model):
             addons_path = '[]'
         self.addons_path = addons_path
 
-    @api.onchange('environment_id')
+    @api.onchange('environment_id', 'database_type_id')
     def _onchange_environment(self):
         # Get same env instances for database type and instance number
         instances = self.search(
@@ -465,8 +528,11 @@ class instance(models.Model):
                 )
 
         # Set workers
-        number_of_processors = self.environment_id.server_id.number_of_processors
-        self.workers = (number_of_processors * 2) + 1
+        if self.database_type_id.workers == 'clasic_rule':
+            number_of_processors = self.environment_id.server_id.number_of_processors
+            self.workers = (number_of_processors * 2) + 1
+        else:
+            self.workers = self.database_type_id.workers_number
 
         # get docker images
         docker_image_ids = [
@@ -566,6 +632,7 @@ class instance(models.Model):
         _logger.info("Creating Instance")
         self.make_paths()
         self.update_nginx_site()
+        self.repositories_pull_clone_and_checkout()
         if self.env_type != 'docker':
             self.create_user()
             self.create_pg_user()
@@ -771,7 +838,6 @@ class instance(models.Model):
             service_file_path = os.path.join(
                 '/etc/init', self.odoo_container + '.conf')
         else:
-            self.environment_id.server_id.service_path
             service_file_path = os.path.join('/etc/init.d', self.service_file)
         try:
             sudo('rm ' + service_file_path)
@@ -819,7 +885,6 @@ class instance(models.Model):
                 'rm -f %s' % self.odoo_container
                 )
         else:
-            self.environment_id.server_id.service_path
             service_file_path = os.path.join('/etc/init.d', self.service_file)
             # Build file
             daemon = os.path.join(

@@ -12,6 +12,7 @@ import db_filter
 import environment
 import environment_repository
 import instance
+import instance_repository
 import instance_host
 import mailserver
 import server

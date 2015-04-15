@@ -39,6 +39,7 @@
         'view/database_backup_view.xml',
         'view/docker_image_view.xml',
         'view/server_docker_image_view.xml',
+        'view/instance_repository_view.xml',
         'data/cron.xml',
         'workflow/database_workflow.xml',
         'workflow/environment_workflow.xml',

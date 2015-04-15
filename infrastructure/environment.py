@@ -221,6 +221,9 @@ class environment(models.Model):
 
     @api.multi
     def add_repositories(self):
+        self.ensure_one()
+        if self.type == 'docker':
+            return False
         branch_id = self.odoo_version_id.default_branch_id.id
         server_actual_repository_ids = [
             x.server_repository_id.id for x in self.environment_repository_ids]
