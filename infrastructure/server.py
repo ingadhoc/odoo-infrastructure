@@ -116,6 +116,12 @@ class server(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
+    server_use_type = fields.Selection(
+        [('customer', 'Customer'), ('own', 'Own')],
+        'Server Type',
+        default='customer',
+        required=True,
+        )
     holder_id = fields.Many2one(
         'res.partner',
         string='Holder',
@@ -135,7 +141,6 @@ class server(models.Model):
     used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
-        required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         help='Partner that can contact you and ask for changes on server configuration'
@@ -211,7 +216,6 @@ class server(models.Model):
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/sites-enabled',
         )
-
     nginx_sites_path = fields.Char(
         string='Nginx Sites Path',
         readonly=True,
@@ -252,11 +256,6 @@ class server(models.Model):
         _states_,
         string="State",
         default='draft',
-        )
-    server_repository_ids = fields.One2many(
-        'infrastructure.server_repository',
-        'server_id',
-        string='server_repository_ids',
         )
     server_docker_image_ids = fields.One2many(
         'infrastructure.server_docker_image',
@@ -403,7 +402,6 @@ class server(models.Model):
                 * Server Configuration Codename: %s\n\
                 ") % (server_codename, server_conf_codename))
         self.number_of_processors = fabtools.system.cpus()
-        self.add_repositories()
         self.add_images()
         self.signal_workflow('sgn_to_install')
 
@@ -413,10 +411,6 @@ class server(models.Model):
         argumento adicional que se confunde con el context
         """
         self.test_connection()
-
-    @api.multi
-    def get_update_repositories(self):
-        self.server_repository_ids.get_update_repository()
 
     @api.multi
     def test_connection(self, no_prompt=False):
@@ -439,21 +433,6 @@ class server(models.Model):
             return True
         raise Warning(_(
             'Connection successful!'))
-
-    @api.multi
-    def add_repositories(self):
-        actual_repositories = [
-            x.repository_id.id for x in self.server_repository_ids]
-        repositories = self.env['infrastructure.repository'].search([
-            ('default_in_new_env', '=', 'True'),
-            ('id', 'not in', actual_repositories),
-            ])
-        for repository in repositories:
-            vals = {
-                'repository_id': repository.id,
-                'server_id': self.id,
-            }
-            self.server_repository_ids.create(vals)
 
     @api.multi
     def add_images(self):
@@ -491,15 +470,6 @@ class server(models.Model):
         reboot()
 
     @api.multi
-    def restart_postgres(self):
-        self.get_env()
-        try:
-            custom_sudo('service postgres restart')
-        except Exception, e:
-            raise Warning(
-                _('Could Not Restart Postgresql! This is what we get: \n %s') % (e))
-
-    @api.multi
     def restart_nginx(self):
         _logger.info("Restarting nginx")
         self.get_env()
@@ -525,15 +495,6 @@ class server(models.Model):
         self.delete_workflow()
         self.create_workflow()
         return True
-
-    @api.multi
-    def add_to_virtual_domains(self):
-        self.get_env()
-        for domain in self.hostname_ids:
-            append(
-                self.virtual_domains_regex_path,
-                domain.domain_regex,
-                use_sudo=True,)
 
     @api.multi
     def copy_mailgate_file(self):

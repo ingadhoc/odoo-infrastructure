@@ -37,12 +37,8 @@
                 <field name="addons_subdirectory"/>
                 <field name="url"/>
                 <field name="pip_packages"/>
-                <field name="is_server"/>
                 <field name="default_in_new_env"/>
                 <field name="server_wide_modules"/>
-                <field name="install_server_command"
-                    attrs="{'required':[('is_server','=',True)],'invisible':[('is_server','!=',True)]}"
-                    />
             <field name="branch_ids"
                     widget="many2many_tags"
                     />
@@ -67,7 +63,6 @@
             <field name="type"/>
             <field name="url"/>
             <field name="pip_packages"/>
-            <field name="is_server"/>
         </tree>
     </field>
 </record>

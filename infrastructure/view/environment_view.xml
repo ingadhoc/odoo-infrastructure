@@ -10,7 +10,6 @@
         <search string="environment">
             <field name="number"/>
             <field name="name"/>
-            <field name="type"/>
             <field name="description"/>
             <field name="partner_id"/>
             <field name="odoo_version_id"/>
@@ -50,7 +49,6 @@
                     />
             </header>
             <sheet string="environment">
-                <field name="sever_copied" invisible="1"/>
                 <div class="col-md-6">
                     <h2 class="oe_inline">
                         <field name="server_id" class="oe_inline"/>
@@ -69,8 +67,7 @@
                     </button>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons_action">
-                    <button icon="fa-sun-o " type="object" string="Create Environment" class="oe_stat_button" help="Create Env, Source Path, Install Server and Install Pip Packages" name="create_environment" states="draft"/>
-                    <button icon="fa-refresh" type="object" string="Install Odoo" class="oe_stat_button" name="install_odoo" attrs="{'invisible':['|',('sever_copied', '=', False),('state', '!=', 'active')]}"/>
+                    <button icon="fa-sun-o " type="object" string="Create Environment" class="oe_stat_button" help="Create Environment" name="create_environment" states="draft"/>
                     <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="active" confirm="Environment will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
                 </div>
                 <group>
@@ -80,23 +77,12 @@
                     </group>
                     <group>
                         <field name="number"/>
-                        <field name="type"/>
                     </group>
                 </group>
                 <notebook>
-<!--                     <page string="Repositories" states="active">
-                        <button string="Pull, Clone to Env. and Checkout all Repositoires"
-                            icon="gtk-go-down"
-                            type="object"
-                            states="active"
-                            name="repositories_pull_clone_and_checkout"/>
-                        <field name="environment_repository_ids" context="{'default_server_id': server_id}"/>
-                    </page> -->
                     <page string="Advanced Conf.">
                         <group>
-                            <field name="install_server_command" attrs="{'invisible':[('type','=','docker')],'required':[('type','!=','docker')]}"/>
                             <field name="path"/>
-                            <field name="sources_path"/>
                         </group>
                     </page>
                     <page string="Notes">
@@ -123,7 +109,6 @@
                 >
                 <field name="message_unread" invisible="1"/>
                 <field name="number"/>
-                <field name="type"/>
                 <field name="odoo_version_id"/>
                 <field name="name"/>
                 <field name="description"/>

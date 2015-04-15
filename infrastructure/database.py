@@ -240,20 +240,10 @@ class database(models.Model):
     @api.one
     @api.depends('instance_id')
     def get_mailgate_path(self):
-        # TODO tal vez mas adelante podemos borrar la segunda opcion ya que  usariamos la primera
-        # Aunque tal vez haya que traer uno u otro segun la version de odoo
-        if self.server_id.mailgate_file:
-            mailgate_path = self.server_id.mailgate_file
-        else:
-            env_rep = self.env['infrastructure.environment_repository'].search([
-                ('server_repository_id.repository_id.is_server', '=', True),
-                ('environment_id', '=', self.instance_id.environment_id.id)])
-            mailgate_path = _('Not base path found for mail module')
-            if env_rep.addons_paths:
-                for path in literal_eval(env_rep.addons_paths):
-                    if 'openerp' not in path and 'addons'in path:
-                        mailgate_path = os.path.join(
-                            path, 'mail/static/scripts/openerp_mailgate.py')
+        """We use this function because perhups in future you need to use one
+        or another mailgate file depending odoo version
+        """
+        mailgate_path = self.server_id.mailgate_file
         self.mailgate_path = mailgate_path
 
     @api.one
@@ -803,10 +793,21 @@ class database(models.Model):
         client.model('db.database').backups_state(
             self.name, self.backups_enable)
 
+    @api.multi
+    def add_to_virtual_domains(self):
+        self.server_id.get_env()
+        self.get_env()
+        for domain in self.hostname_ids:
+            append(
+                self.server_id.virtual_domains_regex_path,
+                domain.domain_regex,
+                use_sudo=True,)
+
     @api.one
     def config_catchall(self):
         self.server_id.get_env()
         client = self.get_client()
+
         modules = ['auth_server_admin_passwd_passkey', 'mail']
         for module in modules:
             if client.modules(name=module, installed=True) is None:

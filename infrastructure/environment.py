@@ -39,10 +39,9 @@ class environment(models.Model):
         size=16,
         states={'draft': [('readonly', False)]},
         )
-    type = fields.Selection(
-        [(u'virtualenv', u'Virtualenv'),
+    type = fields.Selection([
          (u'docker', u'Docker'),
-         (u'oerpenv', u'Oerpenv')],
+         ],
         string='Type',
         readonly=True,
         required=True,
@@ -73,19 +72,10 @@ class environment(models.Model):
     color = fields.Integer(
         string='Color Index'
         )
-    install_server_command = fields.Char(
-        string='Install Server Command',
-        default='python setup.py install'
-        )
     state = fields.Selection(
         _states_,
         string="State",
         default='draft',
-        )
-    environment_repository_ids = fields.One2many(
-        'infrastructure.environment_repository',
-        'environment_id',
-        string='Repositories',
         )
     server_id = fields.Many2one(
         'infrastructure.server',
@@ -100,12 +90,6 @@ class environment(models.Model):
         'environment_id',
         string='Instances',
         context={'from_environment': True},
-        )
-    sources_path = fields.Char(
-        string='Sources Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
         )
     path = fields.Char(
         string='Path',
@@ -126,28 +110,6 @@ class environment(models.Model):
         string='# Databases',
         compute='_get_databases'
         )
-    sever_copied = fields.Boolean(
-        string='Server Copied?',
-        compute='_get_sever_copied'
-        )
-
-    @api.multi
-    def repositories_pull_clone_and_checkout(self):
-        self.environment_repository_ids.repository_pull_clone_and_checkout()
-
-    @api.one
-    @api.depends(
-        'environment_repository_ids',
-        'environment_repository_ids.path',
-        'environment_repository_ids.server_repository_id.repository_id.is_server',
-            )
-    def _get_sever_copied(self):
-        sever_copied = False
-        servers = [
-            x for x in self.environment_repository_ids if x.server_repository_id.repository_id.is_server and x.path]
-        if servers:
-            sever_copied = True
-        self.sever_copied = sever_copied
 
     @api.one
     @api.depends('database_ids')
@@ -179,6 +141,8 @@ class environment(models.Model):
             [('server_id', '=', self.server_id.id)],
             order='number desc',
                 )
+        if self.server_id.server_use_type:
+            self.partner_id = self.server_id.used_by_id
         self.number = environments and environments[0].number + 1 or 10
 
     @api.onchange('partner_id', 'odoo_version_id')
@@ -200,105 +164,17 @@ class environment(models.Model):
             path = os.path.join(self.server_id.base_path, self.name)
         self.path = path
 
-    @api.onchange('path')
-    def _get_env_paths(self):
-        sources_path = False
-        if self.path:
-            sources_path = os.path.join(self.path, 'sources')
-        self.sources_path = sources_path
-
-    @api.one
-    def make_environment(self):
-        if self.type == 'virtualenv':
-            self.server_id.get_env()
-            if exists(self.path, use_sudo=True):
-                raise Warning(
-                    _("It seams that the environment already exists \
-                        because there is a folder '%s'") % (self.path))
-            sudo('virtualenv ' + self.path)
-        elif self.type == 'oerpenv':
-            raise Warning(_("Type '%s' not implemented yet.") % (self.type))
-
-    @api.multi
-    def add_repositories(self):
-        self.ensure_one()
-        if self.type == 'docker':
-            return False
-        branch_id = self.odoo_version_id.default_branch_id.id
-        server_actual_repository_ids = [
-            x.server_repository_id.id for x in self.environment_repository_ids]
-        repositories = self.env['infrastructure.server_repository'].search([
-            ('repository_id.default_in_new_env', '=', 'True'),
-            ('server_id', '=', self.server_id.id),
-            ('repository_id.branch_ids', '=', branch_id),
-            ('id', 'not in', server_actual_repository_ids),
-            ])
-
-        for server_repository in repositories:
-            vals = {
-                'server_repository_id': server_repository.id,
-                'branch_id': branch_id,
-                'environment_id': self.id,
-            }
-            self.environment_repository_ids.create(vals)
-
     @api.one
     def make_env_paths(self):
         self.server_id.get_env()
-        if exists(self.sources_path, use_sudo=True):
+        if exists(self.path, use_sudo=True):
             raise Warning(_("Folder '%s' already exists") %
-                          (self.sources_path))
-        sudo('mkdir -p ' + self.sources_path)
-
-    @api.one
-    @api.returns('infrastructure.environment_repository')
-    def check_repositories(self):
-        self.server_id.get_env()
-        environment_repository = False
-        for repository in self.environment_repository_ids:
-            if repository.server_repository_id.repository_id.is_server:
-                environment_repository = repository
-        if not environment_repository:
-            raise Warning(
-                _("No Server Repository Found on actual environment"))
-        if not exists(environment_repository.path, use_sudo=True):
-            raise Warning(_("Server Path '%s' does not exist, check \
-                server repository path. It is probable that repositories \
-                have not been copied to this environment yet.") % (
-                environment_repository.path))
-        return environment_repository
-
-    @api.one
-    def install_odoo(self):
-        if self.type == 'virtualenv':
-            self.server_id.get_env()
-            environment_repository = self.check_repositories()
-            with cd(environment_repository.path):
-                sudo(
-                    'source ' + os.path.join(
-                        self.path, 'bin/activate') + ' && ' + \
-                    environment_repository.server_repository_id.repository_id.install_server_command)
-            self.change_path_group_and_perm()
-        else:
-            raise Warning(_("Type '%s' not implemented yet.") % (self.type))
-
-    @api.one
-    def change_path_group_and_perm(self):
-        self.server_id.get_env()
-        try:
-            sudo('chown -R :%s %s' %
-                 (self.server_id.instance_user_group, self.path))
-            sudo('chmod -R g+rw %s' % (self.path))
-        except:
-            raise Warning(_("Error changing group '%s' to path '%s'.\
-             Please verifify that group and path exists") % (
-                self.server_id.instance_user_group, self.path))
+                          (self.path))
+        sudo('mkdir -p ' + self.path)
 
     @api.multi
     def create_environment(self):
-        self.make_environment()
         self.make_env_paths()
-        self.add_repositories()
         self.signal_workflow('sgn_to_active')
 
     @api.multi
@@ -307,7 +183,7 @@ class environment(models.Model):
             raise Warning(_(
                 'You can not delete an environment that has instances'))
         self.server_id.get_env()
-        paths = [self.sources_path, self.path]
+        paths = [self.path]
         for path in paths:
             sudo('rm -f -r ' + path)
         self.signal_workflow('sgn_cancel')
@@ -324,8 +200,6 @@ class environment(models.Model):
             'Name must be unique per server!'),
         ('path_uniq', 'unique(path, server_id)',
             'Path must be unique per server!'),
-        ('sources_path_uniq', 'unique(path, server_id)',
-            'Sources Path must be unique per server!'),
         ('sources_number', 'unique(number, server_id)',
             'Number must be unique per server!'),
     ]

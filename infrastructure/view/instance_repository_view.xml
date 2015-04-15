@@ -8,14 +8,8 @@
     <field name="model">infrastructure.instance_repository</field>
     <field name="arch" type="xml">
         <search string="instance_repository">
-            <group string="By Attribute">
-                <field name="server_repository_id" string="Server Repository"/>
-                <field name="branch_id" string="Specific Branch"/>
-                <field name="path" string="Path"/>
-                <field name="addons_paths" string="Addons Path"/>
-            </group>
-            <group string="By object">
-            </group>
+            <field name="repository_id"/>
+            <field name="branch_id"/>
         </search>
     </field>
 </record>
@@ -30,12 +24,10 @@
             </header>
             <sheet string="instance_repository">
              <group>
-                <field name="server_repository_id"/>
+                <field name="repository_id"/>
                 <field name="branch_id"
                     domain="[('id','in',branch_ids[0][2])]"
                     />
-                <field name="path"/>
-                <field name="addons_paths"/>
                 <field name="branch_ids"
                     invisible="True"
                     />
@@ -51,13 +43,10 @@
     <field name="model">infrastructure.instance_repository</field>
     <field name="arch" type="xml">
         <tree string="instance_repository" editable="bottom">
-            <field name="server_repository_id" domain="[('server_id','=',server_id)]"/>
+            <field name="repository_id"/>
             <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
-            <field name="path"/>
-            <field name="addons_paths"/>
             <field name="branch_ids" invisible="1"/>
-            <field name="server_id" invisible="1"/>
-            <button string="Pull, Clone to Ins. and Checkout"
+            <button string="Clone, Pull and Checkout"
                 icon="gtk-go-down"
                 type="object"
                 name="repository_pull_clone_and_checkout"/>

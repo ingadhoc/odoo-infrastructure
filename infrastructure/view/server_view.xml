@@ -107,9 +107,10 @@
                         </div>
                     </group>
                     <group>
-                        <field name="holder_id"/>
+                        <field name="server_use_type"/>
+                        <field name="used_by_id" attrs="{'required':[('server_use_type','=','customer')],'invisible':[('server_use_type','!=','customer')]}"/>
                         <field name="owner_id"/>
-                        <field name="used_by_id"/>
+                        <field name="holder_id"/>
                     </group>
                 </group>
                 <notebook>
@@ -164,19 +165,10 @@
                         <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
                         <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
-<!--                     <page string="Repositories" states="active">
-                        <button string="Get and Update all Repositoires"
-                            icon="gtk-go-down"
-                            type="object"
-                            states="active"
-                            name="get_update_repositories"/>
-                       <field name="server_repository_ids"/>
-                    </page> -->
                     <page string="Docker Images" states="active">
                        <field name="server_docker_image_ids"/>
                     </page>
                     <page string="Hostnames" states="active">
-                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
                        <field name="hostname_ids"/>
                     </page>
                     <page string="Changes" states="active">

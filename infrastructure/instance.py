@@ -103,38 +103,11 @@ class instance(models.Model):
         'instance_id',
         string='Repositories',
         )
-    # other_instance_repository_ids = fields.Many2many(
-    #     compute='get_other_instance_repository_ids',
-    #     string='Other Instance Repositories'
-    #     )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
         compute='get_sources_from',
         string='Other Instance Repositories'
         )
-    sources_instance_repository_ids = fields.One2many(
-        'infrastructure.instance_repository',
-        related='sources_from_id.instance_repository_ids',
-        string='Other Instance Repositories'
-        )
-
-    @api.one
-    @api.depends('database_type_id')
-    def get_sources_from(self):
-        sources_from_id = False
-        db_type = self.database_type_id
-        if db_type.sources_from_id:
-            sources_from_id = self.search([
-                ('database_type_id', '=', db_type.sources_from_id.id),
-                ('environment_id', '=', self.environment_id.id),
-                ], limit=1)
-        self.sources_from_id = sources_from_id
-
-    # @api.one
-    # @api.depends('database_type_id')
-    # def get_other_instance_repository_ids(self):
-    #     self.other_instance_repository_ids = self.env['infrastructure.database_type']
-
     run_server_command = fields.Char(
         string='Run Server Command',
         required=True,
@@ -371,6 +344,18 @@ class instance(models.Model):
     ]
 
     @api.one
+    @api.depends('database_type_id')
+    def get_sources_from(self):
+        sources_from_id = False
+        db_type = self.database_type_id
+        if db_type.sources_from_id:
+            sources_from_id = self.search([
+                ('database_type_id', '=', db_type.sources_from_id.id),
+                ('environment_id', '=', self.environment_id.id),
+                ], limit=1)
+        self.sources_from_id = sources_from_id
+
+    @api.one
     @api.depends('server_id')
     def _get_main_hostname(self):
         main_host = self.instance_host_ids.filtered(
@@ -403,7 +388,11 @@ class instance(models.Model):
         if self.database_type_id:
             self.name = self.database_type_id.prefix
             instance_admin_pass = self.database_type_id.instance_admin_pass
-            self.admin_pass = instance_admin_pass or self.display_name
+            if self.server_id.server_use_type == 'own' and instance_admin_pass:
+                admin_pass = instance_admin_pass or self.display_name
+            else:
+                admin_pass = self.display_name
+            self.admin_pass = admin_pass
             self.db_filter = self.database_type_id.db_filter
 
     @api.one
@@ -445,7 +434,7 @@ class instance(models.Model):
     @api.depends('environment_id')
     def _get_module_load(self):
         module_load = ','.join(
-            [x.server_repository_id.repository_id.server_wide_modules for x in self.instance_repository_ids if x.server_repository_id.repository_id.server_wide_modules])
+            [x.repository_id.server_wide_modules for x in self.instance_repository_ids if x.repository_id.server_wide_modules])
         if module_load:
             self.module_load = 'web,web_kanban,' + module_load
 
@@ -462,17 +451,16 @@ class instance(models.Model):
     def add_repositories(self):
         branch_id = self.environment_id.odoo_version_id.default_branch_id.id
         instance_actual_repository_ids = [
-            x.server_repository_id.id for x in self.instance_repository_ids]
-        repositories = self.env['infrastructure.server_repository'].search([
-            ('repository_id.default_in_new_env', '=', 'True'),
-            ('server_id', '=', self.server_id.id),
-            ('repository_id.branch_ids', '=', branch_id),
+            x.repository_id.id for x in self.instance_repository_ids]
+        repositories = self.env['infrastructure.repository'].search([
+            ('default_in_new_env', '=', 'True'),
+            ('branch_ids', '=', branch_id),
             ('id', 'not in', instance_actual_repository_ids),
             ])
 
-        for server_repository in repositories:
+        for repository in repositories:
             vals = {
-                'server_repository_id': server_repository.id,
+                'repository_id': repository.id,
                 'branch_id': branch_id,
                 'instance_id': self.id,
             }
@@ -480,37 +468,13 @@ class instance(models.Model):
 
     @api.one
     @api.depends(
-        'instance_repository_ids',
-        'instance_repository_ids.addons_paths',
-        'environment_id',
-        'environment_id.environment_repository_ids',
-        'environment_id.environment_repository_ids.addons_paths'
+        'instance_repository_ids.repository_id.addons_path',
     )
     def _get_addons_path(self):
-        # TODO simplificar esto y los addons path y demas, hacer algo mucho mas simpe
         _logger.info("Getting Addons Path")
-        addons_path = []
-        if self.env_type == 'docker':
-            for path in self.instance_repository_ids:
-                repository = path.server_repository_id.repository_id
-                addons_path.append(
-                    os.path.join(
-                        '/mnt/extra-addons',
-                        repository.directory,
-                        repository.addons_subdirectory and repository.addons_subdirectory or '',
-                        )
-                    )
-        else:
-            try:
-                for repository in self.environment_id.environment_repository_ids:
-                    if repository.addons_paths:
-                        for addon_path in literal_eval(repository.addons_paths):
-                            addons_path.append(addon_path)
-            except:
-                _logger.error("Error trying to get addons path")
-        if not addons_path:
-            addons_path = '[]'
-        self.addons_path = addons_path
+        addons_paths = [
+            x.repository_id.addons_path for x in self.instance_repository_ids if x.repository_id.addons_path]
+        self.addons_path = ','.join(addons_paths)
 
     @api.onchange('environment_id', 'database_type_id')
     def _onchange_environment(self):
@@ -676,7 +640,7 @@ class instance(models.Model):
                 self.xml_rpc_port,
                 self.longpolling_port,
                 self.conf_path,
-                self.environment_id.sources_path,
+                self.sources_path,
                 # TODO agregar el sources de la instance
                 self.data_dir,
                 self.server_id.backups_path,
@@ -751,10 +715,6 @@ class instance(models.Model):
         if exists(self.conf_file_path, use_sudo=True):
             sudo('rm ' + self.conf_file_path)
 
-        # Build addons path
-        addons_paths = literal_eval(self.addons_path)
-        addons_path = ','.join(addons_paths)
-
         # Construimos commando
         if self.env_type == 'docker':
             command = 'docker %s --' % self.run_odoo_command()
@@ -766,8 +726,8 @@ class instance(models.Model):
                 )
         command += ' --stop-after-init -s'
 
-        if addons_path:
-            command += ' --addons-path=' + addons_path
+        if self.addons_path:
+            command += ' --addons-path=' + self.addons_path
         # agregamos ' para que no de error con ciertos dominios
         command += ' --db-filter=' + "'%s'" % self.db_filter.rule
         if self.env_type != 'docker':
