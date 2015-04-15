@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- SEARCH VIEW -->
+<record id="view_infrastructure_instance_repository_filter" model="ir.ui.view">
+    <field name="name">infrastructure.instance_repository.select</field>
+    <field name="model">infrastructure.instance_repository</field>
+    <field name="arch" type="xml">
+        <search string="instance_repository">
+            <group string="By Attribute">
+                <field name="server_repository_id" string="Server Repository"/>
+                <field name="branch_id" string="Specific Branch"/>
+                <field name="path" string="Path"/>
+                <field name="addons_paths" string="Addons Path"/>
+            </group>
+            <group string="By object">
+            </group>
+        </search>
+    </field>
+</record>
+
+<!-- FORMVIEW -->
+<record id="view_infrastructure_instance_repository_form" model="ir.ui.view">
+    <field name="name">infrastructure.instance_repository.form</field>
+    <field name="model">infrastructure.instance_repository</field>
+    <field name="arch" type="xml">
+        <form string="instance_repository">
+            <header>
+            </header>
+            <sheet string="instance_repository">
+             <group>
+                <field name="server_repository_id"/>
+                <field name="branch_id"
+                    domain="[('id','in',branch_ids[0][2])]"
+                    />
+                <field name="path"/>
+                <field name="addons_paths"/>
+                <field name="branch_ids"
+                    invisible="True"
+                    />
+             </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_instance_repository_tree" model="ir.ui.view">
+    <field name="name">infrastructure.instance_repository.tree</field>
+    <field name="model">infrastructure.instance_repository</field>
+    <field name="arch" type="xml">
+        <tree string="instance_repository" editable="bottom">
+            <field name="server_repository_id" domain="[('server_id','=',server_id)]"/>
+            <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
+            <field name="path"/>
+            <field name="addons_paths"/>
+            <field name="branch_ids" invisible="1"/>
+            <field name="server_id" invisible="1"/>
+            <button string="Pull, Clone to Ins. and Checkout"
+                icon="gtk-go-down"
+                type="object"
+                name="repository_pull_clone_and_checkout"/>
+        </tree>
+    </field>
+</record>
+
+</data>
+</openerp>
