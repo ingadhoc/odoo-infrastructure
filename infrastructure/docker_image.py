@@ -12,7 +12,6 @@ class infrastructure_docker_image(models.Model):
         )
     prefix = fields.Char(
         'Prefix',
-        required=True,
         )
     pull_name = fields.Char(
         'Pull Name',

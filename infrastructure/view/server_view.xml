@@ -169,7 +169,8 @@
                        <field name="server_docker_image_ids"/>
                     </page>
                     <page string="Hostnames" states="active">
-                       <field name="hostname_ids"/>
+                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
+                        <field name="hostname_ids"/>
                     </page>
                     <page string="Changes" states="active">
                        <field name="change_ids"/>

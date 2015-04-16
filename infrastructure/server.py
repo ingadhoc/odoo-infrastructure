@@ -449,6 +449,16 @@ class server(models.Model):
             self.server_docker_image_ids.create(vals)
 
     @api.multi
+    def add_to_virtual_domains(self):
+        self.server_id.get_env()
+        self.get_env()
+        for domain in self.hostname_ids:
+            append(
+                self.server_id.virtual_domains_regex_path,
+                domain.domain_regex,
+                use_sudo=True,)
+
+    @api.multi
     def show_passwd(self):
         self.ensure_one()
         raise except_orm(

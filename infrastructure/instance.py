@@ -18,7 +18,6 @@ class instance(models.Model):
     """"""
 
     _name = 'infrastructure.instance'
-    _rec_name = 'display_name'
     _description = 'instance'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
     _states_ = [
@@ -42,16 +41,10 @@ class instance(models.Model):
         track_visibility='onchange',
         copy=False,
         )
-    display_name = fields.Char(
-        'Name',
-        compute='get_display_name',
-        store=True,
-        )
     name = fields.Char(
         string='Name',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
+        compute='get_name',
+        store=True,
         )
     type = fields.Selection(
         [(u'secure', u'Secure'), (u'none_secure', u'None Secure')],
@@ -108,16 +101,18 @@ class instance(models.Model):
         compute='get_sources_from',
         string='Other Instance Repositories'
         )
-    run_server_command = fields.Char(
-        string='Run Server Command',
-        required=True,
-        default='odoo.py',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-        )
     proxy_mode = fields.Boolean(
         string='Proxy Mode?',
         default=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    service_type = fields.Selection([
+        ('docker', 'Docker Restart'),
+        # ('upstart', 'Upstart Service'),
+        ('no_service', 'No Service')],
+        default='docker',
+        required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -187,82 +182,57 @@ class instance(models.Model):
         string='Addons Path',
         compute='_get_addons_path',
         )
-    user = fields.Char(
-        string='User',
-        states={'draft': [('readonly', False)]}
-        )
-    service_file = fields.Char(
-        string='Service Name',
-        readonly=True,
-        states={'draft': [('readonly', False)]}
-        )
     base_path = fields.Char(
         string='Base Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
+        compute='_get_ports_and_paths',
        )
     conf_path = fields.Char(
         string='Config. Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
+        compute='_get_ports_and_paths',
         )
     pg_data_path = fields.Char(
         string='Pg Data Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
+        compute='_get_ports_and_paths',
         )
     conf_file_path = fields.Char(
         string='Config. File Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
+        compute='_get_ports_and_paths',
        )
     backups_path = fields.Char(
         string='Backups Path',
-        readonly=True,
-        # required=True, TODO make require after instances updated
-        states={'draft': [('readonly', False)]},
+        compute='_get_ports_and_paths',
         )
     data_dir = fields.Char(
         string='Data Dir',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
+        compute='_get_ports_and_paths',
         )
     logfile = fields.Char(
         string='Log File Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
+        compute='_get_ports_and_paths',
+        )
+    container_logfile = fields.Char(
+        string='Log File Path',
+        compute='_get_ports_and_paths',
         )
     xml_rpc_port = fields.Integer(
         string='XML-RPC Port',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-        required=True
+        compute='_get_ports_and_paths',
         )
     xml_rpcs_port = fields.Integer(
         string='XML-RPCS Port',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        compute='_get_ports_and_paths',
         )
     longpolling_port = fields.Integer(
         string='Longpolling Port',
-        readonly=True,
-        states={'draft': [('readonly', False)]},
+        compute='_get_ports_and_paths',
+        )
+    sources_path = fields.Char(
+        string='Sources Path',
+        compute='_get_ports_and_paths',
         )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases'
-        )
-    sources_path = fields.Char(
-        string='Sources Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]}
         )
     server_id = fields.Many2one(
         'infrastructure.server',
@@ -276,14 +246,10 @@ class instance(models.Model):
         string='Docker Images',
         compute='_get_docker_images',
         )
-    env_type = fields.Selection(
-        related='environment_id.type',
-        string='Environment Type',
-        readonly=True
-        )
     odoo_image_id = fields.Many2one(
         'infrastructure.docker_image',
         string='Odoo Image',
+        required=True,
         readonly=True,
         domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'odoo')]",
         states={'draft': [('readonly', False)]}
@@ -291,6 +257,7 @@ class instance(models.Model):
     odoo_image_tag_id = fields.Many2one(
         'infrastructure.docker_image.tag',
         string='Tag',
+        required=True,
         readonly=True,
         domain="[('docker_image_id', '=', odoo_image_id)]",
         states={'draft': [('readonly', False)]}
@@ -298,6 +265,7 @@ class instance(models.Model):
     pg_image_id = fields.Many2one(
         'infrastructure.docker_image',
         string='Postgres Image',
+        required=True,
         readonly=True,
         domain="[('odoo_image_ids', '=', odoo_image_id)]",
         states={'draft': [('readonly', False)]}
@@ -305,17 +273,48 @@ class instance(models.Model):
     pg_image_tag_id = fields.Many2one(
         'infrastructure.docker_image.tag',
         string='Tag',
+        required=True,
         readonly=True,
         domain="[('docker_image_id', '=', pg_image_id)]",
         states={'draft': [('readonly', False)]}
         )
+    odoo_sufix = fields.Char(
+        string='Odoo Sufix',
+        help='Commonly used only on debuggin, use for eg. "-u all"'
+        )
     odoo_container = fields.Char(
         string='Odoo Container',
         compute='get_container_names',
+        store=True,
         )
     pg_container = fields.Char(
         string='Postgresql Container',
         compute='get_container_names',
+        )
+    # COMMANDS
+    start_odoo_cmd = fields.Char(
+        string='Start Odoo',
+        compute='get_commands',
+        )
+    start_attach_odoo_cmd = fields.Char(
+        string='Start & Attach Odoo',
+        compute='get_commands',
+        )
+    start_attached_odoo_cmd = fields.Char(
+        string='Start Attached Container',
+        compute='get_commands',
+        )
+    start_pg_cmd = fields.Char(
+        string='Start Postgres',
+        compute='get_commands',
+        )
+    kill_odoo_cmd = fields.Char(
+        string='Kill and Stop Odoo',
+        compute='get_commands',
+        )
+    kill_pg_cmd = fields.Char(
+        string='Kill and Stop Postgres',
+        compute='get_commands',
         )
 
     _sql_constraints = [
@@ -327,16 +326,12 @@ class instance(models.Model):
             'Longpolling Port must be unique per server!'),
         ('logfile_uniq', 'unique(logfile, server_id)',
             'Log File Path must be unique per server!'),
-        ('user_uniq', 'unique(user, server_id)',
-            'User must be unique per server!'),
         ('data_dir_uniq', 'unique(data_dir, server_id)',
             'Data Dir must be unique per server!'),
         ('base_path_uniq', 'unique(base_path, server_id)',
             'Base Path must be unique per server!'),
         ('conf_file_path_uniq', 'unique(conf_file_path, server_id)',
             'Config. File Path must be unique per server!'),
-        ('service_file_uniq', 'unique(service_file, server_id)',
-            'Service File Path must be unique per server!'),
         ('number_uniq', 'unique(number, environment_id)',
             'Number must be unique per environment!'),
         ('name_uniq', 'unique(name, environment_id)',
@@ -374,37 +369,34 @@ class instance(models.Model):
 
     @api.one
     @api.depends(
-        'name',
-        'environment_id',
+        'database_type_id.prefix',
         'environment_id.name',
         )
-    def get_display_name(self):
-        self.display_name = "%s-%s" % (
-            self.environment_id.name or '', self.name or '')
+    def get_name(self):
+        self.name = "%s-%s" % (
+            self.environment_id.name or '', self.database_type_id.prefix or '')
 
-    # TODO borrar el campo name del mapa, lo dejamos para aquellas instancias viejas creadas con main y demas
     @api.onchange('database_type_id')
     def onchange_database_type_id(self):
         if self.database_type_id:
-            self.name = self.database_type_id.prefix
             instance_admin_pass = self.database_type_id.instance_admin_pass
             if self.server_id.server_use_type == 'own' and instance_admin_pass:
-                admin_pass = instance_admin_pass or self.display_name
+                admin_pass = instance_admin_pass or self.name
             else:
-                admin_pass = self.display_name
+                admin_pass = self.name
             self.admin_pass = admin_pass
             self.db_filter = self.database_type_id.db_filter
 
     @api.one
-    @api.depends('display_name')
+    @api.depends('name')
     def get_container_names(self):
-        self.odoo_container = 'odoo-' + self.display_name
-        self.pg_container = 'db-' + self.display_name
+        self.odoo_container = 'odoo-' + self.name
+        self.pg_container = 'db-' + self.name
 
     @api.multi
     def show_passwd(self):
         raise except_orm(
-            _("Password for user '%s':") % self.user,
+            _("Password for user"),
             _("%s") % self.admin_pass
         )
 
@@ -520,16 +512,9 @@ class instance(models.Model):
     def _onchange_pg_image(self):
         self.pg_image_tag_id = self.pg_image_id.tag_ids
 
-    @api.onchange('name', 'environment_id')
-    def _get_user(self):
-        user = False
-        if self.name and self.environment_id.name:
-            user = self.environment_id.name + '-' + self.name
-        self.user = user
-        self.service_file = user
-
-    @api.onchange('name', 'number', 'environment_id')
-    def _get_ports_and_ports(self):
+    @api.one
+    @api.depends('name', 'number', 'environment_id')
+    def _get_ports_and_paths(self):
         xml_rpc_port = False
         xml_rpcs_port = False
         longpolling_port = False
@@ -549,21 +534,20 @@ class instance(models.Model):
         self.xml_rpc_port = xml_rpc_port
         self.xml_rpcs_port = xml_rpcs_port
         self.longpolling_port = longpolling_port
-        if self.environment_id.path and self.name:
+        if self.environment_id.path and self.database_type_id.prefix:
             base_path = os.path.join(
-                self.environment_id.path, self.name)
+                self.environment_id.path, self.database_type_id.prefix)
             conf_path = os.path.join(base_path, 'config')
             pg_data_path = os.path.join(base_path, 'postgresql')
             backups_path = os.path.join(
                 self.server_id.backups_path,
                 self.environment_id.name,
-                self.name,
+                self.database_type_id.prefix,
                 )
             conf_file_path = os.path.join(conf_path, 'openerp-server.conf')
-            logfile = os.path.join(base_path, 'odoo.log')
+            logfile = os.path.join(conf_path, 'odoo.log')
             data_dir = os.path.join(base_path, 'data_dir')
             sources_path = os.path.join(base_path, 'sources')
-        self.pg_data_path = pg_data_path
         self.pg_data_path = pg_data_path
         self.backups_path = backups_path
         self.conf_path = conf_path
@@ -571,6 +555,7 @@ class instance(models.Model):
         self.base_path = base_path
         self.conf_file_path = conf_file_path
         self.logfile = logfile
+        self.container_logfile = os.path.join('/etc/odoo/', 'odoo.log')
         self.data_dir = data_dir
 
 # Actions
@@ -580,14 +565,11 @@ class instance(models.Model):
         if self.database_ids:
             raise Warning(_(
                 'You can not delete an instance that has databases'))
-        self.stop_service()
+        self.stop_odoo_service()
         self.stop_pg_service()
-        if self.env_type != 'docker':
-            self.stop_run_on_start()
-        self.delete_service_files()
+        self.delete_pg_service()
+        self.delete_odoo_service()
         self.delete_nginx_site()
-        self.delete_user()
-        self.delete_pg_user()
         self.delete_paths()
         self.signal_workflow('sgn_cancel')
 
@@ -595,20 +577,14 @@ class instance(models.Model):
     def create_instance(self):
         _logger.info("Creating Instance")
         self.make_paths()
+        self.add_repositories()
         self.update_nginx_site()
         self.repositories_pull_clone_and_checkout()
-        if self.env_type != 'docker':
-            self.create_user()
-            self.create_pg_user()
-        else:
-            self.update_pg_service_file()
-            self.start_pg_service()
-
+        self.update_pg_service()
+        self.start_pg_service()
         self.update_conf_file()
-        self.update_service_file()
-        self.start_service()
-        if self.env_type != 'docker':
-            self.run_on_start()
+        self.update_odoo_service()
+        self.start_odoo_service()
         self.signal_workflow('sgn_to_active')
 
     @api.multi
@@ -641,7 +617,6 @@ class instance(models.Model):
                 self.longpolling_port,
                 self.conf_path,
                 self.sources_path,
-                # TODO agregar el sources de la instance
                 self.data_dir,
                 self.server_id.backups_path,
                 self.server_id.backups_path,
@@ -666,6 +641,57 @@ class instance(models.Model):
                 self.pg_image_id.pull_name,
             ))
         return command
+
+    @api.one
+    def get_commands(self):
+        pg_volume_links = (
+            '-v %s:/var/lib/postgresql/data' % self.pg_data_path)
+        odoo_port_links = (
+            '-p 127.0.0.1:%i:8069 -p 127.0.0.1:%i:8072') % (
+            self.xml_rpc_port, self.longpolling_port)
+        odoo_volume_links = (
+            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo -v %s:%s') % (
+            self.conf_path, self.sources_path, self.data_dir,
+            self.server_id.backups_path, self.server_id.backups_path)
+
+        if self.service_type == 'docker':
+            prefix = '--restart=always -d'
+        else:
+            prefix = '--rm'
+
+        # build images names
+        odoo_image_name = '--name %s:%s' % (
+            self.odoo_image_id.pull_name, self.odoo_image_tag_id.name)
+        pg_image_name = '--name %s:%s' % (
+            self.pg_image_id.pull_name, self.pg_image_tag_id.name)
+
+        # build sufix
+        odoo_sufix = self.odoo_sufix and ' %s' % self.odoo_sufix or ''
+        odoo_sufix += self.module_load and ' --load=%s' % self.module_load or ''
+        if self.module_load:
+            odoo_sufix += ' --load=' + self.module_load
+
+        # odoo start commands
+        self.start_odoo_cmd = 'docker run %s %s %s %s %s %s -- %s' % (
+            prefix, self.odoo_image_id.prefix,
+            odoo_port_links, odoo_volume_links,
+            odoo_image_name, self.odoo_container, odoo_sufix)
+
+        self.start_attach_odoo_cmd = 'docker run %s %s %s %s %s %s %s -- %s' % (
+            '-ti -u root', self.odoo_image_id.prefix,
+            odoo_port_links, odoo_volume_links,
+            odoo_image_name, self.odoo_container, '/bin/bash', odoo_sufix)
+
+        self.start_attached_odoo_cmd = 'runuser -u odoo openerp-server -- -c /etc/odoo/openerp-server.conf'
+
+        # pg start command
+        self.start_pg_cmd = 'docker run %s %s %s %s %s' % (
+            prefix, self.pg_image_id.prefix, pg_volume_links,
+            pg_image_name, self.pg_container)
+
+        # kill commands
+        self.kill_odoo_cmd = 'docker rm -f %s' % self.odoo_container
+        self.kill_pg_cmd = 'docker rm -f %s' % self.pg_container
 
     @api.multi
     def delete_paths(self):
@@ -699,10 +725,10 @@ class instance(models.Model):
         _logger.info("Updating conf file")
         self.environment_id.server_id.get_env()
         try:
-            self.stop_service()
-            start_service = True
+            self.stop_odoo_service()
+            start_odoo_service = True
         except:
-            start_service = False
+            start_odoo_service = False
 
         if not exists(self.environment_id.path, use_sudo=True):
             raise except_orm(_('No Environment Path!'),
@@ -716,40 +742,22 @@ class instance(models.Model):
             sudo('rm ' + self.conf_file_path)
 
         # Construimos commando
-        if self.env_type == 'docker':
-            command = 'docker %s --' % self.run_odoo_command()
-        else:
-            command = '%s/bin/%s -c %s' % (
-                self.environment_id.path,
-                self.run_server_command,
-                self.conf_file_path,
-                )
+        command = 'docker %s --' % self.run_odoo_command()
         command += ' --stop-after-init -s'
 
         if self.addons_path:
             command += ' --addons-path=' + self.addons_path
         # agregamos ' para que no de error con ciertos dominios
         command += ' --db-filter=' + "'%s'" % self.db_filter.rule
-        if self.env_type != 'docker':
-            command += ' --xmlrpc-port=' + str(self.xml_rpc_port)
-            command += ' --logfile=' + self.logfile
+        command += ' --logfile=' + self.container_logfile
         command += ' --limit-time-real=' + str(self.limit_time_real)
         command += ' --limit-time-cpu=' + str(self.limit_time_cpu)
         command += ' --db_maxconn=' + str(self.db_maxconn)
 
         if self.environment_id.odoo_version_id.name in ('8.0', 'master'):
-            # Para docker el data dir lo usamos en el montaje del volume con -v
-            if self.env_type != 'docker':
-                if self.data_dir:
-                    command += ' --data-dir=' + self.data_dir
-                if self.longpolling_port:
-                    command += ' --longpolling-port=' + str(self.longpolling_port)
-            else:
-                # if docker, we force this data dir
-                if self.data_dir:
-                    command += ' --data-dir=/var/lib/odoo/'
+            if self.data_dir:
+                command += ' --data-dir=/var/lib/odoo/'
 
-        # TODO ver que esta opcion todavia no se almacena ni se lee desde el conf, por eso la estamos llevando en el servicio
         if self.module_load:
             command += ' --load=' + self.module_load
 
@@ -770,45 +778,39 @@ class instance(models.Model):
             command += ' --no-xmlrpcs'
 
         try:
-            if self.env_type == 'docker':
-                sudo(command)
-            else:
-                sudo('chown ' + self.user + ':odoo -R ' + self.environment_id.path)
-                _logger.info("Running command: %s" % command)
-                eggs_dir = '/home/%s/.python-eggs' % self.user
-                if not exists(eggs_dir, use_sudo=True):
-                    sudo('mkdir %s' % eggs_dir, user=self.user)
-                with shell_env(PYTHON_EGG_CACHE=eggs_dir):
-                    sudo('chmod g+rw -R ' + self.environment_id.path)
-                    sudo(command, user=self.user)
+            sudo(command)
         except Exception, e:
             raise Warning(_("Can not create/update configuration file, this is what we get: \n %s") % (
                 e))
         # TODO cambiar esto por el webservice que permite cambiar el admin pass
         sed(self.conf_file_path, '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass, use_sudo=True)
-        if start_service:
-            self.start_service()
+        if start_odoo_service:
+            self.start_odoo_service()
 
     @api.multi
-    def delete_service_files(self):
+    def delete_pg_service(self):
+        raise 'TODO Not implemented yet'
+
+    def delete_odoo_service(self):
+        raise 'TODO Not implemented yet'
         _logger.info("Deleting service file")
-        if self.env_type == 'docker':
+        if self.service_type == 'docker':
+            print 'asdasdasda'
+        elif self.service_type == 'usptart':
             pg_service_file_path = os.path.join(
                 '/etc/init', self.pg_container + '.conf')
             service_file_path = os.path.join(
                 '/etc/init', self.odoo_container + '.conf')
-        else:
-            service_file_path = os.path.join('/etc/init.d', self.service_file)
-        try:
-            sudo('rm ' + service_file_path)
-            if self.env_type == 'docker':
+            try:
+                sudo('rm ' + service_file_path)
                 sudo('rm ' + pg_service_file_path)
-        except Exception, e:
-            _logger.warning(("Could delete service file '%s', this is what we get: \n %s") % (
-                self.service_file, e))
+            except Exception, e:
+                _logger.warning(("Could delete service file '%s', this is what we get: \n %s") % (
+                    self.service_file, e))
 
     @api.multi
-    def update_pg_service_file(self):
+    def update_pg_service(self):
+        raise 'TODO Not implemented yet'
         # TODO esta funcion deberia recorrer varios
         _logger.info("Updating Postgresql service file")
         service_path = '/etc/init'
@@ -828,160 +830,92 @@ class instance(models.Model):
         sudo('chmod 777 ' + service_file_path)
 
     @api.multi
-    def update_service_file(self):
+    def update_odoo_service(self):
+        raise 'TODO Not implemented yet'
         # TODO esta funcion deberia recorrer varios
         _logger.info("Updating service file")
 
-        if self.env_type == 'docker':
-            service_file_path = os.path.join(
-                '/etc/init', self.odoo_container + '.conf')
-            run_odoo_command = '%s -- ' % self.run_odoo_command()
-            if self.module_load:
-                run_odoo_command += ' --load=' + self.module_load
-            service_content = template_upstar_file % (
-                self.odoo_container,
-                'and started %s' % self.pg_container,
-                run_odoo_command,
-                'rm -f %s' % self.odoo_container
-                )
-        else:
-            service_file_path = os.path.join('/etc/init.d', self.service_file)
-            # Build file
-            daemon = os.path.join(
-                self.environment_id.path, 'bin', self.run_server_command)
-            service_content = template_service_file % (
-                self.user, self.conf_file_path, daemon)
+        if self.service_type == 'docker':
+            print 'asdas'
+        # elif self.service_type == 'upstart':
+        #     service_file_path = os.path.join(
+        #         '/etc/init', self.odoo_container + '.conf')
+        #     run_odoo_command = '%s -- ' % self.run_odoo_command()
+        #     if self.module_load:
+        #         run_odoo_command += ' --load=' + self.module_load
+        #     service_content = template_upstar_file % (
+        #         self.odoo_container,
+        #         'and started %s' % self.pg_container,
+        #         run_odoo_command,
+        #         'rm -f %s' % self.odoo_container
+        #         )
+        #     # Check if service already exist
+        #     if exists(service_file_path, use_sudo=True):
+        #         sudo('rm ' + service_file_path)
 
-        # Check if service already exist
-        if exists(service_file_path, use_sudo=True):
-            sudo('rm ' + service_file_path)
-
-        # Create file
-        append(service_file_path, service_content, use_sudo=True,)
-        # por un tema de ejeucion...
-        if self.env_type != 'docker':
-            sudo('chmod 777 ' + service_file_path)
+        #     # Create file
+        #     append(service_file_path, service_content, use_sudo=True,)
 
     @api.one
-    def create_user(self):
-        _logger.info("Creating unix user")
+    def start_odoo_service(self):
+        self.stop_odoo_service()
+
         self.environment_id.server_id.get_env()
-        try:
-            sudo('adduser --system --ingroup odoo ' + self.user)
-        except Exception, e:
-            raise Warning(_("Can not create linux user %s, this is what we get: \n %s") % (
-                self.user, e))
+        _logger.info("Starting Service %s " % self.name)
+        if self.service_type == 'docker':
+            raise 'TODO not implemented yet'
+        # elif self.service_type == 'upstart':
+        #     service = self.odoo_container
+        #     env.warn_only = True
+        #     fabtools.service.start(service)
+        #     env.warn_only = False
 
     @api.one
-    def delete_user(self):
-        _logger.info("Deleting unix user")
+    def stop_odoo_service(self):
         self.environment_id.server_id.get_env()
-        try:
-            sudo('deluser %s' % self.user)
-        except Exception, e:
-            _logger.warning(("Can not delete linux user %s, this is what we get: \n %s") % (
-                self.user, e))
+        _logger.info("Stopping Service %s " % self.name)
+        if self.service_type == 'docker':
+            raise 'TODO not implemented yet'
+        # elif self.service_type == 'upstart':
+        #     service = self.odoo_container
+        #     env.warn_only = True
+        #     fabtools.service.stop(service)
+        #     env.warn_only = False
 
     @api.one
-    def create_pg_user(self):
-        if not fabtools.postgres.user_exists(self.user):
-            _logger.info("Creating pg User")
-            self.environment_id.server_id.get_env()
-            try:
-                sudo('sudo -u postgres createuser -d -R -S ' + self.user)
-            except Exception, e:
-                raise Warning(_("Can not create postgres user %s, this is what we get: \n %s") % (
-                    self.user, e))
+    def restart_odoo_service(self):
+        raise 'TODO not implemented yet'
+        # if self.env_type == 'docker':
+        #     service = self.odoo_container
+        # else:
+        #     service = self.service_file
 
-    @api.one
-    def delete_pg_user(self):
-        if fabtools.postgres.user_exists(self.user):
-            _logger.info("Deleting pg User")
-            self.environment_id.server_id.get_env()
-            try:
-                sudo('sudo -u postgres dropuser %s' % self.user)
-            except Exception, e:
-                raise Warning(_("Can not delete postgres user %s, this is what we get: \n %s") % (
-                    self.user, e))
-
-    @api.one
-    def start_service(self):
-        if self.env_type == 'docker':
-            service = self.odoo_container
-        else:
-            service = self.service_file
-
-        _logger.info("Starting Service %s " % service)
-        self.environment_id.server_id.get_env()
-        self.stop_service()
-        env.warn_only = True
-        fabtools.service.start(service)
-        env.warn_only = False
-
-    @api.one
-    def stop_service(self):
-        if self.env_type == 'docker':
-            service = self.odoo_container
-        else:
-            service = self.service_file
-
-        _logger.info("Stopping Service %s " % service)
-        self.environment_id.server_id.get_env()
-        env.warn_only = True
-        fabtools.service.stop(service)
-        env.warn_only = False
-
-    @api.one
-    def restart_service(self):
-        if self.env_type == 'docker':
-            service = self.odoo_container
-        else:
-            service = self.service_file
-
-        _logger.info("Restarting Service")
-        self.environment_id.server_id.get_env()
-        try:
-            sudo('service ' + service + ' restart')
-        except Exception, e:
-            raise Warning(_("Could not restart service '%s', this is what we get: \n %s") % (
-                service, e))
+        # _logger.info("Restarting Service")
+        # self.environment_id.server_id.get_env()
+        # try:
+        #     sudo('service ' + service + ' restart')
+        # except Exception, e:
+        #     raise Warning(_("Could not restart service '%s', this is what we get: \n %s") % (
+        #         service, e))
 
     @api.one
     def start_pg_service(self):
-        _logger.info("Starting Postgresql Service")
-        self.environment_id.server_id.get_env()
-        self.stop_pg_service()
-        env.warn_only = True
-        fabtools.service.start(self.pg_container)
-        env.warn_only = False
+        raise 'TODO not implemented yet'
+        # _logger.info("Starting Postgresql Service")
+        # self.environment_id.server_id.get_env()
+        # self.stop_pg_service()
+        # env.warn_only = True
+        # fabtools.service.start(self.pg_container)
+        # env.warn_only = False
 
     @api.one
     def stop_pg_service(self):
-        _logger.info("Stopping Postgresql Service")
-        self.environment_id.server_id.get_env()
-        env.warn_only = True
-        fabtools.service.stop(self.pg_container)
-        env.warn_only = False
-
-    @api.one
-    def run_on_start(self):
-        _logger.info("Adding run on start")
-        self.environment_id.server_id.get_env()
-        try:
-            sudo('update-rc.d  ' + self.service_file + ' defaults')
-        except Exception, e:
-            raise Warning(_("Could not add service '%s' to run on start, this is what we get: \n %s") % (
-                self.service_file, e))
-
-    @api.one
-    def stop_run_on_start(self):
-        _logger.info("Stopping run on start")
-        self.environment_id.server_id.get_env()
-        try:
-            sudo('update-rc.d  -f ' + self.service_file + ' remove')
-        except Exception, e:
-            _logger.warning(("Could not stop service '%s' to run on start, this is what we get: \n %s") % (
-                self.service_file, e))
+        raise 'TODO not implemented yet'
+        # _logger.info("Stopping Postgresql Service")
+        # self.environment_id.server_id.get_env()
+        # env.warn_only = True
+        # fabtools.service.stop(self.pg_container)
+        # env.warn_only = False
 
     @api.one
     def delete_nginx_site(self):
@@ -990,7 +924,7 @@ class instance(models.Model):
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         nginx_site_file_path = os.path.join(
             nginx_sites_path,
-            self.display_name
+            self.name
         )
         try:
             sudo('rm -f %s' % nginx_site_file_path)
@@ -1024,10 +958,10 @@ class instance(models.Model):
 
         acces_log = os.path.join(
             self.environment_id.server_id.nginx_log_path,
-            'access_' + re.sub('[-]', '_', self.display_name))
+            'access_' + re.sub('[-]', '_', self.name))
         error_log = os.path.join(
             self.environment_id.server_id.nginx_log_path,
-            'error_' + re.sub('[-]', '_', self.display_name))
+            'error_' + re.sub('[-]', '_', self.name))
         xmlrpc_port = self.xml_rpc_port
 
         nginx_long_polling = ''
@@ -1064,7 +998,7 @@ class instance(models.Model):
         # Check if file already exists and delete it
         nginx_site_file_path = os.path.join(
             nginx_sites_path,
-            self.display_name
+            self.name
         )
         if exists(nginx_site_file_path, use_sudo=True):
             sudo('rm ' + nginx_site_file_path)

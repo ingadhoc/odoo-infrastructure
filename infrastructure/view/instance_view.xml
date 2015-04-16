@@ -9,12 +9,10 @@
     <field name="model">infrastructure.instance</field>
     <field name="arch" type="xml">
         <search string="instance">
-            <field name="display_name"/>
+            <field name="name"/>
             <field name="main_hostname"/>
             <field name="number"/>
             <field name="xml_rpc_port"/>
-            <field name="user"/>
-            <!-- <field name="type"/> -->
             <field name="database_type_id"/>
             <field name="db_filter"/>
             <field name="server_id"/>
@@ -36,7 +34,6 @@
         <form string="instance">
             <field name="id" invisible="1"/>
             <field name="name" invisible="1"/>
-            <field name="env_type" invisible="1"/>
             <field name="docker_image_ids" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
@@ -64,7 +61,6 @@
                     <h1>
                         <field name="database_type_id" default_focus="1" placeholder="Type..."/>
                         <field name="main_hostname" widget="url"/>
-                        <!-- <field name="name" default_focus="1" placeholder="Name..."/> -->
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
@@ -73,9 +69,9 @@
                     </button>
                 </div>
                 <div class="oe_right oe_button_box" name="action_buttons">
-                    <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_service" states="active"/>
-                    <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_service" states="active"/>
-                    <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_service" states="active"/>
+                    <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_odoo_service" states="active"/>
+                    <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_odoo_service" states="active"/>
+                    <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_odoo_service" states="active"/>
                     <button icon="fa-sun-o" type="object" string="Create / Update" class="oe_stat_button" help="Create or update User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" states="draft"/>
                     <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
 <!--                     <button icon="fa-refresh" type="object" string="Update Conf" class="oe_stat_button" name="update_conf_file" states="active"/>
@@ -102,26 +98,21 @@
                         <field name="unaccent"/>
                         <field name="workers"/>
                     </group>
-                    <group attrs="{'invisible':[('env_type','!=','docker')]}">
+                    <group>
                         <label for="odoo_image_id"/>
                         <div class="address_format">
-                            <field name="odoo_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 75%" />
-                            <field name="odoo_image_tag_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 24%" />
+                            <field name="odoo_image_id" options="{'no_create': True}" style="width: 75%" />
+                            <field name="odoo_image_tag_id" options="{'no_create': True}" style="width: 24%" />
                         </div>
                         <label for="pg_image_id"/>
                         <div class="address_format">
-                            <field name="pg_image_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 75%" />
-                            <field name="pg_image_tag_id" attrs="{'required':[('env_type','=','docker')]}" options="{'no_create': True}" style="width: 24%" />
+                            <field name="pg_image_id" options="{'no_create': True}" style="width: 75%" />
+                            <field name="pg_image_tag_id" options="{'no_create': True}" style="width: 24%" />
                         </div>
                         <field name="odoo_container"/>
                         <field name="pg_container"/>
                         <!-- TODO ver si agregamos o no este boton de remove containers -->
                         <!-- <button type="object" string="Remove Containers" class="oe_link" name="remove_containers" states="draft" confirm="Remove Containers in Order To Create New Ones"/> -->
-                    </group>
-                    <group attrs="{'invisible':[('env_type','=','docker')]}">
-                        <field name="user" attrs="{'required':[('env_type','!=','docker')]}"/>
-                        <field name="service_file" attrs="{'required':[('env_type','!=','docker')]}"/>
-                        <field name="run_server_command" attrs="{'required':[('env_type','!=','docker')]}"/>
                     </group>
                 </group>
                 <notebook>
@@ -130,11 +121,19 @@
                             <field name="type" invisible="1"/>
                             <field name="addons_path"/>
                         </group>
-                        <!-- <label for="addons_path"/> -->
-                        <!-- con este widget no funciona bien de una -->
-                        <!-- <field name="instance_host_ids" widget="many2many_tags"/> -->
                         <label for="instance_host_ids"/>
                         <field name="instance_host_ids"/>
+                    </page>
+                    <page string="Commands">
+                        <group>
+                            <field name="odoo_sufix"/>
+                            <field name="start_odoo_cmd"/>
+                            <field name="start_pg_cmd"/>
+                            <field name="start_attach_odoo_cmd"/>
+                            <field name="start_attached_odoo_cmd"/>
+                            <field name="kill_odoo_cmd"/>
+                            <field name="kill_pg_cmd"/>
+                        </group>
                     </page>
                     <page string="Repositories">
                         <button string="Add default repositories"
@@ -197,7 +196,7 @@
             <field name="message_unread" invisible="1"/>
             <field name="number"/>
             <field name="database_type_id"/>
-            <field name="display_name"/>
+            <field name="name"/>
             <field name="main_hostname" widget="url"/>
             <field name="server_id"/>
             <field name="environment_id"/>

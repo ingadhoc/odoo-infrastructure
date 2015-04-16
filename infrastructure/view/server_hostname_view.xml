@@ -9,12 +9,8 @@
     <field name="model">infrastructure.server_hostname</field>
     <field name="arch" type="xml">
         <search string="server_hostname">
-            <group string="By Attribute">
-                <field name="name" string="Name"/>
-                <field name="wildcard" string="Wild Card"/>
-            </group>
-            <group string="By object">
-            </group>
+            <field name="name"/>
+            <field name="wildcard"/>
         </search>
     </field>
 </record>
@@ -44,6 +40,7 @@
     <field name="model">infrastructure.server_hostname</field>
     <field name="arch" type="xml">
         <tree string="server_hostname">
+            <field name="sequence" widget="handle"/>
             <field name="name"/>
             <field name="wildcard"/>
             <field name="domain_regex"/>

@@ -26,8 +26,8 @@
             </header>
             <sheet string="database_type">
              <group>
-                <field name="type"/>
                 <field name="name"/>
+                <field name="type"/>
                 <field name="prefix"/>
                 <field name="url_prefix"/>
                 <field name="auto_deactivation_days"/>
@@ -72,8 +72,8 @@
     <field name="arch" type="xml">
         <tree string="database_type">
             <field name="sequence" widget="handle"/>
-            <field name="type"/>
             <field name="name"/>
+            <field name="type"/>
             <field name="prefix"/>
             <field name="url_prefix"/>
             <field name="auto_deactivation_days"/>

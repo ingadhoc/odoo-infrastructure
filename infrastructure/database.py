@@ -377,7 +377,7 @@ class database(models.Model):
         except:
             # If we get an error we try restarting the service
             try:
-                self.instance_id.restart_service()
+                self.instance_id.restart_odoo_service()
                 # we ask again for sock and try to connect waiting for service start
                 sock = self.get_sock(max_attempts=1000)
                 sock.drop(self.instance_id.admin_pass, self.name)
@@ -447,7 +447,7 @@ class database(models.Model):
         except:
             # If we get an error we try restarting the service
             try:
-                self.instance_id.restart_service()
+                self.instance_id.restart_odoo_service()
                 # we ask again for sock and try to connect waiting for start
                 sock = self.get_sock(max_attempts=1000)
                 sock.rename(self.instance_id.admin_pass, self.name, new_name)
@@ -507,7 +507,7 @@ class database(models.Model):
                 # restart the instance without workers
                 instance = self.instance_id
                 instance.update_conf_file(force_no_workers=True)
-                instance.start_service()
+                instance.start_odoo_service()
                 # we ask again for sock and try to connect waiting for service start
                 sock = self.get_sock(max_attempts=1000)
                 sock.duplicate_database(
@@ -516,7 +516,7 @@ class database(models.Model):
                 #     new_database_name, backups_enable)
                 # restart the instance with default config
                 instance.update_conf_file()
-                instance.start_service()
+                instance.start_odoo_service()
                 # TODo agregar aca releer los modulos y demas en la nueva bd
             except Exception, e:
                 raise Warning(
@@ -792,16 +792,6 @@ class database(models.Model):
             client.model('db.database').write([self_db_id], vals)
         client.model('db.database').backups_state(
             self.name, self.backups_enable)
-
-    @api.multi
-    def add_to_virtual_domains(self):
-        self.server_id.get_env()
-        self.get_env()
-        for domain in self.hostname_ids:
-            append(
-                self.server_id.virtual_domains_regex_path,
-                domain.domain_regex,
-                use_sudo=True,)
 
     @api.one
     def config_catchall(self):

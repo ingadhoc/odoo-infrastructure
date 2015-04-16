@@ -8,12 +8,17 @@ class server_hostname(models.Model):
 
     _name = 'infrastructure.server_hostname'
     _description = 'server_hostname'
+    _order = 'sequence'
 
     _sql_constraints = [
         ('name_uniq', 'unique(name, wildcard)',
             'Hostname/wildcard must be unique per server!'),
     ]
 
+    sequence = fields.Integer(
+        'Sequence',
+        default=10,
+        )    
     name = fields.Char(
         string='Name',
         required=True

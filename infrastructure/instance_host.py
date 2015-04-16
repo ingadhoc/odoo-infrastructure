@@ -53,11 +53,15 @@ class instance_host(models.Model):
 
     @api.onchange('server_hostname_id', 'subdomain', 'instance_id')
     def _get_name(self):
+        if not self.server_hostname_id:
+            server_hostname = self.env['infrastructure.server_hostname'].search([
+                ('server_id', '=', self.instance_id.server_id.id)],
+                limit=1)
+            self.server_hostname_id = server_hostname.id
         if self.server_hostname_id.wildcard:
-            if self.subdomain:
-                name = self.subdomain + '.' + self.server_hostname_id.name
-            else:
-                name = '*' + '.' + self.server_hostname_id.name
+            if not self.subdomain:
+                self.subdomain = self.instance_id.environment_id.name
+            name = self.subdomain + '.' + self.server_hostname_id.name
         else:
             name = self.server_hostname_id.name
         if self.instance_id.database_type_id.url_prefix and name:
