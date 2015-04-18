@@ -139,6 +139,7 @@
                                 <field name="mailgate_file"/>
                                 <field name="nginx_sites_path"/>
                                 <field name="nginx_log_path"/>
+                                <field name="ssl_path"/>
                                 <field name="local_alias_path"/>
                             </group>
                             <group>
@@ -169,7 +170,7 @@
                        <field name="server_docker_image_ids"/>
                     </page>
                     <page string="Hostnames" states="active">
-                        <button type="object" name="add_to_virtual_domains" string="Add to Virtual Domains" help="Add to postfix virutal domains so that you can use them in catchall" class="oe_highlight"/>
+                        <button type="object" name="configure_hosts" string="Configure Hosts" help="Add to postfix virutal domains so that you can use them in catchall and Also Load SSL Certificates" class="oe_highlight"/>
                         <field name="hostname_ids"/>
                     </page>
                     <page string="Changes" states="active">

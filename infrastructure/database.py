@@ -323,7 +323,8 @@ class database(models.Model):
     def get_sock(self, service='db', max_attempts=5):
         self.ensure_one()
         base_url = self.instance_id.main_hostname
-        rpc_db_url = 'http://%s/xmlrpc/%s' % (base_url, service)
+        rpc_db_url = '%s/xmlrpc/%s' % (base_url, service)
+        # rpc_db_url = 'http://%s/xmlrpc/%s' % (base_url, service)
         sock = xmlrpclib.ServerProxy(rpc_db_url)
 
         # try connection
@@ -587,7 +588,8 @@ class database(models.Model):
         try:
             if not_database:
                 return Client(
-                    'http://%s' % (self.instance_id.main_hostname))
+                    '%s' % (self.instance_id.main_hostname))
+                    # 'http://%s' % (self.instance_id.main_hostname))
         except Exception, e:
             raise except_orm(
                 _("Unable to Connect to Database."),
@@ -596,7 +598,8 @@ class database(models.Model):
         # First try to connect using instance pass
         try:
             return Client(
-                'http://%s' % (self.instance_id.main_hostname),
+                '%s' % (self.instance_id.main_hostname),
+                # 'http://%s' % (self.instance_id.main_hostname),
                 db=self.name,
                 user='admin',
                 password=self.instance_id.admin_pass)
@@ -604,7 +607,8 @@ class database(models.Model):
         except:
             try:
                 return Client(
-                    'http://%s' % (self.instance_id.main_hostname),
+                    '%s' % (self.instance_id.main_hostname),
+                    # 'http://%s' % (self.instance_id.main_hostname),
                     db=self.name,
                     user='admin',
                     password=self.admin_password)

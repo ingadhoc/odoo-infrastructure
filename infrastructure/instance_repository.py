@@ -58,7 +58,7 @@ class instance_repository(models.Model):
             self.branch_id = default_branch_id
 
     @api.one
-    def repository_pull_clone_and_checkout(self):
+    def repository_pull_clone_and_checkout(self, update=True):
         self.instance_id.environment_id.server_id.get_env()
         path = os.path.join(
                 self.instance_id.sources_path,
@@ -76,7 +76,7 @@ class instance_repository(models.Model):
                 remote_url,
                 path=path,
                 branch=self.branch_id.name,
-                update=True,
+                update=update,
                 use_sudo=True,
                 user=None
                 )

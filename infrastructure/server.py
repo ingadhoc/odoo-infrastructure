@@ -173,6 +173,13 @@ class server(models.Model):
         states={'draft': [('readonly', False)]},
         default='/opt/odoo',
         )
+    ssl_path = fields.Char(
+        string='SSL path',
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/nginx/ssl',
+        )
     backups_path = fields.Char(
         string='Backups Path',
         readonly=True,
@@ -449,12 +456,23 @@ class server(models.Model):
             self.server_docker_image_ids.create(vals)
 
     @api.multi
+    def configure_hosts(self):
+        self.load_ssl_certficiates()
+        self.add_to_virtual_domains()
+
+    @api.multi
+    def load_ssl_certficiates(self):
+        self.ensure_one()
+        for domain in self.hostname_ids:
+            domain.load_ssl_certficiate()
+
+    @api.multi
     def add_to_virtual_domains(self):
-        self.server_id.get_env()
+        self.ensure_one()
         self.get_env()
         for domain in self.hostname_ids:
             append(
-                self.server_id.virtual_domains_regex_path,
+                self.virtual_domains_regex_path,
                 domain.domain_regex,
                 use_sudo=True,)
 

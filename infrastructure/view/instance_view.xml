@@ -69,16 +69,10 @@
                     </button>
                 </div>
                 <div class="oe_right oe_button_box" name="action_buttons">
-                    <button icon="fa-refresh" type="object" string="Restart" class="oe_stat_button" name="restart_odoo_service" states="active"/>
-                    <button icon="fa-play" type="object" string="Start" class="oe_inline oe_stat_button" name="start_odoo_service" states="active"/>
-                    <button icon="fa-stop" type="object" string="Stop" class="oe_inline oe_stat_button" name="stop_odoo_service" states="active"/>
                     <button icon="fa-sun-o" type="object" string="Create / Update" class="oe_stat_button" help="Create or update User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" states="draft"/>
-                    <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
-<!--                     <button icon="fa-refresh" type="object" string="Update Conf" class="oe_stat_button" name="update_conf_file" states="active"/>
-                    <button icon="fa-refresh" type="object" string="Up. Nginx Site" class="oe_stat_button" name="update_nginx_site" states="active"/>
-                    <button icon="fa-refresh" type="object" string="Update Service" class="oe_stat_button" name="update_service_file" states="active"/> -->
-<!--                     <button icon="fa-play" type="object" string="Run On Start" class="oe_stat_button" name="run_on_start" states="active"/>
-                    <button icon="fa-stop" type="object" string="Stop On Start" class="oe_stat_button" name="stop_run_on_start" states="active"/> -->
+                    <button icon="fa-file-text-o" type="object" string="Update Conf" class="oe_stat_button" help="Update Odoo Config File" name="update_conf_file" states="draft"/>
+                    <button icon="fa-link" type="object" string="Update Nginx" class="oe_stat_button" help="Update Nginx Configuration" name="update_nginx_site" states="draft"/>
+                    <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="draft,active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
                 </div>
                 <group>
                     <group>
@@ -109,23 +103,35 @@
                             <field name="pg_image_id" options="{'no_create': True}" style="width: 75%" />
                             <field name="pg_image_tag_id" options="{'no_create': True}" style="width: 24%" />
                         </div>
-                        <field name="odoo_container"/>
-                        <field name="pg_container"/>
-                        <!-- TODO ver si agregamos o no este boton de remove containers -->
-                        <!-- <button type="object" string="Remove Containers" class="oe_link" name="remove_containers" states="draft" confirm="Remove Containers in Order To Create New Ones"/> -->
+                        <label for="odoo_container"/>
+                        <div>
+                            <field name="odoo_container" class="oe_inline"/>
+                            <button name="start_odoo_service" string="⇒ Start/Restart" type="object" class="oe_link"/>
+                            <button name="stop_odoo_service" string="⇒ Stop/Remove" type="object" class="oe_link"/>
+                        </div>
+                        <label for="pg_container"/>
+                        <div>
+                            <field name="pg_container" class="oe_inline"/>
+                            <button name="start_pg_service" string="⇒ Start/Restart" type="object" class="oe_link"/>
+                            <button name="stop_pg_service" string="⇒ Stop/Remove" type="object" class="oe_link"/>
+                        </div>
+                        <field name="service_type"/>
                     </group>
                 </group>
                 <notebook>
                     <page string="Configuration">
-                        <group colspan="4">
-                            <field name="type" invisible="1"/>
+                        <group>
                             <field name="addons_path"/>
+                            <field name="type"/>
+                            <!-- <field name="ssl_certificate" attrs="{'invisible':[('type','!=','secure')],'required':[('type','=','secure')]}"/> -->
+                            <!-- <field name="ssl_certificate_key" attrs="{'invisible':[('type','!=','secure')],'required':[('type','=','secure')]}"/> -->
+                            <field name="instance_host_ids"/>
                         </group>
-                        <label for="instance_host_ids"/>
-                        <field name="instance_host_ids"/>
                     </page>
                     <page string="Commands">
                         <group>
+                            <field name="odoo_log_cmd"/>
+                            <field name="pg_log_cmd"/>
                             <field name="odoo_sufix"/>
                             <field name="start_odoo_cmd"/>
                             <field name="start_pg_cmd"/>
@@ -133,6 +139,7 @@
                             <field name="start_attached_odoo_cmd"/>
                             <field name="kill_odoo_cmd"/>
                             <field name="kill_pg_cmd"/>
+                            <field name="update_conf_cmd"/>
                         </group>
                     </page>
                     <page string="Repositories">
@@ -158,6 +165,10 @@
                                 <field name="limit_time_cpu"/>
                                 <field name="db_maxconn"/>
                                 <field name="proxy_mode"/>
+                                <field name="without_demo"/>
+                                <field name="logrotate"/>
+                                <field name="log_level"/>
+                                <field name="default_repositories_id"/>
                             </group>
                             <group>
                                 <field name="base_path"/>
