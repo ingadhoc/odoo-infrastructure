@@ -651,8 +651,9 @@ class database(models.Model):
                 backup['type'],
             ]
             rows.append(row)
+        print 'imp_fields', imp_fields
+        print 'rows', rows
         self.env['infrastructure.database.backup'].load(imp_fields, rows)
-
         # remove removed backups
         self_backups = [x.name for x in self.backup_ids]
         remote_backups = [x['name'] for x in backups_data]

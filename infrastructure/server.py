@@ -195,13 +195,6 @@ class server(models.Model):
     color = fields.Integer(
         string='Color Index',
         )
-    sources_path = fields.Char(
-        string='Sources Path',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
-        default='/opt/odoo/sources',
-        )
     instance_user_group = fields.Char(
         string='Instance Users Group',
         readonly=True,

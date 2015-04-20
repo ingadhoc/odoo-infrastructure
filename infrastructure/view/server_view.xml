@@ -134,7 +134,6 @@
                             <group>
                                 <field name="ip_address"/>
                                 <field name="base_path"/>
-                                <field name="sources_path"/>
                                 <field name="backups_path"/>
                                 <field name="mailgate_file"/>
                                 <field name="nginx_sites_path"/>

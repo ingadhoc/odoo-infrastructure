@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _
+from openerp.exceptions import Warning
 import requests
 import os
+import simplejson
 
 
 class database_backup(models.Model):
@@ -45,30 +47,37 @@ class database_backup(models.Model):
         # TODO ver si hacemos un overwrite si hay que borrarla antes
         source_path = os.path.join(self.path, self.name)
         try:
-            # Esto era con html
-            # print '1111111111'
-            # request = 'http://%s/restore_db/%s/%s/%s/%s' % (
-            #     instance.main_hostname,
-            #     instance.admin_pass,
-            #     source_path,
-            #     new_database_name,
-            #     str(backups_enable),
-            #     )
-            # print '222222', request
-            # res = requests.get(request)
-            # print 'res', res
-            import json
-            import urllib2
+            print 'instance.main_hostname', instance.main_hostname
+            print 'instance.main_hostname', 'http://localhost:9069'
+            url = "%s/%s" % (instance.main_hostname, 'restore_db')
+            headers = {'content-type': 'application/json'}
+            # Example echo method
             data = {
-                    'ids': [12, 3, 4, 5, 6],
-                    'file_path': 'asdasda',
+                "jsonrpc": "2.0",
+                "method": "call",
+                "params": {
+                    'admin_pass': instance.admin_pass,
+                    'db_name': new_database_name,
+                    'file_path': source_path,
+                    'backups_state': backups_enable,
+                    },
             }
-            req = urllib2.Request(
-                'http://%s/restore_db' % instance.main_hostname)
-            req.add_header('Content-Type', 'application/json')
+            print 'url', url
+            print 'data', data
+# url http://localhost:9069//restore_db
+# data {'params': {'admin_pass': u'admin', 'backups_state': False, 'db_name': u'up_cedent_03', 'file_path': u'/opt/odoo/cedentsrl-80/backups/prod_cedent/cedent_19_03_daily_20150320_210001.zip'}, 'jsonrpc': '2.0', 'method': 'call'}
 
-            response = urllib2.urlopen(req, json.dumps(data))
+            response = requests.post(
+                url,
+                data=simplejson.dumps(data),
+                headers=headers
+                ).json()
             print 'response', response
+            if response['result'].get('error'):
+                print "response.get('error')", response.get('error')
+                raise Warning(_(
+                    'Unable to restore bd %s, this is what we get: \n %s') % (
+                    new_database_name, response['result'].get('error')))
         except Exception, e:
             raise Warning(_(
                 'Unable to restore bd %s, this is what we get: \n %s') % (

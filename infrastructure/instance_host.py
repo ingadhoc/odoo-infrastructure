@@ -71,3 +71,6 @@ class instance_host(models.Model):
         if self.server_hostname_id.wildcard:
             if not self.subdomain:
                 self.subdomain = self.instance_id.environment_id.name
+        else:
+            self.subdomain = False
+        self._change_subdomain()
