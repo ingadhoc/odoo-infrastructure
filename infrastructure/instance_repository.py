@@ -7,6 +7,7 @@ from fabric.contrib.files import exists
 import os
 from ast import literal_eval
 from fabtools.require.git import working_copy
+from fabric.api import env
 
 
 class instance_repository(models.Model):
@@ -58,7 +59,7 @@ class instance_repository(models.Model):
             self.branch_id = default_branch_id
 
     @api.one
-    def repository_pull_clone_and_checkout(self):
+    def repository_pull_clone_and_checkout(self, update=True):
         self.instance_id.environment_id.server_id.get_env()
         path = os.path.join(
                 self.instance_id.sources_path,
@@ -72,13 +73,15 @@ class instance_repository(models.Model):
         else:
             remote_url = self.repository_id.url
         try:
+            # TODO mejorar aca y usar la api de github para pasar depth = 1 y manejar errores
             working_copy(
                 remote_url,
                 path=path,
                 branch=self.branch_id.name,
-                update=True,
+                update=update,
                 use_sudo=True,
                 user=None
                 )
-        except:
-            raise Warning('TODO error!!!')
+        except Exception, e:
+            raise Warning('Error pulling git repository. This is what we get:\
+                \n%s' % e)

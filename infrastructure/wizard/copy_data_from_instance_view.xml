@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_copy_data_from_instance_wizard_view" model="ir.ui.view">
+     <field name="name">Copy Data From Instance</field>
+     <field name="model">infrastructure.copy_data_from_instance.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Copy Data From Instance">
+            <group>
+                <field name="server_id"/>
+                <field name="target_instance_id"/>
+                <field name="source_instance_id"/>
+            </group>
+            <footer>
+                <button name="action_confirm" confirm="All database data and filestore data will be delete and can not be recovered, are you sure you want to continue?" string="Copy Data" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_copy_data_from_instance_wizard" model="ir.actions.act_window">
+     <field name="name">Copy Data From Instance</field>
+     <field name="res_model">infrastructure.copy_data_from_instance.wizard</field>
+     <field name="type">ir.actions.act_window</field>
+     <field name="view_type">form</field>
+     <field name="view_mode">tree,form</field>
+     <field name="view_id" ref="infrastructure_copy_data_from_instance_wizard_view"/>
+     <field name="context">{}</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>

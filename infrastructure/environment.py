@@ -145,13 +145,17 @@ class environment(models.Model):
             self.partner_id = self.server_id.used_by_id
         self.number = environments and environments[0].number + 1 or 10
 
-    @api.onchange('partner_id', 'odoo_version_id')
+    # TODO si no vamos a usar el sufijo entonces borrar lo comentado aca
+    @api.onchange('partner_id')
+    # @api.onchange('partner_id', 'odoo_version_id')
     def _get_name(self):
         name = False
-        if self.partner_id and self.odoo_version_id:
-            partner_name = self.partner_id.commercial_partner_id.name
-            sufix = self.odoo_version_id.sufix
-            name = '%s-%s' % (partner_name, sufix)
+        if self.partner_id:
+        # if self.partner_id and self.odoo_version_id:
+            name = self.partner_id.commercial_partner_id.name
+            # partner_name = self.partner_id.commercial_partner_id.name
+            # sufix = self.odoo_version_id.sufix
+            # name = '%s-%s' % (partner_name, sufix)
             valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
             name = ''.join(c for c in name if c in valid_chars)
             name = name.replace(' ', '').replace('.', '').lower()

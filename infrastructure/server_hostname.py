@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
 from openerp import models, fields, api, _
+from openerp.exceptions import Warning
+from fabtools import require
+import os
 
 
 class server_hostname(models.Model):
@@ -11,14 +13,14 @@ class server_hostname(models.Model):
     _order = 'sequence'
 
     _sql_constraints = [
-        ('name_uniq', 'unique(name, wildcard)',
+        ('name_uniq', 'unique(name, wildcard, server_id)',
             'Hostname/wildcard must be unique per server!'),
     ]
 
     sequence = fields.Integer(
         'Sequence',
         default=10,
-        )    
+        )
     name = fields.Char(
         string='Name',
         required=True
@@ -40,6 +42,36 @@ class server_hostname(models.Model):
         ondelete='cascade',
         required=True
         )
+    ssl_available = fields.Boolean(
+        string='SSL Available?',
+        )
+    ssl_intermediate_certificate = fields.Text(
+        string='SSL Intermediate Certificate',
+        )
+    ssl_certificate = fields.Text(
+        string='SSL Certificate',
+        )
+    ssl_certificate_key = fields.Text(
+        string='SSL Certificate KEY',
+        )
+    ssl_certificate_path = fields.Char(
+        string='SSL Certificate',
+        compute='get_certificate_paths'
+        )
+    ssl_certificate_key_path = fields.Char(
+        string='SSL Certificate',
+        compute='get_certificate_paths'
+        )
+
+    @api.one
+    @api.depends('name')
+    def get_certificate_paths(self):
+        name = self.name
+        if self.wildcard:
+            name += '_wildcard'
+        base_file_path = os.path.join(self.server_id.ssl_path, name)
+        self.ssl_certificate_path = base_file_path + '.crt'
+        self.ssl_certificate_key_path = base_file_path + '.key'
 
     @api.onchange('wildcard', 'name')
     def _get_domain_regex(self):
@@ -66,3 +98,23 @@ class server_hostname(models.Model):
                 name += _(' - Wildcard')
             res.append((record['id'], name))
         return res
+
+    @api.one
+    def load_ssl_certficiate(self):
+        self.server_id.get_env()
+        if not self.ssl_available:
+            return False
+        if not self.ssl_certificate or not self.ssl_certificate_key or not self.ssl_intermediate_certificate:
+            raise Warning(_('To configure SSL you need to set ssl certificates and keys'))
+        # TODO add ssl path in server data
+        require.files.directory(
+            self.server_id.ssl_path, use_sudo=True, owner='', group='', mode='600')
+        require.file(
+            path=self.ssl_certificate_path,
+            contents=('%s\n%s') % (
+                self.ssl_certificate, self.ssl_intermediate_certificate),
+            use_sudo=True)
+        require.file(
+            path=self.ssl_certificate_key_path,
+            contents=self.ssl_certificate_key,
+            use_sudo=True)

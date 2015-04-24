@@ -23,9 +23,14 @@ class instance_host(models.Model):
         ondelete='cascade',
         required=True
         )
+    prefix = fields.Char(
+        'Prefix',
+        required=False,
+        )
     name = fields.Char(
         'Name',
-        required=True
+        compute='get_name',
+        store=True,
         )
     server_id = fields.Many2one(
         'infrastructure.server',
@@ -51,19 +56,34 @@ class instance_host(models.Model):
             'Name must be unique per server!'),
     ]
 
-    @api.onchange('server_hostname_id', 'subdomain', 'instance_id')
+    @api.one
+    @api.depends('prefix', 'server_hostname_id.name')
+    def get_name(self):
+        name = self.server_hostname_id.name
+        if self.prefix and name:
+            name = self.prefix + '.' + name
+        self.name = name
+
+    @api.onchange('subdomain')
+    def _change_subdomain(self):
+        prefix = False
+        if self.subdomain:
+            prefix = self.subdomain
+        if self.instance_id.database_type_id.url_prefix and prefix:
+            prefix = self.instance_id.database_type_id.url_prefix + '_' + prefix
+        self.prefix = prefix
+
+    @api.onchange('server_hostname_id', 'instance_id')
     def _get_name(self):
         if not self.server_hostname_id:
-            server_hostname = self.env['infrastructure.server_hostname'].search([
-                ('server_id', '=', self.instance_id.server_id.id)],
-                limit=1)
+            server_hostname = self.env[
+                'infrastructure.server_hostname'].search(
+                    [('server_id', '=', self.instance_id.server_id.id)],
+                    limit=1)
             self.server_hostname_id = server_hostname.id
         if self.server_hostname_id.wildcard:
             if not self.subdomain:
                 self.subdomain = self.instance_id.environment_id.name
-            name = self.subdomain + '.' + self.server_hostname_id.name
         else:
-            name = self.server_hostname_id.name
-        if self.instance_id.database_type_id.url_prefix and name:
-            name = self.instance_id.database_type_id.url_prefix + '.' + name
-        self.name = name
+            self.subdomain = False
+        self._change_subdomain()

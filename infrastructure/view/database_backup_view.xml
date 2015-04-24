@@ -43,6 +43,19 @@
                 type="action"
                 name="%(action_infrastructure_restore_database_wizard)d"
                 help="Restore Database" context="{'search_default_database_backup_id': active_id}"/>
+            <button
+                string="Get Backup"
+                icon="gtk-go-down"
+                type="object"
+                name="get_backup_msg"
+                />
+                <!-- TODO implementar -->
+<!--             <button
+                string="Delete Backup"
+                icon="gtk-cancel"
+                type="object"
+                name="delete_backup"
+                /> -->
         </tree>
     </field>
 </record>

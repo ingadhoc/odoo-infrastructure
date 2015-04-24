@@ -217,8 +217,12 @@ class database(models.Model):
 
     @api.onchange('instance_id')
     def _onchange_instance(self):
-        self.partner_id = self.instance_id.environment_id.partner_id
-        self.database_type_id = self.instance_id.database_type_id
+        instance = self.instance_id
+        self.partner_id = instance.environment_id.partner_id
+        self.database_type_id = instance.database_type_id
+        if instance.main_hostname_id:
+            self.alias_hostname_id = instance.main_hostname_id.server_hostname_id
+            self.alias_prefix = instance.main_hostname_id.prefix
 
     @api.one
     @api.depends('module_ids')
@@ -271,10 +275,8 @@ class database(models.Model):
         return local_alias
 
     _sql_constraints = [
-        ('name_uniq', 'unique(name, server_id)',
-            'Database Name Must be Unique per server'),
-        ('domain_alias_uniq', 'unique(domain_alias)',
-            'Domain Alias Must be Unique'),
+        ('name_uniq', 'unique(name, instance_id)',
+            'Database Name Must be Unique per instance'),
     ]
 
     @api.one
@@ -323,7 +325,8 @@ class database(models.Model):
     def get_sock(self, service='db', max_attempts=5):
         self.ensure_one()
         base_url = self.instance_id.main_hostname
-        rpc_db_url = 'http://%s/xmlrpc/%s' % (base_url, service)
+        rpc_db_url = '%s/xmlrpc/%s' % (base_url, service)
+        # rpc_db_url = 'http://%s/xmlrpc/%s' % (base_url, service)
         sock = xmlrpclib.ServerProxy(rpc_db_url)
 
         # try connection
@@ -367,9 +370,13 @@ class database(models.Model):
         self.install_base_modules()
         self.signal_workflow('sgn_to_active')
 
-    @api.one
+    @api.multi
     def drop_db(self):
         """Funcion que utiliza ws nativos de odoo para eliminar db"""
+        self.ensure_one()
+        if self.advance_type == 'protected':
+            raise Warning(_('You can not drop a database protected,\
+                you can change database type, or drop it manually'))
         _logger.info("Dropping db '%s'" % (self.name))
         sock = self.get_sock()
         try:
@@ -377,7 +384,7 @@ class database(models.Model):
         except:
             # If we get an error we try restarting the service
             try:
-                self.instance_id.restart_odoo_service()
+                self.instance_id.start_odoo_service()
                 # we ask again for sock and try to connect waiting for service start
                 sock = self.get_sock(max_attempts=1000)
                 sock.drop(self.instance_id.admin_pass, self.name)
@@ -394,7 +401,7 @@ class database(models.Model):
         try:
             self_db_id = client.model('ir.model.data').xmlid_to_res_id(
                 'database_tools.db_self_database')
-            res = client.model('db.database').database_backup(self_db_id)[0]
+            res = client.model('db.database').action_database_backup(self_db_id)[0]
         except Exception, e:
                 raise Warning(_('Could not make backup!\
                     This is what we get %s' % e))
@@ -404,24 +411,6 @@ class database(models.Model):
         else:
             raise Warning(_('Could not make backup!\
                 This is what we get %s' % res.get('error', '')))
-
-    @api.one
-    def dump_db(self):
-        """Funcion que utiliza ws nativos de odoo para hacer backup de bd"""
-        raise Warning(_('Not Implemented yet'))
-        # TODO arreglar esto para que devuelva el archivo y lo descargue
-        sock = self.get_sock()
-        try:
-            backup_file = open('backup.dump', 'wb')
-            backup_file.write(base64.b64decode(
-                sock.dump(self.instance_id.admin_pass, self.name)))
-            # return sock.dump(self.instance_id.admin_pass, self.name)
-            backup_file.close()
-        except Exception, e:
-            raise Warning(
-                _('Unable to dump Database. If you are working in an \
-                instance with "workers" then you can try \
-                restarting service. This is what we get:\n%s') % (e))
 
     @api.one
     def migrate_db(self):
@@ -447,7 +436,7 @@ class database(models.Model):
         except:
             # If we get an error we try restarting the service
             try:
-                self.instance_id.restart_odoo_service()
+                self.instance_id.start_odoo_service()
                 # we ask again for sock and try to connect waiting for start
                 sock = self.get_sock(max_attempts=1000)
                 sock.rename(self.instance_id.admin_pass, self.name, new_name)
@@ -457,6 +446,12 @@ class database(models.Model):
                     instance with "workers" then you can try \
                     restarting service. This is what we get:\n%s') % (e))
         self.name = new_name
+        # reconfigure catchall
+        if self.catchall_enable:
+            self.config_catchall()
+        if self.backups_enable:
+            self.config_backups()
+
 
 # TODO borrar esta funcion que va en database backup
     # @api.one
@@ -524,7 +519,8 @@ class database(models.Model):
         client.model('db.database').backups_state(
             new_database_name, backups_enable)
         new_db.signal_workflow('sgn_to_active')
-
+        if backups_enable:
+            new_db.config_backups()
         # devolvemos la accion de la nueva bd creada
         action = self.env['ir.model.data'].xmlid_to_object(
             'infrastructure.action_infrastructure_database_databases')
@@ -587,7 +583,8 @@ class database(models.Model):
         try:
             if not_database:
                 return Client(
-                    'http://%s' % (self.instance_id.main_hostname))
+                    '%s' % (self.instance_id.main_hostname))
+                    # 'http://%s' % (self.instance_id.main_hostname))
         except Exception, e:
             raise except_orm(
                 _("Unable to Connect to Database."),
@@ -596,7 +593,8 @@ class database(models.Model):
         # First try to connect using instance pass
         try:
             return Client(
-                'http://%s' % (self.instance_id.main_hostname),
+                '%s' % (self.instance_id.main_hostname),
+                # 'http://%s' % (self.instance_id.main_hostname),
                 db=self.name,
                 user='admin',
                 password=self.instance_id.admin_pass)
@@ -604,7 +602,8 @@ class database(models.Model):
         except:
             try:
                 return Client(
-                    'http://%s' % (self.instance_id.main_hostname),
+                    '%s' % (self.instance_id.main_hostname),
+                    # 'http://%s' % (self.instance_id.main_hostname),
                     db=self.name,
                     user='admin',
                     password=self.admin_password)
@@ -626,6 +625,9 @@ class database(models.Model):
                     _("You can not Update Backups Data if module '%s' is not installed in the database") % (module))
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
+        _logger.info('Updating remote backups data')
+        client.model('db.database').update_backups_data(self_db_id)
+        _logger.info('Reading Remote Backups Data')
         backups_data = client.read(
             'db.database.backup', [('database_id', '=', self_db_id)])
         imp_fields = [
@@ -648,11 +650,10 @@ class database(models.Model):
             ]
             rows.append(row)
         self.env['infrastructure.database.backup'].load(imp_fields, rows)
-
         # remove removed backups
         self_backups = [x.name for x in self.backup_ids]
         remote_backups = [x['name'] for x in backups_data]
-        removed_backups = list(set(remote_backups) - set(self_backups))
+        removed_backups = list(set(self_backups) - set(remote_backups))
         self.backup_ids.search([('name', 'in', removed_backups)]).unlink()
 
 # Modules management
