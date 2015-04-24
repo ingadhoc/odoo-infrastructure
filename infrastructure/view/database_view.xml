@@ -77,9 +77,8 @@
                 <div class="oe_right oe_button_box" name="buttons_action">
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
                     <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="action_backup_now" states="active"/>
-                    <button icon="fa-download" type="object" string="Dump" class="oe_inline oe_stat_button" name="dump_db" states="active"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
-                    <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active"/>
+                    <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active" confirm="Are you sure you want to drop this database? This can not be undone"/>
                     <button icon="fa-pencil" type="action" string="Rename" class="oe_stat_button" name="%(action_infrastructure_rename_database_wizard)d" states="active"/>
                 </div>
                  <group>
@@ -118,8 +117,8 @@
                                 <field name="daily_backup" /><label for="daily_backup" string="Daily"/> - <field name="weekly_backup"/><label for="daily_backup" string="Weekcly"/> - <field name="monthly_backup"/><label for="monthly_backup" string="Monthly"/>
                             </div>
                         </group>
-                        <button type="object" name="update_backups_data" string="Update Backups Data" attrs="{'invisible':[('backups_enable','=',False)]}" />
-                        <field name="backup_ids" attrs="{'invisible':[('backups_enable','=',False)]}" />
+                        <button type="object" name="update_backups_data" string="Update Backups Data"/>
+                        <field name="backup_ids"/>
                     </page>
                     <page string="email Config" states="active" name="email_config">
                         <group>

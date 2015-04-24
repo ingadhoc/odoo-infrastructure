@@ -331,6 +331,12 @@ class instance(models.Model):
         # required=True,
         )
     # COMMANDS
+    update_all_cmd = fields.Char(
+        string='Update All',
+        compute='get_commands',
+        help='If you use this command on terminal you should add\
+        -d [database_name] to get it works'
+        )
     odoo_log_cmd = fields.Char(
         string='Odoo Log',
         compute='get_commands',
@@ -695,6 +701,13 @@ class instance(models.Model):
             self.odoo_container, odoo_image_name,
             self.get_update_conf_command_sufix())
 
+        # odoo update all command
+        self.update_all_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
+            '--rm -ti', self.odoo_image_id.prefix or '',
+            odoo_port_links, odoo_volume_links, odoo_pg_link,
+            self.odoo_container, odoo_image_name,
+            odoo_sufix + ' --stop-after-init --logfile=False --workers=0 -u all')
+
         # pg start command
         self.start_pg_cmd = 'docker run %s %s %s --name %s %s' % (
             prefix, self.pg_image_id.prefix or '', pg_volume_links,
@@ -707,6 +720,21 @@ class instance(models.Model):
         # Logs
         self.odoo_log_cmd = 'tail -f %s' % self.logfile
         self.pg_log_cmd = 'docker logs -f %s' % self.pg_container
+
+    @api.multi
+    def get_tunnel_to_pg(self):
+        self.ensure_one()
+        server = self.server_id
+        server.get_env()
+        ip = sudo("docker inspect --format '{{ .NetworkSettings.IPAddress }}' %s" % self.pg_container)
+        tunnel_to_pg = "ssh -L 5499:%s:5432 %s@%s -p %i" % (
+            ip, server.user_name, server.main_hostname, server.ssh_port)
+        raise Warning(_('Tunneling command to access postgres:\n%s\n\
+            Password: %s\n\
+            In your pgadmin you should enter:\n\
+            *Host: localhost\n\
+            *Port: 5499\n\
+            *Usarname and pass: odoo') % (tunnel_to_pg, server.password))
 
     @api.multi
     def get_update_conf_command_sufix(self):
@@ -750,6 +778,65 @@ class instance(models.Model):
         _logger.info("Deleting path and subpath of: %s " % self.base_path)
         self.environment_id.server_id.get_env()
         sudo('rm -r %s' % self.base_path, dont_raise=True)
+
+    @api.one
+    def copy_databases_from(self, instance):
+        if self.database_type_id.type == 'protected':
+            raise Warning('You can not replace data in a instance of type\
+                protected, you should do it manually or change type.')
+        self.server_id.get_env()
+        _logger.info('Copying database data from %s to %s' % (
+            instance.name, self.name))
+        # remove pg files and get new ones
+        _logger.info('Removing pg data for %s' % self.name)
+        fabtools.files.remove(
+            self.pg_data_path, recursive=True, use_sudo=True)
+        fabtools.files.copy(
+            instance.pg_data_path, self.pg_data_path,
+            recursive=True, use_sudo=True)
+
+        # remove data files and get new ones
+        _logger.info('Removing data dir data for %s' % self.name)
+        fabtools.files.remove(
+            self.data_dir, recursive=True, use_sudo=True)
+        fabtools.files.copy(
+            instance.data_dir, self.data_dir,
+            recursive=True, use_sudo=True)
+
+        # chown and chmod
+        sudo('chown .docker -R ' + self.pg_data_path)
+        sudo('chmod 777 -R ' + self.data_dir)
+
+        # Restart services
+        self.start_pg_service()
+        self.start_odoo_service()
+
+        # Unlink actual databases
+        _logger.info('Unlinking actual databases records')
+        for database in self.database_ids:
+            database.signal_workflow('sgn_cancel')
+            database.unlink()
+
+        # Create new databases
+        _logger.info('Duplicating surce instance database info')
+        for database in instance.database_ids:
+            new_db = database.copy({
+                'database_type_id': self.database_type_id.id,
+                'instance_id': self.id,
+                })
+            # we run this to deactivate backups
+            new_db.signal_workflow('sgn_to_active')
+            _logger.info('Renaiming database %s' % new_db.name)
+            new_db.rename_db('%s_%s' % (
+                self.database_type_id.prefix, new_db.name))
+            new_db.config_backups()
+
+    @api.one
+    def databases_update_all(self):
+        self.stop_odoo_service()
+        for database in self.database_ids:
+            sudo('%s -d %s' % (self.update_all_cmd, database.name))
+        self.start_odoo_service()
 
     @api.multi
     def make_paths(self):
@@ -819,9 +906,10 @@ class instance(models.Model):
         _logger.info("Stopping Odoo Service %s " % self.name)
         try:
             sudo(self.kill_odoo_cmd)
-        except Exception, e:
+        except:
             _logger.warning(("Could remove remove container '%s'") % (
                 self.kill_odoo_cmd))
+
     @api.one
     def start_pg_service(self):
         self.environment_id.server_id.get_env()
@@ -837,7 +925,7 @@ class instance(models.Model):
         _logger.info("Stopping Postgresql Service %s " % self.name)
         try:
             sudo(self.kill_pg_cmd)
-        except Exception, e:
+        except:
             _logger.warning(("Could remove remove container '%s'") % (
                 self.kill_pg_cmd))
 
@@ -906,6 +994,7 @@ class instance(models.Model):
                 server_hostname_id.ssl_certificate_key_path,
                 acces_log,
                 error_log,
+                self.name,
                 self.name,
                 self.name,
                 )
@@ -979,8 +1068,8 @@ class instance(models.Model):
     # rewrite  ^/(.*)$  http://%s/$1 permanent;
 nginx_redirect_template = """
 server   {
-        server_name %s;
-        rewrite  ^/(.*)$  %s/$1 permanent;
+    server_name %s;
+    rewrite  ^/(.*)$  %s/$1 permanent;
 }
 """
 nginx_long_polling_template = """
@@ -990,26 +1079,26 @@ nginx_long_polling_template = """
 """
 nginx_site_template = """
 server {
-        listen 80;
-        server_name %s;
-        access_log %s;
-        error_log %s;
+    listen 80;
+    server_name %s;
+    access_log %s;
+    error_log %s;
 
-        location / {
-                proxy_pass              http://127.0.0.1:%i;
-                proxy_set_header        X-Forwarded-Host $host;
-        }
+    location / {
+            proxy_pass              http://127.0.0.1:%i;
+            proxy_set_header        X-Forwarded-Host $host;
+    }
 
-    %s
+%s
 
 }
 """
 nginx_ssl_site_template = """
-upstream backend-%s {
-  server 127.0.0.1:%i;
+upstream %s {
+    server 127.0.0.1:%i weight=1 fail_timeout=300s;
 }
-upstream backend-%s-im {
-    server 127.0.0.1:%s;
+upstream %s-im {
+    server 127.0.0.1:%s weight=1 fail_timeout=300s;
 }
 server {
     listen 80;
@@ -1018,38 +1107,63 @@ server {
     rewrite ^/.*$ https://$host$request_uri? permanent;
 }
 server {
-  listen 443;
-  server_name %s;
-  # ssl settings
-  ssl on;
-  ssl_certificate     %s;
-  ssl_certificate_key %s;
-  keepalive_timeout 60;
-  # proxy header and settings
-  proxy_set_header Host $host;
-  proxy_set_header X-Real-IP $remote_addr;
-  proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
-  proxy_set_header X-Forwarded-Proto $scheme;
-  proxy_redirect off;
-  # odoo log files
-  access_log %s;
-  error_log  %s;
-  # increase proxy buffer size
-  proxy_buffers 16 64k;
-  proxy_buffer_size 128k;
-   # force timeouts if the backend dies
-  proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
-   # enable data compression
-  gzip on;
-  gzip_min_length 1100;
-  gzip_buffers 4 32k;
-  gzip_types text/plain application/x-javascript text/xml text/css;
-  gzip_vary on;
-  location / {
-    proxy_pass http://backend-%s;
-  }
-  location /longpolling {
-    proxy_pass http://backend-%s-im;
+    listen 443;
+    server_name %s;
+
+    # ssl settings
+    ssl on;
+    ssl_certificate     %s;
+    ssl_certificate_key %s;
+    keepalive_timeout 60;
+
+    # limit ciphers
+    ssl_ciphers            HIGH:!ADH:!MD5;
+    ssl_protocols            SSLv3 TLSv1;
+    ssl_prefer_server_ciphers    on;
+
+    # proxy header and settings
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+
+    # Let the OpenERP web service know that we're using HTTPS, otherwise
+    # it will generate URL using http:// and not https://
+    proxy_set_header X-Forwarded-Proto https;
+
+    # odoo log files
+    access_log %s;
+    error_log  %s;
+
+    # increase proxy buffer size
+    proxy_buffers 16 64k;
+    proxy_buffer_size 128k;
+
+    # force timeouts if the backend dies
+    proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+
+    # enable data compression
+    gzip on;
+    gzip_min_length 1100;
+    gzip_buffers 4 32k;
+    gzip_types text/plain application/x-javascript text/xml text/css;
+    gzip_vary on;
+
+    # cache some static data in memory for 60mins.
+    # under heavy load this should relieve stress on the OpenERP web interface a bit.
+    location ~* /web/static/ {
+        proxy_cache_valid 200 60m;
+        proxy_buffering    on;
+        expires 864000;
+        proxy_pass http://%s;
+    }
+
+    location / {
+        proxy_pass http://%s;
+    }
+
+    location /longpolling {
+        proxy_pass http://%s-im;
     }
 }
 """

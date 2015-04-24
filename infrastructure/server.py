@@ -364,6 +364,7 @@ class server(models.Model):
         env.password = self.password
         env.host_string = self.main_hostname
         env.port = self.ssh_port
+        env.timeout = 4 #by default is 10
         return env
 
     @api.one

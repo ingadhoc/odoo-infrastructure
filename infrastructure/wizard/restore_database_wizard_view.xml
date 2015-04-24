@@ -7,12 +7,13 @@
      <field name="model">infrastructure.restore_database.wizard</field>
      <field name="arch" type="xml">
         <form string="Restore Database">
+            <h1>Rembember to reconfigure catchall on new database</h1>
             <group>
                 <field name="database_backup_id"/>
                 <field name="create_date"/>
                 <!-- TODO todavia no implemetamos mover a otra environment y server-->
-                <field name="server_id" readonly="1" />
-                <field name="environment_id" readonly="1" domain="[('server_id','=',server_id)]"/>
+                <field name="server_id"/>
+                <field name="environment_id" domain="[('server_id','=',server_id)]"/>
                 <field name="instance_id" domain="[('environment_id','=',environment_id)]"/>
                 <field name="database_type_id"/>
                 <field name="new_db_name"/>

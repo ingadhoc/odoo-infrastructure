@@ -72,6 +72,7 @@
                     <button icon="fa-sun-o" type="object" string="Create / Update" class="oe_stat_button" help="Create or update User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" states="draft"/>
                     <button icon="fa-file-text-o" type="object" string="Update Conf" class="oe_stat_button" help="Update Odoo Config File" name="update_conf_file" states="draft"/>
                     <button icon="fa-link" type="object" string="Update Nginx" class="oe_stat_button" help="Update Nginx Configuration" name="update_nginx_site" states="draft"/>
+                    <button icon="fa-repeat" type="action" string="Copy Data From..." class="oe_stat_button" name="%(action_infrastructure_copy_data_from_instance_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="draft,active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
                 </div>
                 <group>
@@ -129,6 +130,7 @@
                         </group>
                     </page>
                     <page string="Commands">
+                        <button name="get_tunnel_to_pg" type="object" string="Tunnel to Posgres"/>
                         <group>
                             <field name="odoo_log_cmd"/>
                             <field name="pg_log_cmd"/>
@@ -140,6 +142,7 @@
                             <field name="kill_odoo_cmd"/>
                             <field name="kill_pg_cmd"/>
                             <field name="update_conf_cmd"/>
+                            <field name="update_all_cmd"/>
                         </group>
                     </page>
                     <page string="Repositories">
@@ -149,9 +152,19 @@
                         <button string="Pull, Clone to Inst. and Checkout all Repositoires"
                             icon="gtk-go-down"
                             type="object"
-                            states="active"
+                            attrs="{'invisible': ['|',('sources_from_id','!=',False),('state','!=','active')]}"
                             name="repositories_pull_clone_and_checkout"/>
-                        <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}"/>
+                        <button string="Pull from instance:"
+                            icon="gtk-go-down"
+                            type="object"
+                            attrs="{'invisible': ['|',('sources_from_id','=',False),('state','!=','active')]}"
+                            name="repositories_pull_clone_and_checkout"/>
+                        <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}" class="oe_inline"/>
+                        <button string="Update all modules and databases"
+                            type="object"
+                            states="active"
+                            confirm="All databases on this instance will be run with -u all. This operation can take some minutes. Do you want to continue?"
+                            name="databases_update_all"/>
                         <field name="instance_repository_ids" context="{'default_server_id': server_id}"/>
                     </page>
                     <page string="Advanced Conf">

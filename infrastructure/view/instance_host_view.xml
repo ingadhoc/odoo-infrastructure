@@ -36,6 +36,7 @@
                 <field name="wildcard"
                     invisible="True"
                     />
+                <field name="prefix"/>
                 <field name="type"/>
                 <field name="name"/>
              </group>
