@@ -216,12 +216,102 @@
     </field>
 </record>
 
+<record id="act_database_server_instances_all" model="ir.actions.act_window">
+            <field name="name">Database</field>
+            <field name="res_model">infrastructure.database</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'search_default_server_id': [active_id],
+                'default_server_id': active_id,
+                'active_test': False,
+            }</field>
+            <field name="search_view_id" ref="view_infrastructure_database_filter"/>
+        </record>
+
+<record id="act_infrastructure_server_instances_all" model="ir.actions.act_window">
+            <field name="name">Instances</field>
+            <field name="res_model">infrastructure.instance</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'search_default_server_id': [active_id],
+                'default_server_id': active_id,
+                'active_test': False,
+            }</field>
+            <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
+        </record>
+
+<record id="act_infrastructure_server_environment_all" model="ir.actions.act_window">
+            <field name="name">Environment</field>
+            <field name="res_model">infrastructure.environment</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{
+                'search_default_server_id': [active_id],
+                'default_server_id': active_id,
+                'active_test': False,
+            }</field>
+            <field name="search_view_id" ref="view_infrastructure_environment_filter"/>
+        </record>
+
+<!-- KANBAN -->
+<record model="ir.ui.view" id="view_server_kanban">
+            <field name="name">infrastructure.server.kanban</field>
+            <field name="model">infrastructure.server</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey" create="0">
+                    <field name="name"/>
+                    <field name="holder_id"/>
+                    <field name="used_by_id"/>
+                    <field name="color"/>
+                    <field name="state"/>
+                    <field name="instance_count"/>
+                    <field name="database_count"/>
+                    <field name="environment_count"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_server oe_kanban_global_click">
+                                <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
+                                    <span class="oe_e">í</span>
+                                    <ul class="oe_dropdown_menu">
+                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Server Settings</a></li></t>
+                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content" style="width: 180px; height: 140px; margin: 0 auto;">
+                                    <h4 class="text-center"><strong><field name="name"/></strong></h4>
+                                    <div class="text-center oe_kanban_alias" t-if="record.name.value and record.name.value">
+                                        <small><i class="fa fa-envelope-o"></i> <field name="name"/></small>
+                                    </div>
+                                    <div class="oe_kanban_environment_list">
+                                        <a name="%(act_infrastructure_server_environment_all)d" type="action" style="margin-right: 10px">
+                                            <t t-raw="record.environment_count.raw_value"/> Environment
+                                        </a>
+                                    </div>
+                                    <div class="oe_kanban_instances_list">
+                                        <a name="%(act_infrastructure_server_instances_all)d" type="action" style="margin-right: 10px">
+                                            <t t-raw="record.instance_count.raw_value"/> Instances
+                                        </a>
+                                    </div>
+                                    <div class="oe_kanban_database_list">
+                                        <a name="%(act_database_server_instances_all)d" type="action" style="margin-right: 10px">
+                                            <t t-raw="record.database_count.raw_value"/> Database
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="oe_clear"></div> 
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
 <record id="action_infrastructure_server_servers" model="ir.actions.act_window">
     <field name="name">Servers</field>
     <field name="res_model">infrastructure.server</field>
     <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
-    <field name="view_id" ref="view_infrastructure_server_tree"/>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="view_id" ref="view_server_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_server_filter"/>
     <field name="domain">[]</field>
 </record>
