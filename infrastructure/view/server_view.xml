@@ -198,6 +198,7 @@
             colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active',); red:state in ()"
             >
             <field name="message_unread" invisible="1"/>
+            <field name="sequence" widget="handle"/>
             <field name="name"/>
             <field name="ip_address"/>
             <field name="holder_id"/>
@@ -246,7 +247,7 @@
         </record>
 
 <!-- KANBAN -->
-<record model="ir.ui.view" id="view_server_kanban">
+        <record model="ir.ui.view" id="view_server_kanban">
             <field name="name">infrastructure.server.kanban</field>
             <field name="model">infrastructure.server</field>
             <field name="arch" type="xml">
@@ -270,28 +271,25 @@
                                         <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
                                     </ul>
                                 </div>
-                                <div class="oe_kanban_content" style="width: 180px; height: 140px; margin: 0 auto;">
+                                <div class="oe_kanban_content" style="width: 150px; height: 100px; margin: 0 auto;">
                                     <h4 class="text-center"><strong><field name="name"/></strong></h4>
-                                    <div class="text-center oe_kanban_alias" t-if="record.name.value and record.name.value">
-                                        <small><i class="fa fa-envelope-o"></i> <field name="name"/></small>
-                                    </div>
                                     <div class="oe_kanban_environment_list">
-                                        <a name="%(act_infrastructure_server_environment_all)d" type="action" style="margin-right: 10px">
+                                        <a name="4334" type="action" style="margin-right: 10px">
                                             <t t-raw="record.environment_count.raw_value"/> Environment
                                         </a>
                                     </div>
                                     <div class="oe_kanban_instances_list">
-                                        <a name="%(act_infrastructure_server_instances_all)d" type="action" style="margin-right: 10px">
+                                        <a name="4333" type="action" style="margin-right: 10px">
                                             <t t-raw="record.instance_count.raw_value"/> Instances
                                         </a>
                                     </div>
                                     <div class="oe_kanban_database_list">
-                                        <a name="%(act_database_server_instances_all)d" type="action" style="margin-right: 10px">
+                                        <a name="4332" type="action" style="margin-right: 10px">
                                             <t t-raw="record.database_count.raw_value"/> Database
                                         </a>
                                     </div>
                                 </div>
-                                <div class="oe_clear"></div> 
+                                <div class="oe_clear"/> 
                             </div>
                         </t>
                     </templates>

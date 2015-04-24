@@ -46,6 +46,7 @@ class server(models.Model):
 
     _name = 'infrastructure.server'
     _description = 'server'
+    _order = 'sequence'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
 
     _states_ = [
@@ -55,6 +56,10 @@ class server(models.Model):
         ('cancel', 'Cancel'),
     ]
 
+    sequence = fields.Integer(
+        'Sequence',
+        default=10,
+        )
     name = fields.Char(
         string='Name',
         required=True,
