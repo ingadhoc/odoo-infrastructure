@@ -46,12 +46,21 @@ class instance(models.Model):
         compute='get_name',
         store=True,
         )
+    sufix = fields.Char(
+        string='Sufix',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
     # TODO ver que por ahora no los usamos porque los tomamos del dominio
     ssl_certificate = fields.Char(
         string='SSL Certificate',
         )
     ssl_certificate_key = fields.Char(
         string='SSL Certificate KEY',
+        )
+    advance_type = fields.Selection(
+        related='database_type_id.type',
+        string='Advance Type'
         )
     type = fields.Selection(
         [(u'secure', u'Secure'), (u'none_secure', u'None Secure')],
@@ -102,6 +111,7 @@ class instance(models.Model):
         'infrastructure.instance_repository',
         'instance_id',
         string='Repositories',
+        copy=True,
         )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
@@ -434,10 +444,14 @@ class instance(models.Model):
     @api.depends(
         'database_type_id.prefix',
         'environment_id.name',
+        'sufix',
         )
     def get_name(self):
-        self.name = "%s-%s" % (
-            self.environment_id.name or '', self.database_type_id.prefix or '')
+        self.name = "%s-%s%s" % (
+            self.environment_id.name or '',
+            self.database_type_id.prefix or '',
+            self.sufix and '_' + self.sufix or '',
+            )
 
     @api.onchange('database_type_id')
     def onchange_database_type_id(self):
@@ -449,6 +463,7 @@ class instance(models.Model):
                 admin_pass = self.name
             self.admin_pass = admin_pass
             self.db_filter = self.database_type_id.db_filter
+            self.service_type = self.database_type_id.service_type
 
     @api.one
     @api.depends('name')
@@ -499,9 +514,9 @@ class instance(models.Model):
         self.database_count = len(self.database_ids)
 
     @api.multi
-    def repositories_pull_clone_and_checkout(self, update=True):
+    def repositories_pull_clone_and_checkout(self):
         self.instance_repository_ids.repository_pull_clone_and_checkout(
-            update=update)
+            update=True)
 
     @api.multi
     def add_repositories(self):
@@ -601,8 +616,9 @@ class instance(models.Model):
         self.xml_rpcs_port = xml_rpcs_port
         self.longpolling_port = longpolling_port
         if self.environment_id.path and self.database_type_id.prefix:
+            path_sufix = self.database_type_id.prefix + (self.sufix and '_' + self.sufix or '')
             base_path = os.path.join(
-                self.environment_id.path, self.database_type_id.prefix)
+                self.environment_id.path, path_sufix)
             conf_path = os.path.join(base_path, 'config')
             pg_data_path = os.path.join(base_path, 'postgresql')
             backups_path = os.path.join(
@@ -643,7 +659,8 @@ class instance(models.Model):
         self.make_paths()
         self.update_nginx_site()
         self.add_repositories()
-        self.repositories_pull_clone_and_checkout(update=False)
+        self.instance_repository_ids.repository_pull_clone_and_checkout(
+            update=False)
         self.start_pg_service()
         self.update_conf_file()
         self.start_odoo_service()
@@ -778,6 +795,59 @@ class instance(models.Model):
         _logger.info("Deleting path and subpath of: %s " % self.base_path)
         self.environment_id.server_id.get_env()
         sudo('rm -r %s' % self.base_path, dont_raise=True)
+
+    @api.multi
+    def duplicate(self, environment, database_type, sufix, number):
+        self.ensure_one()
+        _logger.info('Duplicating Intance')
+        new_instance = self.copy({
+                'environment_id': environment.id,
+                'database_type_id': database_type.id,
+                'sufix': sufix,
+                'number': number,
+                })
+
+        self.server_id.get_env()
+
+        # make paths
+        new_instance.make_paths()
+
+        _logger.info('Coping pg data')
+        fabtools.files.copy(
+            self.pg_data_path, new_instance.pg_data_path,
+            recursive=True, use_sudo=True)
+        sudo('chown .docker -R ' + new_instance.pg_data_path)
+
+        _logger.info('Coping data dir')
+        fabtools.files.copy(
+            self.data_dir, new_instance.data_dir,
+            recursive=True, use_sudo=True)
+        sudo('chmod 777 -R ' + new_instance.data_dir)
+
+        _logger.info('Coping sources')
+        fabtools.files.copy(
+            self.sources_path, new_instance.sources_path,
+            recursive=True, use_sudo=True)
+        sudo('chmod 777 -R ' + new_instance.sources_path)
+
+        _logger.info('Coping config')
+        fabtools.files.copy(
+            self.conf_path, new_instance.conf_path,
+            recursive=True, use_sudo=True)
+        sudo('chmod 777 -R ' + new_instance.conf_path)
+
+        # return new instance view
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_instance_instances')
+        if not action:
+            return False
+        res = action.read()[0]
+        # res['domain'] = [('id', 'in', databases.ids)]
+        form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+            'infrastructure.view_infrastructure_instance_form')
+        res['views'] = [(form_view_id, 'form')]
+        res['res_id'] = new_instance.id
+        return res
 
     @api.one
     def copy_databases_from(self, instance):

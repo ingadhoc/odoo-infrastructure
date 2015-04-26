@@ -35,6 +35,7 @@
             <field name="id" invisible="1"/>
             <field name="name" invisible="1"/>
             <field name="docker_image_ids" invisible="1"/>
+            <field name="advance_type" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
                     states="draft"
@@ -73,11 +74,13 @@
                     <button icon="fa-file-text-o" type="object" string="Update Conf" class="oe_stat_button" help="Update Odoo Config File" name="update_conf_file" states="draft"/>
                     <button icon="fa-link" type="object" string="Update Nginx" class="oe_stat_button" help="Update Nginx Configuration" name="update_nginx_site" states="draft"/>
                     <button icon="fa-repeat" type="action" string="Copy Data From..." class="oe_stat_button" name="%(action_infrastructure_copy_data_from_instance_wizard)d" states="active"/>
+                    <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_instance_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="draft,active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
                 </div>
                 <group>
                     <group>
                         <field name="number"/>
+                        <field name="sufix"/>
                         <label for="admin_pass"/>
                         <div>
                             <field

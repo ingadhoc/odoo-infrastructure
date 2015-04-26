@@ -44,6 +44,12 @@ class instance_repository(models.Model):
         related='repository_id.branch_ids',
         readonly=True
         )
+    actual_commit = fields.Char(
+        string='Actual Commit',
+        readonly=True,
+        # copy=False, # lo desactivamos porque en el unico caso en que se copia
+        # es en el duplicate de instance y queremos que se copie
+        )
 
     _sql_constraints = [
         ('repository_uniq', 'unique(repository_id, instance_id)',
@@ -59,7 +65,13 @@ class instance_repository(models.Model):
             self.branch_id = default_branch_id
 
     @api.one
+    def action_repository_pull_clone_and_checkout(self):
+        return self.repository_pull_clone_and_checkout()
+
+    @api.one
     def repository_pull_clone_and_checkout(self, update=True):
+        if self.actual_commit and not update:
+            return True
         self.instance_id.environment_id.server_id.get_env()
         path = os.path.join(
                 self.instance_id.sources_path,
@@ -85,3 +97,4 @@ class instance_repository(models.Model):
         except Exception, e:
             raise Warning('Error pulling git repository. This is what we get:\
                 \n%s' % e)
+        self.actual_commit = 'TODO' #por ahora lo usamos para chequear que ya se descargo

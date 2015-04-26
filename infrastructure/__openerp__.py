@@ -14,6 +14,7 @@
         'wizard/restore_database_wizard_view.xml',
         'wizard/rename_db_wizard_view.xml',
         'wizard/copy_data_from_instance_view.xml',
+        'wizard/duplicate_instance_wizard_view.xml',
         'security/infrastructure_group.xml',
         'view/infrastructure_menuitem.xml',
         'view/base_module_view.xml',

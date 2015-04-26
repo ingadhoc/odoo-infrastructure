@@ -25,6 +25,13 @@ class database_type(models.Model):
     url_prefix = fields.Char(
         string='URL Prefix'
         )
+    service_type = fields.Selection([
+        ('docker', 'Docker Restart'),
+        # ('upstart', 'Upstart Service'),
+        ('no_service', 'No Service')],
+        default='docker',
+        required=True,
+        )
     type = fields.Selection(
         [('normal', 'Normal'),
          ('protected', 'Protected'),

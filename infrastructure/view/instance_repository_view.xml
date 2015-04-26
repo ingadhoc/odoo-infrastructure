@@ -31,6 +31,7 @@
                 <field name="branch_ids"
                     invisible="True"
                     />
+                <field name="actual_commit"/>
              </group>
             </sheet>
         </form>
@@ -46,10 +47,11 @@
             <field name="repository_id"/>
             <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
             <field name="branch_ids" invisible="1"/>
+            <field name="actual_commit"/>
             <button string="Clone, Pull and Checkout"
                 icon="gtk-go-down"
                 type="object"
-                name="repository_pull_clone_and_checkout"/>
+                name="action_repository_pull_clone_and_checkout"/>
         </tree>
     </field>
 </record>

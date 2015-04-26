@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_duplicate_instance_wizard_view" model="ir.ui.view">
+     <field name="name">Copy Data From Instance</field>
+     <field name="model">infrastructure.duplicate_instance.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Duplicate Instance">
+            <group>
+                <field name="server_id" invisible="0"/>
+                <field name="source_instance_id"/>
+                <field name="environment_id" domain="[('server_id','=',server_id)]"/>
+                <field name="number"/>
+                <field name="database_type_id"/>
+                <field name="sufix" plcaholder="for eg. a date like '12_03_2015' or a number like '1'"/>
+            </group>
+            <footer>
+                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_duplicate_instance_wizard" model="ir.actions.act_window">
+     <field name="name">Duplicate Instance</field>
+     <field name="res_model">infrastructure.duplicate_instance.wizard</field>
+     <field name="type">ir.actions.act_window</field>
+     <field name="view_type">form</field>
+     <field name="view_mode">tree,form</field>
+     <field name="view_id" ref="infrastructure_duplicate_instance_wizard_view"/>
+     <field name="context">{}</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>
