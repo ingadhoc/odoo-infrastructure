@@ -18,8 +18,8 @@ class database_backup(models.Model):
     database_id = fields.Many2one(
         'infrastructure.database',
         string='Database',
-        required=True,
         ondelete='cascade',
+        required=True,
     )
     date = fields.Datetime(
         string='Date',
@@ -147,11 +147,3 @@ class database_backup(models.Model):
         res['res_id'] = new_db.id
         _logger.info('Database restored succesfully!')
         return res
-
-    # @api.multi
-    # def unlink(self):
-    #     backups_path = self.database_id.instance_id.environment_id.backups_path
-    #     self.database_id.server_id.get_env()
-    #     with cd(backups_path):
-    #         sudo('rm -f %s' % self.name)
-    #     return super(database_backup, self).unlink()

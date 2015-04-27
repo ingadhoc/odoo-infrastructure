@@ -69,8 +69,11 @@ class instance_host(models.Model):
         prefix = False
         if self.subdomain:
             prefix = self.subdomain
-        if self.instance_id.database_type_id.url_prefix and prefix:
-            prefix = self.instance_id.database_type_id.url_prefix + '_' + prefix
+        if self.instance_id.database_type_id.url_prefix:
+            if prefix:
+                prefix = self.instance_id.database_type_id.url_prefix + '_' + prefix
+            else:
+                prefix = self.instance_id.database_type_id.url_prefix
         self.prefix = prefix
 
     @api.onchange('server_hostname_id', 'instance_id')

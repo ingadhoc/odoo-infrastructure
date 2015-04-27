@@ -251,7 +251,7 @@
             <field name="name">infrastructure.server.kanban</field>
             <field name="model">infrastructure.server</field>
             <field name="arch" type="xml">
-                <kanban class="oe_background_grey" create="0">
+                <kanban class="oe_background_grey">
                     <field name="name"/>
                     <field name="holder_id"/>
                     <field name="used_by_id"/>
