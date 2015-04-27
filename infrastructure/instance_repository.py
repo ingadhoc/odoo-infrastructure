@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _
-from openerp.exceptions import except_orm, Warning
-from fabric.api import cd
-from .server import custom_sudo as sudo
-from fabric.contrib.files import exists
+from openerp.exceptions import Warning
 import os
-from ast import literal_eval
 from fabtools.require.git import working_copy
-from fabric.api import env
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class instance_repository(models.Model):
@@ -70,6 +67,8 @@ class instance_repository(models.Model):
 
     @api.one
     def repository_pull_clone_and_checkout(self, update=True):
+        _logger.info("Updateing/getting repository %s with update=%b" % (
+            self.repository_id.name, update))
         if self.actual_commit and not update:
             return True
         self.instance_id.environment_id.server_id.get_env()
@@ -95,6 +94,6 @@ class instance_repository(models.Model):
                 user=None
                 )
         except Exception, e:
-            raise Warning('Error pulling git repository. This is what we get:\
-                \n%s' % e)
-        self.actual_commit = 'TODO' #por ahora lo usamos para chequear que ya se descargo
+            raise Warning(_('Error pulling git repository. This is what we get:\
+                \n%s' % e))
+        self.actual_commit = 'TODO'     #por ahora lo usamos para chequear que ya se descargo

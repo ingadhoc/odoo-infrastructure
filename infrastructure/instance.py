@@ -521,6 +521,7 @@ class instance(models.Model):
 
     @api.multi
     def add_repositories(self):
+        _logger.info("Adding Repositories")
         # TODO cambiar cuando hagamos el campo este m2o y no bolean
         if self.default_repositories_id:
             branch_id = self.environment_id.odoo_version_id.default_branch_id.id
@@ -980,10 +981,10 @@ class instance(models.Model):
     @api.one
     def start_odoo_service(self):
         self.environment_id.server_id.get_env()
-        _logger.info("Starting Odoo Service %s " % self.name)
         # Fist stop
         self.stop_odoo_service()
         # Then Start
+        _logger.info("Starting Odoo Service %s " % self.name)
         sudo(self.start_odoo_cmd)
 
     @api.one
@@ -999,10 +1000,10 @@ class instance(models.Model):
     @api.one
     def start_pg_service(self):
         self.environment_id.server_id.get_env()
-        _logger.info("Starting Postgresql Service %s" % self.name)
         # Fist stop
         self.stop_pg_service()
         # Then Start
+        _logger.info("Starting Postgresql Service %s" % self.name)
         sudo(self.start_pg_cmd)
 
     @api.one
