@@ -9,6 +9,7 @@ import os
 import re
 from fabric.api import env
 import logging
+import time
 import fabtools
 _logger = logging.getLogger(__name__)
 
@@ -916,6 +917,9 @@ class instance(models.Model):
             # we run this to deactivate backups
             new_db.signal_workflow('sgn_to_active')
             _logger.info('Renaiming database %s' % new_db.name)
+            # we wait for service start
+            # TODO mejorar esto, chequear que esta levantado en vez del slepp
+            time.sleep(2)
             new_db.rename_db('%s_%s' % (
                 self.database_type_id.prefix, new_db.name))
             new_db.config_backups()
