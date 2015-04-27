@@ -67,7 +67,7 @@ class instance_repository(models.Model):
 
     @api.one
     def repository_pull_clone_and_checkout(self, update=True):
-        _logger.info("Updateing/getting repository %s with update=%b" % (
+        _logger.info("Updateing/getting repository %s with update=%s" % (
             self.repository_id.name, update))
         if self.actual_commit and not update:
             return True
