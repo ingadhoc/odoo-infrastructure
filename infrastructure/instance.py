@@ -686,7 +686,9 @@ class instance(models.Model):
         if self.service_type == 'docker':
             prefix = '--restart=always -d'
         else:
-            prefix = '--rm'
+            # no usamos mas el --rm porque si no queda colgado al levantar
+            # comoservicio
+            prefix = '-d'
 
         # build images names
         odoo_image_name = '%s:%s' % (
