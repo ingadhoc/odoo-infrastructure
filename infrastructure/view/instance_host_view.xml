@@ -9,8 +9,8 @@
     <field name="model">infrastructure.instance_host</field>
     <field name="arch" type="xml">
         <search string="instance_host">
-            <field name="server_hostname_id" string="Server Hostname"/>
-            <field name="subdomain" string="Subdomain"/>
+            <field name="server_hostname_id"/>
+            <field name="subdomain"/>
         </search>
     </field>
 </record>
@@ -25,18 +25,10 @@
             </header>
             <sheet string="instance_host">
              <group>
-                <field name="server_hostname_id"
-                    domain="[('server_id','=',parent.server_id)]"
-                    />
-                <field name="subdomain"
-                    attrs="{'invisible':[('wildcard','!=',True)]}"
-                    />
-                <!-- TODO borrar esto -->
-                <!-- <field name="database_type_id"/> -->
-                <field name="wildcard"
-                    invisible="True"
-                    />
-                <field name="prefix"/>
+                <field name="server_hostname_id" domain="[('server_id','=',parent.server_id)]"/>
+                <field name="subdomain" attrs="{'invisible':[('wildcard','!=',True)]}"/>
+                <field name="wildcard" invisible="True"/>
+                <field name="prefix" attrs="{'invisible':[('wildcard','!=',True)]}"/>
                 <field name="type"/>
                 <field name="name"/>
              </group>

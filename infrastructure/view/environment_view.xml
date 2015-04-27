@@ -119,46 +119,56 @@
         </field>
     </record>
 
-<record model="ir.ui.view" id="view_infrastructure_environment_kanban">
-  <field name="name">infrastructure.environment..kanban</field>
-  <field name="model">infrastructure.environment</field>
-  <field name="arch" type="xml">
-    <kanban>
-      <field name="color"/>
-      <field name="name"/>
-      <field name="partner_id"/>
-      <field name="description"/>
-      <field name="odoo_version_id"/>
-      <templates>
-        <t t-name="kanban-box">
-            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_project oe_kanban_global_click">
-                <div class="oe_dropdown_kanban">
-                  <span class="oe_dropdown_toggle">
-                    <span class="oe_e">í</span>
-                    <ul class="oe_dropdown_menu">
-                      <li><a type="delete">Delete</a></li>
-                      <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
-                    </ul>
-                  </span>
-                </div>
-                <div class="oe_kanban_content">
-                    <h4 class="text-center"><strong><field name="name"/></strong></h4>
-                    <div class="oe_clear"></div>
-                    <field name="odoo_version_id"/>
-                </div>
-            </div>
-        </t>
-      </templates>
-    </kanban>
-  </field>
+<!-- KANBAN -->
+<record model="ir.ui.view" id="view_environment_kanban">
+    <field name="name">infrastructure.environment.kanban</field>
+    <field name="model">infrastructure.environment</field>
+    <field name="arch" type="xml">
+        <kanban class="oe_background_grey">
+            <field name="name"/>
+            <field name="partner_id"/>
+            <field name="color"/>
+            <field name="state"/>
+            <field name="instance_count"/>
+            <field name="database_count"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
+                        <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
+                            <span class="oe_e">í</span>
+                            <ul class="oe_dropdown_menu">
+                                <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Environment Settings</a></li></t>
+                                <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                            </ul>
+                        </div>
+                        <div class="oe_kanban_content" style="width: 150px; height: 70px; margin: 0 auto;">
+                            <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
+                            <div class="oe_kanban_instances_list">
+                                <a name="action_view_instances" type="object" style="margin-right: 10px">
+                                    <t t-raw="record.instance_count.raw_value"/> Instances
+                                </a>
+                            </div>
+                            <div class="oe_kanban_database_list">
+                                <a name="action_view_databases" type="object" style="margin-right: 10px">
+                                    <t t-raw="record.database_count.raw_value"/> Database
+                                </a>
+                            </div>
+                        </div>
+                        <div class="oe_clear"/> 
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
 </record>
 
 <record id="action_infrastructure_environment_environments" model="ir.actions.act_window">
     <field name="name">Environments</field>
     <field name="res_model">infrastructure.environment</field>
     <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
-    <field name="view_id" ref="view_infrastructure_environment_tree"/>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="view_id" ref="view_environment_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_environment_filter"/>
     <field name="domain">[]</field>
 </record>

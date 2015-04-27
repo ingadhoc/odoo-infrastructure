@@ -19,6 +19,7 @@ class instance(models.Model):
 
     _name = 'infrastructure.instance'
     _description = 'instance'
+    _order = 'number'
     _inherit = ['mail.thread', 'ir.needaction_mixin']
     _states_ = [
         ('draft', 'Draft'),
@@ -835,6 +836,21 @@ class instance(models.Model):
             self.conf_path, new_instance.conf_path,
             recursive=True, use_sudo=True)
         sudo('chmod 777 -R ' + new_instance.conf_path)
+
+        # Create new databases
+        _logger.info('Duplicating surce instance database info')
+        for database in self.database_ids:
+            new_db = database.copy({
+                'database_type_id': database_type.id,
+                'instance_id': new_instance.id,
+                })
+            new_db.signal_workflow('sgn_to_active')
+            # TODO ver si hace falta esto o no, el tema es que esa instancia no la terminamos activando
+            # # we run this to deactivate backups
+            # _logger.info('Renaiming database %s' % new_db.name)
+            # new_db.rename_db('%s_%s' % (
+            #     self.database_type_id.prefix, new_db.name))
+            # new_db.config_backups()
 
         # return new instance view
         action = self.env['ir.model.data'].xmlid_to_object(

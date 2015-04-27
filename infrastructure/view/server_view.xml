@@ -234,7 +234,7 @@
             <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
         </record>
 
-<record id="act_infrastructure_server_environment_all" model="ir.actions.act_window">
+        <record id="act_infrastructure_server_environment_all" model="ir.actions.act_window">
             <field name="name">Environment</field>
             <field name="res_model">infrastructure.environment</field>
             <field name="view_mode">tree,form</field>
@@ -246,7 +246,7 @@
             <field name="search_view_id" ref="view_infrastructure_environment_filter"/>
         </record>
 
-<!-- KANBAN -->
+        <!-- KANBAN -->
         <record model="ir.ui.view" id="view_server_kanban">
             <field name="name">infrastructure.server.kanban</field>
             <field name="model">infrastructure.server</field>
@@ -262,7 +262,7 @@
                     <field name="environment_count"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_server oe_kanban_global_click">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
                                 <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
                                     <span class="oe_e">í</span>
                                     <ul class="oe_dropdown_menu">
@@ -272,19 +272,19 @@
                                     </ul>
                                 </div>
                                 <div class="oe_kanban_content" style="width: 150px; height: 100px; margin: 0 auto;">
-                                    <h4 class="text-center"><strong><field name="name"/></strong></h4>
+                                    <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
                                     <div class="oe_kanban_environment_list">
-                                        <a name="4334" type="action" style="margin-right: 10px">
+                                        <a name="action_view_environments" type="object" style="margin-right: 10px">
                                             <t t-raw="record.environment_count.raw_value"/> Environment
                                         </a>
                                     </div>
                                     <div class="oe_kanban_instances_list">
-                                        <a name="4333" type="action" style="margin-right: 10px">
+                                        <a name="action_view_instances" type="object" style="margin-right: 10px">
                                             <t t-raw="record.instance_count.raw_value"/> Instances
                                         </a>
                                     </div>
                                     <div class="oe_kanban_database_list">
-                                        <a name="4332" type="action" style="margin-right: 10px">
+                                        <a name="action_view_databases" type="object" style="margin-right: 10px">
                                             <t t-raw="record.database_count.raw_value"/> Database
                                         </a>
                                     </div>

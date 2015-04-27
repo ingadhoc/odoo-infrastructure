@@ -127,8 +127,6 @@
                         <group>
                             <field name="addons_path"/>
                             <field name="type"/>
-                            <!-- <field name="ssl_certificate" attrs="{'invisible':[('type','!=','secure')],'required':[('type','=','secure')]}"/> -->
-                            <!-- <field name="ssl_certificate_key" attrs="{'invisible':[('type','!=','secure')],'required':[('type','=','secure')]}"/> -->
                             <field name="instance_host_ids"/>
                         </group>
                     </page>
@@ -232,12 +230,51 @@
     </field>
 </record>
 
+<!-- KANBAN -->
+<record model="ir.ui.view" id="view_instance_kanban">
+    <field name="name">infrastructure.instance.kanban</field>
+    <field name="model">infrastructure.instance</field>
+    <field name="arch" type="xml">
+        <kanban class="oe_background_grey">
+            <field name="name"/>
+            <field name="main_hostname"/>
+            <field name="color"/>
+            <field name="state"/>
+            <field name="database_count"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
+                        <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
+                            <span class="oe_e">í</span>
+                            <ul class="oe_dropdown_menu">
+                                <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Environment Settings</a></li></t>
+                                <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
+                                <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                            </ul>
+                        </div>
+                        <div class="oe_kanban_content" style="width: 150px; height: 80px; margin: 0 auto;">
+                            <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
+                            <a  t-att-href="record.main_hostname.value" target="_blank"><field name="main_hostname"/></a>
+                            <div class="oe_kanban_database_list">
+                                <a name="action_view_databases" type="object" style="margin-right: 10px">
+                                    <t t-raw="record.database_count.raw_value"/> Database
+                                </a>
+                            </div>
+                        </div>
+                        <div class="oe_clear"/> 
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
 <record id="action_infrastructure_instance_instances" model="ir.actions.act_window">
     <field name="name">Instances</field>
     <field name="res_model">infrastructure.instance</field>
     <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
-    <field name="view_id" ref="view_infrastructure_instance_tree"/>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="view_id" ref="view_instance_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
     <field name="domain">[]</field>
 </record>

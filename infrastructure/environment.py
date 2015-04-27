@@ -13,6 +13,7 @@ class environment(models.Model):
     """"""
     _name = 'infrastructure.environment'
     _description = 'environment'
+    _order = 'number'
     _inherit = ['ir.needaction_mixin', 'mail.thread']
 
     _states_ = [

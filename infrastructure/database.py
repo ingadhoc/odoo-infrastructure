@@ -54,6 +54,9 @@ class database(models.Model):
         states={'draft': [('readonly', False)]},
         track_visibility='onchange'
         )
+    color = fields.Integer(
+        string='Color Index'
+        )
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
