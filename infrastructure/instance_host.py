@@ -60,7 +60,7 @@ class instance_host(models.Model):
     @api.depends('prefix', 'server_hostname_id.name')
     def get_name(self):
         name = self.server_hostname_id.name
-        if self.prefix and name:
+        if self.prefix and name and self.server_hostname_id.wildcard:
             name = self.prefix + '.' + name
         self.name = name
 

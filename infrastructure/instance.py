@@ -385,6 +385,10 @@ class instance(models.Model):
         string='Kill and Stop Postgres',
         compute='get_commands',
         )
+    odoo_version = fields.Char(
+        string='Odoo Version',
+        compute='get_odoo_version',
+        )
 
     _sql_constraints = [
         ('xml_rpc_port_uniq', 'unique(xml_rpc_port, server_id)',
@@ -406,6 +410,11 @@ class instance(models.Model):
         ('name_uniq', 'unique(name, environment_id)',
             'Name must be unique per environment!'),
     ]
+
+    @api.one
+    @api.depends('environment_id.odoo_version_id.name')
+    def get_odoo_version(self):
+        self.odoo_version = self.environment_id.odoo_version_id.name
 
     @api.one
     @api.depends('database_type_id')
@@ -714,7 +723,11 @@ class instance(models.Model):
             odoo_port_links, odoo_volume_links, odoo_pg_link,
             self.odoo_container, odoo_image_name, '/bin/bash')
 
-        self.start_attached_odoo_cmd = 'runuser -u odoo openerp-server -- -c /etc/odoo/openerp-server.conf --logfile=False'
+        user = 'odoo'
+        if self.odoo_version in ('7.0'):
+            user = 'openerp'
+
+        self.start_attached_odoo_cmd = 'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf --logfile=False' % user
 
         # odoo command for update conf
         self.update_conf_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
@@ -776,7 +789,9 @@ class instance(models.Model):
         command += ' --limit-time-cpu=' + str(self.limit_time_cpu)
         command += ' --db_maxconn=' + str(self.db_maxconn)
         command += ' --without-demo=' + str(self.without_demo)
-        command += ' --data-dir=/var/lib/odoo/'
+        # TODO only v8
+        if self.odoo_version not in ('7.0'):
+            command += ' --data-dir=/var/lib/odoo/'
         command += ' --workers=' + str(self.workers)
         # TODO ver si lo agregamos
         # command += ' --no-xmlrpcs'
@@ -790,7 +805,8 @@ class instance(models.Model):
         if self.proxy_mode:
             command += ' --proxy-mode'
 
-        if self.logrotate:
+        # TODO only v8
+        if self.logrotate and self.odoo_version not in ('7.0'):
             command += ' --logrotate'
 
         return command
