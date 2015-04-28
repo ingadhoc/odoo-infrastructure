@@ -603,7 +603,7 @@ class instance(models.Model):
 
     @api.onchange('pg_image_id')
     def _onchange_pg_image(self):
-        self.pg_image_tag_id = self.pg_image_id.tag_ids
+        self.pg_image_tag_id = self.pg_image_id.tag_ids and self.pg_image_id.tag_ids[0] or False
 
     @api.one
     @api.depends('name', 'number', 'environment_id')
