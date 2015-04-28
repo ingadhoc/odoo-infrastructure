@@ -552,7 +552,7 @@ class instance(models.Model):
             x.repository_id.addons_path for x in self.instance_repository_ids if x.repository_id.addons_path]
         self.addons_path = ','.join(addons_paths)
 
-    @api.onchange('environment_id', 'database_type_id')
+    @api.onchange('environment_id')
     def _onchange_environment(self):
         # Get same env instances for database type and instance number
         instances = self.search(
@@ -952,6 +952,7 @@ class instance(models.Model):
             _logger.info(("Creating path '%s'") % (path))
             sudo('mkdir -m 777 -p ' + path)
 
+    @api.one
     def update_conf_file(self):
     # TODO implementar force no workers
     # def update_conf_file(self, force_no_workers=False):

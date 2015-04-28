@@ -140,8 +140,7 @@ class database(models.Model):
         )
     main_hostname = fields.Char(
         string='Main Hostname',
-        related='instance_id.main_hostname',
-        readonly=True,
+        compute='get_main_hostname',
         )
     backup_ids = fields.One2many(
         'infrastructure.database.backup',
@@ -226,6 +225,20 @@ class database(models.Model):
         if instance.main_hostname_id:
             self.alias_hostname_id = instance.main_hostname_id.server_hostname_id
             self.alias_prefix = instance.main_hostname_id.prefix
+
+    @api.one
+    @api.depends(
+        'instance_id.main_hostname',
+        'instance_id.db_filter.add_bd_name_to_host'
+         )
+    def get_main_hostname(self):
+        main_hostname = self.instance_id.main_hostname
+        if self.instance_id.db_filter.add_bd_name_to_host:
+            main_hostname = "%s.%s" % (
+                self.name,
+                self.instance_id.main_hostname_id.name
+                )
+        self.main_hostname = main_hostname
 
     @api.one
     @api.depends('module_ids')

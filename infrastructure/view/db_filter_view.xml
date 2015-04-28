@@ -9,12 +9,8 @@
     <field name="model">infrastructure.db_filter</field>
     <field name="arch" type="xml">
         <search string="db_filter">
-            <group string="By Attribute">
-                <field name="name" string="Name"/>
-                <field name="rule" string="Rule"/>
-            </group>
-            <group string="By Object">
-            </group>
+            <field name="name"/>
+            <field name="rule"/>
         </search>
     </field>
 </record>
@@ -31,6 +27,7 @@
              <group>
                 <field name="name"/>
                 <field name="rule"/>
+                <field name="add_bd_name_to_host"/>
              </group>
             </sheet>
         </form>
@@ -45,6 +42,7 @@
         <tree string="db_filter">
             <field name="name"/>
             <field name="rule"/>
+            <field name="add_bd_name_to_host"/>
         </tree>
     </field>
 </record>
