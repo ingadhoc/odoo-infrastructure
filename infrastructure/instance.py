@@ -742,7 +742,7 @@ class instance(models.Model):
             '--rm -ti', self.odoo_image_id.prefix or '',
             odoo_port_links, odoo_volume_links, odoo_pg_link,
             self.odoo_container, odoo_image_name,
-            odoo_sufix + ' --stop-after-init --logfile=False --workers=0 -u all')
+            odoo_sufix + ' --stop-after-init --workers=0 -u all')
 
         # pg start command
         self.start_pg_cmd = 'docker run %s %s %s --name %s %s' % (
