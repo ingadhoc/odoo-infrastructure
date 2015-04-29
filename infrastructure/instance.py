@@ -710,8 +710,6 @@ class instance(models.Model):
         # build sufix
         odoo_sufix = self.odoo_sufix and ' %s' % self.odoo_sufix or ''
         odoo_sufix += self.module_load and ' --load=%s' % self.module_load or ''
-        if self.module_load:
-            odoo_sufix += ' --load=' + self.module_load
 
         # odoo start commands
         self.start_odoo_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
@@ -728,7 +726,8 @@ class instance(models.Model):
         if self.odoo_version in ('7.0'):
             user = 'openerp'
 
-        self.start_attached_odoo_cmd = 'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf --logfile=False' % user
+        self.start_attached_odoo_cmd = 'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf --logfile=False %s' % (
+            user, odoo_sufix)
 
         # odoo command for update conf
         self.update_conf_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
