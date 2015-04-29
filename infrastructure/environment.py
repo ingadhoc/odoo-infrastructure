@@ -71,7 +71,8 @@ class environment(models.Model):
         string='Note'
         )
     color = fields.Integer(
-        string='Color Index'
+        string='Color Index',
+        compute='get_color',
         )
     state = fields.Selection(
         _states_,
@@ -111,6 +112,16 @@ class environment(models.Model):
         string='# Databases',
         compute='_get_databases'
         )
+
+    @api.one
+    @api.depends('state')
+    def get_color(self):
+        color = 4
+        if self.state == 'draft':
+            color = 7
+        elif self.state == 'cancel':
+            color = 1
+        self.color = color
 
     @api.one
     @api.depends('database_ids')

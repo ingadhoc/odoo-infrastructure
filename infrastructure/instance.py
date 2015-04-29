@@ -107,7 +107,8 @@ class instance(models.Model):
         string='Note'
         )
     color = fields.Integer(
-        string='Color Index'
+        string='Color Index',
+        compute='get_color',
         )
     instance_repository_ids = fields.One2many(
         'infrastructure.instance_repository',
@@ -411,6 +412,16 @@ class instance(models.Model):
         ('name_uniq', 'unique(name, environment_id)',
             'Name must be unique per environment!'),
     ]
+
+    @api.one
+    @api.depends('state')
+    def get_color(self):
+        color = 4
+        if self.state == 'draft':
+            color = 7
+        elif self.state == 'cancel':
+            color = 1
+        self.color = color
 
     @api.one
     @api.depends('environment_id.odoo_version_id.name')

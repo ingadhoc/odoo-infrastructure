@@ -199,6 +199,7 @@ class server(models.Model):
         )
     color = fields.Integer(
         string='Color Index',
+        compute='get_color',
         )
     instance_user_group = fields.Char(
         string='Instance Users Group',
@@ -345,6 +346,18 @@ class server(models.Model):
             raise Warning(_(
                 'You cannot delete a server which is not draft or cancelled.'))
         return super(server, self).unlink()
+
+    @api.one
+    @api.depends('state')
+    def get_color(self):
+        color = 4
+        if self.state == 'draft':
+            color = 7
+        elif self.state == 'cancel':
+            color = 1
+        elif self.state == 'to_install':
+            color = 3
+        self.color = color
 
     @api.one
     @api.depends('environment_ids')

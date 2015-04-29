@@ -55,7 +55,8 @@ class database(models.Model):
         track_visibility='onchange'
         )
     color = fields.Integer(
-        string='Color Index'
+        string='Color Index',
+        compute='get_color',
         )
     partner_id = fields.Many2one(
         'res.partner',
@@ -216,6 +217,16 @@ class database(models.Model):
         'Catchall Enable',
         copy=False,
         )
+
+    @api.one
+    @api.depends('state')
+    def get_color(self):
+        color = 4
+        if self.state == 'draft':
+            color = 7
+        elif self.state == 'cancel':
+            color = 1
+        self.color = color
 
     @api.onchange('instance_id')
     def _onchange_instance(self):

@@ -263,14 +263,6 @@
                     <templates>
                         <t t-name="kanban-box">
                             <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
-                                <div class="oe_dropdown_toggle oe_dropdown_kanban" groups="base.group_user">
-                                    <span class="oe_e">í</span>
-                                    <ul class="oe_dropdown_menu">
-                                        <t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Server Settings</a></li></t>
-                                        <t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>
-                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
-                                    </ul>
-                                </div>
                                 <div class="oe_kanban_content" style="width: 150px; height: 100px; margin: 0 auto;">
                                     <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
                                     <div class="oe_kanban_environment_list">
