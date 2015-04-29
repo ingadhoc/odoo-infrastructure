@@ -347,7 +347,8 @@ class instance(models.Model):
         string='Update All',
         compute='get_commands',
         help='If you use this command on terminal you should add\
-        -d [database_name] to get it works'
+        -d [database_name] to get it works. You can also add "--logfile=False"\
+        if you run it on the terminal to see the log'
         )
     odoo_log_cmd = fields.Char(
         string='Odoo Log',
