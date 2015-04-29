@@ -114,6 +114,7 @@ class database_backup(models.Model):
                 verify=False, #TODO fix this, we disable verify because an error we have with certificates
                 # aca se explica ele error http://docs.python-requests.org/en/latest/community/faq/#what-are-hostname-doesn-t-match-errors
                 ).json()
+            _logger.info('Restored complete, result: %s' % response)
             if response['result'].get('error', False):
                 raise Warning(_(
                     'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
