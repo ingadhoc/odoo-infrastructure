@@ -1166,6 +1166,7 @@ class instance(models.Model):
         '''
         This function returns an action that display a form or tree view
         '''
+        self.ensure_one()
         databases = self.database_ids.search(
             [('instance_id', 'in', self.ids)])
         action = self.env['ir.model.data'].xmlid_to_object(
@@ -1174,9 +1175,11 @@ class instance(models.Model):
         if not action:
             return False
         res = action.read()[0]
-        res['domain'] = [('id', 'in', databases.ids)]
         if len(self) == 1:
-            res['context'] = {'default_instance_id': self.id}
+            res['context'] = {
+                'default_instance_id': self.id,
+                'search_default_instance_id': self.id,
+                }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_database_form')

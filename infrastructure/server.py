@@ -609,6 +609,7 @@ class server(models.Model):
         '''
         This function returns an action that display a form or tree view
         '''
+        self.ensure_one()
         environments = self.environment_ids.search(
             [('server_id', 'in', self.ids)])
         action = self.env['ir.model.data'].xmlid_to_object(
@@ -617,9 +618,11 @@ class server(models.Model):
         if not action:
             return False
         res = action.read()[0]
-        res['domain'] = [('id', 'in', environments.ids)]
         if len(self) == 1:
-            res['context'] = {'default_server_id': self.id}
+            res['context'] = {
+                'default_server_id': self.id,
+                'search_default_server_id': self.id
+                }
         if not len(environments.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_environment_form')
@@ -633,6 +636,7 @@ class server(models.Model):
         '''
         This function returns an action that display a form or tree view
         '''
+        self.ensure_one()
         instances = self.instance_ids.search(
             [('server_id', 'in', self.ids)])
         action = self.env['ir.model.data'].xmlid_to_object(
@@ -641,9 +645,11 @@ class server(models.Model):
         if not action:
             return False
         res = action.read()[0]
-        res['domain'] = [('id', 'in', instances.ids)]
         if len(self) == 1:
-            res['context'] = {'default_server_id': self.id}
+            res['context'] = {
+                'default_server_id': self.id,
+                'search_default_server_id': self.id            
+            }
         if not len(instances.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_instance_form')
@@ -657,6 +663,7 @@ class server(models.Model):
         '''
         This function returns an action that display a form or tree view
         '''
+        self.ensure_one()
         databases = self.database_ids.search(
             [('server_id', 'in', self.ids)])
         action = self.env['ir.model.data'].xmlid_to_object(
@@ -665,9 +672,11 @@ class server(models.Model):
         if not action:
             return False
         res = action.read()[0]
-        res['domain'] = [('id', 'in', databases.ids)]
         if len(self) == 1:
-            res['context'] = {'default_server_id': self.id}
+            res['context'] = {
+                'default_server_id': self.id,
+                'search_default_server_id': self.id
+            }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_database_form')
