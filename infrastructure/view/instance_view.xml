@@ -110,14 +110,16 @@
                         <label for="odoo_container"/>
                         <div>
                             <field name="odoo_container" class="oe_inline"/>
-                            <button name="start_odoo_service" string="⇒ Start/Restart" type="object" class="oe_link"/>
-                            <button name="stop_odoo_service" string="⇒ Stop/Remove" type="object" class="oe_link"/>
+                            <button name="start_odoo_service" string="Start" help="Fisrt stop (and remove) then run start command" type="object" class="oe_link"/>
+                            <button name="restart_odoo_service" string="Restart" help="Run docker restart" type="object" class="oe_link"/>
+                            <button name="stop_odoo_service" string="Stop/Remove" help="Stop and Remove docker Container" type="object" class="oe_link"/>
                         </div>
                         <label for="pg_container"/>
                         <div>
                             <field name="pg_container" class="oe_inline"/>
-                            <button name="start_pg_service" string="⇒ Start/Restart" type="object" class="oe_link"/>
-                            <button name="stop_pg_service" string="⇒ Stop/Remove" type="object" class="oe_link"/>
+                            <button name="start_pg_service" string="Start" help="Fisrt stop (and remove) then run start command" type="object" class="oe_link"/>
+                            <button name="restart_pg_service" string="Restart" help="Run docker restart" type="object" class="oe_link"/>
+                            <button name="stop_pg_service" string="Stop/Remove" help="Stop and Remove docker Container" type="object" class="oe_link"/>
                         </div>
                         <field name="service_type"/>
                     </group>
@@ -131,19 +133,26 @@
                         </group>
                     </page>
                     <page string="Commands">
-                        <button name="get_tunnel_to_pg" type="object" string="Tunnel to Posgres"/>
-                        <group>
+                        <group string="Odoo">
                             <field name="odoo_log_cmd"/>
-                            <field name="pg_log_cmd"/>
                             <field name="odoo_sufix"/>
+                            <field name="restart_odoo_cmd"/>
                             <field name="start_odoo_cmd"/>
-                            <field name="start_pg_cmd"/>
                             <field name="start_attach_odoo_cmd"/>
                             <field name="start_attached_odoo_cmd"/>
+                            <field name="stop_odoo_cmd"/>
                             <field name="kill_odoo_cmd"/>
-                            <field name="kill_pg_cmd"/>
                             <field name="update_conf_cmd"/>
                             <field name="update_all_cmd"/>
+                        </group>
+                        <group string="Postgres">
+                            <button name="get_tunnel_to_pg" type="object" string="Tunnel to Posgres"/>
+                            <newline/>
+                            <field name="pg_log_cmd"/>
+                            <field name="restart_pg_cmd"/>
+                            <field name="start_pg_cmd"/>
+                            <field name="stop_pg_cmd"/>
+                            <field name="kill_pg_cmd"/>
                         </group>
                     </page>
                     <page string="Repositories">

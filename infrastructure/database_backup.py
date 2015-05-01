@@ -78,6 +78,11 @@ class database_backup(models.Model):
             self, instance, new_database_name,
             backups_enable, database_type):
         self.ensure_one()
+        # TODO podriamos nosotors cambiar workers a 0
+        if instance.workers != 0:
+            raise Warning(_('You can not restore a database to a instance with\
+                workers, you should first set them to 0, reconfig and try\
+                again. After saccesfull restore you can reactivate workers'))
         # TODO ver si hacemos un overwrite si hay que borrarla antes
         source_server = self.database_id.server_id
         target_server = instance.server_id

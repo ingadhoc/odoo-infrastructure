@@ -12,6 +12,8 @@ from openerp.exceptions import Warning
 from ast import literal_eval
 import os
 import base64
+import requests
+import simplejson
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -479,26 +481,6 @@ class database(models.Model):
         if self.backups_enable:
             self.config_backups()
 
-
-# TODO borrar esta funcion que va en database backup
-    # @api.one
-    # def restore_db(self):
-    #     """Funcion que utiliza ws nativos de odoo para hacer update de bd"""
-    #     raise Warning(_('Not Implemented yet'))
-    #     # TODO implementar
-    #     sock = self.get_sock()
-    #     f = file('/home/chosco/back/backup.dump', 'r')
-    #     data_b64 = base64.encodestring(f.read())
-    #     f.close()
-    #     try:
-    #         return sock.restore(
-    #             self.instance_id.admin_pass, self.name, data_b64)
-    #     except:
-    #         raise Warning(
-    #             _('Unable to migrate Database. If you are working in an \
-    #                 instance with "workers" then you can try \
-    #                 restarting service.'))
-
     @api.one
     def exist_db(self, database_name):
         """Funcion que utiliza ws nativos de odoo"""
@@ -507,6 +489,69 @@ class database(models.Model):
             return True
         else:
             return False
+
+    @api.multi
+    def restore(self, file_path, file_name):
+        self.ensure_one()
+        # TODO podriamos nosotors cambiar workers a 0
+        instance = self.instance_id
+        new_database_name = self.name
+        backups_enable = self.backups_enable
+        if instance.workers != 0:
+            raise Warning(_('You can not restore a database to a instance with\
+                workers, you should first set them to 0, reconfig and try\
+                again. After saccesfull restore you can reactivate workers'))
+        # TODO ver si hacemos un overwrite si hay que borrarla antes
+        # source_server = self.database_id.server_id
+        # target_server = instance.server_id
+        # remote_server = False
+        # if source_server != target_server:
+        #     # We use get in target server because using scp is difficult (passing password)
+        #     # and also can not use put on source server
+        #     remote_server = {
+        #         'user_name': source_server.user_name,
+        #         'password': source_server.password,
+        #         'host_string': source_server.main_hostname,
+        #         'port': source_server.ssh_port,
+        #     }
+        try:
+            url = "%s/%s" % (instance.main_hostname, 'restore_db')
+            headers = {'content-type': 'application/json'}
+            data = {
+                "jsonrpc": "2.0",
+                "method": "call",
+                "params": {
+                    'admin_pass': instance.admin_pass,
+                    'db_name': new_database_name,
+                    'file_path': file_path,
+                    'file_name': file_name,
+                    'backups_state': backups_enable,
+                    # 'remote_server': remote_server,
+                    },
+            }
+            _logger.info('Restoring backup %s, you can also watch target instance log' % new_database_name)
+            response = requests.post(
+                url,
+                data=simplejson.dumps(data),
+                headers=headers,
+                verify=False, #TODO fix this, we disable verify because an error we have with certificates
+                # aca se explica ele error http://docs.python-requests.org/en/latest/community/faq/#what-are-hostname-doesn-t-match-errors
+                ).json()
+            _logger.info('Restored complete, result: %s' % response)
+            if response['result'].get('error', False):
+                raise Warning(_(
+                    'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
+                    new_database_name, response['result'].get('error')))
+            _logger.info('Back Up %s Restored Succesfully' % new_database_name)
+        except Exception, e:
+            raise Warning(_(
+                'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
+                new_database_name, e))
+        _logger.info('Creating new database data on infra')
+        self.signal_workflow('sgn_to_active')
+        if backups_enable:
+            self.config_backups()
+        return True
 
     @api.multi
     def duplicate_db(self, new_database_name, backups_enable, database_type):

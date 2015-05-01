@@ -380,11 +380,27 @@ class instance(models.Model):
         compute='get_commands',
         )
     kill_odoo_cmd = fields.Char(
-        string='Kill and Stop Odoo',
+        string='Remove Odoo Container',
+        compute='get_commands',
+        )
+    restart_odoo_cmd = fields.Char(
+        string='Restart Odoo',
+        compute='get_commands',
+        )
+    restart_pg_cmd = fields.Char(
+        string='Restart Postgres',
+        compute='get_commands',
+        )
+    stop_odoo_cmd = fields.Char(
+        string='Stop Odoo',
+        compute='get_commands',
+        )
+    stop_pg_cmd = fields.Char(
+        string='Stop Postgres',
         compute='get_commands',
         )
     kill_pg_cmd = fields.Char(
-        string='Kill and Stop Postgres',
+        string='Remove Postgres Container',
         compute='get_commands',
         )
     odoo_version = fields.Char(
@@ -763,6 +779,14 @@ class instance(models.Model):
         self.kill_odoo_cmd = 'docker rm -f %s' % self.odoo_container
         self.kill_pg_cmd = 'docker rm -f %s' % self.pg_container
 
+        # stop commands
+        self.stop_odoo_cmd = 'docker stop %s' % self.odoo_container
+        self.stop_pg_cmd = 'docker stop %s' % self.pg_container
+
+        # restart commands
+        self.restart_odoo_cmd = 'docker restart %s' % self.odoo_container
+        self.restart_pg_cmd = 'docker restart %s' % self.pg_container
+
         # Logs
         self.odoo_log_cmd = 'tail -f %s' % self.logfile
         self.pg_log_cmd = 'docker logs -f %s' % self.pg_container
@@ -1022,13 +1046,24 @@ class instance(models.Model):
         sudo(self.start_odoo_cmd)
 
     @api.one
+    def restart_odoo_service(self):
+        self.environment_id.server_id.get_env()
+        _logger.info("Restarting Odoo Service %s " % self.name)
+        sudo(self.restart_odoo_cmd)
+
+    @api.one
     def stop_odoo_service(self):
         self.environment_id.server_id.get_env()
         _logger.info("Stopping Odoo Service %s " % self.name)
         try:
+            sudo(self.stop_odoo_cmd)
+        except:
+            _logger.warning(("Could stop container '%s'") % (
+                self.stop_odoo_cmd))
+        try:
             sudo(self.kill_odoo_cmd)
         except:
-            _logger.warning(("Could remove remove container '%s'") % (
+            _logger.warning(("Could remove container '%s'") % (
                 self.kill_odoo_cmd))
 
     @api.one
@@ -1041,13 +1076,24 @@ class instance(models.Model):
         sudo(self.start_pg_cmd)
 
     @api.one
+    def restart_pg_service(self):
+        self.environment_id.server_id.get_env()
+        _logger.info("Restarting Postgresql Service %s" % self.name)
+        sudo(self.restart_pg_cmd)
+
+    @api.one
     def stop_pg_service(self):
         self.environment_id.server_id.get_env()
         _logger.info("Stopping Postgresql Service %s " % self.name)
         try:
+            sudo(self.stop_pg_cmd)
+        except:
+            _logger.warning(("Could stop container '%s'") % (
+                self.stop_pg_cmd))
+        try:
             sudo(self.kill_pg_cmd)
         except:
-            _logger.warning(("Could remove remove container '%s'") % (
+            _logger.warning(("Could remove container '%s'") % (
                 self.kill_pg_cmd))
 
     @api.one
