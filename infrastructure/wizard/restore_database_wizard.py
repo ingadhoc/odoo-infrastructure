@@ -37,14 +37,14 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         string='Environment',
         required=True,
         readonly=False,
-        ondelte='cascade',  #no deberia hacer falta porque es un transiente model pero algunas veces no lo borra
+        ondelete='cascade',  #no deberia hacer falta porque es un transiente model pero algunas veces no lo borra
     )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
         required=True,
         readonly=False,
-        ondelte='cascade',  #no deberia hacer falta porque es un transiente model pero algunas veces no lo borra
+        ondelete='cascade',  #no deberia hacer falta porque es un transiente model pero algunas veces no lo borra
     )
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
