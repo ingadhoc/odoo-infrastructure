@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from openerp import fields, api, models, _
+from openerp.exceptions import Warning
 from fabric.contrib.files import exists
 import os
 
@@ -25,6 +26,7 @@ class infrastructure_restore_from_file_wizard(models.TransientModel):
         string='Database',
         default=_get_database,
         readonly=True,
+        ondelete='cascade',
         required=True,
     )
 
