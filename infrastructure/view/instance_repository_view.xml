@@ -48,6 +48,7 @@
             <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
             <field name="branch_ids" invisible="1"/>
             <field name="actual_commit"/>
+            <field name="sources_from_id" invisible="1"/>
             <button string="Clone, Pull and Checkout"
                 icon="gtk-go-down"
                 type="object"
@@ -55,6 +56,7 @@
             <button string="Pull Source and Active Repository"
                 icon="gtk-goto-bottom"
                 type="object"
+                attrs="{'invisible':[('sources_from_id','=',False)]}"
                 confirm="Are you sure you want to force an update of source repository and actual repository?"
                 name="action_pull_source_and_active"/>
         </tree>

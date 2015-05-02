@@ -19,6 +19,11 @@ class instance_repository(models.Model):
         string='Repository',
         required=True
         )
+    sources_from_id = fields.Many2one(
+        'infrastructure.instance',
+        related='instance_id.sources_from_id',
+        string='Source Instance',
+        )
     branch_id = fields.Many2one(
         'infrastructure.repository_branch',
         string='Specific Branch',
@@ -70,14 +75,14 @@ class instance_repository(models.Model):
         """This method is used from instance that clone repositories from other
         instance, with this method, first source repository is pulled, then
         active one."""
-        if not self.instance_id.sources_from_id:
+        if not self.sources_from_id:
             raise Warning(_('this method must be call from a repository that\
                 belongs to an instance with Other Instance Repositories'))
         _logger.info("Searching source repository for repo %s and instance %s" % (
             self.repository_id.name, self.instance_id.name))
         source_repository = self.search([
             ('repository_id', '=', self.repository_id.id),
-            ('instance_id', '=', self.instance_id.sources_from_id.id),
+            ('instance_id', '=', self.sources_from_id.id),
             ], limit=1)
         if not source_repository:
             raise Warning(_('Source repository not found'))
