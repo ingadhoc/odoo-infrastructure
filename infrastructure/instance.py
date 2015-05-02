@@ -688,6 +688,7 @@ class instance(models.Model):
         if self.database_ids:
             raise Warning(_(
                 'You can not delete an instance that has databases'))
+        self.instance_repository_ids.write({'actual_commit': False})
         self.stop_odoo_service()
         self.stop_pg_service()
         self.delete_nginx_site()
