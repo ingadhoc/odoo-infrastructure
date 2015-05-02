@@ -16,6 +16,7 @@ class infrastructure_restore_from_file_wizard(models.TransientModel):
     file_path = fields.Char(
         string='File Path',
         required=True,
+        default='/opt/odoo/backups/tmp/',
     )
     file_name = fields.Char(
         string='File Name',

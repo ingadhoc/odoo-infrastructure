@@ -52,6 +52,11 @@
                 icon="gtk-go-down"
                 type="object"
                 name="action_repository_pull_clone_and_checkout"/>
+            <button string="Pull Source and Active Repository"
+                icon="gtk-goto-bottom"
+                type="object"
+                confirm="Are you sure you want to force an update of source repository and actual repository?"
+                name="action_pull_source_and_active"/>
         </tree>
     </field>
 </record>

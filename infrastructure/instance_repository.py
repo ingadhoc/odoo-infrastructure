@@ -66,6 +66,25 @@ class instance_repository(models.Model):
         return self.repository_pull_clone_and_checkout()
 
     @api.one
+    def action_pull_source_and_active(self):
+        """This method is used from instance that clone repositories from other
+        instance, with this method, first source repository is pulled, then
+        active one."""
+        if not self.instance_id.sources_from_id:
+            raise Warning(_('this method must be call from a repository that\
+                belongs to an instance with Other Instance Repositories'))
+        _logger.info("Searching source repository for repo %s and instance %s" % (
+            self.repository_id.name, self.instance_id.name))
+        source_repository = self.search([
+            ('repository_id', '=', self.repository_id.id),
+            ('instance_id', '=', self.instance_id.sources_from_id.id),
+            ], limit=1)
+        if not source_repository:
+            raise Warning(_('Source repository not found'))
+        source_repository.repository_pull_clone_and_checkout()
+        return self.repository_pull_clone_and_checkout()
+
+    @api.one
     def repository_pull_clone_and_checkout(self, update=True):
         _logger.info("Updateing/getting repository %s with update=%s" % (
             self.repository_id.name, update))

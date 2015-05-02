@@ -7,6 +7,7 @@
      <field name="model">infrastructure.restore_from_file.wizard</field>
      <field name="arch" type="xml">
         <form string="Restore From File">
+            <p>Backup Must be in a path that the container can see</p>
             <group>
                 <field name="database_id"/>
                 <field name="file_path"/>
