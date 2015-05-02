@@ -154,6 +154,7 @@ class server(models.Model):
         'infrastructure.database',
         'server_id',
         string='Databases',
+        domain=[('state', '!=', 'cancel')],
         )
     database_count = fields.Integer(
         string='# Databases',
@@ -163,6 +164,7 @@ class server(models.Model):
         'infrastructure.instance',
         'server_id',
         string='Databases',
+        domain=[('state', '!=', 'cancel')],
         )
     instance_count = fields.Integer(
         string='# Instances',
@@ -282,6 +284,7 @@ class server(models.Model):
         'infrastructure.environment',
         'server_id',
         string='Environments',
+        domain=[('state', '!=', 'cancel')],
         context={'from_server': True},
         )
     server_configuration_id = fields.Many2one(

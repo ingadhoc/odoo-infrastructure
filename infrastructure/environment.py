@@ -92,6 +92,7 @@ class environment(models.Model):
         'environment_id',
         string='Instances',
         context={'from_environment': True},
+        domain=[('state', '!=', 'cancel')],
         )
     path = fields.Char(
         string='Path',
@@ -106,7 +107,8 @@ class environment(models.Model):
     database_ids = fields.One2many(
         'infrastructure.database',
         'environment_id',
-        string='Databases'
+        string='Databases',
+        domain=[('state', '!=', 'cancel')],
         )
     database_count = fields.Integer(
         string='# Databases',

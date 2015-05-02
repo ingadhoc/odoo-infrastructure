@@ -207,7 +207,8 @@ class instance(models.Model):
         'infrastructure.database',
         'instance_id',
         string='Databases',
-        context={'from_instance': True}
+        context={'from_instance': True},
+        domain=[('state', '!=', 'cancel')],
         )
     addons_path = fields.Char(
         string='Addons Path',
