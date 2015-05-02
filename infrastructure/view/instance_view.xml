@@ -17,6 +17,7 @@
             <field name="db_filter"/>
             <field name="server_id"/>
             <field name="environment_id"/>
+            <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Server" context="{'group_by':'server_id'}"/>
                 <filter string="Environment" context="{'group_by':'environment_id'}"/>
@@ -278,6 +279,7 @@
     <field name="view_id" ref="view_instance_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
     <field name="domain">[]</field>
+    <field name="context">{'search_default_not_cancel': 1}</field>
 </record>
 
 <menuitem

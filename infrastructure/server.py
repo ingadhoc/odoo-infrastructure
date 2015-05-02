@@ -621,7 +621,8 @@ class server(models.Model):
         if len(self) == 1:
             res['context'] = {
                 'default_server_id': self.id,
-                'search_default_server_id': self.id
+                'search_default_server_id': self.id,
+                'search_default_not_cancel': 1,
                 }
         if not len(environments.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
@@ -648,7 +649,8 @@ class server(models.Model):
         if len(self) == 1:
             res['context'] = {
                 'default_server_id': self.id,
-                'search_default_server_id': self.id            
+                'search_default_server_id': self.id,
+                'search_default_not_cancel': 1,
             }
         if not len(instances.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
@@ -675,7 +677,8 @@ class server(models.Model):
         if len(self) == 1:
             res['context'] = {
                 'default_server_id': self.id,
-                'search_default_server_id': self.id
+                'search_default_server_id': self.id,
+                'search_default_not_cancel': 1,
             }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(

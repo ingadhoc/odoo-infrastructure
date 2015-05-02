@@ -14,6 +14,7 @@
             <field name="partner_id"/>
             <field name="odoo_version_id"/>
             <field name="server_id"/>
+            <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Partner" context="{'group_by':'partner_id'}"/>
                 <filter string="Environment Version" context="{'group_by':'odoo_version_id'}"/>
@@ -163,6 +164,7 @@
     <field name="view_id" ref="view_environment_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_environment_filter"/>
     <field name="domain">[]</field>
+    <field name="context">{'search_default_not_cancel': 1}</field>
 </record>
 
 <menuitem

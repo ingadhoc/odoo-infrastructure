@@ -14,6 +14,7 @@
             <field name="holder_id"/>
             <field name="owner_id"/>
             <field name="used_by_id"/>
+            <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Server Configuration" context="{'group_by':'server_configuration_id'}"/>
                 <filter string="Holder" context="{'group_by':'holder_id'}"/>
@@ -297,6 +298,7 @@
     <field name="view_id" ref="view_server_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_server_filter"/>
     <field name="domain">[]</field>
+    <field name="context">{'search_default_not_cancel': 1}</field>
 </record>
 
 <menuitem
