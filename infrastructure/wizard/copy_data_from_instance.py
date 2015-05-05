@@ -17,8 +17,7 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
         'infrastructure.instance',
         'Source Instance',
         required=True,
-        domain="[('server_id','=',server_id),('id','!=',target_instance_id)]",
-        domain=[('state', '=', 'active')],
+        domain="[('server_id','=',server_id),('id','!=',target_instance_id),('state', '=', 'active')]",
         )
     server_id = fields.Many2one(
         'infrastructure.server',
