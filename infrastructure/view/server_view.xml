@@ -63,7 +63,7 @@
                     </h1>
                     <h2>
                         <field name="main_hostname" widget="url" placeholder="Main Hostname..."/>
-                        <field name="server_configuration_id" placeholder="Server Configuration..."/>
+                        <field name="server_configuration_id" options="{'no_create': True}" placeholder="Server Configuration..."/>
                     </h2>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
@@ -104,7 +104,7 @@
                             <button name="show_passwd"
                                 string="⇒ View Password"
                                 type="object"
-                                class="oe_link oe_read_only"/>
+                                class="oe_link"/>
                         </div>
                     </group>
                     <group>

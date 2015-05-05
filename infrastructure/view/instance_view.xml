@@ -58,10 +58,10 @@
             <sheet>
                 <div class="col-md-6">
                     <h2 class="oe_inline">
-                        <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/>
+                        <field name="server_id" class="oe_inline"/> / <field name="environment_id" options="{'no_create': True}" class="oe_inline"/>
                     </h2>
                     <h1>
-                        <field name="database_type_id" default_focus="1" placeholder="Type..."/>
+                        <field name="database_type_id" options="{'no_create': True}" default_focus="1" placeholder="Type..."/>
                         <field name="main_hostname" widget="url"/>
                     </h1>
                 </div>
@@ -91,7 +91,7 @@
                             <button name="show_passwd"
                                 string="⇒ View Password"
                                 type="object"
-                                class="oe_link oe_read_only"/>
+                                class="oe_link"/>
                         </div>
                         <field name="db_filter"/>
                         <field name="unaccent"/>

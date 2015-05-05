@@ -12,10 +12,10 @@
                 <field name="database_backup_id"/>
                 <field name="create_date"/>
                 <!-- TODO todavia no implemetamos mover a otra environment y server-->
-                <field name="server_id"/>
-                <field name="environment_id" domain="[('server_id','=',server_id)]"/>
-                <field name="instance_id" domain="[('environment_id','=',environment_id)]"/>
-                <field name="database_type_id"/>
+                <field name="server_id" options="{'no_create': True}"/>
+                <field name="environment_id" options="{'no_create': True}" domain="[('server_id','=',server_id)]"/>
+                <field name="instance_id" options="{'no_create': True}" domain="[('environment_id','=',environment_id)]"/>
+                <field name="database_type_id" options="{'no_create': True}"/>
                 <field name="new_db_name"/>
                 <!-- <field name="overwrite_active"/> -->
                 <field name="backups_enable"/>

@@ -9,7 +9,7 @@
         <form string="Duplicate DB">
             <h1>Rembember to reconfigure catchall on new database</h1>
             <group>
-                <field name="database_type_id"/>
+                <field name="database_type_id" options="{'no_create': True}"/>
                 <field name="new_db_name"/>
                 <field name="backups_enable"/>
             </group>

@@ -26,7 +26,7 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
         )
     target_instance_id = fields.Many2one(
         'infrastructure.instance',
-        'Source Instance',
+        'Target Instance',
         readonly=True,
         required=True,
         default=get_target_instance,

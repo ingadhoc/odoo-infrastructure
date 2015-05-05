@@ -27,6 +27,7 @@
                 <field name="repository_id"/>
                 <field name="branch_id"
                     domain="[('id','in',branch_ids[0][2])]"
+                    options="{'no_create': True}"
                     />
                 <field name="branch_ids"
                     invisible="True"

@@ -25,7 +25,7 @@
             </header>
             <sheet string="instance_host">
              <group>
-                <field name="server_hostname_id" domain="[('server_id','=',parent.server_id)]"/>
+                <field name="server_hostname_id" options="{'no_create': True}" domain="[('server_id','=',parent.server_id)]"/>
                 <field name="subdomain" attrs="{'invisible':[('wildcard','!=',True)]}"/>
                 <field name="wildcard" invisible="True"/>
                 <field name="prefix" attrs="{'invisible':[('wildcard','!=',True)]}"/>

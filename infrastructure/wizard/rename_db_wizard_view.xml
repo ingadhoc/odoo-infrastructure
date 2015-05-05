@@ -8,7 +8,7 @@
      <field name="arch" type="xml">
         <form string="Rename Database">
             <group>
-                <field name="database_type_id"/>
+                <field name="database_type_id" options="{'no_create': True}"/>
                 <field name="name"/>
             </group>
             <footer>

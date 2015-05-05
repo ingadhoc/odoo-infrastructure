@@ -25,7 +25,8 @@
             <div>
                 <field
                     name="contract_id"
-                    class="oe_inline"/>
+                    class="oe_inline"
+                    options="{'no_create': True}"/>
                 <button name="upload_contract_data"
                     string="⇒ Upload Contract"
                     type="object"

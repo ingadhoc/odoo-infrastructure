@@ -9,10 +9,10 @@
         <form string="Duplicate Instance">
             <group>
                 <field name="server_id" invisible="0"/>
-                <field name="source_instance_id"/>
-                <field name="environment_id" domain="[('server_id','=',server_id)]"/>
+                <field name="source_instance_id" options="{'no_create': True}"/>
+                <field name="environment_id" options="{'no_create': True}" domain="[('server_id','=',server_id)]"/>
                 <field name="number"/>
-                <field name="database_type_id"/>
+                <field name="database_type_id" options="{'no_create': True}"/>
                 <field name="sufix" plcaholder="for eg. a date like '12_03_2015' or a number like '1'"/>
             </group>
             <footer>
