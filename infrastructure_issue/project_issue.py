@@ -8,7 +8,8 @@ class project_issue(models.Model):
 
     database_id = fields.Many2one(
         'infrastructure.database',
-        string='Database'
+        string='Database',
+        domain=[('state', '=', 'active')],
     )
     db_user = fields.Char(
         string='DB User',

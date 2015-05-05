@@ -22,6 +22,7 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
         'infrastructure.environment',
         string='Environment',
         required=True,
+        domain=[('state', '=', 'active')],
         )
     server_id = fields.Many2one(
         'infrastructure.server',
