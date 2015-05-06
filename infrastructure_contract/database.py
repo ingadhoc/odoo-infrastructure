@@ -1,7 +1,6 @@
  #-*- coding: utf-8 -*-
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
-from urlparse import urlparse
 
 
 class database(models.Model):
@@ -31,7 +30,7 @@ class database(models.Model):
             'user',
             'database',
             'server_host',
-            'number']
+            'contract_id']
         ['self.asd', ]
         commercial_partner = self.contract_id.partner_id.commercial_partner_id
 
@@ -53,6 +52,6 @@ class database(models.Model):
             user.login,
             self._cr.dbname,
             server_host,
-            self.contract_id.code,
+            self.contract_id.id,
             ]]
         client.model('support.contract').load(imp_fields, rows)
