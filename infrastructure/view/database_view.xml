@@ -157,7 +157,7 @@
                             </tree>
                         </field>
                     </page>
-                    <page string="Users">
+                    <page string="Users" states="active">
                         <button name="update_users_data" string="Update" type="object"/>
                         <field name="user_ids"/>
                     </page>

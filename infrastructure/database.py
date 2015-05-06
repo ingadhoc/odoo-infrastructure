@@ -768,24 +768,26 @@ class database(models.Model):
             'shortdesc',
             'state']
 
+        _logger.info('Updating modules list on db %s' % self.name)
         if update_list:
             client.model('ir.module.module').update_list()
 
         module_ids = client.model('ir.module.module').search(modules_domain)
 
+        _logger.info('Reading modules data for db %s' % self.name)
         exp_modules_data = client.model('ir.module.module').read(
             module_ids, fields)
 
-        vals = {'database_id': self.id}
-
         imp_modules_data = []
         # construimos y agregamos los identificadores al princio
+        _logger.info('Building modules data to import for db %s' % self.name)
         for exp_module in exp_modules_data:
             # TODO seguro que esto lo podemos hacer mejor con un iterkeys o algo asi
             # simulamos un modulo con el . para hacer un unlink
             module_name = 'infra_db_%i_module' % self.id
             vals = [
-                '%s.%s' % (module_name, exp_module['name']),
+                # agregamos el replace porque hay casos de modulos con . en el nombre
+                '%s.%s' % (module_name, exp_module['name'].replace('.', '_')),
                 self.id,
                 exp_module['name'],
                 exp_module['sequence'],
@@ -798,11 +800,15 @@ class database(models.Model):
                 exp_module['state'],
                 ]
             imp_modules_data.append(vals)
+
         # LOAD data
+        _logger.info('Loading modules data for db %s' % self.name)
         self.env['infrastructure.database.module'].load(
-            ['id', 'database_id/.id'] + fields, imp_modules_data, context={'default_noupdate': True})
+            ['id', 'database_id/.id'] + fields, imp_modules_data,
+            context={'default_noupdate': True})
 
         # Remove old data only if not modules_domain
+        _logger.info('Removing old modules data for db %s' % self.name)
         if not modules_domain:
             res = self.env['ir.model.data']._process_end([module_name])
             return res
@@ -817,12 +823,12 @@ class database(models.Model):
             'email',
             ]
 
+        _logger.info('Reading users data for db %s' % self.name)
         exp_users_data = client.model('res.users').search_read([], fields)
-
-        vals = {'database_id': self.id}
 
         imp_users_data = []
         # construimos y agregamos los identificadores al princio
+        _logger.info('Building users data to import for db %s' % self.name)
         for exp_user in exp_users_data:
             # simulamos un modulo con el . para hacer un unlink
             module_name = 'infra_db_%i_user' % self.id
@@ -836,10 +842,12 @@ class database(models.Model):
             imp_users_data.append(vals)
 
         # LOAD data
+        _logger.info('Loading users data for db %s' % self.name)
         self.env['infrastructure.database.user'].load(
             ['id', 'database_id/.id'] + fields, imp_users_data,
             )
 
+        _logger.info('Removing old users data for db %s' % self.name)
         res = self.env['ir.model.data']._process_end([module_name])
         return res
 
