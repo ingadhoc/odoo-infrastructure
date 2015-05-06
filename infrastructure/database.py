@@ -659,8 +659,7 @@ class database(models.Model):
         self.ensure_one()
         try:
             if not_database:
-                return Client(
-                    '%s' % (self.instance_id.main_hostname))
+                return Client(self.instance_id.main_hostname)
                     # 'http://%s' % (self.instance_id.main_hostname))
         except Exception, e:
             raise except_orm(
@@ -670,8 +669,7 @@ class database(models.Model):
         # First try to connect using instance pass
         try:
             return Client(
-                '%s' % (self.instance_id.main_hostname),
-                # 'http://%s' % (self.instance_id.main_hostname),
+                self.instance_id.main_hostname,
                 db=self.name,
                 user='admin',
                 password=self.instance_id.admin_pass)
@@ -679,7 +677,7 @@ class database(models.Model):
         except:
             try:
                 return Client(
-                    '%s' % (self.instance_id.main_hostname),
+                    self.instance_id.main_hostname,
                     # 'http://%s' % (self.instance_id.main_hostname),
                     db=self.name,
                     user='admin',

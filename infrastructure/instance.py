@@ -826,13 +826,14 @@ class instance(models.Model):
         command += ' --limit-time-cpu=' + str(self.limit_time_cpu)
         command += ' --db_maxconn=' + str(self.db_maxconn)
         command += ' --without-demo=' + str(self.without_demo)
+        command += '--log-level=' + self.log_level
+
         # TODO only v8
         if self.odoo_version not in ('7.0'):
             command += ' --data-dir=/var/lib/odoo/'
         command += ' --workers=' + str(self.workers)
         # TODO ver si lo agregamos
         # command += ' --no-xmlrpcs'
-
         if self.module_load:
             command += ' --load=' + self.module_load
 

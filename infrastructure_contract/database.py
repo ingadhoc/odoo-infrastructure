@@ -35,8 +35,7 @@ class database(models.Model):
         ['self.asd', ]
         commercial_partner = self.contract_id.partner_id.commercial_partner_id
 
-        server_host = urlparse(
-            self.env['ir.config_parameter'].get_param('web.base.url')).netloc
+        server_host = self.env['ir.config_parameter'].get_param('web.base.url')
 
         # search for user related to commercial partner
         user = self.env['res.users'].search([(
