@@ -685,6 +685,10 @@ class instance(models.Model):
     @api.multi
     def delete(self):
         _logger.info("Deleting Instance")
+        if self.advance_type == 'protected':
+            raise Warning(_(
+                'You can not delete an instance that is of type protected,\
+                you can change type, or drop it manually'))
         if self.database_ids:
             raise Warning(_(
                 'You can not delete an instance that has databases'))
