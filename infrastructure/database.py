@@ -156,6 +156,11 @@ class database(models.Model):
         'database_id',
         string='Modules',
         )
+    user_ids = fields.One2many(
+        'infrastructure.database.user',
+        'database_id',
+        string='Users',
+        )
     base_module_ids = fields.Many2many(
         'infrastructure.base.module',
         'infrastructure_database_ids_base_module_rel',
@@ -743,11 +748,13 @@ class database(models.Model):
         self.update_modules_data(
             modules_domain=[('name', 'in', module_names)])
 
-    @api.one
+    @api.multi
     def action_update_modules_data(self):
         self.update_modules_data(update_list=True)
 
+    @api.multi
     def update_modules_data(self, modules_domain=None, update_list=False):
+        self.ensure_one()
         if not modules_domain:
             modules_domain = []
 
@@ -763,10 +770,10 @@ class database(models.Model):
             'shortdesc',
             'state']
 
-        module_ids = client.model('ir.module.module').search(modules_domain)
-
         if update_list:
             client.model('ir.module.module').update_list()
+
+        module_ids = client.model('ir.module.module').search(modules_domain)
 
         exp_modules_data = client.model('ir.module.module').read(
             module_ids, fields)
@@ -778,7 +785,7 @@ class database(models.Model):
         for exp_module in exp_modules_data:
             # TODO seguro que esto lo podemos hacer mejor con un iterkeys o algo asi
             # simulamos un modulo con el . para hacer un unlink
-            module_name = 'infra_db_%i' % 160
+            module_name = 'infra_db_%i_module' % self.id
             vals = [
                 '%s.%s' % (module_name, exp_module['name']),
                 self.id,
@@ -801,6 +808,42 @@ class database(models.Model):
         if not modules_domain:
             res = self.env['ir.model.data']._process_end([module_name])
             return res
+
+    @api.multi
+    def update_users_data(self):
+        self.ensure_one()
+        client = self.get_client()
+        fields = [
+            'name',
+            'login',
+            'email',
+            ]
+
+        exp_users_data = client.model('res.users').search_read([], fields)
+
+        vals = {'database_id': self.id}
+
+        imp_users_data = []
+        # construimos y agregamos los identificadores al princio
+        for exp_user in exp_users_data:
+            # simulamos un modulo con el . para hacer un unlink
+            module_name = 'infra_db_%i_user' % self.id
+            vals = [
+                '%s.%s' % (module_name, exp_user['id']),
+                self.id,
+                exp_user['name'],
+                exp_user['login'],
+                exp_user['email'],
+                ]
+            imp_users_data.append(vals)
+
+        # LOAD data
+        self.env['infrastructure.database.user'].load(
+            ['id', 'database_id/.id'] + fields, imp_users_data,
+            )
+
+        res = self.env['ir.model.data']._process_end([module_name])
+        return res
 
 # MAIL server and catchall configurations
     @api.one
@@ -840,6 +883,19 @@ class database(models.Model):
                 _("Unable to Upload SMTP Config."),
                 _('Error: %s') % e
                 )
+
+    @api.one
+    def change_admin_passwd(self, current_passwd, new_passwd):
+        client = self.get_client()
+        try:
+            user_obj = client.model('res.users')
+            return user_obj.change_password(current_passwd, new_passwd)
+
+        except Exception, e:
+            raise except_orm(
+                _("Unable to change password."),
+                _('Error: %s') % e
+            )
 
     @api.one
     def config_backups(self):

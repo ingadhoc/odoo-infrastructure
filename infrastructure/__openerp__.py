@@ -33,6 +33,7 @@
         'view/server_configuration_view.xml',
         'view/server_change_view.xml',
         'view/database_type_view.xml',
+        'view/database_user_view.xml',
         'view/command_view.xml',
         'view/server_configuration_command_view.xml',
         'view/environment_view.xml',

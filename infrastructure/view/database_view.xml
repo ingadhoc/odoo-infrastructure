@@ -81,7 +81,7 @@
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active" confirm="Are you sure you want to drop this database? This can not be undone"/>
                     <button icon="fa-pencil" type="action" string="Rename" class="oe_stat_button" name="%(action_infrastructure_rename_database_wizard)d" states="active"/>
-                    <button icon="fa-pencil" type="action" string="Change Pass" class="oe_stat_button" name="%(action_infrastructure_change_db_passwd_wizard)d" states="active"/>
+                    <button icon="fa-key" type="action" string="Change Pass" class="oe_stat_button" name="%(action_infrastructure_change_db_passwd_wizard)d" states="active"/>
                     <button icon="fa-arrow-circle-up" type="action" string="Restore" class="oe_stat_button" name="%(action_infrastructure_restore_from_file_wizard)d" states="draft"/>
                 </div>
                  <group>
@@ -156,6 +156,10 @@
                                 <field name="state"/>
                             </tree>
                         </field>
+                    </page>
+                    <page string="Users">
+                        <button name="update_users_data" string="Update" type="object"/>
+                        <field name="user_ids"/>
                     </page>
                     <page string="Notes">
                         <field name="note"/>

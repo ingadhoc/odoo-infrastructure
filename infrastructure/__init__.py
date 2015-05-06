@@ -8,6 +8,7 @@ import database
 import database_type
 import database_backup
 import database_module
+import database_user
 import db_filter
 import environment
 import instance
