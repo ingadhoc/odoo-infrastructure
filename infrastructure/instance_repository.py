@@ -114,8 +114,8 @@ class instance_repository(models.Model):
                 path=path,
                 branch=self.branch_id.name,
                 update=update,
-                use_sudo=True,
-                user=None
+                # use_sudo=True,  #podriamos no usar sudo 
+                # user=None
                 )
         except Exception, e:
             raise Warning(_('Error pulling git repository. This is what we get:\
