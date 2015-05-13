@@ -143,21 +143,8 @@
                                 <field name="local_alias_path"/>
                             </group>
                             <group>
-                                <field name="instance_user_group"/>
                                 <field name="virtual_alias_path"/>
                                 <field name="virtual_domains_regex_path"/>
-                                <field name="postgres_superuser"/>
-                                <label for="postgres_superuser_pass"/>
-                                <div>
-                                    <field
-                                        name="postgres_superuser_pass"
-                                        password="True"
-                                        class="oe_inline"/>
-                                    <button name="show_pg_passwd"
-                                        string="⇒ View Password"
-                                        type="object"
-                                        class="oe_link oe_read_only"/>
-                                </div>
                                 <field name="number_of_processors"/>
                             </group>
                         </group>

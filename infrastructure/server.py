@@ -203,13 +203,6 @@ class server(models.Model):
         string='Color Index',
         compute='get_color',
         )
-    instance_user_group = fields.Char(
-        string='Instance Users Group',
-        readonly=True,
-        required=True,
-        states={'draft': [('readonly', False)]},
-        default='odoo',
-        )
     nginx_log_path = fields.Char(
         string='Nginx Log Path',
         readonly=True,
@@ -230,19 +223,6 @@ class server(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/sites-enabled',
-        )
-    postgres_superuser = fields.Char(
-        string='Postgres Superuser',
-        help="Postgres Superuser. You can record and existing one or create a new one with an installation command",
-        readonly=True,
-        states={'draft': [('readonly', False)]},
-        default='odoo',
-        )
-    postgres_superuser_pass = fields.Char(
-        string='Postgres Superuser Pwd',
-        help="Postgres Superuser Password. You can record and existing one or create a new one with an installation command",
-        readonly=True,
-        states={'draft': [('readonly', False)]},
         )
     gdrive_account = fields.Char(
         string='Gdrive Account',
@@ -497,14 +477,6 @@ class server(models.Model):
         raise except_orm(
             _("Password for user '%s':") % self.user_name,
             _("%s") % self.password
-            )
-
-    @api.multi
-    def show_pg_passwd(self):
-        self.ensure_one()
-        raise except_orm(
-            _("Password for pg user '%s':") % self.postgres_superuser,
-            _("%s") % self.postgres_superuser_pass
             )
 
     @api.multi
