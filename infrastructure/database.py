@@ -435,16 +435,22 @@ class database(models.Model):
         try:
             self_db_id = client.model('ir.model.data').xmlid_to_res_id(
                 'database_tools.db_self_database')
-            res = client.model('db.database').action_database_backup(self_db_id)[0]
+            res = client.model('db.database').action_database_backup(
+                self_db_id)
+            # si el nombre no viene en el diccionario algo anduvo mal
+            bd_result = res.get(self.name, False)
+            if not bd_result:
+                raise Warning(_('Could not make backup!\
+                    Unknown Error. This is what we get %s' % res))
         except Exception, e:
                 raise Warning(_('Could not make backup!\
                     This is what we get %s' % e))
-        if res.get('backup_name', False):
+        if bd_result.get('backup_name', False):
             raise Warning(_(
-                'Backup %s succesfully created!' % res['backup_name']))
+                'Backup %s succesfully created!' % bd_result['backup_name']))
         else:
             raise Warning(_('Could not make backup!\
-                This is what we get %s' % res.get('error', '')))
+                This is what we get %s' % bd_result.get('error', '')))
 
     @api.one
     def migrate_db(self):
@@ -741,38 +747,41 @@ class database(models.Model):
             except Exception, e:
                 _logger.warning(
                     "Unable to install module %s. This is what we get %s." % (
-                    module.name, e))
-        module_names = [x.name for x in self.base_module_ids]
-        self.update_modules_data(
-            modules_domain=[('name', 'in', module_names)])
+                        module.name, e))
+        self.update_modules_data(fields=['state'])
 
     @api.multi
     def action_update_modules_data(self):
         self.update_modules_data(update_list=True)
 
     @api.multi
-    def update_modules_data(self, modules_domain=None, update_list=False):
+    def update_modules_data(self, fields=None, update_list=False):
         self.ensure_one()
-        if not modules_domain:
-            modules_domain = []
 
         client = self.get_client()
-        fields = [
-            'name',
-            'sequence',
-            'author',
-            'auto_install',
-            'installed_version',
-            'latest_version',
-            'published_version',
-            'shortdesc',
-            'state']
+        # si viene fields verificamos que este name o lo agregamos porque lo
+        # usamos siempre
+        if fields:
+            if 'name' not in fields:
+                fields.append('name')
+        # si no viene fields lo creamos nosotros
+        else:
+            fields = [
+                'name',
+                'sequence',
+                'author',
+                'auto_install',
+                'installed_version',
+                'latest_version',
+                'published_version',
+                'shortdesc',
+                'state']
 
         _logger.info('Updating modules list on db %s' % self.name)
         if update_list:
             client.model('ir.module.module').update_list()
 
-        module_ids = client.model('ir.module.module').search(modules_domain)
+        module_ids = client.model('ir.module.module').search([])
 
         _logger.info('Reading modules data for db %s' % self.name)
         exp_modules_data = client.model('ir.module.module').read(
@@ -782,24 +791,18 @@ class database(models.Model):
         # construimos y agregamos los identificadores al princio
         _logger.info('Building modules data to import for db %s' % self.name)
         for exp_module in exp_modules_data:
-            # TODO seguro que esto lo podemos hacer mejor con un iterkeys o algo asi
-            # simulamos un modulo con el . para hacer un unlink
             module_name = 'infra_db_%i_module' % self.id
-            vals = [
-                # agregamos el replace porque hay casos de modulos con . en el nombre
+            row = [
                 '%s.%s' % (module_name, exp_module['name'].replace('.', '_')),
-                self.id,
-                exp_module['name'],
-                exp_module['sequence'],
-                exp_module['author'],
-                str(exp_module['auto_install']),
-                exp_module['installed_version'],
-                exp_module['latest_version'],
-                exp_module['published_version'],
-                exp_module['shortdesc'],
-                exp_module['state'],
+                self.id
                 ]
-            imp_modules_data.append(vals)
+            for field in fields:
+                # we have to make this because this boolean field takes to an error
+                if field == 'auto_install':
+                    row.append(str(exp_module[field]))
+                else:
+                    row.append(exp_module[field])
+            imp_modules_data.append(row)
 
         # LOAD data
         _logger.info('Loading modules data for db %s' % self.name)
@@ -807,11 +810,10 @@ class database(models.Model):
             ['id', 'database_id/.id'] + fields, imp_modules_data,
             context={'default_noupdate': True})
 
-        # Remove old data only if not modules_domain
+        # Remove old data only
         _logger.info('Removing old modules data for db %s' % self.name)
-        if not modules_domain:
-            res = self.env['ir.model.data']._process_end([module_name])
-            return res
+        res = self.env['ir.model.data']._process_end([module_name])
+        return res
 
     @api.multi
     def update_users_data(self):

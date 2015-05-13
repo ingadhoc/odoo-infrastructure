@@ -57,9 +57,7 @@ class database(models.Model):
         # No se como correrlo sin hacer el for
         for module in self:
             client.install(module.name)
-        module_names = [x.name for x in self]
-        database.update_modules_data(
-            modules_domain=[('name', 'in', module_names)])
+        database.update_modules_data(fields=['state'])
 
     @api.multi
     def upgrade_modules(self):
@@ -68,9 +66,7 @@ class database(models.Model):
         # No se como correrlo sin hacer el for
         for module in self:
             client.upgrade(module.name)
-        module_names = [x.name for x in self]
-        database.update_modules_data(
-            modules_domain=[('name', 'in', module_names)])
+        database.update_modules_data(fields=['state'])
 
     @api.multi
     def uninstall_modules(self):
@@ -79,6 +75,4 @@ class database(models.Model):
         # No se como correrlo sin hacer el for
         for module in self:
             client.uninstall(module.name)
-        module_names = [x.name for x in self]
-        database.update_modules_data(
-            modules_domain=[('name', 'in', module_names)])
+        database.update_modules_data(fields=['state'])
