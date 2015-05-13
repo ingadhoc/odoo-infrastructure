@@ -42,6 +42,11 @@ class server_hostname(models.Model):
         ondelete='cascade',
         required=True
         )
+    partner_id = fields.Many2one(
+        'res.partner',
+        'Partner',
+        help='If partner is set, then this hostname will be only availble for this partner databases and instances'
+        )
     ssl_available = fields.Boolean(
         string='SSL Available?',
         )

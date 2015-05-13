@@ -21,11 +21,13 @@
     <field name="model">infrastructure.instance_host</field>
     <field name="arch" type="xml">
         <form string="instance_host">
+            <field name="partner_id" invisible="1"/>
             <header>
             </header>
             <sheet string="instance_host">
+                <p>You can only choose hostnames that are configured in this server and that has partner = False or partner = this environment partner</p>
              <group>
-                <field name="server_hostname_id" options="{'no_create': True}" domain="[('server_id','=',parent.server_id)]"/>
+                <field name="server_hostname_id" domain="[('server_id','=',parent.server_id),'|', ('partner_id','=', False), ('partner_id','=', partner_id)]" options="{'no_create': True}"/>
                 <field name="subdomain" attrs="{'invisible':[('wildcard','!=',True)]}"/>
                 <field name="wildcard" invisible="True"/>
                 <field name="prefix" attrs="{'invisible':[('wildcard','!=',True)]}"/>

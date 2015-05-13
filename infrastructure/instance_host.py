@@ -32,6 +32,9 @@ class instance_host(models.Model):
         compute='get_name',
         store=True,
         )
+    partner_id = fields.Many2one(
+        related='instance_id.environment_id.partner_id'
+        )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',

@@ -11,6 +11,7 @@
         <search string="server_hostname">
             <field name="name"/>
             <field name="wildcard"/>
+            <field name="partner_id"/>
         </search>
     </field>
 </record>
@@ -28,6 +29,7 @@
                 <field name="name"/>
                 <field name="wildcard"/>
                 <field name="domain_regex"/>
+                <field name="partner_id"/>
                 <field name="ssl_available"/>
              </group>
             <notebook attrs="{'invisible':[('ssl_available','=',False)]}">
@@ -56,6 +58,7 @@
             <field name="name"/>
             <field name="wildcard"/>
             <field name="domain_regex"/>
+            <field name="partner_id"/>
             <field name="ssl_available"/>
         </tree>
     </field>
