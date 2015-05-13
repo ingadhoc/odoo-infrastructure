@@ -23,24 +23,16 @@ class database_backup(models.Model):
     )
     date = fields.Datetime(
         string='Date',
-        # readonly=True,
-        required=True
     )
     name = fields.Char(
         string='Name',
-        # readonly=True,
-        required=True
     )
     path = fields.Char(
         string='Path',
-        # readonly=True,
-        required=True
     )
     type = fields.Selection(
-        [('manual', 'Manual'), ('daily', 'Daily'),
-         ('weekly', 'Weekly'), ('monthly', 'Monthly')],
+        [('manual', 'Manual'), ('automatic', 'Automatic')],
         string='Type',
-        required=True
     )
     backup_cmd = fields.Char(
         compute='get_backup_cmd',
