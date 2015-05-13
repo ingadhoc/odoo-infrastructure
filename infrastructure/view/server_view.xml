@@ -153,7 +153,7 @@
                         <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
                         <field name="install_command_ids" context="{'server_id':id}"/>
                     </page>
-                    <page string="Docker Images" states="active">
+                    <page string="Docker Images" states="to_install,active">
                        <field name="server_docker_image_ids"/>
                     </page>
                     <page string="Hostnames" states="active">
