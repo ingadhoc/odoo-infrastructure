@@ -207,15 +207,6 @@ class database(models.Model):
         string='# Modules',
         compute='_get_modules',
         )
-    daily_backup = fields.Boolean(
-        string='Daily Backups?',
-        )
-    weekly_backup = fields.Boolean(
-        string='Weekly Backups?',
-        )
-    monthly_backup = fields.Boolean(
-        string='Monthly Backups?',
-        )
     backups_enable = fields.Boolean(
         'Backups Enable',
         copy=False,
@@ -915,6 +906,7 @@ class database(models.Model):
                 raise Warning(
                     _("You can not configure backups if module '%s' is not installed in the database") % (module))
 
+        # TODO habriq ue chequear que exista self_db_id
         # Configure backups
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
@@ -922,9 +914,8 @@ class database(models.Model):
             vals = {
                 'backups_path': os.path.join(
                     self.instance_id.backups_path, self.name),
-                'daily_backup': self.daily_backup,
-                'weekly_backup': self.weekly_backup,
-                'monthly_backup': self.monthly_backup,
+                'syncked_backup_path': os.path.join(
+                    self.instance_id.syncked_backup_path, self.name),
             }
             client.model('db.database').write([self_db_id], vals)
         client.model('db.database').backups_state(

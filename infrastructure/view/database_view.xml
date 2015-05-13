@@ -115,10 +115,6 @@
                             <div class="oe_inline">
                                 <field name="backups_enable"/><button class="oe_link" type="object" name="config_backups" states='active' string="Config Backups"/>
                             </div>
-                            <label string=""/>
-                            <div attrs="{'invisible':[('backups_enable','=',False)]}">
-                                <field name="daily_backup" /><label for="daily_backup" string="Daily"/> - <field name="weekly_backup"/><label for="daily_backup" string="Weekcly"/> - <field name="monthly_backup"/><label for="monthly_backup" string="Monthly"/>
-                            </div>
                         </group>
                         <button type="object" name="update_backups_data" string="Update Backups Data"/>
                         <field name="backup_ids"/>

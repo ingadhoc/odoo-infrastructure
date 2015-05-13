@@ -234,6 +234,10 @@ class instance(models.Model):
         string='Backups Path',
         compute='_get_ports_and_paths',
         )
+    syncked_backup_path = fields.Char(
+        string='Sincked Backup Path',
+        compute='_get_ports_and_paths',
+        )
     data_dir = fields.Char(
         string='Data Dir',
         compute='_get_ports_and_paths',
@@ -643,6 +647,7 @@ class instance(models.Model):
         conf_path = False
         conf_file_path = False
         backups_path = False
+        syncked_backup_path = False
         base_path = False
         pg_data_path = False
         logfile = False
@@ -667,12 +672,19 @@ class instance(models.Model):
                 self.environment_id.name,
                 self.database_type_id.prefix,
                 )
+            syncked_backup_path = os.path.join(
+                self.server_id.backups_path,
+                'syncked',
+                self.environment_id.name,
+                self.database_type_id.prefix,
+                )
             conf_file_path = os.path.join(conf_path, 'openerp-server.conf')
             logfile = os.path.join(conf_path, 'odoo.log')
             data_dir = os.path.join(base_path, 'data_dir')
             sources_path = os.path.join(base_path, 'sources')
         self.pg_data_path = pg_data_path
         self.backups_path = backups_path
+        self.syncked_backup_path = syncked_backup_path
         self.conf_path = conf_path
         self.sources_path = sources_path
         self.base_path = base_path
