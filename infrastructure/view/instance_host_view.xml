@@ -21,7 +21,6 @@
     <field name="model">infrastructure.instance_host</field>
     <field name="arch" type="xml">
         <form string="instance_host">
-            <field name="partner_id" invisible="1"/>
             <header>
             </header>
             <sheet string="instance_host">
@@ -33,6 +32,7 @@
                 <field name="prefix" attrs="{'invisible':[('wildcard','!=',True)]}"/>
                 <field name="type"/>
                 <field name="name"/>
+                <field name="partner_id"/>
              </group>
             </sheet>
         </form>

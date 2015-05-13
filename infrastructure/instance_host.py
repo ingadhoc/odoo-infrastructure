@@ -33,7 +33,9 @@ class instance_host(models.Model):
         store=True,
         )
     partner_id = fields.Many2one(
-        related='instance_id.environment_id.partner_id'
+        'res.partner',
+        related='instance_id.environment_id.partner_id',
+        readonly=True,
         )
     server_id = fields.Many2one(
         'infrastructure.server',
@@ -81,11 +83,20 @@ class instance_host(models.Model):
 
     @api.onchange('server_hostname_id', 'instance_id')
     def _get_name(self):
+        #dont know why partner related field is not being updated
+        self.partner_id = self.instance_id.environment_id.partner_id
         if not self.server_hostname_id:
             server_hostname = self.env[
-                'infrastructure.server_hostname'].search(
-                    [('server_id', '=', self.instance_id.server_id.id)],
+                'infrastructure.server_hostname'].search([
+                    ('server_id', '=', self.server_id.id),
+                    ('partner_id', '=', self.partner_id.id),
+                    ],
                     limit=1)
+            if not server_hostname:
+                server_hostname = self.env[
+                    'infrastructure.server_hostname'].search([
+                        ('server_id', '=', self.server_id.id)],
+                        limit=1)
             self.server_hostname_id = server_hostname.id
         if self.server_hostname_id.wildcard:
             if not self.subdomain:
