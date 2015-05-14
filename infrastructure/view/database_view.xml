@@ -133,7 +133,7 @@
                                 <field name="catchall_enable"/><button class="oe_link" type="object" name="config_catchall" attrs="{'invisible':['|',('state','!=','active'),('catchall_enable','=',False)]}" string="Config Catchall"/>
                             </div>
                             <field name="alias_hostname_id" attrs="{'invisible':[('catchall_enable','=',False)],'required':[('catchall_enable','=',True)]}" domain="[('server_id','=',server_id), '|', ('partner_id','=', False), ('partner_id','=', partner_id)]" options="{'no_create': True}"/>
-                            <field name="alias_prefix" attrs="{'invisible':['|',('catchall_enable','=',False),('alias_hostname_wildcard','=',False)], 'required':['|',('catchall_enable','=',True),('alias_hostname_wildcard','=',True)]}"/>
+                            <field name="alias_prefix" attrs="{'invisible':['|',('catchall_enable','=',False),('alias_hostname_wildcard','=',False)], 'required':[('catchall_enable','=',True),('alias_hostname_wildcard','=',True)]}"/>
                             <field name="domain_alias" attrs="{'invisible':[('catchall_enable','=',False)]}"/>
                             <field name="alias_hostname_wildcard" attrs="{'invisible':[('catchall_enable','=',False)]}" invisible="1"/>
                         </group>
