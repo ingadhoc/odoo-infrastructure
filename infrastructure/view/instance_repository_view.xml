@@ -60,6 +60,12 @@
             <field name="branch_ids" invisible="1"/>
             <field name="actual_commit"/>
             <field name="sources_from_id" invisible="1"/>
+            <button string="Delete"
+                icon="gtk-cancel"
+                type="object"
+                confirm="Are you sure you want to delete this repository folder? After deletion remembet to reconfig odoo config file."
+                help='Delte repository forlder'
+                name="action_delete"/>
         </tree>
     </field>
 </record>

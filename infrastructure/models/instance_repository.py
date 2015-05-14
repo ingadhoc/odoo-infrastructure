@@ -3,7 +3,9 @@ from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 import os
 from fabtools.require.git import working_copy
+import fabtools
 import logging
+import time
 _logger = logging.getLogger(__name__)
 
 
@@ -52,11 +54,23 @@ class instance_repository(models.Model):
         # copy=False, # lo desactivamos porque en el unico caso en que se copia
         # es en el duplicate de instance y queremos que se copie
         )
+    path = fields.Char(
+        string='Path',
+        compute='get_path'
+        )
 
     _sql_constraints = [
         ('repository_uniq', 'unique(repository_id, instance_id)',
             'Repository Must be Unique per Ìnstance'),
     ]
+
+    @api.one
+    @api.depends('instance_id.sources_path', 'repository_id.directory')
+    def get_path(self):
+        self.path = os.path.join(
+                self.instance_id.sources_path,
+                self.repository_id.directory
+                )
 
     @api.onchange('repository_id')
     def change_repository(self):
@@ -67,8 +81,27 @@ class instance_repository(models.Model):
             self.branch_id = default_branch_id
 
     @api.one
+    def unlink(self):
+        if self.actual_commit:
+            raise Warning(_(
+                'You cannot delete a repository that has Actual Commit\
+                You should first delete it with the delete button.'))
+        return super(instance_repository, self).unlink()
+
+    @api.one
     def action_repository_pull_clone_and_checkout(self):
         return self.repository_pull_clone_and_checkout()
+
+    @api.one
+    def action_delete(self):
+        self.instance_id.environment_id.server_id.get_env()
+        try:
+            fabtools.files.remove(
+                self.path, recursive=True, use_sudo=True)
+            self.actual_commit = False
+        except Exception, e:
+            raise Warning(_('Error Removing Folder %s. This is what we get:\
+                \n%s' % (self.path, e)))
 
     @api.one
     def action_pull_source_and_active(self):
@@ -96,10 +129,7 @@ class instance_repository(models.Model):
         if self.actual_commit and not update:
             return True
         self.instance_id.environment_id.server_id.get_env()
-        path = os.path.join(
-                self.instance_id.sources_path,
-                self.repository_id.directory
-                )
+        path = self.path
         if self.instance_id.sources_from_id:
             remote_url = os.path.join(
                 self.instance_id.sources_from_id.sources_path,
@@ -114,10 +144,8 @@ class instance_repository(models.Model):
                 path=path,
                 branch=self.branch_id.name,
                 update=update,
-                # use_sudo=True,  #podriamos no usar sudo 
-                # user=None
                 )
         except Exception, e:
             raise Warning(_('Error pulling git repository. This is what we get:\
                 \n%s' % e))
-        self.actual_commit = 'TODO'     #por ahora lo usamos para chequear que ya se descargo
+        self.actual_commit = time.strftime('%d-%m-%Y')     #por ahora lo usamos para chequear que ya se descargo
