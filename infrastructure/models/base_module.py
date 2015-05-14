@@ -14,7 +14,6 @@ class database(models.Model):
         )
     shortdesc = fields.Char(
         'Module Name',
-        required=True,
         )
     author = fields.Char(
         'Author',

@@ -16,7 +16,7 @@ class database(models.Model):
         ondelete='cascade',
         readonly=True,
         required=True,
-    )
+        )
     state = fields.Selection([
         ('uninstallable', 'Not Installable'),
         ('uninstalled', 'Not Installed'),
@@ -28,19 +28,19 @@ class database(models.Model):
         'Status',
         readonly=True,
         compute=False,
-    )
+        )
     installed_version = fields.Char(
         'Latest Version',
-    )
+        )
     latest_version = fields.Char(
         'Installed Version',
-    )
+        )
     published_version = fields.Char(
         'Published Version',
-    )
+        )
     auto_install = fields.Boolean(
         'Auto Install',
-    )
+        )
 
     @api.multi
     def check_one_database(self):
