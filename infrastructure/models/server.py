@@ -194,6 +194,13 @@ class server(models.Model):
         default='/opt/odoo/backups',
         states={'draft': [('readonly', False)]},
         )
+    syncked_backups_path = fields.Char(
+        string='Syncked Backups Path',
+        readonly=True,
+        required=True,
+        default='/opt/odoo/backups/syncked',
+        states={'draft': [('readonly', False)]},
+        )
     mailgate_file = fields.Char(
         string='Mailgate File',
         readonly=True,
@@ -478,6 +485,35 @@ class server(models.Model):
             _("Password for user '%s':") % self.user_name,
             _("%s") % self.password
             )
+
+    @api.multi
+    def show_gdrive_passwd(self):
+        self.ensure_one()
+        raise except_orm(
+            _("Password for user '%s':") % self.gdrive_account,
+            _("%s") % self.gdrive_passw
+            )
+
+    @api.multi
+    def configure_gdrive_sync(self):
+        self.get_env()
+        if not self.gdrive_account or not self.gdrive_passw:
+            raise Warning(_('To configure google drive sync you need to set account and password'))
+        fabtools.require.deb.ppa('ppa:twodopeshaggy/drive')
+        fabtools.require.deb.package('drive')
+        fabtools.require.files.directory(
+            self.syncked_backups_path, use_sudo=True, mode='777')
+        fabtools.cron.add_task(
+            'bu_push_tu_drive',
+            '0 4 * * 0',
+            'root',
+            'drive push -quiet %s' % self.syncked_backups_path)
+        raise Warning(_('Please log in into the server and run:\n\
+            * drive init %s\n\
+            Follow onscreen steps\
+            ') % (
+            self.syncked_backups_path,
+            ))
 
     @api.multi
     def reboot_server(self):

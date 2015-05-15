@@ -681,8 +681,7 @@ class instance(models.Model):
                 self.database_type_id.prefix,
                 )
             syncked_backup_path = os.path.join(
-                self.server_id.backups_path,
-                'syncked',
+                self.server_id.syncked_backups_path,
                 self.environment_id.name,
                 self.database_type_id.prefix,
                 )
