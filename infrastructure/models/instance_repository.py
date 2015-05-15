@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, _
+from openerp import models, fields, api, _, tools
 from openerp.exceptions import Warning
+from datetime import datetime
 import os
 from fabtools.require.git import working_copy
 import fabtools
 import logging
-import time
+# import time
 _logger = logging.getLogger(__name__)
 
 
@@ -148,4 +149,6 @@ class instance_repository(models.Model):
         except Exception, e:
             raise Warning(_('Error pulling git repository. This is what we get:\
                 \n%s' % e))
-        self.actual_commit = time.strftime('%d-%m-%Y')     #por ahora lo usamos para chequear que ya se descargo
+        # por ahora lo usamos para chequear que ya se descargo
+        self.actual_commit = fields.Datetime.to_string(
+            fields.Datetime.context_timestamp(self, datetime.now()))
