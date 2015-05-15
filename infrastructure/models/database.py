@@ -409,7 +409,7 @@ class database(models.Model):
         except:
             # If we get an error we try restarting the service
             try:
-                self.instance_id.start_odoo_service()
+                self.instance_id.restart_odoo_service()
                 # we ask again for sock and try to connect waiting for service start
                 sock = self.get_sock(max_attempts=1000)
                 sock.drop(self.instance_id.admin_pass, self.name)
@@ -467,7 +467,7 @@ class database(models.Model):
         except:
             # If we get an error we try restarting the service
             try:
-                self.instance_id.start_odoo_service()
+                self.instance_id.restart_odoo_service()
                 # we ask again for sock and try to connect waiting for start
                 sock = self.get_sock(max_attempts=1000)
                 sock.rename(self.instance_id.admin_pass, self.name, new_name)
@@ -570,26 +570,9 @@ class database(models.Model):
         try:
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
-        except:
-            # If we get an error we try duplicating restarting service without workers
-            try:
-                # restart the instance without workers
-                instance = self.instance_id
-                instance.update_conf_file(force_no_workers=True)
-                instance.start_odoo_service()
-                # we ask again for sock and try to connect waiting for service start
-                sock = self.get_sock(max_attempts=1000)
-                sock.duplicate_database(
-                    self.instance_id.admin_pass, self.name, new_database_name)
-                # client.model('db.database').backups_state(
-                #     new_database_name, backups_enable)
-                # restart the instance with default config
-                instance.update_conf_file()
-                instance.start_odoo_service()
-                # TODo agregar aca releer los modulos y demas en la nueva bd
-            except Exception, e:
-                raise Warning(
-                    _('Unable to duplicate Database. This is what we get:\n%s') % (e))
+        except Exception, e:
+            raise Warning(
+                _('Unable to duplicate Database. This is what we get:\n%s') % (e))
         client.model('db.database').backups_state(
             new_database_name, backups_enable)
         new_db.signal_workflow('sgn_to_active')

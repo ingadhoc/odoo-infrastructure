@@ -111,16 +111,18 @@
                         <label for="odoo_container"/>
                         <div>
                             <field name="odoo_container" class="oe_inline"/>
-                            <button name="start_odoo_service" string="Start" help="Fisrt stop (and remove) then run start command" type="object" class="oe_link"/>
-                            <button name="restart_odoo_service" string="Restart" help="Run docker restart" type="object" class="oe_link"/>
-                            <button name="stop_odoo_service" string="Stop/Remove" help="Stop and Remove docker Container" type="object" class="oe_link"/>
+                            <button name="run_odoo_service" string="Run" help="Run docker run" type="object" class="oe_link"/>
+                            <button name="restart_odoo_service" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
+                            <button name="stop_odoo_service" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
+                            <button name="remove_odoo_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
                         </div>
                         <label for="pg_container"/>
                         <div>
                             <field name="pg_container" class="oe_inline"/>
-                            <button name="start_pg_service" string="Start" help="Fisrt stop (and remove) then run start command" type="object" class="oe_link"/>
-                            <button name="restart_pg_service" string="Restart" help="Run docker restart" type="object" class="oe_link"/>
-                            <button name="stop_pg_service" string="Stop/Remove" help="Stop and Remove docker Container" type="object" class="oe_link"/>
+                            <button name="run_pg_service" string="Run" help="Run docker run" type="object" class="oe_link"/>
+                            <button name="restart_pg_service" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
+                            <button name="stop_pg_service" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
+                            <button name="remove_pg_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
                         </div>
                         <field name="service_type"/>
                     </group>
@@ -137,12 +139,13 @@
                         <group string="Odoo">
                             <field name="odoo_log_cmd"/>
                             <field name="odoo_sufix"/>
-                            <field name="restart_odoo_cmd"/>
                             <field name="start_odoo_cmd"/>
-                            <field name="start_attach_odoo_cmd"/>
-                            <field name="start_attached_odoo_cmd"/>
+                            <field name="restart_odoo_cmd"/>
                             <field name="stop_odoo_cmd"/>
-                            <field name="kill_odoo_cmd"/>
+                            <field name="remove_odoo_cmd"/>
+                            <field name="run_odoo_cmd"/>
+                            <field name="run_attach_odoo_cmd"/>
+                            <field name="start_attached_odoo_cmd"/>
                             <field name="update_conf_cmd"/>
                             <field name="update_all_cmd"/>
                         </group>
@@ -150,10 +153,11 @@
                             <button name="get_tunnel_to_pg" type="object" string="Tunnel to Posgres"/>
                             <newline/>
                             <field name="pg_log_cmd"/>
-                            <field name="restart_pg_cmd"/>
                             <field name="start_pg_cmd"/>
+                            <field name="restart_pg_cmd"/>
                             <field name="stop_pg_cmd"/>
-                            <field name="kill_pg_cmd"/>
+                            <field name="remove_pg_cmd"/>
+                            <field name="run_pg_cmd"/>
                         </group>
                     </page>
                     <page string="Repositories">
