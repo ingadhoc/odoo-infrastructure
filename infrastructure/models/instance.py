@@ -899,25 +899,25 @@ class instance(models.Model):
 
         _logger.info('Coping pg data')
         fabtools.files.copy(
-            self.pg_data_path, new_instance.pg_data_path,
+            self.pg_data_path, new_instance.base_path,
             recursive=True, use_sudo=True)
         sudo('chown .docker -R ' + new_instance.pg_data_path)
 
         _logger.info('Coping data dir')
         fabtools.files.copy(
-            self.data_dir, new_instance.data_dir,
+            self.data_dir, new_instance.base_path,
             recursive=True, use_sudo=True)
         sudo('chmod 777 -R ' + new_instance.data_dir)
 
         _logger.info('Coping sources')
         fabtools.files.copy(
-            self.sources_path, new_instance.sources_path,
+            self.sources_path, new_instance.base_path,
             recursive=True, use_sudo=True)
         sudo('chmod 777 -R ' + new_instance.sources_path)
 
         _logger.info('Coping config')
         fabtools.files.copy(
-            self.conf_path, new_instance.conf_path,
+            self.conf_path, new_instance.base_path,
             recursive=True, use_sudo=True)
         sudo('chmod 777 -R ' + new_instance.conf_path)
 
