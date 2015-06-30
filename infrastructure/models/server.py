@@ -552,7 +552,7 @@ class server(models.Model):
         self.get_env()
         local_mailgate_file = os.path.join(
             self.module_path(),
-            'static/scripts/openerp_mailgate.py')
+            'scripts/openerp_mailgate.py')
         try:
             res = upload_template(
                 local_mailgate_file, self.base_path,
