@@ -191,25 +191,25 @@ class server(models.Model):
         string='AFIP homo pkey file',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/odoo/homo.pkey',
+        default='/opt/odoo/backups/homo.pkey',
         )
     afip_prod_pkey_file = fields.Char(
         string='AFIP prod pkey file',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/odoo/prod.pkey',
+        default='/opt/odoo/backups/prod.pkey',
         )
     afip_homo_cert_file = fields.Char(
         string='AFIP homo cert file',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/odoo/homo.cert',
+        default='/opt/odoo/backups/homo.cert',
         )
     afip_prod_cert_file = fields.Char(
         string='AFIP prod cert file',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        default='/etc/odoo/prod.cert',
+        default='/opt/odoo/backups/prod.cert',
         )
     afip_prod_cert_content = fields.Text(
         string='AFIP prod cert Content',
