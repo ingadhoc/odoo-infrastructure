@@ -187,6 +187,50 @@ class server(models.Model):
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/ssl',
         )
+    afip_homo_pkey_file = fields.Char(
+        string='AFIP homo pkey file',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/odoo/homo.pkey',
+        )
+    afip_prod_pkey_file = fields.Char(
+        string='AFIP prod pkey file',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/odoo/prod.pkey',
+        )
+    afip_homo_cert_file = fields.Char(
+        string='AFIP homo cert file',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/odoo/homo.cert',
+        )
+    afip_prod_cert_file = fields.Char(
+        string='AFIP prod cert file',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        default='/etc/odoo/prod.cert',
+        )
+    afip_prod_cert_content = fields.Text(
+        string='AFIP prod cert Content',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    afip_homo_cert_content = fields.Text(
+        string='AFIP homo cert Content',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    afip_prod_pkey_content = fields.Text(
+        string='AFIP prod pkey Content',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
+    afip_homo_pkey_content = fields.Text(
+        string='AFIP homo pkey Content',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        )
     backups_path = fields.Char(
         string='Backups Path',
         readonly=True,

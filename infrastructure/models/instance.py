@@ -1059,10 +1059,33 @@ class instance(models.Model):
         except Exception, e:
             raise Warning(_("Can not create/update configuration file, this is what we get: \n %s") % (
                 e))
-        sed(
-            self.conf_file_path,
+        sed(self.conf_file_path,
             '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass,
             use_sudo=True)
+        server_mode_value = self.database_type_id.server_mode_value or ''
+        sed(self.conf_file_path,
+            '(server_mode).*', 'server_mode = %s' % server_mode_value,
+            use_sudo=True)
+        if self.server_id.afip_homo_pkey_file:
+            sed(self.conf_file_path,
+                '(afip_homo_pkey_file).*',
+                'afip_homo_pkey_file = ' + self.server_id.afip_homo_pkey_file,
+                use_sudo=True)
+        if self.server_id.afip_homo_cert_file:
+            sed(self.conf_file_path,
+                '(afip_homo_cert_file).*',
+                'afip_homo_cert_file = ' + self.server_id.afip_homo_cert_file,
+                use_sudo=True)
+        if self.server_id.afip_prod_pkey_file:
+            sed(self.conf_file_path,
+                '(afip_prod_pkey_file).*',
+                'afip_prod_pkey_file = ' + self.server_id.afip_prod_pkey_file,
+                use_sudo=True)
+        if self.server_id.afip_prod_cert_file:
+            sed(self.conf_file_path,
+                '(afip_prod_cert_file).*',
+                'afip_prod_cert_file = ' + self.server_id.afip_prod_cert_file,
+                use_sudo=True)
 
     @api.one
     def run_odoo_service(self):

@@ -96,6 +96,9 @@ class database_type(models.Model):
     workers_number = fields.Integer(
         'Workers Number',
         )
+    server_mode_value = fields.Char(
+        'Server Mode Value',
+        )
 
     @api.multi
     def show_instance_admin_pass(self):

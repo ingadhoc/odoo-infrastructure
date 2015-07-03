@@ -60,6 +60,7 @@
                         class="oe_link oe_read_only"/>
                 </div>
                 <field name="db_filter"/>
+                <field name="server_mode_value"/>
              </group>
             </sheet>
         </form>

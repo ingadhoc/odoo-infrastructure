@@ -171,6 +171,22 @@
                             </group>
                         </group>
                     </page>
+                    <page string="Afip DATA">
+                        <group>
+                            <group>
+                                <field name="afip_homo_pkey_file"/>
+                                <field name="afip_homo_cert_file"/>
+                                <field name="afip_homo_pkey_content"/>
+                                <field name="afip_homo_cert_content"/>
+                            </group>
+                            <group>
+                                <field name="afip_prod_pkey_file"/>
+                                <field name="afip_prod_cert_file"/>
+                                <field name="afip_prod_pkey_content"/>
+                                <field name="afip_prod_cert_content"/>
+                            </group>
+                        </group>
+                    </page>
                     <page string="Installation" states="to_install,active">
                         <button type="object" class="oe_highlight" name="install_postfix" string="Install Posftix"/>
                         <field name="install_command_ids" context="{'server_id':id}"/>
