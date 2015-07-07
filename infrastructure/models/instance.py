@@ -852,7 +852,7 @@ class instance(models.Model):
         command += ' --limit-time-cpu=' + str(self.limit_time_cpu)
         command += ' --db_maxconn=' + str(self.db_maxconn)
         command += ' --without-demo=' + str(self.without_demo)
-        command += '--log-level=' + self.log_level
+        command += ' --log-level=' + self.log_level
 
         # TODO only v8
         if self.odoo_version not in ('7.0'):
@@ -980,6 +980,10 @@ class instance(models.Model):
         # Restart services
         self.restart_pg_service()
         self.restart_odoo_service()
+        # TODO desactivamos esto y el rename para qu eno de errores
+        # TODO mejorar esto, chequear que esta levantado en vez del slepp
+        # _logger.info('Waiting for service start to rename databases')
+        # time.sleep(10)
 
         # Unlink actual databases
         _logger.info('Unlinking actual databases records')
@@ -996,13 +1000,12 @@ class instance(models.Model):
                 })
             # we run this to deactivate backups
             new_db.signal_workflow('sgn_to_active')
-            _logger.info('Renaiming database %s' % new_db.name)
+            # TODO desactivamos esto por problemas en el wait y no configuramos los backups
             # we wait for service start
-            # TODO mejorar esto, chequear que esta levantado en vez del slepp
-            time.sleep(5)
-            new_db.rename_db('%s_%s' % (
-                self.database_type_id.prefix, new_db.name))
-            new_db.config_backups()
+            # _logger.info('Renaiming database %s' % new_db.name)
+            # new_db.rename_db('%s_%s' % (
+            #     self.database_type_id.prefix, new_db.name))
+            # new_db.config_backups()
 
     @api.one
     def databases_update_all(self):
