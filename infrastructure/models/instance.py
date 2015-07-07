@@ -961,6 +961,7 @@ class instance(models.Model):
         _logger.info('Removing pg data for %s' % self.name)
         fabtools.files.remove(
             self.pg_data_path, recursive=True, use_sudo=True)
+        _logger.info('Copying pg data for %s' % self.name)
         fabtools.files.copy(
             instance.pg_data_path, self.pg_data_path,
             recursive=True, use_sudo=True)
@@ -969,6 +970,7 @@ class instance(models.Model):
         _logger.info('Removing data dir data for %s' % self.name)
         fabtools.files.remove(
             self.data_dir, recursive=True, use_sudo=True)
+        _logger.info('Copying data dir for %s' % self.name)
         fabtools.files.copy(
             instance.data_dir, self.data_dir,
             recursive=True, use_sudo=True)
