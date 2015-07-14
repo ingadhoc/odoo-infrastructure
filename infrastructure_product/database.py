@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp import models, fields, api
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -10,7 +9,7 @@ class database(models.Model):
     """"""
     _inherit = 'infrastructure.database'
 
-    product_id = fields.Many2one(
+    product_ids = fields.Many2many(
         'product.product',
         string='Product',
         domain=[('type', '=', 'odoo_pack')],
@@ -20,9 +19,7 @@ class database(models.Model):
     @api.one
     def install_product_modules(self):
         client = self.get_client()
-        if not self.product_id:
-            raise Warning(_('You must select a product'))
-        for module in self.product_id.module_ids:
+        for module in self.mapped('product_ids.module_ids'):
             try:
                 client.install(module.name)
             except Exception, e:

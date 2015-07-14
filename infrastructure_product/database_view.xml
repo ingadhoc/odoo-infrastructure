@@ -10,8 +10,8 @@
         <field name="main_hostname" position="after">
             <label for="product_id"/>
             <div>
-                <field name="product_id" class="oe_inline"/>
-                <button name="install_product_modules" string="⇒ Install Modules" type="object" class="oe_link" attrs="{'invisible':[('product_id', '=', False)]}"/>
+                <field name="product_ids" widget="many2many_tags" class="oe_inline"/>
+                <button name="install_product_modules" string="⇒ Install Modules" type="object" class="oe_link" attrs="{'invisible':[('product_ids', '=', [(6, False, [])])]}"/>
             </div>
         </field>
     </field>
