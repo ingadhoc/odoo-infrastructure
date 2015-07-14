@@ -23,7 +23,7 @@
     <field name="model">infrastructure.base.module</field>
     <field name="inherit_id" ref=""/>
     <field name="arch" type="xml">
-        <form create="0" edit="0" string="Module">
+        <form string="Module">
             <sheet>
             <div class="oe_title">
                 <h1><field name="shortdesc"/></h1>
