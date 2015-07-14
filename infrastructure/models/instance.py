@@ -708,9 +708,10 @@ class instance(models.Model):
             raise Warning(_(
                 'You can not delete an instance that is of type protected,\
                 you can change type, or drop it manually'))
-        if self.database_ids:
-            raise Warning(_(
-                'You can not delete an instance that has databases'))
+        self.database_ids.signal_workflow('sgn_cancel')
+        # if self.database_ids:
+        #     raise Warning(_(
+        #         'You can not delete an instance that has databases'))
         self.instance_repository_ids.write({'actual_commit': False})
         self.remove_odoo_service()
         self.remove_pg_service()
