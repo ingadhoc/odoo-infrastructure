@@ -128,7 +128,6 @@
                                 <div>
                                     <field
                                         name="gdrive_account"
-                                        password="True"
                                         class="oe_inline"/>
                                     <button name="configure_gdrive_sync"
                                         string="⇒ Configure"
