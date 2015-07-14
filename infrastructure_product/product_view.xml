@@ -24,7 +24,7 @@
     <field name="name">Odoo Packs</field>
     <field name="res_model">product.template</field>
     <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
+    <field name="view_mode">kanban,tree,form</field>
     <field name="view_id" ref="product.product_template_kanban_view"/>
     <field name="search_view_id" ref=""/>
     <field name="domain">[('type', '=', 'odoo_pack')]</field>
