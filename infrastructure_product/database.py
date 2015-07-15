@@ -19,11 +19,12 @@ class database(models.Model):
     @api.one
     def install_product_modules(self):
         client = self.get_client()
-        for module in self.mapped('product_ids.module_ids'):
-            try:
-                client.install(module.name)
-            except Exception, e:
-                _logger.warning(
-                    "Unable to install module %s. This is what we get %s." % (
-                        module.name, e))
+        modules = self.mapped('product_ids.module_ids.name')
+        _logger.warning('Installing modules %s' % str(modules))
+        try:
+            client.install(*modules)
+        except Exception, e:
+            _logger.warning(
+                "Unable to install modules %s. This is what we get %s." % (
+                    str(modules), e))
         self.update_modules_data(fields=['state'])
