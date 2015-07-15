@@ -716,7 +716,7 @@ class database(models.Model):
     def install_base_modules(self):
         client = self.get_client()
         modules = self.mapped('base_module_ids.name')
-        _logger.warning('Installing modules %s' % str(modules))
+        _logger.info('Installing modules %s' % str(modules))
         try:
             client.install(*modules)
         except Exception, e:

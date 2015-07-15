@@ -20,7 +20,7 @@ class database(models.Model):
     def install_product_modules(self):
         client = self.get_client()
         modules = self.mapped('product_ids.module_ids.name')
-        _logger.warning('Installing modules %s' % str(modules))
+        _logger.info('Installing modules %s' % str(modules))
         try:
             client.install(*modules)
         except Exception, e:
