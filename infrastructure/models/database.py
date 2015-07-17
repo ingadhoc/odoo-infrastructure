@@ -215,6 +215,15 @@ class database(models.Model):
         'Catchall Enable',
         copy=False,
         )
+    instance_log_level = fields.Selection([
+        (u'info', 'info'), (u'debug_rpc', 'debug_rpc'),
+        (u'warn', 'warn'), (u'test', 'test'), (u'critical', 'critical'),
+        (u'debug_sql', 'debug_sql'), (u'error', 'error'), (u'debug', 'debug'),
+        (u'debug_rpc_answer', 'debug_rpc_answer')],
+        string='Default Instance Log Level',
+        default='info',
+        required=True,
+        )
 
     @api.one
     @api.depends('state')

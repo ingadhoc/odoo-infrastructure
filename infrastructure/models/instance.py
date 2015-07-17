@@ -142,7 +142,7 @@ class instance(models.Model):
         (u'debug_sql', 'debug_sql'), (u'error', 'error'), (u'debug', 'debug'),
         (u'debug_rpc_answer', 'debug_rpc_answer')],
         string='Log Level',
-        default='debug_rpc',
+        default='info',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
@@ -516,6 +516,7 @@ class instance(models.Model):
             self.admin_pass = admin_pass
             self.db_filter = self.database_type_id.db_filter
             self.service_type = self.database_type_id.service_type
+            self.log_level = self.database_type_id.instance_log_level
 
     @api.one
     @api.depends('name')
