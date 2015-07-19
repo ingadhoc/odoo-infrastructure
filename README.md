@@ -1,9 +1,7 @@
 [![Build Status](https://travis-ci.org/ingadhoc/odoo-infrastructure.svg?branch=8.0)](https://travis-ci.org/ingadhoc/odoo-infrastructure)
 [![Coverage Status](https://coveralls.io/repos/ingadhoc/odoo-infrastructure/badge.png?branch=8.0)](https://coveralls.io/r/ingadhoc/odoo-infrastructure?branch=8.0)
 
-# ${REPO_NAME_VERBOSE}
-
-${REPO_DESCRIPTION_AND_MODULE_LIST}
+# odoo infrastructure
 
 Server and general underlying infrastructure management for Odoo
 
