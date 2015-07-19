@@ -8,6 +8,9 @@
     'website': 'www.ingadhoc.com',
     'license': 'AGPL-3',
     'depends': ['mail'],
+    'external_dependencies': {
+        'python': ['fabric', 'fabtools', 'erppeek']
+        },
     'data': [
         'wizard/duplicate_db_wizard_view.xml',
         'wizard/change_db_passwd_wizard_view.xml',
