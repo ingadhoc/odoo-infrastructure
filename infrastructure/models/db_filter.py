@@ -18,5 +18,6 @@ class db_filter(models.Model):
         )
     add_bd_name_to_host = fields.Boolean(
         string='Add BD to host',
-        help="Add BD name to host on databases, for example [bd_name].adhoc.com.ar",
+        help="Add BD name to host on databases, for example\
+        [bd_name].adhoc.com.ar",
         )

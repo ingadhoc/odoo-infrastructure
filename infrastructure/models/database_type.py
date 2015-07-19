@@ -44,7 +44,8 @@ class database_type(models.Model):
         * Protected: needs special confirmation before some operations\
         * Auto Deactivation: automatically deactivated on deactivation date\
         * Auto Drop: automatically dropped on deactivation date\
-        * Auto Deactivation and Drop: automatically deactivated on deactivation date and automatically dropped on deactivation date\
+        * Auto Deactivation and Drop: automatically deactivated on\
+        deactivation date and automatically dropped on deactivation date\
         ",
         required=True,
         default='normal'
@@ -74,12 +75,14 @@ class database_type(models.Model):
         )
     instance_admin_pass = fields.Char(
         'Instance Admin Password',
-        help='It will be used on OWN SERVERS as default on Instance Admin Password, if not value defined instance name will be suggested',
+        help='It will be used on OWN SERVERS as default on Instance Admin\
+        Password, if not value defined instance name will be suggested',
         )
     db_admin_pass = fields.Char(
         'DB Admin Password',
         # esta si la usamos siempre porque total va encriptada
-        help='It will be used as default on Database Admin Password, if not value defined instance name will be suggested',
+        help='It will be used as default on Database Admin Password,\
+        if not value defined instance name will be suggested',
         )
     db_filter = fields.Many2one(
         'infrastructure.db_filter',

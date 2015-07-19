@@ -9,9 +9,7 @@ from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from erppeek import Client
 from openerp.exceptions import Warning
-from ast import literal_eval
 import os
-import base64
 import requests
 import simplejson
 import logging
@@ -101,12 +99,14 @@ class database(models.Model):
     deactivation_date = fields.Date(
         string='Deactivation Date',
         copy=False,
-        help='Depending on type it could be onl informative or could be automatically deactivated on this date',
+        help='Depending on type it could be onl informative or could be\
+        automatically deactivated on this date',
         )
     drop_date = fields.Date(
         string='Drop Date',
         copy=False,
-        help='Depending on type it could be onl informative or could be automatically dropped on this date',
+        help='Depending on type it could be onl informative or could be\
+        automatically dropped on this date',
         )
     advance_type = fields.Selection(
         related='database_type_id.type',
@@ -171,7 +171,8 @@ class database(models.Model):
         )
     admin_password = fields.Char(
         string='Admin Password',
-        help='When trying to connect to the database first we are going to try by using the instance password and then with thisone.',
+        help='When trying to connect to the database first we are going to\
+        try by using the instance password and then with thisone.',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -231,9 +232,10 @@ class database(models.Model):
         instance = self.instance_id
         self.partner_id = instance.environment_id.partner_id
         self.database_type_id = instance.database_type_id
-        if instance.main_hostname_id:
-            self.alias_hostname_id = instance.main_hostname_id.server_hostname_id
-            self.alias_prefix = instance.main_hostname_id.prefix
+        main_hostname = instance.main_hostname_id
+        if main_hostname:
+            self.alias_hostname_id = main_hostname.server_hostname_id
+            self.alias_prefix = main_hostname.prefix
 
     @api.one
     @api.depends(
@@ -293,10 +295,11 @@ class database(models.Model):
     def get_local_alias(self):
         local_alias = False
         if self.mailgate_path:
-            local_alias = '%s: "| %s  --host=localhost --port=%i -u %i -p %s -d %s' % (
-                self.domain_alias, self.mailgate_path,
-                self.instance_id.xml_rpc_port,
-                SUPERUSER_ID, self.instance_id.admin_pass, self.name)
+            local_alias = (
+                '%s: "| %s  --host=localhost --port=%i -u %i -p %s -d %s' % (
+                    self.domain_alias, self.mailgate_path,
+                    self.instance_id.xml_rpc_port,
+                    SUPERUSER_ID, self.instance_id.admin_pass, self.name))
         return local_alias
 
     _sql_constraints = [
@@ -319,7 +322,8 @@ class database(models.Model):
                 self.database_type_id.prefix,
                 self.instance_id.environment_id.name.replace('-', '_')
                     )
-            self.admin_password = self.database_type_id.db_admin_pass or self.instance_id.name
+            self.admin_password = self.database_type_id.db_admin_pass or \
+                self.instance_id.name
 
     @api.onchange('database_type_id', 'issue_date')
     def get_deact_date(self):
@@ -363,7 +367,8 @@ class database(models.Model):
             try:
                 sock._()   # Call a fictive method.
             except xmlrpclib.Fault:
-                # connected to the server and the method doesn't exist which is expected.
+                # connected to the server and the method doesn't exist which
+                # is expected.
                 _logger.info("Connected to socket")
                 connected = True
                 pass
@@ -371,7 +376,8 @@ class database(models.Model):
                 _logger.info("Could not connect to socket")
                 pass
             except:
-                # Tuve que agregar este porque el error no me era atrapado arriba
+                # Tuve que agregar este porque el error no me era atrapado
+                # arriba
                 _logger.info("Connecting3")
                 pass
         if not connected:
@@ -410,7 +416,8 @@ class database(models.Model):
             # If we get an error we try restarting the service
             try:
                 self.instance_id.restart_odoo_service()
-                # we ask again for sock and try to connect waiting for service start
+                # we ask again for sock and try to connect waiting for service
+                # start
                 sock = self.get_sock(max_attempts=1000)
                 sock.drop(self.instance_id.admin_pass, self.name)
             except Exception, e:
@@ -508,7 +515,8 @@ class database(models.Model):
         # target_server = instance.server_id
         # remote_server = False
         # if source_server != target_server:
-        #     # We use get in target server because using scp is difficult (passing password)
+        #     # We use get in target server because using scp is difficult
+        #     # (passing password)
         #     # and also can not use put on source server
         #     remote_server = {
         #         'user_name': source_server.user_name,
@@ -531,23 +539,30 @@ class database(models.Model):
                     # 'remote_server': remote_server,
                     },
             }
-            _logger.info('Restoring backup %s, you can also watch target instance log' % new_database_name)
+            _logger.info(
+                'Restoring backup %s, you can also watch target\
+                instance log' % new_database_name)
             response = requests.post(
                 url,
                 data=simplejson.dumps(data),
                 headers=headers,
-                verify=False, #TODO fix this, we disable verify because an error we have with certificates
-                # aca se explica ele error http://docs.python-requests.org/en/latest/community/faq/#what-are-hostname-doesn-t-match-errors
+                verify=False,
+                # TODO fix this, we disable verify because an error we have
+                # with certificates aca se explica le error
+                # http://docs.python-requests.org/en/latest/community/faq/
+                # what-are-hostname-doesn-t-match-errors
                 ).json()
             _logger.info('Restored complete, result: %s' % response)
             if response['result'].get('error', False):
                 raise Warning(_(
-                    'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
+                    'Unable to restore bd %s, you can try restartin target\
+                    instance. This is what we get: \n %s') % (
                     new_database_name, response['result'].get('error')))
             _logger.info('Back Up %s Restored Succesfully' % new_database_name)
         except Exception, e:
             raise Warning(_(
-                'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
+                'Unable to restore bd %s, you can try restartin target\
+                instance. This is what we get: \n %s') % (
                 new_database_name, e))
         _logger.info('Creating new database data on infra')
         self.signal_workflow('sgn_to_active')
@@ -572,7 +587,8 @@ class database(models.Model):
                 self.instance_id.admin_pass, self.name, new_database_name)
         except Exception, e:
             raise Warning(
-                _('Unable to duplicate Database. This is what we get:\n%s') % (e))
+                _('Unable to duplicate Database. This is what we get:\n%s') % (
+                    e))
         client.model('db.database').backups_state(
             new_database_name, backups_enable)
         new_db.signal_workflow('sgn_to_active')
@@ -608,8 +624,9 @@ class database(models.Model):
     #         client.model('db.database').backups_state(
     #             new_database_name, backups_enable)
     #     except Exception, e:
-    #         raise Warning(
-    #             _('Unable to duplicate Database. This is what we get:\n%s') % (e))
+    #         raise Warning(_(
+    #             'Unable to duplicate Database. This is what we get:\n%s') % (
+    #               e))
     #     new_db.signal_workflow('sgn_to_active')
     #     # TODO retornar accion de ventana a la bd creada
 
@@ -626,8 +643,9 @@ class database(models.Model):
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(
-                    _("You can not kill connections if module '%s' is not installed in the database") % (module))
+                raise Warning(_(
+                    "You can not kill connections if module '%s' is not\
+                    installed in the database") % (module))
 
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
@@ -640,7 +658,6 @@ class database(models.Model):
         try:
             if not_database:
                 return Client(self.instance_id.main_hostname)
-                    # 'http://%s' % (self.instance_id.main_hostname))
         except Exception, e:
             raise except_orm(
                 _("Unable to Connect to Database."),
@@ -676,8 +693,9 @@ class database(models.Model):
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(
-                    _("You can not Update Backups Data if module '%s' is not installed in the database") % (module))
+                raise Warning(_(
+                    "You can not Update Backups Data if module '%s' is not\
+                    installed in the database") % (module))
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
         _logger.info('Updating remote backups data')
@@ -772,7 +790,7 @@ class database(models.Model):
                 self.id
                 ]
             for field in fields:
-                # we have to make this because this boolean field takes to an error
+                # this way because this boolean field takes to an error
                 if field == 'auto_install':
                     row.append(str(exp_module[field]))
                 else:
@@ -887,8 +905,9 @@ class database(models.Model):
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(
-                    _("You can not configure backups if module '%s' is not installed in the database") % (module))
+                raise Warning(_(
+                    "You can not configure backups if module '%s' is not\
+                    installed in the database") % (module))
 
         # TODO habriq ue chequear que exista self_db_id
         # Configure backups
@@ -913,13 +932,16 @@ class database(models.Model):
         modules = ['auth_server_admin_passwd_passkey', 'mail']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(
-                    _("You can not configure catchall if module '%s' is not installed in the database") % (module))
+                raise Warning(_("You can not configure catchall if module '%s'\
+                     is not installed in the database") % (module))
         if not self.local_alias:
-            raise Warning(
-                _("You can not configure catchall if Local Alias is not set. Probably this is because Mailgate File was not found"))
+            raise Warning(_("You can not configure catchall if Local Alias is\
+                not set. Probably this is because Mailgate File was not\
+                found"))
         if not exists(self.mailgate_path, use_sudo=True):
-            raise Warning(_("Mailgate file was not found on mailgate path '%s' base path found for mail module") % (
+            raise Warning(_(
+                "Mailgate file was not found on mailgate path '%s' base path\
+                found for mail module") % (
                 self.mailgate_path))
         # Configure domain_alias on databas
         client.model('ir.config_parameter').set_param(

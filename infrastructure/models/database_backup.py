@@ -80,8 +80,8 @@ class database_backup(models.Model):
         target_server = instance.server_id
         remote_server = False
         if source_server != target_server:
-            # We use get in target server because using scp is difficult (passing password)
-            # and also can not use put on source server
+            # We use get in target server because using scp is difficult
+            # (passing password) and also can not use put on source server
             remote_server = {
                 'user_name': source_server.user_name,
                 'password': source_server.password,
@@ -103,23 +103,30 @@ class database_backup(models.Model):
                     'remote_server': remote_server,
                     },
             }
-            _logger.info('Restoring backup %s, you can also watch target instance log' % new_database_name)
+            _logger.info(
+                'Restoring backup %s, you can also watch target instance\
+                log' % new_database_name)
             response = requests.post(
                 url,
                 data=simplejson.dumps(data),
                 headers=headers,
-                verify=False, #TODO fix this, we disable verify because an error we have with certificates
-                # aca se explica ele error http://docs.python-requests.org/en/latest/community/faq/#what-are-hostname-doesn-t-match-errors
+                verify=False,
+                # TODO fix this, we disable verify because an error we have
+                # with certificates. Aca se explica ele error
+                # http://docs.python-requests.org/en/latest/community/faq/
+                # #what-are-hostname-doesn-t-match-errors
                 ).json()
             _logger.info('Restored complete, result: %s' % response)
             if response['result'].get('error', False):
                 raise Warning(_(
-                    'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
+                    'Unable to restore bd %s, you can try restartin target\
+                    instance. This is what we get: \n %s') % (
                     new_database_name, response['result'].get('error')))
             _logger.info('Back Up %s Restored Succesfully' % new_database_name)
         except Exception, e:
             raise Warning(_(
-                'Unable to restore bd %s, you can try restartin target instance. This is what we get: \n %s') % (
+                'Unable to restore bd %s, you can try restartin target\
+                instance. This is what we get: \n %s') % (
                 new_database_name, e))
         _logger.info('Creating new database data on infra')
         new_db = self.database_id.copy({

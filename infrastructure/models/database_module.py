@@ -47,7 +47,8 @@ class database(models.Model):
         database = set([x.database_id for x in self])
         if len(database) != 1:
             raise Warning(_(
-                'You can only use this function in modules of the same database'))
+                'You can only use this function in modules of the same\
+                database'))
         return database.pop()
 
     @api.multi

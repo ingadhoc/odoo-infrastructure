@@ -6,7 +6,8 @@
 Infrastructure Contract
 =======================
 Provides integration between infrastructure module and web_support modules.
-Add on infrastructure databases a link to contracts and the posibility to upload the contract to the database.
+Add on infrastructure databases a link to contracts and the posibility to
+upload the contract to the database.
 Destiny database must have web_support_client module installed
     """,
     'category': u'base.module_category_knowledge_management',
