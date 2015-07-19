@@ -1,6 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_res_partner_manager,res.partner.manager,model_res_partner,group_manager,1,1,1,1
-access_res_partner_user,res.partner.user,model_res_partner,group_user,1,1,1,1
+access_res_partner_manager,res.partner.manager,base.model_res_partner,group_manager,1,1,1,1
+access_res_partner_user,res.partner.user,base.model_res_partner,group_user,1,1,1,1
 access_infrastructure_server_change_manager,infrastructure.server_change.manager,model_infrastructure_server_change,group_manager,1,1,1,1
 access_infrastructure_server_change_user,infrastructure.server_change.user,model_infrastructure_server_change,group_user,1,1,1,1
 access_infrastructure_database_manager,infrastructure.database.manager,model_infrastructure_database,group_manager,1,1,1,1

@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-import product
-import database
+from . import product
+from . import database

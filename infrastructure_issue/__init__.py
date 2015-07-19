@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-import project_issue
-import database
+from . import project_issue
+from . import database

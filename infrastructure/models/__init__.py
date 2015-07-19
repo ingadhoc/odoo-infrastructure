@@ -1,24 +1,24 @@
 # -*- coding: utf-8 -*-
-import command
-import repository
-import repository_branch
-import odoo_version
-import base_module
-import database
-import database_type
-import database_backup
-import database_module
-import database_user
-import db_filter
-import environment
-import instance
-import instance_repository
-import instance_host
-import mailserver
-import server
-import server_change
-import server_configuration
-import server_configuration_command
-import server_hostname
-import docker_image
-import server_docker_image
+from . import command
+from . import repository
+from . import repository_branch
+from . import odoo_version
+from . import base_module
+from . import database
+from . import database_type
+from . import database_backup
+from . import database_module
+from . import database_user
+from . import db_filter
+from . import environment
+from . import instance
+from . import instance_repository
+from . import instance_host
+from . import mailserver
+from . import server
+from . import server_change
+from . import server_configuration
+from . import server_configuration_command
+from . import server_hostname
+from . import docker_image
+from . import server_docker_image
