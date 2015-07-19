@@ -113,7 +113,8 @@ class server(models.Model):
     number_of_processors = fields.Integer(
         string='Number of Processors',
         readonly=True,
-        help="This is used to suggest instance workers qty, you can get this information with: grep processor /proc/cpuinfo | wc -l",
+        help="This is used to suggest instance workers qty, you can get this\
+        information with: grep processor /proc/cpuinfo | wc -l",
         )
     password = fields.Char(
         string='Password',
@@ -141,14 +142,16 @@ class server(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        help='Owner of the server, the one you should contacto to make changes on, for example, hardware.'
+        help='Owner of the server, the one you should contacto to make\
+        changes on, for example, hardware.'
         )
     used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        help='Partner that can contact you and ask for changes on server configuration'
+        help='Partner that can contact you and ask for changes on server\
+        configuration'
         )
     database_ids = fields.One2many(
         'infrastructure.database',
@@ -248,7 +251,8 @@ class server(models.Model):
     mailgate_file = fields.Char(
         string='Mailgate File',
         readonly=True,
-        help='Mailgate File is Copided to Server and Computed when installing postfix'
+        help='Mailgate File is Copided to Server and Computed when installing\
+        postfix'
         )
     color = fields.Integer(
         string='Color Index',
@@ -416,7 +420,7 @@ class server(models.Model):
         env.password = self.password
         env.host_string = self.main_hostname
         env.port = self.ssh_port
-        env.timeout = 4 #by default is 10
+        env.timeout = 4     # by default is 10
         return env
 
     @api.one
@@ -542,7 +546,9 @@ class server(models.Model):
     def configure_gdrive_sync(self):
         self.get_env()
         if not self.gdrive_account or not self.gdrive_passw:
-            raise Warning(_('To configure google drive sync you need to set account and password'))
+            raise Warning(_(
+                'To configure google drive sync you need to set account and\
+                password'))
         fabtools.require.deb.ppa('ppa:twodopeshaggy/drive')
         fabtools.require.deb.package('drive')
         fabtools.require.files.directory(
@@ -622,7 +628,7 @@ class server(models.Model):
 
     @api.multi
     def install_postfix(self):
-    # def install_postfix(mailname):
+        # def install_postfix(mailname):
         """
         Require a Postfix email server.
 
@@ -650,8 +656,10 @@ class server(models.Model):
             install('postfix')
 
         # Update postfix conf
-        custom_sudo("postconf -e 'virtual_alias_domains = regexp:%s'" % self.virtual_domains_regex_path)
-        custom_sudo("postconf -e 'virtual_alias_maps = hash:%s'" % self.virtual_alias_path)
+        custom_sudo("postconf -e 'virtual_alias_domains = regexp:%s'" % (
+            self.virtual_domains_regex_path))
+        custom_sudo("postconf -e 'virtual_alias_maps = hash:%s'" % (
+            self.virtual_alias_path))
 
         # Restart postfix
         custom_sudo('service postfix restart')

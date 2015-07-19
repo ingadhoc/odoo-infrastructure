@@ -45,7 +45,8 @@ class server_hostname(models.Model):
     partner_id = fields.Many2one(
         'res.partner',
         'Partner',
-        help='If partner is set, then this hostname will be only availble for this partner databases and instances'
+        help='If partner is set, then this hostname will be only availble\
+        for this partner databases and instances'
         )
     ssl_available = fields.Boolean(
         string='SSL Available?',
@@ -83,11 +84,13 @@ class server_hostname(models.Model):
         domain_regex = False
         if self.name:
             if self.wildcard:
-                domain_regex = '/[@.]' + '\\.'.join(self.name.split('.')) + '$/'
-                "/[@.]domain\.com\.ar$/"
+                domain_regex = '/[@.]' + '\\.'.join(
+                    self.name.split('.')) + '$/'
+                # "/[@.]domain\.com\.ar$/"
             else:
-                domain_regex = '/(.*)' + '\\.'.join(self.name.split('.')) + '$/'
-                "/(.*)tuukan\.com$/"
+                domain_regex = '/(.*)' + '\\.'.join(
+                    self.name.split('.')) + '$/'
+                # "/(.*)tuukan\.com$/"
         self.domain_regex = domain_regex
 
     def name_get(self, cr, uid, ids, context=None):
@@ -109,11 +112,14 @@ class server_hostname(models.Model):
         self.server_id.get_env()
         if not self.ssl_available:
             return False
-        if not self.ssl_certificate or not self.ssl_certificate_key or not self.ssl_intermediate_certificate:
-            raise Warning(_('To configure SSL you need to set ssl certificates and keys'))
+        if not self.ssl_certificate or not self.ssl_certificate_key or \
+                not self.ssl_intermediate_certificate:
+            raise Warning(_(
+                'To configure SSL you need to set ssl certificates and keys'))
         # TODO add ssl path in server data
         require.files.directory(
-            self.server_id.ssl_path, use_sudo=True, owner='', group='', mode='600')
+            self.server_id.ssl_path, use_sudo=True,
+            owner='', group='', mode='600')
         require.file(
             path=self.ssl_certificate_path,
             contents=('%s\n%s') % (

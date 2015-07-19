@@ -37,14 +37,14 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         string='Environment',
         required=True,
         domain=[('state', '=', 'active')],
-        ondelete='cascade',  #no deberia hacer falta porque es un transiente model pero algunas veces no lo borra
+        ondelete='cascade',
     )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
         required=True,
         domain=[('state', '=', 'active')],
-        ondelete='cascade',  #no deberia hacer falta porque es un transiente model pero algunas veces no lo borra
+        ondelete='cascade',
     )
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
@@ -55,8 +55,9 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         string='New db Name',
         required=True
         )
-    # TODO ver si incorporamos la posibilidad de que se sobreescriba a la misma bd en la que estamos parados
-    # el tema es que actualmente usamos dicha bd para restaurar a traves de database_tools por lo cual no andaria
+    # TODO ver si incorporamos la posibilidad de que se sobreescriba a la misma
+    # bd en la que estamos parados. el tema es que actualmente usamos dicha bd
+    # para restaurar a traves de database_tools por lo cual no andaria
     # overwrite_active = fields.Boolean(
     #     string='Overwrite Active Database?',
     #     default=False

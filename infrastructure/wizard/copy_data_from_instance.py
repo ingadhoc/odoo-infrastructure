@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from openerp import fields, api, _
+from openerp import fields, api
 from openerp.osv import osv
-from openerp.exceptions import Warning
 
 
 class infrastructure_copy_data_from_instance(osv.osv_memory):
@@ -17,7 +16,8 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
         'infrastructure.instance',
         'Source Instance',
         required=True,
-        domain="[('server_id','=',server_id),('id','!=',target_instance_id),('state', '=', 'active')]",
+        domain="[('server_id','=',server_id),\
+        ('id','!=',target_instance_id),('state', '=', 'active')]",
         )
     server_id = fields.Many2one(
         'infrastructure.server',
@@ -36,9 +36,10 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
     @api.depends('target_instance_id')
     def get_server_and_source_instance(self):
         self.server_id = self.target_instance_id.server_id
+        target_instance = self.target_instance_id
         self.source_instance_id = self.env['infrastructure.instance'].search(
-            [('environment_id', '=', self.target_instance_id.environment_id.id),
-                ('id', '!=', self.target_instance_id.id)],
+            [('environment_id', '=', target_instance.environment_id.id),
+                ('id', '!=', target_instance.id)],
             limit=1)
 
     @api.multi

@@ -52,4 +52,5 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
         databases = self.env['infrastructure.database'].search(
             [('id', 'in', active_ids)])
         for database in databases:
-            database.duplicate_db(self.new_db_name, self.backups_enable, self.database_type_id)
+            database.duplicate_db(
+                self.new_db_name, self.backups_enable, self.database_type_id)

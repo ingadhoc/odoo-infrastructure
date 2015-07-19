@@ -75,15 +75,16 @@ class instance_host(models.Model):
         if self.subdomain:
             prefix = self.subdomain
         if self.instance_id.database_type_id.url_prefix:
+            url_prefix = self.instance_id.database_type_id.url_prefix
             if prefix:
-                prefix = self.instance_id.database_type_id.url_prefix + '_' + prefix
+                prefix = url_prefix + '_' + prefix
             else:
-                prefix = self.instance_id.database_type_id.url_prefix
+                prefix = url_prefix
         self.prefix = prefix
 
     @api.onchange('server_hostname_id', 'instance_id')
     def _get_name(self):
-        #dont know why partner related field is not being updated
+        # dont know why partner related field is not being updated
         self.partner_id = self.instance_id.environment_id.partner_id
         if not self.server_hostname_id:
             server_hostname = self.env[

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from openerp import models, fields, api, _, tools
+from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 from datetime import datetime
 import os
@@ -75,7 +75,8 @@ class instance_repository(models.Model):
 
     @api.onchange('repository_id')
     def change_repository(self):
-        default_branch_id = self.instance_id.environment_id.odoo_version_id.default_branch_id.id
+        environment = self.instance_id.environment_id
+        default_branch_id = environment.odoo_version_id.default_branch_id.id
         repo_branch_ids = [
             x.id for x in self.repository_id.branch_ids]
         if default_branch_id and default_branch_id in repo_branch_ids:
@@ -112,8 +113,9 @@ class instance_repository(models.Model):
         if not self.sources_from_id:
             raise Warning(_('this method must be call from a repository that\
                 belongs to an instance with Other Instance Repositories'))
-        _logger.info("Searching source repository for repo %s and instance %s" % (
-            self.repository_id.name, self.instance_id.name))
+        _logger.info(
+            "Searching source repository for repo %s and instance %s" % (
+                self.repository_id.name, self.instance_id.name))
         source_repository = self.search([
             ('repository_id', '=', self.repository_id.id),
             ('instance_id', '=', self.sources_from_id.id),
@@ -139,7 +141,8 @@ class instance_repository(models.Model):
         else:
             remote_url = self.repository_id.url
         try:
-            # TODO mejorar aca y usar la api de github para pasar depth = 1 y manejar errores
+            # TODO mejorar aca y usar la api de github para pasar depth = 1 y
+            # manejar errores
             working_copy(
                 remote_url,
                 path=path,
