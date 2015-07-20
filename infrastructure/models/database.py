@@ -241,7 +241,7 @@ class database(models.Model):
     @api.depends(
         'instance_id.main_hostname',
         'instance_id.db_filter.add_bd_name_to_host'
-         )
+        )
     def get_main_hostname(self):
         main_hostname = self.instance_id.main_hostname
         if self.instance_id.db_filter.add_bd_name_to_host:
@@ -321,7 +321,7 @@ class database(models.Model):
             self.name = ('%s_%s') % (
                 self.database_type_id.prefix,
                 self.instance_id.environment_id.name.replace('-', '_')
-                    )
+                )
             self.admin_password = self.database_type_id.db_admin_pass or \
                 self.instance_id.name
 

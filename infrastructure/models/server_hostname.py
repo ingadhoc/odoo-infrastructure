@@ -31,10 +31,6 @@ class server_hostname(models.Model):
     domain_regex = fields.Char(
         string='Domain Regex',
         required=True,
-        help="""
-        For domains use something like '/(.*)tuukan\.com$/'
-        For wildcards use something line '/[@.]domain\.com\.ar$/'
-        """
         )
     server_id = fields.Many2one(
         'infrastructure.server',

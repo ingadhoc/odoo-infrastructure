@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
-from fabric.api import shell_env
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
-from ast import literal_eval
 import os
 import re
-from fabric.api import env
 import logging
-import time
 import fabtools
 _logger = logging.getLogger(__name__)
 
@@ -83,7 +79,8 @@ class instance(models.Model):
         string='Limit Time Real',
         required=True,
         default=240,
-        help='Maximum allowed Real time per request. The default odoo value is 120 but sometimes we use 240 to avoid some workers timeout error',
+        help='Maximum allowed Real time per request. The default odoo value is\
+        120 but sometimes we use 240 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -91,7 +88,8 @@ class instance(models.Model):
         string='Limit Time CPU',
         required=True,
         default=120,
-        help='Maximum allowed CPU time per request. The default odoo value is 60 but sometimes we use 120 to avoid some workers timeout error',
+        help='Maximum allowed CPU time per request. The default odoo value is\
+        60 but sometimes we use 120 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -99,7 +97,8 @@ class instance(models.Model):
         string='DB Max connections',
         required=True,
         default=32,
-        help='Specify the the maximum number of physical connections to posgresql. Default odoo config is 64, we use 32.',
+        help='Specify the the maximum number of physical connections to\
+        posgresql. Default odoo config is 64, we use 32.',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -299,7 +298,8 @@ class instance(models.Model):
         string='Odoo Image',
         required=True,
         readonly=True,
-        domain="[('id', 'in', docker_image_ids[0][2]), ('service', '=', 'odoo')]",
+        domain="[('id', 'in', docker_image_ids[0][2]),\
+        ('service', '=', 'odoo')]",
         states={'draft': [('readonly', False)]}
         )
     odoo_image_tag_id = fields.Many2one(
@@ -492,7 +492,8 @@ class instance(models.Model):
     def _get_docker_images(self):
         self.docker_image_ids = self.env['infrastructure.docker_image']
         self.docker_image_ids = [
-            x.docker_image_id.id for x in self.server_id.server_docker_image_ids]
+            x.docker_image_id.id for x in (
+                self.server_id.server_docker_image_ids)]
 
     @api.one
     @api.depends(
@@ -559,7 +560,9 @@ class instance(models.Model):
     @api.depends('environment_id')
     def _get_module_load(self):
         module_load = ','.join(
-            [x.repository_id.server_wide_modules for x in self.instance_repository_ids if x.repository_id.server_wide_modules])
+            [x.repository_id.server_wide_modules for x in (
+                self.instance_repository_ids) if (
+                    x.repository_id.server_wide_modules)])
         if module_load:
             self.module_load = 'web,web_kanban,' + module_load
 
@@ -577,8 +580,8 @@ class instance(models.Model):
     def add_repositories(self):
         _logger.info("Adding Repositories")
         # TODO cambiar cuando hagamos el campo este m2o y no bolean
+        branch_id = self.environment_id.odoo_version_id.default_branch_id.id
         if self.default_repositories_id:
-            branch_id = self.environment_id.odoo_version_id.default_branch_id.id
             instance_actual_repository_ids = [
                 x.repository_id.id for x in self.instance_repository_ids]
             repositories = self.env['infrastructure.repository'].search([
@@ -602,14 +605,16 @@ class instance(models.Model):
     def _get_addons_path(self):
         _logger.info("Getting Addons Path")
         addons_paths = [
-            x.repository_id.addons_path for x in self.instance_repository_ids if x.repository_id.addons_path]
+            x.repository_id.addons_path for x in (
+                self.instance_repository_ids) if x.repository_id.addons_path]
         self.addons_path = ','.join(addons_paths)
 
     @api.onchange('environment_id')
     def _onchange_environment(self):
+        environment = self.environment_id
         # Get same env instances for database type and instance number
         instances = self.search(
-            [('environment_id', '=', self.environment_id.id)],
+            [('environment_id', '=', environment.id)],
             order='number desc',
             )
         actual_db_type_ids = [x.database_type_id.id for x in instances]
@@ -622,14 +627,15 @@ class instance(models.Model):
 
         # Set workers
         if self.database_type_id.workers == 'clasic_rule':
-            number_of_processors = self.environment_id.server_id.number_of_processors
+            number_of_processors = environment.server_id.number_of_processors
             self.workers = (number_of_processors * 2) + 1
         else:
             self.workers = self.database_type_id.workers_number
 
         # get docker images
         docker_image_ids = [
-            x.docker_image_id.id for x in self.environment_id.server_id.server_docker_image_ids]
+            x.docker_image_id.id for x in (
+                environment.server_id.server_docker_image_ids)]
         docker_images = self.env['infrastructure.docker_image']
         odoo_images = docker_images.search([
             ('service', '=', 'odoo'),
@@ -647,7 +653,10 @@ class instance(models.Model):
 
     @api.onchange('pg_image_id')
     def _onchange_pg_image(self):
-        self.pg_image_tag_id = self.pg_image_id.tag_ids and self.pg_image_id.tag_ids[0] or False
+        if self.pg_image_id.tag_ids:
+            self.pg_image_tag_id = self.pg_image_id.tag_ids[0]
+        else:
+            self.pg_image_tag_id = False
 
     @api.one
     @api.depends('name', 'number', 'environment_id')
@@ -673,7 +682,8 @@ class instance(models.Model):
         self.xml_rpcs_port = xml_rpcs_port
         self.longpolling_port = longpolling_port
         if self.environment_id.path and self.database_type_id.prefix:
-            path_sufix = self.database_type_id.prefix + (self.sufix and '_' + self.sufix or '')
+            path_sufix = self.database_type_id.prefix + (
+                self.sufix and '_' + self.sufix or '')
             base_path = os.path.join(
                 self.environment_id.path, path_sufix)
             conf_path = os.path.join(base_path, 'config')
@@ -747,7 +757,8 @@ class instance(models.Model):
             '-p 127.0.0.1:%i:8069 -p 127.0.0.1:%i:8072') % (
             self.xml_rpc_port, self.longpolling_port)
         odoo_volume_links = (
-            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo -v %s:%s') % (
+            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo\
+            -v %s:%s') % (
             self.conf_path, self.sources_path, self.data_dir,
             self.server_id.backups_path, self.server_id.backups_path)
 
@@ -768,7 +779,8 @@ class instance(models.Model):
 
         # build sufix
         odoo_sufix = self.odoo_sufix and ' %s' % self.odoo_sufix or ''
-        odoo_sufix += self.module_load and ' --load=%s' % self.module_load or ''
+        if self.module_load:
+            odoo_sufix += ' --load=%s' % (self.module_load or '')
 
         # odoo start commands
         self.run_odoo_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
@@ -776,31 +788,36 @@ class instance(models.Model):
             odoo_port_links, odoo_volume_links, odoo_pg_link,
             self.odoo_container, odoo_image_name, odoo_sufix)
 
-        self.run_attach_odoo_cmd = 'docker run %s %s %s %s %s --name %s %s %s' % (
-            '-ti --rm -u root', self.odoo_image_id.prefix or '',
-            odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_container, odoo_image_name, '/bin/bash')
+        self.run_attach_odoo_cmd = (
+            'docker run %s %s %s %s %s --name %s %s %s' % (
+                '-ti --rm -u root', self.odoo_image_id.prefix or '',
+                odoo_port_links, odoo_volume_links, odoo_pg_link,
+                self.odoo_container, odoo_image_name, '/bin/bash'))
 
         user = 'odoo'
         if self.odoo_version in ('7.0'):
             user = 'openerp'
 
-        self.start_attached_odoo_cmd = 'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf --logfile=False %s' % (
-            user, odoo_sufix)
+        self.start_attached_odoo_cmd = (
+            'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf\
+            --logfile=False %s' % (
+                user, odoo_sufix))
 
         # odoo command for update conf
-        self.update_conf_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
-            '--rm', self.odoo_image_id.prefix or '',
-            odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_container, odoo_image_name,
-            self.get_update_conf_command_sufix())
+        self.update_conf_cmd = (
+            'docker run %s %s %s %s %s --name %s %s -- %s' % (
+                '--rm', self.odoo_image_id.prefix or '',
+                odoo_port_links, odoo_volume_links, odoo_pg_link,
+                self.odoo_container, odoo_image_name,
+                self.get_update_conf_command_sufix()))
 
         # odoo update all command
-        self.update_all_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
-            '--rm -ti', self.odoo_image_id.prefix or '',
-            odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_container, odoo_image_name,
-            odoo_sufix + ' --stop-after-init --workers=0 -u all')
+        self.update_all_cmd = (
+            'docker run %s %s %s %s %s --name %s %s -- %s' % (
+                '--rm -ti', self.odoo_image_id.prefix or '',
+                odoo_port_links, odoo_volume_links, odoo_pg_link,
+                self.odoo_container, odoo_image_name,
+                odoo_sufix + ' --stop-after-init --workers=0 -u all'))
 
         # pg start command
         self.run_pg_cmd = 'docker run %s %s %s --name %s %s' % (
@@ -832,7 +849,9 @@ class instance(models.Model):
         self.ensure_one()
         server = self.server_id
         server.get_env()
-        ip = sudo("docker inspect --format '{{ .NetworkSettings.IPAddress }}' %s" % self.pg_container)
+        ip = sudo(
+            "docker inspect --format '{{ .NetworkSettings.IPAddress }}' %s" % (
+                self.pg_container))
         tunnel_to_pg = "ssh -L 5499:%s:5432 %s@%s -p %i" % (
             ip, server.user_name, server.main_hostname, server.ssh_port)
         raise Warning(_('Tunneling command to access postgres:\n%s\n\
@@ -933,7 +952,8 @@ class instance(models.Model):
                 'instance_id': new_instance.id,
                 })
             new_db.signal_workflow('sgn_to_active')
-            # TODO ver si hace falta esto o no, el tema es que esa instancia no la terminamos activando
+            # TODO ver si hace falta esto o no, el tema es que esa instancia no
+            # la terminamos activando
             # # we run this to deactivate backups
             # _logger.info('Renaiming database %s' % new_db.name)
             # new_db.rename_db('%s_%s' % (
@@ -1006,7 +1026,8 @@ class instance(models.Model):
                 })
             # we run this to deactivate backups
             new_db.signal_workflow('sgn_to_active')
-            # TODO desactivamos esto por problemas en el wait y no configuramos los backups
+            # TODO desactivamos esto por problemas en el wait y no
+            # configuramos los backups
             # we wait for service start
             # _logger.info('Renaiming database %s' % new_db.name)
             # new_db.rename_db('%s_%s' % (
@@ -1063,44 +1084,57 @@ class instance(models.Model):
             sudo('rm ' + self.conf_file_path)
 
         try:
-            _logger.info("Running update conf command: '%s'" % self.update_conf_cmd)
+            _logger.info(
+                "Running update conf command: '%s'" % self.update_conf_cmd)
             sudo(self.update_conf_cmd)
         except Exception, e:
-            raise Warning(_("Can not create/update configuration file, this is what we get: \n %s") % (
+            raise Warning(_(
+                "Can not create/update configuration file,\
+                this is what we get: \n %s") % (
                 e))
         sed(self.conf_file_path,
             '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass,
             use_sudo=True)
 
         # we run append first to ensure key exist and then sed
-        append(self.conf_file_path, 'server_mode = ', partial=True, use_sudo=True)
+        append(
+            self.conf_file_path,
+            'server_mode = ', partial=True, use_sudo=True)
         server_mode_value = self.database_type_id.server_mode_value or ''
         sed(self.conf_file_path,
             '(server_mode).*', 'server_mode = %s' % server_mode_value,
             use_sudo=True)
 
-        append(self.conf_file_path, 'afip_homo_pkey_file = ', partial=True, use_sudo=True)
+        append(
+            self.conf_file_path,
+            'afip_homo_pkey_file = ', partial=True, use_sudo=True)
         if self.server_id.afip_homo_pkey_file:
             sed(self.conf_file_path,
                 '(afip_homo_pkey_file).*',
                 'afip_homo_pkey_file = ' + self.server_id.afip_homo_pkey_file,
                 use_sudo=True)
 
-        append(self.conf_file_path, 'afip_homo_cert_file = ', partial=True, use_sudo=True)
+        append(
+            self.conf_file_path,
+            'afip_homo_cert_file = ', partial=True, use_sudo=True)
         if self.server_id.afip_homo_cert_file:
             sed(self.conf_file_path,
                 '(afip_homo_cert_file).*',
                 'afip_homo_cert_file = ' + self.server_id.afip_homo_cert_file,
                 use_sudo=True)
 
-        append(self.conf_file_path, 'afip_prod_pkey_file = ', partial=True, use_sudo=True)
+        append(
+            self.conf_file_path,
+            'afip_prod_pkey_file = ', partial=True, use_sudo=True)
         if self.server_id.afip_prod_pkey_file:
             sed(self.conf_file_path,
                 '(afip_prod_pkey_file).*',
                 'afip_prod_pkey_file = ' + self.server_id.afip_prod_pkey_file,
                 use_sudo=True)
-        
-        append(self.conf_file_path, 'afip_prod_cert_file = ', partial=True, use_sudo=True)
+
+        append(
+            self.conf_file_path,
+            'afip_prod_cert_file = ', partial=True, use_sudo=True)
         if self.server_id.afip_prod_cert_file:
             sed(self.conf_file_path,
                 '(afip_prod_cert_file).*',
@@ -1199,25 +1233,31 @@ class instance(models.Model):
         try:
             sudo('rm -f %s' % nginx_site_file_path)
         except Exception, e:
-            _logger.warning(("Could remove nginx site file '%s', this is what we get: \n %s") % (
+            _logger.warning((
+                "Could remove nginx site file '%s',\
+                this is what we get: \n %s") % (
                 self.service_file, e))
 
     @api.one
     def update_nginx_site(self):
         _logger.info("Updating nginx site")
         if not self.main_hostname:
-            raise Warning(_('Can Not Configure Nginx if Main Site is not Seted!'))
+            raise Warning(_(
+                'Can Not Configure Nginx if Main Site is not Seted!'))
 
         self.environment_id.server_id.get_env()
 
         server_names = [
-            x.name for x in self.instance_host_ids if x.type != 'redirect_to_main']
-        # TODO ver si dejamos esto o lo borramos, queremos que sea flexible desde el usuario
-        # aunque vimos que preferentemente se va a configurar www como principal
+            x.name for x in self.instance_host_ids if (
+                x.type != 'redirect_to_main')]
+        # TODO ver si dejamos esto o lo borramos, queremos que sea flexible
+        # desde el usuario. aunque
+        # vimos que preferentemente se va a configurar www como principal
         redirect_server_names = []
         # redirect_server_names = ['www.' + x for x in server_names]
         redirect_server_names += [
-            x.name for x in self.instance_host_ids if x.type == 'redirect_to_main']
+            x.name for x in self.instance_host_ids if (
+                x.type == 'redirect_to_main')]
 
         if not server_names:
             raise Warning(_('You Must set at least one instance host!'))
@@ -1235,7 +1275,8 @@ class instance(models.Model):
         if self.longpolling_port:
             nginx_long_polling = nginx_long_polling_template % (
                 self.longpolling_port)
-        # TODO modify template in order to give posibility to not use longpolling
+        # TODO modify template in order to give posibility to not use
+        # longpolling
         if self.type == 'secure':
             server_hostname_id = self.main_hostname_id.server_hostname_id
             if not self.main_hostname_id.server_hostname_id.ssl_available:

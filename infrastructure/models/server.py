@@ -3,7 +3,7 @@ from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, reboot
 from fabric.contrib.files import append, upload_template
-from fabric.api import *
+from fabric.api import sudo
 import fabtools
 from fabtools.deb import is_installed, preseed_package, install
 from fabtools.require.service import started

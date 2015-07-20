@@ -2,7 +2,6 @@
 import string
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
-from fabric.api import cd
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists
 import os
@@ -41,8 +40,8 @@ class environment(models.Model):
         states={'draft': [('readonly', False)]},
         )
     type = fields.Selection([
-         (u'docker', u'Docker'),
-         ],
+        (u'docker', u'Docker'),
+        ],
         string='Type',
         readonly=True,
         required=True,
@@ -153,8 +152,7 @@ class environment(models.Model):
     def _get_number(self):
         environments = self.search(
             [('server_id', '=', self.server_id.id)],
-            order='number desc',
-                )
+            order='number desc')
         if self.server_id.server_use_type:
             self.partner_id = self.server_id.used_by_id
         self.number = environments and environments[0].number + 1 or 10
@@ -165,7 +163,7 @@ class environment(models.Model):
     def _get_name(self):
         name = False
         if self.partner_id:
-        # if self.partner_id and self.odoo_version_id:
+            # if self.partner_id and self.odoo_version_id:
             name = self.partner_id.commercial_partner_id.name
             # partner_name = self.partner_id.commercial_partner_id.name
             # sufix = self.odoo_version_id.sufix
