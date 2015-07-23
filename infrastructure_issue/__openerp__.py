@@ -5,8 +5,8 @@
     'version': '1.0',
     'description': u'Infrastructure Issue',
     'category': u'base.module_category_knowledge_management',
-    'author': u'Ingeniería Adhoc',
-    'website': 'www.ingadhoc.com',
+    'author': u'ADHOC SA',
+    'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'depends': [
         'infrastructure',
