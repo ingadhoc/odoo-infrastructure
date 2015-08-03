@@ -37,7 +37,7 @@
                     <field name="ssl_certificate" attrs="{'required':[('ssl_available','=',True)]}"/>
                 </page>
                 <page string="SSL Intermadiate Certificate">
-                    <field name="ssl_intermediate_certificate" attrs="{'required':[('ssl_available','=',True)]}"/>
+                    <field name="ssl_intermediate_certificate"/>
                 </page>
                 <page string="SSL Certificate KEY">
                     <field name="ssl_certificate_key" attrs="{'required':[('ssl_available','=',True)]}"/>

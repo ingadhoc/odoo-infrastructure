@@ -112,18 +112,19 @@ class server_hostname(models.Model):
         self.server_id.get_env()
         if not self.ssl_available:
             return False
-        if not self.ssl_certificate or not self.ssl_certificate_key or \
-                not self.ssl_intermediate_certificate:
+        if not self.ssl_certificate or not self.ssl_certificate_key:
             raise Warning(_(
                 'To configure SSL you need to set ssl certificates and keys'))
         # TODO add ssl path in server data
+        certificate = self.ssl_certificate
+        if self.ssl_intermediate_certificate:
+            certificate += ('\n%s') % (self.ssl_intermediate_certificate)
         require.files.directory(
             self.server_id.ssl_path, use_sudo=True,
             owner='', group='', mode='600')
         require.file(
             path=self.ssl_certificate_path,
-            contents=('%s\n%s') % (
-                self.ssl_certificate, self.ssl_intermediate_certificate),
+            contents=certificate,
             use_sudo=True)
         require.file(
             path=self.ssl_certificate_key_path,
