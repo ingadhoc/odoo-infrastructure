@@ -14,6 +14,7 @@ Server and general underlying infrastructure management for Odoo
 If you don't have Pip, find it here: http://pypi.python.org/pypi/pip
 
 ## Contributing
+We follow some guidelines and advice than [Odoo Argentina](https://github.com/ingadhoc/odoo-argentina/wiki). In summary:
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
@@ -22,11 +23,10 @@ If you don't have Pip, find it here: http://pypi.python.org/pypi/pip
 5. Submit a pull request :D
 
 ## Credits
-
 <p>
-<img alt="IngAdhoc" src="http://fotos.subefotos.com/a72e91469ba66af8f91ad7d775536930o.png" />
+<img alt="ADHOC" src="http://fotos.subefotos.com/83fed853c1e15a8023b86b2b22d6145bo.png" />
 </p>
-**Ingeniería Adhoc** - www.ingadhoc.com
+**Adhoc SA** - www.adhoc.com.ar
 
 ## License
 
