@@ -1,0 +1,3683 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* infrastructure
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-08-05 11:43+0000\n"
+"PO-Revision-Date: 2015-08-05 11:43+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server_hostname.py:106
+#, python-format
+msgid " - Wildcard"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:352
+#: code:addons/infrastructure/models/instance.py:538
+#: code:addons/infrastructure/models/server.py:538
+#: code:addons/infrastructure/models/server.py:546
+#, python-format
+msgid "%s"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "(Re)Start"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_homo_cert_content:0
+msgid "AFIP homo cert Content"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_homo_cert_file:0
+msgid "AFIP homo cert file"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_homo_pkey_content:0
+msgid "AFIP homo pkey Content"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_homo_pkey_file:0
+msgid "AFIP homo pkey file"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_prod_cert_content:0
+msgid "AFIP prod cert Content"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_prod_cert_file:0
+msgid "AFIP prod cert file"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_prod_pkey_content:0
+msgid "AFIP prod pkey Content"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,afip_prod_pkey_file:0
+msgid "AFIP prod pkey file"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Activate"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database,state:0
+#: selection:infrastructure.environment,state:0
+#: selection:infrastructure.instance,state:0
+#: field:infrastructure.mailserver,active:0
+#: selection:infrastructure.server,state:0
+msgid "Active"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_repository,actual_commit:0
+msgid "Actual Commit"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.db_filter,add_bd_name_to_host:0
+msgid "Add BD name to host on databases, for example        [bd_name].adhoc.com.ar"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.db_filter,add_bd_name_to_host:0
+msgid "Add BD to host"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Add default repositories"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Add to postfix virutal domains so that you can use them in catchall and Also Load SSL Certificates"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.repository,addons_subdirectory:0
+msgid "Addons Subdirectory"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,admin_password:0
+#: field:infrastructure.instance,admin_pass:0
+msgid "Admin Password"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Advance Info"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Advanced Conf"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+msgid "Advanced Conf."
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Afip DATA"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Albanian / Shqip"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,alias_hostname_id:0
+msgid "Alias Hostname"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,alias_prefix:0
+msgid "Alias Prefix"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
+msgid "All database data and filestore data will be delete and can not be recovered, are you sure you want to continue?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "All databases on this instance will be run with -u all. This operation can take some minutes. Do you want to continue?"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Amharic / አምሃርኛ"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+msgid "Apps"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Arabic / الْعَرَبيّة"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+msgid "Are you sure you want to delete this repository folder? After deletion remembet to reconfig odoo config file."
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Are you sure you want to drop this database? This can not be undone"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+msgid "Are you sure you want to force an update of source repository and actual repository?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Are you sure you want to reboot the server?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Are you sure you want to restart nxginx?"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,attachment_location:0
+msgid "Attachment Location"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,attachment_loc_type:0
+msgid "Attachment Location Type"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.base.module:infrastructure.view_base_module_filter
+#: field:infrastructure.base.module,author:0
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+#: field:infrastructure.database.module,author:0
+msgid "Author"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,type:0
+msgid "Auto Deactivation"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,type:0
+msgid "Auto Deactivation and Drop"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,type:0
+msgid "Auto Drop"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.module,auto_install:0
+msgid "Auto Install"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database.backup,type:0
+msgid "Automatic"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,auto_deactivation_days:0
+msgid "Automatic Deactivation Days"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,auto_drop_days:0
+msgid "Automatic Drop Days"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:451
+#, python-format
+msgid "Backup %s succesfully created!backup_name"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
+msgid "Backup Must be in a path that the container can see"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Backup Now"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: field:infrastructure.database,backup_ids:0
+msgid "Backups"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,backups_enable:0
+msgid "Backups Enable"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.duplicate_db.wizard,backups_enable:0
+#: field:infrastructure.restore_database.wizard,backups_enable:0
+msgid "Backups Enable on new DB?"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,backups_path:0
+msgid "Backups Path"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: field:infrastructure.database,base_module_ids:0
+#: model:ir.actions.act_window,name:infrastructure.action_base_module
+#: model:ir.ui.menu,name:infrastructure.menu_base_module
+msgid "Base Modules"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,base_path:0
+msgid "Base path"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Bosnian / bosanski jezik"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.repository,branch_ids:0
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_repository_branch_branches
+#: model:ir.ui.menu,name:infrastructure.menu_branches
+msgid "Branches"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Bulgarian / български език"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_filter
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
+msgid "By Attribute"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_filter
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
+msgid "By object"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:1249
+#, python-format
+msgid "Can Not Configure Nginx if Main Site is not Seted!"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:1095
+#, python-format
+msgid "Can not create/update configuration file,                this is what we get: \n"
+" %s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/wizard/duplicate_db_wizard.py:55
+#, python-format
+msgid "Can not duplicate database, no active_ids on context"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:40
+#, python-format
+msgid "Can not run command:\n"
+"%s\n"
+"This is what we get:\n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:616
+#, python-format
+msgid "Can not run upload mailgate file:\n"
+"                This is what we get:\n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
+#: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: selection:infrastructure.database,state:0
+#: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
+#: view:infrastructure.duplicate_instance.wizard:infrastructure.infrastructure_duplicate_instance_wizard_view
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: selection:infrastructure.environment,state:0
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: selection:infrastructure.instance,state:0
+#: view:infrastructure.rename_database.name:infrastructure.infrastructure_rename_database_wizard_view
+#: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
+#: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+#: selection:infrastructure.server,state:0
+msgid "Cancel"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Catalan / Català"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,catchall_enable:0
+msgid "Catchall Enable"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+msgid "Category"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
+msgid "Change"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_change_db_passwd_wizard
+msgid "Change Database Password"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.duplicate_db.wizard,change_user:0
+msgid "Change Instance?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Change Pass"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+#: field:infrastructure.server,change_ids:0
+msgid "Changes"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Chinese (CN) / 简体中文"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Chinese (HK)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Chinese (TW) / 正體字"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,smtp_encryption:0
+msgid "Choose the connection encryption scheme:\n"
+"- None: SMTP sessions are done in cleartext.\n"
+"- TLS (STARTTLS): TLS encryption is requested at start of SMTP session (Recommended)\n"
+"- SSL/TLS: SMTP sessions are encrypted with SSL/TLS through a dedicated port (default: 465)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,workers:0
+msgid "Clasic Rule"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database_type,workers:0
+msgid "Clasic Rule means workers = server_processors * 2 + 1"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+msgid "Clone, Pull and Checkout"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,color:0
+msgid "Color"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.command,command:0
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
+#: field:infrastructure.server_configuration_command,command:0
+msgid "Command"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Commands"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.instance,odoo_sufix:0
+msgid "Commonly used only on debuggin, use for eg. \"-u all\""
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.docker_image,odoo_image_ids:0
+msgid "Compatible Odoo Images"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.docker_image,pg_image_ids:0
+msgid "Compatible Postgresql Images"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Config Backups"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Config Catchall"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: model:ir.ui.menu,name:infrastructure.menu_configuration
+msgid "Configuration"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Configure Hosts"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.duplicate_instance.wizard:infrastructure.infrastructure_duplicate_instance_wizard_view
+msgid "Confirm"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.change_db_passwd.wizard,confirm_passwd:0
+msgid "Confirm Password"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,smtp_encryption:0
+msgid "Connection Security"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:495
+#, python-format
+msgid "Connection successful!"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
+msgid "Copy Data"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_copy_data_from_instance_wizard
+msgid "Copy Data From Instance"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Copy Data From..."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:595
+#, python-format
+msgid "Could Not Reload Nginx! This is what we get: \n"
+" %s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:585
+#, python-format
+msgid "Could Not Restart Nginx! This is what we get: \n"
+" %s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:491
+#, python-format
+msgid "Could not connect to host. Please check credentials"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:438
+#, python-format
+msgid "Could not connect to port %s.\n"
+"                * Check connection with: \"telnet %s %s\"\n"
+"                * You can also connect to server and check ports with \"%s\"\n"
+"                * You can try opening port with %s\n"
+"                * If still can not connect, contact server admin\n"
+""
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:388
+#, python-format
+msgid "Could not connect to socket '%s'"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:448
+#, python-format
+msgid "Could not make backup!                    This is what we get %s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:445
+#, python-format
+msgid "Could not make backup!                    Unknown Error. This is what we get %s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:455
+#, python-format
+msgid "Could not make backup!                This is what we get %s"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Create"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Create / Update"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+msgid "Create Environment"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Create or update User, Config File, Service File, Start Service and add to System Start Up"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.restore_database.wizard,create_date:0
+msgid "Created On"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,create_uid:0
+#: field:infrastructure.change_db_passwd.wizard,create_uid:0
+#: field:infrastructure.command,create_uid:0
+#: field:infrastructure.copy_data_from_instance.wizard,create_uid:0
+#: field:infrastructure.database,create_uid:0
+#: field:infrastructure.database.backup,create_uid:0
+#: field:infrastructure.database.module,create_uid:0
+#: field:infrastructure.database.user,create_uid:0
+#: field:infrastructure.database_type,create_uid:0
+#: field:infrastructure.db_filter,create_uid:0
+#: field:infrastructure.docker_image,create_uid:0
+#: field:infrastructure.docker_image.tag,create_uid:0
+#: field:infrastructure.duplicate_db.wizard,create_uid:0
+#: field:infrastructure.duplicate_instance.wizard,create_uid:0
+#: field:infrastructure.environment,create_uid:0
+#: field:infrastructure.instance,create_uid:0
+#: field:infrastructure.instance_host,create_uid:0
+#: field:infrastructure.instance_repository,create_uid:0
+#: field:infrastructure.mailserver,create_uid:0
+#: field:infrastructure.odoo_version,create_uid:0
+#: field:infrastructure.rename_database.name,create_uid:0
+#: field:infrastructure.repository,create_uid:0
+#: field:infrastructure.repository_branch,create_uid:0
+#: field:infrastructure.restore_database.wizard,create_uid:0
+#: field:infrastructure.restore_from_file.wizard,create_uid:0
+#: field:infrastructure.server,create_uid:0
+#: field:infrastructure.server_change,create_uid:0
+#: field:infrastructure.server_configuration,create_uid:0
+#: field:infrastructure.server_configuration_command,create_uid:0
+#: field:infrastructure.server_docker_image,create_uid:0
+#: field:infrastructure.server_hostname,create_uid:0
+msgid "Created by"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,create_date:0
+#: field:infrastructure.change_db_passwd.wizard,create_date:0
+#: field:infrastructure.command,create_date:0
+#: field:infrastructure.copy_data_from_instance.wizard,create_date:0
+#: field:infrastructure.database,create_date:0
+#: field:infrastructure.database.backup,create_date:0
+#: field:infrastructure.database.module,create_date:0
+#: field:infrastructure.database.user,create_date:0
+#: field:infrastructure.database_type,create_date:0
+#: field:infrastructure.db_filter,create_date:0
+#: field:infrastructure.docker_image,create_date:0
+#: field:infrastructure.docker_image.tag,create_date:0
+#: field:infrastructure.duplicate_db.wizard,create_date:0
+#: field:infrastructure.duplicate_instance.wizard,create_date:0
+#: field:infrastructure.environment,create_date:0
+#: field:infrastructure.instance,create_date:0
+#: field:infrastructure.instance_host,create_date:0
+#: field:infrastructure.instance_repository,create_date:0
+#: field:infrastructure.mailserver,create_date:0
+#: field:infrastructure.odoo_version,create_date:0
+#: field:infrastructure.rename_database.name,create_date:0
+#: field:infrastructure.repository,create_date:0
+#: field:infrastructure.repository_branch,create_date:0
+#: field:infrastructure.restore_from_file.wizard,create_date:0
+#: field:infrastructure.server,create_date:0
+#: field:infrastructure.server_change,create_date:0
+#: field:infrastructure.server_configuration,create_date:0
+#: field:infrastructure.server_configuration_command,create_date:0
+#: field:infrastructure.server_docker_image,create_date:0
+#: field:infrastructure.server_hostname,create_date:0
+msgid "Created on"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Croatian / hrvatski jezik"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.server,server_use_type:0
+msgid "Customer"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Czech / Čeština"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,db_admin_pass:0
+msgid "DB Admin Password"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,db_filter:0
+#: field:infrastructure.instance,db_filter:0
+msgid "DB Filter"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_db_filter_db_filters
+#: model:ir.ui.menu,name:infrastructure.menu_db_filters
+msgid "DB Filters"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,db_maxconn:0
+msgid "DB Max connections"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Danish / Dansk"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+#: model:ir.ui.menu,name:infrastructure.menu_data
+msgid "Data"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,without_demo:0
+msgid "Data Dir"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.backup,database_id:0
+#: field:infrastructure.database.module,database_id:0
+#: view:infrastructure.environment:infrastructure.view_environment_kanban
+#: view:infrastructure.instance:infrastructure.view_instance_kanban
+#: field:infrastructure.restore_from_file.wizard,database_id:0
+#: view:infrastructure.server:infrastructure.view_server_kanban
+#: model:ir.actions.act_window,name:infrastructure.act_database_server_instances_all
+msgid "Database"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_database_backup
+msgid "Database Backup"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
+msgid "Database Backups"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_database_module
+msgid "Database Module"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_database_module
+msgid "Database Modules"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.database:0
+msgid "Database Name Must be Unique per instance"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,database_type_id:0
+#: field:infrastructure.duplicate_db.wizard,database_type_id:0
+#: field:infrastructure.duplicate_instance.wizard,database_type_id:0
+#: field:infrastructure.instance,database_type_id:0
+#: field:infrastructure.rename_database.name,database_type_id:0
+#: field:infrastructure.restore_database.wizard,database_type_id:0
+msgid "Database Type"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_database_type_database_types
+#: model:ir.ui.menu,name:infrastructure.menu_database_types
+msgid "Database Types"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.user:infrastructure.view_infrastructure_database_user_tree
+msgid "Database Users"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.user,database_id:0
+msgid "Database id"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_form
+#: field:infrastructure.environment,database_ids:0
+#: field:infrastructure.instance,database_ids:0
+#: field:infrastructure.server,database_ids:0
+#: field:infrastructure.server,instance_ids:0
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_database_databases
+#: model:ir.ui.menu,name:infrastructure.menu_databases
+#: model:ir.ui.menu,name:infrastructure.menu_databases_conf
+msgid "Databases"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.backup,date:0
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: field:infrastructure.server_change,date:0
+msgid "Date"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,message_last_post:0
+#: help:infrastructure.environment,message_last_post:0
+#: help:infrastructure.instance,message_last_post:0
+#: help:infrastructure.server,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Deactivate"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database,state:0
+msgid "Deactivated"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,deactivation_date:0
+msgid "Deactivation Date"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,smtp_debug:0
+msgid "Debugging"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.odoo_version,default_branch_id:0
+msgid "Default Branch"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,instance_log_level:0
+msgid "Default Instance Log Level"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.repository,default_in_new_env:0
+msgid "Default in new Environment?"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,default_on_new_db:0
+#: field:infrastructure.database.module,default_on_new_db:0
+msgid "Default on New Database"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+msgid "Delete"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+msgid "Delte repository forlder"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,demo_data:0
+msgid "Demo Data?"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,advance_type:0
+#: help:infrastructure.database_type,type:0
+msgid "Depending on the type:        * Normal: nothing special is made        * Protected: needs special confirmation before some operations        * Auto Deactivation: automatically deactivated on deactivation date        * Auto Drop: automatically dropped on deactivation date        * Auto Deactivation and Drop: automatically deactivated on        deactivation date and automatically dropped on deactivation date        "
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,deactivation_date:0
+msgid "Depending on type it could be onl informative or could be        automatically deactivated on this date"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,drop_date:0
+msgid "Depending on type it could be onl informative or could be        automatically dropped on this date"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.environment,description:0
+#: field:infrastructure.mailserver,name:0
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: field:infrastructure.server_change,description:0
+msgid "Description"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: field:infrastructure.repository,directory:0
+msgid "Directory"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_configuration,distrib_codename:0
+msgid "Distribution Codename"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.environment,type:0
+#: model:ir.ui.menu,name:infrastructure.menu_docker
+msgid "Docker"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.docker_image:infrastructure.view_infrastructure_docker_image
+#: view:infrastructure.docker_image:infrastructure.view_infrastructure_docker_image_form
+#: field:infrastructure.server_docker_image,docker_image_id:0
+#: model:ir.model,name:infrastructure.model_infrastructure_docker_image
+msgid "Docker Image"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.server_docker_image:0
+msgid "Docker Image Must be Unique per server"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_docker_image_tag
+msgid "Docker Image Tag"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+#: field:infrastructure.server,server_docker_image_ids:0
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_docker_image
+#: model:ir.ui.menu,name:infrastructure.menu_docker_images
+msgid "Docker Images"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,service_type:0
+#: selection:infrastructure.instance,service_type:0
+msgid "Docker Restart"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_hostname,domain_regex:0
+msgid "Domain Regex"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database,state:0
+#: selection:infrastructure.environment,state:0
+#: selection:infrastructure.instance,state:0
+#: selection:infrastructure.server,state:0
+msgid "Draft"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Drop"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,drop_date:0
+msgid "Drop Date"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.restore_database.wizard,database_backup_id:0
+msgid "Dump File"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Duplicate"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
+#: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
+msgid "Duplicate DB"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.duplicate_instance.wizard:infrastructure.infrastructure_duplicate_instance_wizard_view
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_duplicate_instance_wizard
+msgid "Duplicate Instance"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_duplicate_db_wizard
+msgid "Duplicate db Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Dutch (BE) / Nederlands (BE)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Dutch / Nederlands"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,unaccent:0
+msgid "Enable Unaccent"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "English (AU)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "English (UK)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "English (US)"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: field:infrastructure.database,environment_id:0
+#: field:infrastructure.duplicate_instance.wizard,environment_id:0
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: field:infrastructure.instance,environment_id:0
+#: field:infrastructure.restore_database.wizard,environment_id:0
+#: view:infrastructure.server:infrastructure.view_server_kanban
+#: model:ir.actions.act_window,name:infrastructure.act_infrastructure_server_environment_all
+msgid "Environment"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+msgid "Environment Version"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:1079
+#, python-format
+msgid "Environment path '%s' does not exists.                                 Please create it first!"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+msgid "Environment will be delated from server and will be unrecoverable, are you sure you want to continue?"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,environment_ids:0
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_environment_environments
+#: model:ir.ui.menu,name:infrastructure.menu_environments
+msgid "Environments"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance_repository.py:110
+#, python-format
+msgid "Error Removing Folder %s. This is what we get:                \n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance_repository.py:157
+#, python-format
+msgid "Error pulling git repository. This is what we get:                \n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:668
+#: code:addons/infrastructure/models/database.py:689
+#: code:addons/infrastructure/models/database.py:889
+#: code:addons/infrastructure/models/database.py:902
+#, python-format
+msgid "Error: %s"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Estonian / Eesti keel"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_tree
+msgid "Execute"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_tree
+msgid "Execute Command"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,external_id:0
+msgid "External ID"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,external_id:0
+msgid "External ID used to identify record on record update. It is        suggested that all mail servers has the same external id to make the        replaceable"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+msgid "Extra"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.restore_from_file.wizard,file_name:0
+msgid "File Name"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.restore_from_file.wizard,file_path:0
+msgid "File Path"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/wizard/restore_from_file.py:45
+#, python-format
+msgid "File was not found on path '%s'"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Finnish / Suomi"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,workers:0
+msgid "Fix Number"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/environment.py:191
+#, python-format
+msgid "Folder '%s' already exists"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,message_follower_ids:0
+#: field:infrastructure.environment,message_follower_ids:0
+#: field:infrastructure.instance,message_follower_ids:0
+#: field:infrastructure.server,message_follower_ids:0
+msgid "Followers"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "French (BE) / Français (BE)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "French (CA) / Français (CA)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "French (CH) / Français (CH)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "French / Français"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Galician / Galego"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,gdrive_account:0
+msgid "Gdrive Account"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,gdrive_passw:0
+msgid "Gdrive Password"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,gdrive_space:0
+msgid "Gdrive Space"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Georgian / ქართული ენა"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "German / Deutsch"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
+msgid "Get Backup"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Gral. Info"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Greek / Ελληνικά"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.base.module:infrastructure.view_base_module_filter
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+msgid "Group By"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+msgid "Group By..."
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Gujarati / ગુજરાતી"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,http_port:0
+msgid "HTTP Port"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,https_port:0
+msgid "HTTPS Port"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Hebrew / עִבְרִי"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Hindi / हिंदी"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+#: field:infrastructure.server,holder_id:0
+msgid "Holder"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,message_summary:0
+#: help:infrastructure.environment,message_summary:0
+#: help:infrastructure.instance,message_summary:0
+#: help:infrastructure.server,message_summary:0
+msgid "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,smtp_host:0
+msgid "Hostname or IP of SMTP server"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.server_hostname:0
+msgid "Hostname/wildcard must be unique per server!"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+#: field:infrastructure.server,hostname_ids:0
+msgid "Hostnames"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,instance_host_ids:0
+msgid "Hosts"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Hungarian / Magyar"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,id:0
+#: field:infrastructure.change_db_passwd.wizard,id:0
+#: field:infrastructure.command,id:0
+#: field:infrastructure.copy_data_from_instance.wizard,id:0
+#: field:infrastructure.database,id:0
+#: field:infrastructure.database.backup,id:0
+#: field:infrastructure.database.module,id:0
+#: field:infrastructure.database.user,id:0
+#: field:infrastructure.database_type,id:0
+#: field:infrastructure.db_filter,id:0
+#: field:infrastructure.docker_image,id:0
+#: field:infrastructure.docker_image.tag,id:0
+#: field:infrastructure.duplicate_db.wizard,id:0
+#: field:infrastructure.duplicate_instance.wizard,id:0
+#: field:infrastructure.environment,id:0
+#: field:infrastructure.instance,id:0
+#: field:infrastructure.instance_host,id:0
+#: field:infrastructure.instance_repository,id:0
+#: field:infrastructure.mailserver,id:0
+#: field:infrastructure.odoo_version,id:0
+#: field:infrastructure.rename_database.name,id:0
+#: field:infrastructure.repository,id:0
+#: field:infrastructure.repository_branch,id:0
+#: field:infrastructure.restore_database.wizard,id:0
+#: field:infrastructure.restore_from_file.wizard,id:0
+#: field:infrastructure.server,id:0
+#: field:infrastructure.server_change,id:0
+#: field:infrastructure.server_configuration,id:0
+#: field:infrastructure.server_configuration_command,id:0
+#: field:infrastructure.server_docker_image,id:0
+#: field:infrastructure.server_hostname,id:0
+msgid "ID"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,ip_address:0
+msgid "IP Address"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,message_unread:0
+#: help:infrastructure.environment,message_unread:0
+#: help:infrastructure.instance,message_unread:0
+#: help:infrastructure.server,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,smtp_debug:0
+msgid "If enabled, the full output of SMTP sessions will be written to the server log at DEBUG level(this is very verbose and may include confidential info!)"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database_type,sources_from_id:0
+msgid "If none is selected sources are cloned from host, if you want to        clone them from other instance, choose the databse type from where the        sources are going to be clone"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server_hostname,partner_id:0
+msgid "If partner is set, then this hostname will be only availble        for this partner databases and instances"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,partner_id:0
+msgid "If partner is set, then this mailserver will be only availble        for this partner databases"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Indonesian / Bahasa Indonesia"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.base.module:infrastructure.view_base_module_form
+msgid "Information"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.module.category,description:infrastructure.module_category_infrastructure
+#: model:ir.module.category,name:infrastructure.module_category_infrastructure
+#: model:ir.ui.menu,name:infrastructure.menu_infrastructure
+msgid "Infrastructure"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_base_module
+msgid "Infrastructure Base Module"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_change_db_passwd_wizard
+msgid "Infrastructure Change Database Password Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_copy_data_from_instance_wizard
+msgid "Infrastructure Copy Data From Instance Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_database_user
+msgid "Infrastructure Database User"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_duplicate_instance_wizard
+msgid "Infrastructure Duplicate Instance Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_duplicate_db_wizard
+msgid "Infrastructure Duplicate db Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.mailserver:infrastructure.view_infrastructure_mailserver_form
+msgid "Infrastructure Mailserver"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_rename_database_name
+msgid "Infrastructure Rename Database Name Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_restore_database_wizard
+msgid "Infrastructure Restore Database Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_restore_from_file_wizard
+msgid "Infrastructure Restore From File Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_form
+msgid "Install"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,install_lang_id:0
+msgid "Install Language"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Install Modules"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Install Posftix"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Installation"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_configuration,install_command_ids:0
+msgid "Installation Commands"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+#: selection:infrastructure.database.module,state:0
+msgid "Installed"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.module,latest_version:0
+msgid "Installed Version"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: field:infrastructure.database,instance_id:0
+#: field:infrastructure.duplicate_db.wizard,instance_id:0
+#: field:infrastructure.instance_repository,instance_id:0
+#: field:infrastructure.restore_database.wizard,instance_id:0
+msgid "Instance"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,instance_admin_pass:0
+msgid "Instance Admin Password"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,type:0
+msgid "Instance Type"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_environment_kanban
+#: field:infrastructure.environment,instance_ids:0
+#: view:infrastructure.server:infrastructure.view_server_kanban
+#: model:ir.actions.act_window,name:infrastructure.act_infrastructure_server_instances_all
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_instance_instances
+#: model:ir.ui.menu,name:infrastructure.menu_instances
+msgid "Instances"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,message_is_follower:0
+#: field:infrastructure.environment,message_is_follower:0
+#: field:infrastructure.instance,message_is_follower:0
+#: field:infrastructure.server,message_is_follower:0
+msgid "Is a Follower"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,issue_date:0
+msgid "Issue Data"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database_type,db_admin_pass:0
+msgid "It will be used as default on Database Admin Password,        if not value defined instance name will be suggested"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database_type,db_filter:0
+msgid "It will be used as default on Instances"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database_type,instance_admin_pass:0
+msgid "It will be used on OWN SERVERS as default on Instance Admin        Password, if not value defined instance name will be suggested"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Italian / Italiano"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Japanese / 日本語"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Kabyle / Taqbaylit"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Korean (KP) / 한국어 (KP)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Korean (KR) / 한국어 (KR)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Lao / ພາສາລາວ"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,message_last_post:0
+#: field:infrastructure.environment,message_last_post:0
+#: field:infrastructure.instance,message_last_post:0
+#: field:infrastructure.server,message_last_post:0
+msgid "Last Message Date"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,write_uid:0
+#: field:infrastructure.change_db_passwd.wizard,write_uid:0
+#: field:infrastructure.command,write_uid:0
+#: field:infrastructure.copy_data_from_instance.wizard,write_uid:0
+#: field:infrastructure.database,write_uid:0
+#: field:infrastructure.database.backup,write_uid:0
+#: field:infrastructure.database.module,write_uid:0
+#: field:infrastructure.database.user,write_uid:0
+#: field:infrastructure.database_type,write_uid:0
+#: field:infrastructure.db_filter,write_uid:0
+#: field:infrastructure.docker_image,write_uid:0
+#: field:infrastructure.docker_image.tag,write_uid:0
+#: field:infrastructure.duplicate_db.wizard,write_uid:0
+#: field:infrastructure.duplicate_instance.wizard,write_uid:0
+#: field:infrastructure.environment,write_uid:0
+#: field:infrastructure.instance,write_uid:0
+#: field:infrastructure.instance_host,write_uid:0
+#: field:infrastructure.instance_repository,write_uid:0
+#: field:infrastructure.mailserver,write_uid:0
+#: field:infrastructure.odoo_version,write_uid:0
+#: field:infrastructure.rename_database.name,write_uid:0
+#: field:infrastructure.repository,write_uid:0
+#: field:infrastructure.repository_branch,write_uid:0
+#: field:infrastructure.restore_database.wizard,write_uid:0
+#: field:infrastructure.restore_from_file.wizard,write_uid:0
+#: field:infrastructure.server,write_uid:0
+#: field:infrastructure.server_change,write_uid:0
+#: field:infrastructure.server_configuration,write_uid:0
+#: field:infrastructure.server_configuration_command,write_uid:0
+#: field:infrastructure.server_docker_image,write_uid:0
+#: field:infrastructure.server_hostname,write_uid:0
+msgid "Last Updated by"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,write_date:0
+#: field:infrastructure.change_db_passwd.wizard,write_date:0
+#: field:infrastructure.command,write_date:0
+#: field:infrastructure.copy_data_from_instance.wizard,write_date:0
+#: field:infrastructure.database,write_date:0
+#: field:infrastructure.database.backup,write_date:0
+#: field:infrastructure.database.module,write_date:0
+#: field:infrastructure.database.user,write_date:0
+#: field:infrastructure.database_type,write_date:0
+#: field:infrastructure.db_filter,write_date:0
+#: field:infrastructure.docker_image,write_date:0
+#: field:infrastructure.docker_image.tag,write_date:0
+#: field:infrastructure.duplicate_db.wizard,write_date:0
+#: field:infrastructure.duplicate_instance.wizard,write_date:0
+#: field:infrastructure.environment,write_date:0
+#: field:infrastructure.instance,write_date:0
+#: field:infrastructure.instance_host,write_date:0
+#: field:infrastructure.instance_repository,write_date:0
+#: field:infrastructure.mailserver,write_date:0
+#: field:infrastructure.odoo_version,write_date:0
+#: field:infrastructure.rename_database.name,write_date:0
+#: field:infrastructure.repository,write_date:0
+#: field:infrastructure.repository_branch,write_date:0
+#: field:infrastructure.restore_database.wizard,write_date:0
+#: field:infrastructure.restore_from_file.wizard,write_date:0
+#: field:infrastructure.server,write_date:0
+#: field:infrastructure.server_change,write_date:0
+#: field:infrastructure.server_configuration,write_date:0
+#: field:infrastructure.server_configuration_command,write_date:0
+#: field:infrastructure.server_docker_image,write_date:0
+#: field:infrastructure.server_hostname,write_date:0
+msgid "Last Updated on"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.module,installed_version:0
+msgid "Latest Version"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Latvian / latviešu valoda"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,limit_time_cpu:0
+msgid "Limit Time CPU"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,limit_time_real:0
+msgid "Limit Time Real"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Lithuanian / Lietuvių kalba"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,local_alias_path:0
+msgid "Local Alias Path For Catch All Configuration"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,local_alias_path:0
+msgid "Local Aliases Path"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,log_level:0
+msgid "Log Level"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.user,login:0
+msgid "Login"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,logrotate:0
+msgid "Logrotate"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Macedonian / македонски јазик"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_mailserver_mail_servers
+#: model:ir.ui.menu,name:infrastructure.menu_mail_servers
+msgid "Mail Servers"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,mailgate_file:0
+msgid "Mailgate File"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,mailgate_file:0
+msgid "Mailgate File is Copided to Server and Computed when installing        postfix"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:946
+#, python-format
+msgid "Mailgate file was not found on mailgate path '%s' base path                found for mail module"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.instance_host,type:0
+#: model:ir.ui.menu,name:infrastructure.menu_infra_main
+msgid "Main"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,main_hostname:0
+msgid "Main Hostname"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Main Hostname..."
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_host,type:0
+msgid "Main?"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database,state:0
+msgid "Maintenance"
+msgstr ""
+
+#. module: infrastructure
+#: model:res.groups,name:infrastructure.group_manager
+msgid "Manager"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database.backup,type:0
+msgid "Manual"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.instance,limit_time_cpu:0
+msgid "Maximum allowed CPU time per request. The default odoo value is        60 but sometimes we use 120 to avoid some workers timeout error"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.instance,limit_time_real:0
+msgid "Maximum allowed Real time per request. The default odoo value is        120 but sometimes we use 240 to avoid some workers timeout error"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,message_ids:0
+#: field:infrastructure.environment,message_ids:0
+#: field:infrastructure.instance,message_ids:0
+#: field:infrastructure.server,message_ids:0
+msgid "Messages"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,message_ids:0
+#: help:infrastructure.environment,message_ids:0
+#: help:infrastructure.instance,message_ids:0
+#: help:infrastructure.server,message_ids:0
+msgid "Messages and communication history"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.ui.menu,name:infrastructure.menu_miscellaneous
+msgid "Miscellaneous"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.base.module:infrastructure.view_base_module_filter
+#: view:infrastructure.base.module:infrastructure.view_base_module_form
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+msgid "Module"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.server,name:infrastructure.action_server_database_module_install
+msgid "Module Install"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,shortdesc:0
+#: field:infrastructure.database.module,shortdesc:0
+msgid "Module Name"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.server,name:infrastructure.action_server_database_module_uninstall
+#: model:ir.actions.server,name:infrastructure.action_server_database_module_upgrade
+msgid "Module Uninstall"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.base.module:infrastructure.view_base_module_tree
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: field:infrastructure.database,module_ids:0
+#: view:infrastructure.database.module:infrastructure.view_database_module_tree
+msgid "Modules"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.repository,server_wide_modules:0
+msgid "Modules to be load in intance. Eg. web,web_kanban"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Mongolian / монгол"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,name:0
+#: field:infrastructure.command,name:0
+#: field:infrastructure.database,name:0
+#: field:infrastructure.database.backup,name:0
+#: field:infrastructure.database.module,name:0
+#: field:infrastructure.database.user,email:0
+#: field:infrastructure.database.user,name:0
+#: field:infrastructure.database_type,name:0
+#: field:infrastructure.db_filter,name:0
+#: field:infrastructure.docker_image,name:0
+#: field:infrastructure.docker_image.tag,docker_image_id:0
+#: field:infrastructure.docker_image.tag,name:0
+#: field:infrastructure.docker_image.tag,sequence:0
+#: field:infrastructure.environment,name:0
+#: field:infrastructure.instance,name:0
+#: field:infrastructure.instance_host,name:0
+#: field:infrastructure.odoo_version,name:0
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: field:infrastructure.repository,name:0
+#: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_filter
+#: field:infrastructure.repository_branch,name:0
+#: field:infrastructure.server,name:0
+#: field:infrastructure.server_configuration,name:0
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
+#: field:infrastructure.server_configuration_command,name:0
+#: field:infrastructure.server_hostname,name:0
+msgid "Name"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.instance:0
+msgid "Name must be unique per environment!"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.environment:0
+#: sql_constraint:infrastructure.instance_host:0
+msgid "Name must be unique per server!"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Name..."
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.rename_database.name,name:0
+msgid "New Database Name"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.change_db_passwd.wizard,new_passwd:0
+msgid "New Password"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.duplicate_db.wizard,new_db_name:0
+#: field:infrastructure.restore_database.wizard,new_db_name:0
+msgid "New db Name"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:1327
+#, python-format
+msgid "Nginx '%s' directory not found!                 Check if Nginx is installed!"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,nginx_log_path:0
+msgid "Nginx Log Path"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,nginx_sites_path:0
+msgid "Nginx Sites Path"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:1078
+#, python-format
+msgid "No Environment Path!"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,service_type:0
+#: selection:infrastructure.instance,service_type:0
+msgid "No Service"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server_configuration_command.py:40
+#, python-format
+msgid "No server in context"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.mailserver,smtp_encryption:0
+msgid "None"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.instance,type:0
+msgid "None Secure"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,type:0
+msgid "Normal"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Norwegian Bokmål / Norsk bokmål"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+msgid "Not Cancel"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/wizard/duplicate_db_wizard.py:51
+#, python-format
+msgid "Not Implemented Yet!"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database.module,state:0
+msgid "Not Installable"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+#: selection:infrastructure.database.module,state:0
+msgid "Not Installed"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.repository,default_in_new_env:0
+msgid "Not implemented yet"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,note:0
+#: field:infrastructure.environment,note:0
+#: field:infrastructure.instance,note:0
+#: field:infrastructure.server,note:0
+msgid "Note"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Notes"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.duplicate_instance.wizard,number:0
+#: field:infrastructure.environment,number:0
+#: field:infrastructure.instance,number:0
+msgid "Number"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.instance:0
+msgid "Number must be unique per environment!"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.environment:0
+msgid "Number must be unique per server!"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,number_of_processors:0
+msgid "Number of Processors"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:552
+#, python-format
+msgid "Number should be between 1 and 9"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/environment.py:145
+#, python-format
+msgid "Number should be between 10 and 99"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.docker_image,service:0
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Odoo"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,odoo_container:0
+msgid "Odoo Container"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,odoo_image_id:0
+msgid "Odoo Image"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.docker_image,odoo_image_ids:0
+msgid "Odoo Images"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,odoo_sufix:0
+msgid "Odoo Sufix"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.docker_image,odoo_version_id:0
+#: field:infrastructure.environment,odoo_version_id:0
+#: view:infrastructure.odoo_version:infrastructure.view_infrastructure_odoo_version_filter
+#: view:infrastructure.odoo_version:infrastructure.view_infrastructure_odoo_version_form
+#: view:infrastructure.odoo_version:infrastructure.view_infrastructure_odoo_version_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_odoo_version
+msgid "Odoo Version"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+msgid "Odoo Version..."
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_odoo_version_odoo_versions
+#: model:ir.ui.menu,name:infrastructure.menu_odoo_versions
+msgid "Odoo Versions"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,smtp_pass:0
+msgid "Optional password for SMTP authentication"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,smtp_user:0
+msgid "Optional username for SMTP authentication"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.docker_image,service:0
+#: selection:infrastructure.instance_host,type:0
+msgid "Other"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.server,server_use_type:0
+msgid "Own"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+#: field:infrastructure.server,owner_id:0
+msgid "Owner"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,owner_id:0
+msgid "Owner of the server, the one you should contacto to make        changes on, for example, hardware."
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: field:infrastructure.repository,pip_packages:0
+msgid "PIP Packages"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: field:infrastructure.database,partner_id:0
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+#: field:infrastructure.environment,partner_id:0
+#: field:infrastructure.mailserver,partner_id:0
+#: field:infrastructure.server_hostname,partner_id:0
+#: model:ir.model,name:infrastructure.model_res_partner
+msgid "Partner"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,used_by_id:0
+msgid "Partner that can contact you and ask for changes on server        configuration"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,holder_id:0
+msgid "Partner that you should contact related to server service."
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+msgid "Partner..."
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_partner_partners
+#: model:ir.ui.menu,name:infrastructure.menu_partners
+msgid "Partners"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,smtp_pass:0
+#: field:infrastructure.server,password:0
+msgid "Password"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:537
+#, python-format
+msgid "Password for user"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:537
+#: code:addons/infrastructure/models/server.py:545
+#, python-format
+msgid "Password for user '%s':"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/wizard/change_db_passwd_wizard.py:25
+#, python-format
+msgid "Password is too short.                       At least 5 characters are required."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:351
+#, python-format
+msgid "Password:"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database_type.py:121
+#: code:addons/infrastructure/models/database_type.py:125
+#, python-format
+msgid "Password: '%s'"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/wizard/change_db_passwd_wizard.py:29
+#, python-format
+msgid "Passwords mismatch!"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.backup,path:0
+#: field:infrastructure.environment,path:0
+msgid "Path"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.environment:0
+msgid "Path must be unique per server!"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Persian / فارس"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:565
+#, python-format
+msgid "Please log in into the server and run:\n"
+"            * drive init %s\n"
+"            Follow onscreen steps            "
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Polish / Język polski"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,smtp_port:0
+msgid "Port used for incoming emails"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,ssh_port:0
+msgid "Port used for ssh connection to the server"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,http_port:0
+msgid "Port used to access odoo via web browser"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,https_port:0
+msgid "Port used to access odoo via web browser over ssl"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Portuguese (BR) / Português (BR)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Portuguese / Português"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,postfix_hostname:0
+msgid "Postfix Hostname"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Postgres"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,pg_image_id:0
+msgid "Postgres Image"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.docker_image,service:0
+msgid "Postgresql"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.docker_image,pg_image_ids:0
+msgid "Postgresql Images"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,prefix:0
+#: field:infrastructure.docker_image,prefix:0
+#: field:infrastructure.instance_host,prefix:0
+msgid "Prefix"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,sequence:0
+msgid "Priority"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,protect_db:0
+msgid "Protect Databases?"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,type:0
+msgid "Protected"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,proxy_mode:0
+msgid "Proxy Mode?"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.module,published_version:0
+msgid "Published Version"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_form
+#: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_tree
+msgid "Pull Image"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_tree
+msgid "Pull Image Detached"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.docker_image,pull_name:0
+msgid "Pull Name"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+msgid "Pull Source and Active Repository"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Pull from instance:"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Pull, Clone to Inst. and Checkout all Repositoires"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Reboot Server"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.instance_host,type:0
+msgid "Redirect To Main"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.user,partner_id:0
+msgid "Related Partner"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
+#: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
+msgid "Rembember to reconfigure catchall on new database"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Remove"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.rename_database.name:infrastructure.infrastructure_rename_database_wizard_view
+msgid "Rename"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.rename_database.name:infrastructure.infrastructure_rename_database_wizard_view
+msgid "Rename Database"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_rename_database_wizard
+msgid "Rename Database Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: field:infrastructure.instance,instance_repository_ids:0
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_repository_repositories
+#: model:ir.ui.menu,name:infrastructure.menu_repositories
+#: model:ir.ui.menu,name:infrastructure.menu_repositories_conf
+msgid "Repositories"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_repository,repository_id:0
+msgid "Repository"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.instance_repository:0
+msgid "Repository Must be Unique per Ìnstance"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,requires_vpn:0
+msgid "Requires VPN?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Restart Nginx"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
+#: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
+msgid "Restore"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_form
+#: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
+#: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
+msgid "Restore Database"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_restore_database_wizard
+msgid "Restore Database Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
+msgid "Restore From File"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_restore_from_file_wizard
+msgid "Restore From File Wizard"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Romanian / română"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.db_filter,rule:0
+msgid "Rule"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Run"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Run docker restart"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Run docker run"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Run docker stop"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database_backup.py:59
+#, python-format
+msgid "Run on your terminal:\n"
+"            %s\n"
+"            Password: %s"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Russian / русский язык"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,smtp_port:0
+#: field:infrastructure.server,smtp_port:0
+msgid "SMTP Port"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,smtp_port:0
+msgid "SMTP Port. Usually 465 for SSL, and 25 or 587 for other cases."
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,smtp_server_id:0
+#: field:infrastructure.mailserver,smtp_host:0
+msgid "SMTP Server"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,ssh_port:0
+msgid "SSH Port"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_hostname,ssl_available:0
+msgid "SSL Available?"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,ssl_certificate:0
+#: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
+#: field:infrastructure.server_hostname,ssl_certificate:0
+msgid "SSL Certificate"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,ssl_certificate_key:0
+#: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
+#: field:infrastructure.server_hostname,ssl_certificate_key:0
+msgid "SSL Certificate KEY"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
+msgid "SSL Intermadiate Certificate"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_hostname,ssl_intermediate_certificate:0
+msgid "SSL Intermediate Certificate"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,ssl_path:0
+msgid "SSL path"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.mailserver,smtp_encryption:0
+msgid "SSL/TLS"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.base.module:infrastructure.view_base_module_filter
+#: view:infrastructure.database.module:infrastructure.view_database_module_filter
+msgid "Search modules"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.instance,type:0
+msgid "Secure"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.base.module,sequence:0
+#: field:infrastructure.database.module,sequence:0
+#: field:infrastructure.database_type,sequence:0
+#: field:infrastructure.odoo_version,sequence:0
+#: field:infrastructure.repository,sequence:0
+#: field:infrastructure.server,sequence:0
+#: field:infrastructure.server_hostname,sequence:0
+msgid "Sequence"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Serbian (Cyrillic) / српски"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Serbian (Latin) / srpski"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.ui.menu,name:infrastructure.menu_serv__env_and_inst
+msgid "Serv. Env and Inst"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: field:infrastructure.database,server_id:0
+#: field:infrastructure.duplicate_db.wizard,server_id:0
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+#: field:infrastructure.environment,server_id:0
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: field:infrastructure.instance,server_id:0
+#: field:infrastructure.instance_host,server_id:0
+#: field:infrastructure.restore_database.wizard,server_id:0
+#: field:infrastructure.server_change,server_id:0
+#: field:infrastructure.server_docker_image,server_id:0
+#: field:infrastructure.server_hostname,server_id:0
+msgid "Server"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:461
+#, python-format
+msgid "Server Codename is not the and Server configuration mismatch\n"
+"                * Server Codename: %s\n"
+"                * Server Configuration Codename: %s\n"
+"                "
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,server_configuration_id:0
+msgid "Server Config."
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+msgid "Server Configuration"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Server Configuration..."
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_server_configuration_server_configurations
+#: model:ir.ui.menu,name:infrastructure.menu_server_configurations
+msgid "Server Configurations"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_form
+#: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_server_docker_image
+msgid "Server Docker Image"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_host,server_hostname_id:0
+msgid "Server Hostname"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_server_hostname
+#: model:ir.ui.menu,name:infrastructure.menu_server_hostname
+msgid "Server Hostnames"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,server_mode_value:0
+msgid "Server Mode Value"
+msgstr ""
+
+#. module: infrastructure
+#: sql_constraint:infrastructure.server:0
+msgid "Server Name must be unique!"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,server_use_type:0
+msgid "Server Type"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.repository,server_wide_modules:0
+msgid "Server Wide Modules"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_server_servers
+#: model:ir.ui.menu,name:infrastructure.menu_servers
+msgid "Servers"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.docker_image,service:0
+msgid "Service"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,service_type:0
+#: field:infrastructure.instance,service_type:0
+msgid "Service type"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Slovak / Slovenský jazyk"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Slovenian / slovenščina"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.copy_data_from_instance.wizard,source_instance_id:0
+#: field:infrastructure.duplicate_instance.wizard,source_instance_id:0
+msgid "Source Instance"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance_repository.py:128
+#, python-format
+msgid "Source repository not found"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,sources_from_id:0
+msgid "Sources From"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (AR) / Español (AR)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (BO) / Español (BO)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (CL) / Español (CL)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (CO) / Español (CO)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (CR) / Español (CR)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (DO) / Español (DO)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (EC) / Español (EC)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (GT) / Español (GT)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (MX) / Español (MX)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (PA) / Español (PA)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (PE) / Español (PE)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (PY) / Español (PY)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (UY) / Español (UY)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish (VE) / Español (VE)"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Spanish / Español"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_repository,branch_id:0
+msgid "Specific Branch"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.instance,db_maxconn:0
+msgid "Specify the the maximum number of physical connections to        posgresql. Default odoo config is 64, we use 32."
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,state:0
+#: field:infrastructure.environment,state:0
+#: field:infrastructure.instance,state:0
+#: field:infrastructure.server,state:0
+msgid "State"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database.module,state:0
+msgid "Status"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Stop"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Stop and then Run docker rm -f"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_host,subdomain:0
+msgid "Subdomain"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.duplicate_instance.wizard,sufix:0
+#: field:infrastructure.instance,sufix:0
+#: field:infrastructure.odoo_version,sufix:0
+msgid "Sufix"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,message_summary:0
+#: field:infrastructure.environment,message_summary:0
+#: field:infrastructure.instance,message_summary:0
+#: field:infrastructure.server,message_summary:0
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: field:infrastructure.server_change,name:0
+msgid "Summary"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Swedish / svenska"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,syncked_backups_path:0
+msgid "Syncked Backups Path"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.mailserver,smtp_encryption:0
+msgid "TLS (STARTTLS)"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,odoo_image_tag_id:0
+#: field:infrastructure.instance,pg_image_tag_id:0
+msgid "Tag"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.docker_image,tag_ids:0
+msgid "Tags"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.copy_data_from_instance.wizard,target_instance_id:0
+msgid "Target Instance"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Telugu / తెలుగు"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "Test connection, check distribution, get processors data and activate"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Thai / ภาษาไทย"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,number_of_processors:0
+msgid "This is used to suggest instance workers qty, you can get this        information with: grep processor /proc/cpuinfo | wc -l"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.server,state:0
+msgid "To Install"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database.module,state:0
+msgid "To be installed"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database.module,state:0
+msgid "To be removed"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database.module,state:0
+msgid "To be upgraded"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server_hostname.py:116
+#, python-format
+msgid "To configure SSL you need to set ssl certificates and keys"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:553
+#, python-format
+msgid "To configure google drive sync you need to set account and                password"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Tunnel to Posgres"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:861
+#, python-format
+msgid "Tunneling command to access postgres:\n"
+"%s\n"
+"            Password: %s\n"
+"            In your pgadmin you should enter:\n"
+"            *Host: localhost\n"
+"            *Port: 5499\n"
+"            *Usarname and pass: odoo"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Turkish / Türkçe"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: field:infrastructure.database,advance_type:0
+#: field:infrastructure.database.backup,type:0
+#: field:infrastructure.database_type,type:0
+#: field:infrastructure.environment,type:0
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: field:infrastructure.repository,type:0
+msgid "Type"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Type..."
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.repository,url:0
+msgid "URL"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,url_prefix:0
+msgid "URL Prefix"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Ukrainian / українська"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:667
+#: code:addons/infrastructure/models/database.py:688
+#, python-format
+msgid "Unable to Connect to Database."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:888
+#, python-format
+msgid "Unable to Upload SMTP Config."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:901
+#, python-format
+msgid "Unable to change password."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:429
+#, python-format
+msgid "Unable to drop Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:594
+#, python-format
+msgid "Unable to duplicate Database. This is what we get:\n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:467
+#, python-format
+msgid "Unable to migrate Database. If you are working in an                 instance with \"workers\" then you can try                 restarting service. This is what we get:\n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:487
+#, python-format
+msgid "Unable to rename Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n"
+"%s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:561
+#: code:addons/infrastructure/models/database_backup.py:125
+#, python-format
+msgid "Unable to restore bd %s, you can try restartin target                    instance. This is what we get: \n"
+" %s"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:567
+#: code:addons/infrastructure/models/database_backup.py:131
+#, python-format
+msgid "Unable to restore bd %s, you can try restartin target                instance. This is what we get: \n"
+" %s"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_form
+msgid "Uninstall"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database,message_unread:0
+#: field:infrastructure.environment,message_unread:0
+#: field:infrastructure.instance,message_unread:0
+#: field:infrastructure.server,message_unread:0
+msgid "Unread Messages"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Update"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Update Backups Data"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Update Conf"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Update Modules Data"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Update Nginx"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Update Nginx Configuration"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Update Odoo Config File"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Update all modules and databases"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database.module:infrastructure.view_database_module_form
+msgid "Upgrade"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "Upload Config"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,default_repositories_id:0
+msgid "Use Default Repositories?"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+#: field:infrastructure.server,used_by_id:0
+msgid "Used By"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: field:infrastructure.server_change,user_id:0
+#: model:res.groups,name:infrastructure.group_user
+msgid "User"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,user_name:0
+msgid "User Name"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.mailserver,smtp_user:0
+msgid "Username"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: field:infrastructure.database,user_ids:0
+msgid "Users"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Vietnamese / Tiếng Việt"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,virtual_alias_path:0
+msgid "Virtual Alias Path For Postfix Catch All Configuration"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,virtual_alias_path:0
+msgid "Virtual Aliases Path"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server,virtual_domains_regex_path:0
+msgid "Virtual Domain Regex Path"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.server,virtual_domains_regex_path:0
+msgid "Virtual Domain Regex Path For Postfix Catch All Configuration"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.mailserver,sequence:0
+msgid "When no specific mail server is requested for a mail, the highest priority one is used. Default priority is 10 (smaller number = higher priority)"
+msgstr ""
+
+#. module: infrastructure
+#: help:infrastructure.database,admin_password:0
+msgid "When trying to connect to the database first we are going to        try by using the instance password and then with thisone."
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_hostname,wildcard:0
+msgid "Wild Card"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,workers:0
+msgid "Workers"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,workers:0
+msgid "Workers Filter"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.database_type,workers_number:0
+msgid "Workers Number"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:1267
+#, python-format
+msgid "You Must set at least one instance host!"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:700
+#, python-format
+msgid "You can not Update Backups Data if module '%s' is not                    installed in the database"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:912
+#, python-format
+msgid "You can not configure backups if module '%s' is not                    installed in the database"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:942
+#, python-format
+msgid "You can not configure catchall if Local Alias is                not set. Probably this is because Mailgate File was not                found"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:939
+#, python-format
+msgid "You can not configure catchall if module '%s'                     is not installed in the database"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/environment.py:203
+#, python-format
+msgid "You can not delete an environment that has instances"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:725
+#, python-format
+msgid "You can not delete an instance that is of type protected,                you can change type, or drop it manually"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:413
+#, python-format
+msgid "You can not drop a database protected,                you can change database type, or drop it manually"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:650
+#, python-format
+msgid "You can not kill connections if module '%s' is not                    installed in the database"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:514
+#: code:addons/infrastructure/models/database_backup.py:79
+#, python-format
+msgid "You can not restore a database to a instance with                workers, you should first set them to 0, reconfig and try                again. After saccesfull restore you can reactivate workers"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.instance_host:infrastructure.view_infrastructure_instance_host_form
+msgid "You can only choose hostnames that are configured in this server and that has partner = False or partner = this environment partner"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "You can only choose smtp servers that has partner = False or partner = this environment partner"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database_module.py:53
+#, python-format
+msgid "You can only use this function in modules of the same                database"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:318
+#, python-format
+msgid "You cannot delete a database which is not draft                     or cancelled."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/environment.py:151
+#, python-format
+msgid "You cannot delete a environment which is not                     draft or cancelled."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance_repository.py:92
+#, python-format
+msgid "You cannot delete a repository that has Actual Commit                You should first delete it with the delete button."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:388
+#, python-format
+msgid "You cannot delete a server which is not draft or cancelled."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance.py:557
+#, python-format
+msgid "You cannot delete an instance which                 is not draft or cancelled."
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:857
+#, python-format
+msgid "You must choose an SMTP server config in order to upload it"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.command:infrastructure.view_infrastructure_command_filter
+#: view:infrastructure.command:infrastructure.view_infrastructure_command_form
+#: view:infrastructure.command:infrastructure.view_infrastructure_command_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_command
+msgid "command"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "critical"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_tree
+#: selection:infrastructure.database,attachment_loc_type:0
+#: model:ir.model,name:infrastructure.model_infrastructure_database
+msgid "database"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_filter
+#: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_form
+#: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_database_type
+msgid "database_type"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_db_back_up_policy
+msgid "db_back_up_policy"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_db_backup_policy
+msgid "db_backup_policy"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.db_filter:infrastructure.view_infrastructure_db_filter_filter
+#: view:infrastructure.db_filter:infrastructure.view_infrastructure_db_filter_form
+#: view:infrastructure.db_filter:infrastructure.view_infrastructure_db_filter_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_db_filter
+msgid "db_filter"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "debug"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "debug_rpc"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "debug_rpc_answer"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "debug_sql"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.docker_image:infrastructure.view_infrastructure_docker_image_tree
+msgid "docker_image"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "email Config"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_environment
+msgid "environment"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_environment_repository
+msgid "environment_repository"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_environment_version
+msgid "environment_version"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "error"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database,attachment_loc_type:0
+msgid "filesystem"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.repository,type:0
+msgid "git"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "info"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_instance
+msgid "instance"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_host:infrastructure.view_infrastructure_instance_host_filter
+#: view:infrastructure.instance_host:infrastructure.view_infrastructure_instance_host_form
+#: view:infrastructure.instance_host:infrastructure.view_infrastructure_instance_host_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_instance_host
+msgid "instance_host"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance_host,instance_id:0
+msgid "instance_id"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_filter
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_form
+#: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_instance_repository
+msgid "instance_repository"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_mailserver
+msgid "mailserver"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.odoo_version:infrastructure.view_infrastructure_odoo_version_form
+msgid "odoo_version"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
+#: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
+#: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
+#: view:infrastructure.duplicate_instance.wizard:infrastructure.infrastructure_duplicate_instance_wizard_view
+#: view:infrastructure.rename_database.name:infrastructure.infrastructure_rename_database_wizard_view
+#: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
+#: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
+msgid "or"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_form
+#: view:infrastructure.repository:infrastructure.view_infrastructure_repository_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_repository
+msgid "repository"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_filter
+#: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_form
+#: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_repository_branch
+msgid "repository_branch"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.repository_branch,repository_ids:0
+msgid "repository_ids"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.command,sequence:0
+#: field:infrastructure.server_configuration_command,sequence:0
+msgid "sequence"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_server
+msgid "server"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_form
+#: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_server_change
+msgid "server_change"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_configuration:infrastructure.view_infrastructure_server_configuration_filter
+#: view:infrastructure.server_configuration:infrastructure.view_infrastructure_server_configuration_form
+#: view:infrastructure.server_configuration:infrastructure.view_infrastructure_server_configuration_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_server_configuration
+msgid "server_configuration"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_form
+#: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_server_configuration_command
+msgid "server_configuration_command"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_configuration_command,server_configuration_id:0
+msgid "server_configuration_id"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_filter
+#: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
+#: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_tree
+#: model:ir.model,name:infrastructure.model_infrastructure_server_hostname
+msgid "server_hostname"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.server_configuration,server_ids:0
+msgid "server_ids"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_server_repository
+msgid "server_repository"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_server_service
+msgid "server_service"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_service
+msgid "service"
+msgstr ""
+
+#. module: infrastructure
+#: model:ir.model,name:infrastructure.model_infrastructure_service_command
+msgid "service_command"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "test"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance_repository.py:118
+#, python-format
+msgid "this method must be call from a repository that                belongs to an instance with Other Instance Repositories"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "to Active"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "to Draft"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "to Install"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "to Maintenance"
+msgstr ""
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,instance_log_level:0
+#: selection:infrastructure.instance,log_level:0
+msgid "warn"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "⇒ Configure"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "⇒ Test Connection"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+#: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_form
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
+msgid "⇒ View Password"
+msgstr ""
+
