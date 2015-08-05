@@ -14,13 +14,7 @@ Server and general underlying infrastructure management for Odoo
 If you don't have Pip, find it here: http://pypi.python.org/pypi/pip
 
 ## Contributing
-We follow some guidelines and advice than [Odoo Argentina](https://github.com/ingadhoc/odoo-argentina/wiki). In summary:
-
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+We follow same guidelines and advice than [Odoo Argentina](https://github.com/ingadhoc/odoo-argentina/wiki). In summary:
 
 ## Credits
 <p>
