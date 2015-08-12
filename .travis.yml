@@ -17,6 +17,7 @@ env:
   global:
   - VERSION="8.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0"
   - TRANSIFEX_USER='jjscarafia'
+  - TRANSIFEX_ORGANIZATION='adhoc'
   - secure: HVeS3fKkXitWuJ78WXhJ7M8WgjxNg8qT+EnPNYSM70Z7UJ3Us9z4yRhb76fLu3UQDU7zSuuujsy6RYkNQA/smux9DQ6jdrPlGVyQscNl2/NjfGm+zh+2MU4XnJZixEuPFHSTJHzHBiSDVasuZcss5IyLE5Ec1w8mV8GuEMsZrZP8WL42lFuB/kVnkes/ugIggqyqJ5xQgCR0dvoT9dAn0k39CHo/dUHMojaan0v810/wUFdbqFo2VagCgRUWw7zvPjLqmElhM6Zxxy+ZlZ2etGDL3HBK3PkwvB/bEwixwJoxoELE30bvyuTjjLzns2khtN2y+6f8p1svhd70pU8KytnjBo480vOz+rK/age3+vhXS5a3+SmrbHwQxoS/zeVXS+ec1PwGzQvJmkd95Bl4ht5FFTAHBJvtWMa5H05aiUquxmIrcdyB5Jk3PGALztv1btjh1s7YVEcdAjjXPLW9lhsBl791FAhzt3/YTd94+uHqX2+E6K3KBcEt6mVbmwR6H7DbJnXmAfizOQMw37B3s+CkzetQAWPnqpGuWrbTNRoV5kw+Y7es06pwWYSoTPiBg226HtdrexkaDi8Y/bI+OLmDgglSJgI6Y+1eCQdJAHm5nYMn134rt/O3TUhxckcapyhHB5jxxwpd0zpWbEJLbyi+ZMMuwrCq9qvhhOuGR2g=
 
   matrix:
