@@ -334,6 +334,10 @@ class instance(models.Model):
         string='Odoo Sufix',
         help='Commonly used only on debuggin, use for eg. "-u all"'
         )
+    pg_custom_commands = fields.Char(
+        string='Pg Custom Commands',
+        help='For eg. used to expose the port like "-p 5439:5432"'
+        )
     odoo_container = fields.Char(
         string='Odoo Container',
         compute='get_container_names',
@@ -824,9 +828,9 @@ class instance(models.Model):
                 odoo_sufix + ' --stop-after-init --workers=0 -u all'))
 
         # pg start command
-        self.run_pg_cmd = 'docker run %s %s %s --name %s %s' % (
+        self.run_pg_cmd = 'docker run %s %s %s %s %s --name %s' % (
             prefix, self.pg_image_id.prefix or '', pg_volume_links,
-            self.pg_container, pg_image_name)
+            self.pg_container, self.pg_custom_commands or '', pg_image_name)
 
         # kill commands
         self.remove_odoo_cmd = 'docker rm -f %s' % self.odoo_container

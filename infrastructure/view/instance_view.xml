@@ -152,6 +152,7 @@
                         <group string="Postgres">
                             <button name="get_tunnel_to_pg" type="object" string="Tunnel to Posgres"/>
                             <newline/>
+                            <field name="pg_custom_commands"/>
                             <field name="pg_log_cmd"/>
                             <field name="start_pg_cmd"/>
                             <field name="restart_pg_cmd"/>
