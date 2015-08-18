@@ -115,6 +115,7 @@
                             <div class="oe_inline">
                                 <field name="backups_enable"/><button class="oe_link" type="object" name="config_backups" states='active' string="Config Backups"/>
                             </div>
+                            <field name="backup_format" attrs="{'required': [('backups_enable', '=', True)], 'invisible': [('backups_enable', '=', False)]}"/>
                         </group>
                         <button type="object" name="update_backups_data" string="Update Backups Data"/>
                         <field name="backup_ids"/>

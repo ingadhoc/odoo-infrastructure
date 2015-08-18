@@ -216,6 +216,14 @@ class database(models.Model):
         'Backups Enable',
         copy=False,
         )
+    backup_format = fields.Selection([
+        ('zip', 'zip (With Filestore)'),
+        ('pg_dump', 'pg_dump (Without Filestore)')],
+        'Backup Format',
+        default='pg_dump',
+        required=True,
+        copy=False,
+        )
     catchall_enable = fields.Boolean(
         'Catchall Enable',
         copy=False,
@@ -919,10 +927,15 @@ class database(models.Model):
             'database_tools.db_self_database')
         if self.backups_enable:
             vals = {
+                # we set next backup at a night
+                'backup_next_date': datetime.strftime(
+                    datetime.today()+relativedelta(days=1),
+                    '%Y-%m-%d 05:%M:%S'),
                 'backups_path': os.path.join(
                     self.instance_id.backups_path, self.name),
                 'syncked_backup_path': os.path.join(
                     self.instance_id.syncked_backup_path, self.name),
+                'backup_format': self.backup_format
             }
             client.model('db.database').write([self_db_id], vals)
         client.model('db.database').backups_state(
