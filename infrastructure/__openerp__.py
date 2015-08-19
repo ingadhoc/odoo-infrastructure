@@ -39,6 +39,8 @@
         'wizard/duplicate_instance_wizard_view.xml',
         'wizard/restore_from_file_view.xml',
         'wizard/infrastructure_database_backup_now_view.xml',
+        'wizard/infrastructure_database_drop_wizard_view.xml',
+        'wizard/infrastructure_instance_delete_wizard_view.xml',
         'security/infrastructure_group.xml',
         'view/infrastructure_menuitem.xml',
         'view/base_module_view.xml',

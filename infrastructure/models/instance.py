@@ -725,14 +725,12 @@ class instance(models.Model):
     @api.multi
     def delete(self):
         _logger.info("Deleting Instance")
-        if self.advance_type == 'protected':
+        by_pass_protection = self._context.get('by_pass_protection', False)
+        if self.advance_type == 'protected' and not by_pass_protection:
             raise Warning(_(
                 'You can not delete an instance that is of type protected,\
                 you can change type, or drop it manually'))
         self.database_ids.signal_workflow('sgn_cancel')
-        # if self.database_ids:
-        #     raise Warning(_(
-        #         'You can not delete an instance that has databases'))
         self.instance_repository_ids.write({'actual_commit': False})
         self.remove_odoo_service()
         self.remove_pg_service()
@@ -1104,6 +1102,25 @@ class instance(models.Model):
             '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass,
             use_sudo=True)
 
+        # add aeroo conf to server conf
+        # we run append first to ensure key exist and then sed
+        append(
+            self.conf_file_path,
+            'aeroo.docs_enabled = ', partial=True, use_sudo=True)
+        server_mode_value = self.database_type_id.server_mode_value or ''
+        sed(self.conf_file_path,
+            '(aeroo.docs_enabled).*', 'aeroo.docs_enabled = True',
+            use_sudo=True)
+
+        append(
+            self.conf_file_path,
+            'aeroo.docs_host = ', partial=True, use_sudo=True)
+        server_mode_value = self.database_type_id.server_mode_value or ''
+        sed(self.conf_file_path,
+            '(aeroo.docs_host).*', 'aeroo.docs_host = aeroo',
+            use_sudo=True)
+
+        # add certificates to server conf
         # we run append first to ensure key exist and then sed
         append(
             self.conf_file_path,

@@ -7,11 +7,17 @@
 from openerp import fields, api, _
 from openerp.osv import osv
 from openerp.exceptions import Warning
+from dateutil.relativedelta import relativedelta
+from datetime import date
 
 
 class infrastructure_database_backup_now_wizard(osv.osv_memory):
     _name = "infrastructure.database.backup_now.wizard"
     _description = "Infrastructure Database Backup Now Wizard"
+
+    @api.model
+    def get_default_keep_till_date(self):
+        return date.strftime(date.today() + relativedelta(days=30), '%Y-%m-%d')
 
     backup_format = fields.Selection([
         ('zip', 'zip (With Filestore)'),
@@ -28,6 +34,7 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
         'Keep Till Date',
         help="Only for manual backups, if not date is configured then backup "
         "won't be deleted.",
+        default=get_default_keep_till_date,
         )
 
     @api.multi
@@ -40,4 +47,7 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
         database = self.env['infrastructure.database'].browse(active_id)
         name = "%s.%s" % (self.name, self.backup_format)
         return database.backup_now(
-            name=name, keep_till_date=self.keep_till_date)
+            name=name,
+            keep_till_date=self.keep_till_date,
+            backup_format=self.backup_format
+            )

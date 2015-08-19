@@ -49,13 +49,13 @@
                 type="object"
                 name="get_backup_msg"
                 />
-                <!-- TODO implementar -->
-<!--             <button
+            <button
                 string="Delete Backup"
                 icon="gtk-cancel"
                 type="object"
                 name="delete_backup"
-                /> -->
+                confirm="Are you sure you want to delete this backup? This can not be undone"
+                />
         </tree>
     </field>
 </record>
