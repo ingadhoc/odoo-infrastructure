@@ -11,3 +11,4 @@ from . import copy_data_from_instance
 from . import duplicate_instance_wizard
 from . import restore_from_file
 from . import database_backup_now_wizard
+from . import infrastructure_database_drop_wizard

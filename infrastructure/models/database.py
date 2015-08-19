@@ -417,7 +417,8 @@ class database(models.Model):
     def drop_db(self):
         """Funcion que utiliza ws nativos de odoo para eliminar db"""
         self.ensure_one()
-        if self.advance_type == 'protected':
+        by_pass_protection = self._context.get('by_pass_protection', False)
+        if self.advance_type == 'protected' and not by_pass_protection:
             raise Warning(_('You can not drop a database protected,\
                 you can change database type, or drop it manually'))
         _logger.info("Dropping db '%s'" % (self.name))
