@@ -7,6 +7,7 @@
      <field name="model">infrastructure.restore_database.wizard</field>
      <field name="arch" type="xml">
         <form string="Restore Database">
+            <h1>IMPORTANTE! Always check database after a restore!</h1>
             <h1>Rembember to reconfigure catchall on new database</h1>
             <group>
                 <field name="target_advance_type" invisible="1"/>
@@ -16,14 +17,13 @@
                 <field name="target_database_id" attrs="{'invisible': [('type', '!=', 'overwrite')], 'required': [('type', '=', 'overwrite')]}" options="{'no_create': True}"/>
                 <field name="database_type_id" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}" options="{'no_create': True}"/>
                 <field name="new_db_name" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}"/>
-                <!-- <field name="overwrite_active"/> -->
-                <div attrs="{'invisible': ['|', ('target_advance_type', '!=', 'protected'), ('type', '!=', 'overwrite')]}">
-                    <p><b>DANGER!</b><br/>You are trying to overwrite a protected database, plase be aware of what you are doing</p>
-                    <label for="target_db_name_check"/>
-                    <field name="target_db_name_check" attrs="{'required': [('target_advance_type', '=', 'protected'), ('type', '=', 'overwrite')]}"/>
-                </div>
                 <field name="backups_enable"/>
             </group>
+            <div attrs="{'invisible': ['|', ('target_advance_type', '!=', 'protected'), ('type', '!=', 'overwrite')]}">
+                <p><b>DANGER!</b><br/>You are trying to overwrite a protected database, plase be aware of what you are doing</p>
+                <label for="target_db_name_check"/>
+                <field name="target_db_name_check" attrs="{'required': [('target_advance_type', '=', 'protected'), ('type', '=', 'overwrite')]}"/>
+            </div>
             <footer>
                 <button name="restore_database" string="Restore" type="object" class="oe_highlight"/>
                 or
