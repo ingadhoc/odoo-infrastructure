@@ -725,14 +725,12 @@ class instance(models.Model):
     @api.multi
     def delete(self):
         _logger.info("Deleting Instance")
-        if self.advance_type == 'protected':
+        by_pass_protection = self._context.get('by_pass_protection', False)
+        if self.advance_type == 'protected' and not by_pass_protection:
             raise Warning(_(
                 'You can not delete an instance that is of type protected,\
                 you can change type, or drop it manually'))
         self.database_ids.signal_workflow('sgn_cancel')
-        # if self.database_ids:
-        #     raise Warning(_(
-        #         'You can not delete an instance that has databases'))
         self.instance_repository_ids.write({'actual_commit': False})
         self.remove_odoo_service()
         self.remove_pg_service()

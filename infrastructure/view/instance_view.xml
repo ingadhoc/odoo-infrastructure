@@ -76,7 +76,7 @@
                     <button icon="fa-link" type="object" string="Update Nginx" class="oe_stat_button" help="Update Nginx Configuration" name="update_nginx_site" states="draft"/>
                     <button icon="fa-repeat" type="action" string="Copy Data From..." class="oe_stat_button" name="%(action_infrastructure_copy_data_from_instance_wizard)d" states="active"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_instance_wizard)d" states="active"/>
-                    <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="draft,active" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
+                    <button icon="fa-trash-o" type="action" string="Delete" class="oe_stat_button" name="%(action_infrastructure_instance_delete_wizard)d" states="draft,active"/>
                 </div>
                 <group>
                     <group>

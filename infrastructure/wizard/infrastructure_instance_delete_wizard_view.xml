@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_instance_delete_wizard_view" model="ir.ui.view">
+     <field name="name">Change Database Password</field>
+     <field name="model">infrastructure.instance.delete.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Instance Delete">
+            <group>
+                <field name="advance_type" invisible="True"/>
+                <field name="instance_id"/>
+                <field name="instance_name_check" attrs="{'invisible': [('advance_type', '!=', 'protected')], 'required': [('advance_type', '=', 'protected')]}"/>
+            </group>
+            <footer>
+                <button name="confirm" confirm="Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?" string="Confirm" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_instance_delete_wizard" model="ir.actions.act_window">
+     <field name="name">Instance Delete Wizard</field>
+     <field name="res_model">infrastructure.instance.delete.wizard</field>
+     <field name="view_mode">form</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>
