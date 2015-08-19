@@ -446,7 +446,6 @@ class database(models.Model):
         try:
             self_db_id = client.model('ir.model.data').xmlid_to_res_id(
                 'database_tools.db_self_database')
-            print '1', keep_till_date
             bd_result = client.model('db.database').database_backup(
                 self_db_id,
                 'manual',

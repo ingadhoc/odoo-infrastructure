@@ -17,7 +17,7 @@ class database_backup(models.Model):
     """"""
     _name = 'infrastructure.database.backup'
     _description = 'Database Backup'
-    _order = "create_date desc"
+    _order = "date desc"
 
     database_id = fields.Many2one(
         'infrastructure.database',
@@ -54,6 +54,23 @@ class database_backup(models.Model):
         self.full_path = os.path.join(self.path, self.name)
 
     @api.multi
+    def delete_backup(self):
+        self.ensure_one()
+        client = self.database_id.get_client()
+        try:
+            remote_ids = client.model('db.database.backup').search([
+                ('name', '=', self.name)])
+            if not remote_ids:
+                raise Warning(_('No backup found on remote with name "%s"') % (
+                    self.name))
+            client.model('db.database.backup').unlink(remote_ids)
+        except Exception, e:
+                raise Warning(_('Could not delete backup!\
+                    This is what we get %s' % e))
+        # return self.database_id.update_backups_data()
+        # # return self.unlink()
+
+    @api.multi
     def get_backup_msg(self):
         self.ensure_one()
         raise Warning(_('Run on your terminal:\n\
@@ -65,7 +82,7 @@ class database_backup(models.Model):
     @api.one
     def get_backup_cmd(self):
         server = self.database_id.server_id
-        self.backup_cmd = 'scp -P %s %s@%s:%s' % (
+        self.backup_cmd = 'scp -P %s %s@%s:%s .' % (
             server.ssh_port, server.user_name,
             server.main_hostname, self.full_path)
 
