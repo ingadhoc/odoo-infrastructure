@@ -107,7 +107,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
             database = self.target_database_id
         else:
             _logger.info('Creating new database data on infra')
-            database = self.database_id.copy({
+            database = database.copy({
                 'name': db_name,
                 'backups_enable': backups_enable,
                 'issue_date': fields.Date.today(),
