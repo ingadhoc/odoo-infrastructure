@@ -9,6 +9,7 @@
         <form string="Restore Database">
             <h1>Rembember to reconfigure catchall on new database</h1>
             <group>
+                <field name="target_advance_type" invisible="1"/>
                 <field name="database_backup_id"/>
                 <field name="type"/>
                 <field name="instance_id" options="{'no_create': True}"/>
@@ -16,6 +17,11 @@
                 <field name="database_type_id" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}" options="{'no_create': True}"/>
                 <field name="new_db_name" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}"/>
                 <!-- <field name="overwrite_active"/> -->
+                <div attrs="{'invisible': ['|', ('target_advance_type', '!=', 'protected'), ('type', '!=', 'overwrite')]}">
+                    <p><b>DANGER!</b><br/>You are trying to overwrite a protected database, plase be aware of what you are doing</p>
+                    <label for="target_db_name_check"/>
+                    <field name="target_db_name_check" attrs="{'required': [('target_advance_type', '=', 'protected'), ('type', '=', 'overwrite')]}"/>
+                </div>
                 <field name="backups_enable"/>
             </group>
             <footer>

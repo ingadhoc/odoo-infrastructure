@@ -3,7 +3,8 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import fields, api, models
+from openerp import fields, api, models, _
+from openerp.exceptions import Warning
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -28,6 +29,14 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         [('overwrite', 'Overwrite Database'), ('new', 'New Database')],
         required=True,
         default='new',
+        )
+    target_db_name_check = fields.Char(
+        'Database full name',
+        )
+    target_advance_type = fields.Selection(
+        related='target_database_id.database_type_id.type',
+        string='Type',
+        readonly=True,
         )
     database_backup_id = fields.Many2one(
         'infrastructure.database.backup',
@@ -82,6 +91,10 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         backups_enable = self.backups_enable
         database_type = self.database_type_id
         if self.type == 'overwrite':
+            if (
+                    self.target_advance_type == 'protected' and
+                    self.target_database_id.name != self.target_db_name_check):
+                raise Warning(_('Target db name mismatch'))
             overwrite = True
             db_name = self.target_database_id.name
 
