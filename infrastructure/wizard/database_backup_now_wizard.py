@@ -47,4 +47,7 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
         database = self.env['infrastructure.database'].browse(active_id)
         name = "%s.%s" % (self.name, self.backup_format)
         return database.backup_now(
-            name=name, keep_till_date=self.keep_till_date)
+            name=name,
+            keep_till_date=self.keep_till_date,
+            backup_format=self.backup_format
+            )
