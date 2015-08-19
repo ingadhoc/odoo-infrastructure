@@ -216,6 +216,14 @@ class database(models.Model):
         'Backups Enable',
         copy=False,
         )
+    backup_format = fields.Selection([
+        ('zip', 'zip (With Filestore)'),
+        ('pg_dump', 'pg_dump (Without Filestore)')],
+        'Backup Format',
+        default='pg_dump',
+        required=True,
+        copy=False,
+        )
     catchall_enable = fields.Boolean(
         'Catchall Enable',
         copy=False,
@@ -432,27 +440,31 @@ class database(models.Model):
         self.signal_workflow('sgn_cancel')
 
     @api.one
-    def action_backup_now(self):
+    def backup_now(
+            self, name=False, keep_till_date=False, backup_format='zip'):
         client = self.get_client()
         try:
             self_db_id = client.model('ir.model.data').xmlid_to_res_id(
                 'database_tools.db_self_database')
-            res = client.model('db.database').action_database_backup(
-                self_db_id)
-            # si el nombre no viene en el diccionario algo anduvo mal
-            bd_result = res.get(self.name, False)
-            if not bd_result:
-                raise Warning(_('Could not make backup!\
-                    Unknown Error. This is what we get %s' % res))
+            print '1', keep_till_date
+            bd_result = client.model('db.database').database_backup(
+                self_db_id,
+                'manual',
+                backup_format,
+                name,
+                keep_till_date,
+                )
         except Exception, e:
                 raise Warning(_('Could not make backup!\
                     This is what we get %s' % e))
-        if bd_result.get('backup_name', False):
-            raise Warning(_(
-                'Backup %s succesfully created!' % bd_result['backup_name']))
-        else:
+        if not bd_result.get('backup_name', False):
             raise Warning(_('Could not make backup!\
                 This is what we get %s' % bd_result.get('error', '')))
+        # TODO log message or do something (do not raise warning because it
+        # dont close wizard)
+        # else:
+            # raise Warning(_(
+                # 'Backup %s succesfully created!' % bd_result['backup_name']))
 
     @api.one
     def migrate_db(self):
@@ -919,10 +931,15 @@ class database(models.Model):
             'database_tools.db_self_database')
         if self.backups_enable:
             vals = {
+                # we set next backup at a night
+                'backup_next_date': datetime.strftime(
+                    datetime.today()+relativedelta(days=1),
+                    '%Y-%m-%d 05:%M:%S'),
                 'backups_path': os.path.join(
                     self.instance_id.backups_path, self.name),
                 'syncked_backup_path': os.path.join(
                     self.instance_id.syncked_backup_path, self.name),
+                'backup_format': self.backup_format
             }
             client.model('db.database').write([self_db_id], vals)
         client.model('db.database').backups_state(

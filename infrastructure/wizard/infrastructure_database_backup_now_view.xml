@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_database_backup_now_wizard" model="ir.ui.view">
+     <field name="name">Database Backup Now</field>
+     <field name="model">infrastructure.database.backup_now.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Backup Now">
+            <group>
+                <field name="name"/>
+                <field name="backup_format"/>
+                <field name="keep_till_date"/>
+            </group>
+            <footer>
+                <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<record id="action_infrastructure_backup_now_wizard" model="ir.actions.act_window">
+     <field name="name">Database Backup Now</field>
+     <field name="res_model">infrastructure.database.backup_now.wizard</field>
+     <field name="view_mode">form</field>
+     <field name="target">new</field>
+</record>
+
+</data>
+</openerp>

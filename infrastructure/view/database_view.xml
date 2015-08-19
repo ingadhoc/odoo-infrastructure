@@ -77,7 +77,7 @@
                 </div>
                 <div class="oe_right oe_button_box" name="buttons_action">
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
-                    <button icon="fa-download" type="object" string="Backup Now" class="oe_inline oe_stat_button" name="action_backup_now" states="active"/>
+                    <button icon="fa-download" type="action" string="Backup Now" class="oe_inline oe_stat_button" name="%(action_infrastructure_backup_now_wizard)d" states="active"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="object" string="Drop" class="oe_stat_button" name="drop_db" states="active" confirm="Are you sure you want to drop this database? This can not be undone"/>
                     <button icon="fa-pencil" type="action" string="Rename" class="oe_stat_button" name="%(action_infrastructure_rename_database_wizard)d" states="active"/>
@@ -115,6 +115,7 @@
                             <div class="oe_inline">
                                 <field name="backups_enable"/><button class="oe_link" type="object" name="config_backups" states='active' string="Config Backups"/>
                             </div>
+                            <field name="backup_format" attrs="{'required': [('backups_enable', '=', True)], 'invisible': [('backups_enable', '=', False)]}"/>
                         </group>
                         <button type="object" name="update_backups_data" string="Update Backups Data"/>
                         <field name="backup_ids"/>
