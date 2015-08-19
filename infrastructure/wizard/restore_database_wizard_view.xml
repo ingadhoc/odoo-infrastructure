@@ -10,13 +10,11 @@
             <h1>Rembember to reconfigure catchall on new database</h1>
             <group>
                 <field name="database_backup_id"/>
-                <field name="create_date"/>
-                <!-- TODO todavia no implemetamos mover a otra environment y server-->
-                <field name="server_id" options="{'no_create': True}"/>
-                <field name="environment_id" options="{'no_create': True}" domain="[('server_id','=',server_id)]"/>
-                <field name="instance_id" options="{'no_create': True}" domain="[('environment_id','=',environment_id)]"/>
-                <field name="database_type_id" options="{'no_create': True}"/>
-                <field name="new_db_name"/>
+                <field name="type"/>
+                <field name="instance_id" options="{'no_create': True}"/>
+                <field name="target_database_id" attrs="{'invisible': [('type', '!=', 'overwrite')], 'required': [('type', '=', 'overwrite')]}" options="{'no_create': True}"/>
+                <field name="database_type_id" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}" options="{'no_create': True}"/>
+                <field name="new_db_name" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}"/>
                 <!-- <field name="overwrite_active"/> -->
                 <field name="backups_enable"/>
             </group>

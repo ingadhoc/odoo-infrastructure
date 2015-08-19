@@ -44,4 +44,18 @@ class infrastructure_restore_from_file_wizard(models.TransientModel):
                 use_sudo=True):
             raise Warning(_("File was not found on path '%s'") % (
                 self.file_path))
-        return self.database_id.restore(self.file_path, self.file_name)
+        database = self.database_id
+        instance = database.instance_id
+        self.database_id.restore(
+            instance.main_hostname,
+            instance.admin_pass,
+            database.name,
+            self.file_path,
+            self.file_name,
+            database.backups_enable,
+            remote_server=False
+            )
+        database.signal_workflow('sgn_to_active')
+        if database.backups_enable:
+            database.config_backups()
+        return True
