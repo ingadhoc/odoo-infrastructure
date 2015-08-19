@@ -116,6 +116,8 @@ class infrastructure_restore_database_wizard(models.TransientModel):
                 })
         database.signal_workflow('sgn_to_active')
 
+        # we run it because it is not enaught what database_tools does with
+        # this parameter, it could be necesary to load new data of backups
         if backups_enable:
             database.config_backups()
 

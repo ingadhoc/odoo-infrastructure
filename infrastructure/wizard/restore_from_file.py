@@ -55,7 +55,11 @@ class infrastructure_restore_from_file_wizard(models.TransientModel):
             database.backups_enable,
             remote_server=False
             )
-        database.signal_workflow('sgn_to_active')
+
+        # we run it because it is not enaught what database_tools does with
+        # this parameter, it could be necesary to load new data of backups
         if database.backups_enable:
             database.config_backups()
+
+        database.signal_workflow('sgn_to_active')
         return True
