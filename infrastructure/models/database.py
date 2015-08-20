@@ -228,6 +228,61 @@ class database(models.Model):
         'Catchall Enable',
         copy=False,
         )
+    update_state = fields.Selection([
+        ('to_init_and_conf', 'To Init and Config'),
+        ('to_update', 'To Update'),
+        ('optional_update', 'Optional Updaet'),
+        ('ok', 'Ok'),
+        ],
+        'Update Status',
+        readonly=True,
+        compute='get_update_state',
+        store=True,
+        )
+
+    @api.one
+    @api.depends('module_ids.update_state')
+    def get_update_state(self):
+        modules_update_states = self.mapped('module_ids.update_state')
+        if 'to_init_and_conf' in modules_update_states:
+            update_state = 'to_init_and_conf'
+        elif 'to_update' in modules_update_states:
+            update_state = 'to_update'
+        elif 'optional_update' in modules_update_states:
+            update_state = 'optional_update'
+        else:
+            update_state = 'ok'
+        self.update_state = update_state
+
+    @api.one
+    def update_db(self):
+        self.server_id.get_env()
+        to_init_modules = self.module_ids.filtered(
+            lambda r: r.update_state == 'to_init_and_conf')
+        if to_init_modules:
+            self.instance_id.remove_odoo_service()
+            init_command = ('%s -i %s -d %s' % (
+                self.instance_id.update_cmd,
+                ','.join(to_init_modules.mapped('name')),
+                self.name)
+            )
+            _logger.info('Running init modules commmand: %s' % init_command)
+            sudo(init_command)
+            self.instance_id.run_odoo_service()
+
+        # update modules
+        self.module_ids.filtered(
+            lambda r: r.update_state in (
+                'to_update', 'optional_update')).upgrade_modules()
+        self.update_modules_data()
+        return True
+
+    @api.one
+    def check_modules_update_state(self):
+        self.update_modules_data()
+        if self.update_state not in ('ok', 'optional_update'):
+            raise Warning(_('Database "%s" is in "%s" update status') % (
+                self.name, self.update_state))
 
     @api.one
     @api.depends('state')
@@ -237,6 +292,8 @@ class database(models.Model):
             color = 7
         elif self.state == 'cancel':
             color = 1
+        if self.update_state not in ('ok', 'optional_update'):
+            color = 2
         self.color = color
 
     @api.onchange('instance_id')

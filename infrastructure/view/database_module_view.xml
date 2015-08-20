@@ -13,12 +13,14 @@
             <filter name="app" string="Apps" domain="[('application', '=', 1)]"/>
             <filter name="extra" string="Extra" domain="[('application', '=', 0)]"/>
             <field name="database_id"/>
+            <field name="update_state"/>
             <separator/>
             <filter name="installed" string="Installed" domain="[('state', 'in', ['installed', 'to upgrade', 'to remove'])]"/>
             <filter string="Not Installed" domain="[('state', 'in', ['uninstalled', 'uninstallable', 'to install'])]"/>
             <group expand="0" string="Group By">
                 <filter string="Author" domain="[]" context="{'group_by':'author'}"/>
                 <filter string="Category" domain="[]" context="{'group_by':'category_id'}"/>
+                <filter string="Update State" domain="[]" context="{'group_by':'update_state'}"/>
             </group>
        </search>
     </field>
@@ -50,6 +52,7 @@
                 <field name="installed_version"/>
                 <field name="published_version"/>
                 <field name="latest_version"/>
+                <field name="update_state"/>
             </group>
         </group>
     </field>
@@ -60,12 +63,13 @@
     <field name="name">infrastructure.database.module.tree</field>
     <field name="model">infrastructure.database.module</field>
     <field name="arch" type="xml">
-        <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed'" create="false" string="Modules">
+        <tree colors="red:update_state not in ('ok', 'optional_update'); blue:state=='to upgrade' or state=='to install'; grey:state=='uninstallable'; black:state=='installed'" create="false" string="Modules">
             <field name="shortdesc"/>
             <field name="name" groups="base.group_no_one"/>
             <field name="author"/>
             <field name="installed_version"/>
             <field name="state"/>
+            <field name="update_state"/>
             <!-- <field name="category_id" invisible="1"/> -->
         </tree>
     </field>
