@@ -165,22 +165,31 @@
                         <button string="Add default repositories"
                             type="object"
                             name="add_repositories"/>
-                        <button string="Pull, Clone to Inst. and Checkout all Repositoires"
+                        <!-- we are not using for now -->
+<!--                         <button string="Pull, Clone to Inst. and Checkout all Repositoires"
                             icon="gtk-go-down"
                             type="object"
-                            attrs="{'invisible': ['|',('sources_from_id','!=',False),('state','!=','active')]}"
-                            name="repositories_pull_clone_and_checkout"/>
-                        <button string="Pull from instance:"
+                            attrs="{'invisible': ['|',('sources_from_id','!=',False), ('state','!=','active')]}"
+                            name="repositories_pull_clone_and_checkout"/> -->
+                            <!-- we are not using for now -->
+<!--                         <button string="Pull from instance:"
                             icon="gtk-go-down"
                             type="object"
-                            attrs="{'invisible': ['|',('sources_from_id','=',False),('state','!=','active')]}"
-                            name="repositories_pull_clone_and_checkout"/>
-                        <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}" class="oe_inline"/>
-                        <button string="Update all modules and databases"
+                            attrs="{'invisible': ['|',('sources_from_id','=',False), ('state','!=','active')]}"
+                            name="repositories_pull_clone_and_checkout"/> -->
+                        <!-- <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}" class="oe_inline"/> -->
+                        <button string="Check Databases"
+                            type="object"
+                            states="active"
+                            class="oe_highlight"
+                            help='Recommended after a repository pull and a server restart, it update modules information and check if a database requires modules update.'
+                            name="action_check_databases"/>
+                            <!-- we are not using for now -->
+<!--                         <button string="Update all modules and databases"
                             type="object"
                             states="active"
                             confirm="All databases on this instance will be run with -u all. This operation can take some minutes. Do you want to continue?"
-                            name="databases_update_all"/>
+                            name="databases_update_all"/> -->
                         <field name="instance_repository_ids" context="{'default_server_id': server_id}"/>
                     </page>
                     <page string="Advanced Conf">

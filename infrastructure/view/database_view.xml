@@ -15,6 +15,7 @@
             <field name="server_id"/>
             <field name="environment_id"/>
             <field name="instance_id"/>
+            <field name="update_state"/>
             <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Partner" context="{'group_by':'partner_id'}"/>
@@ -22,6 +23,7 @@
                 <filter string="Server" context="{'group_by':'server_id'}"/>
                 <filter string="Environment" context="{'group_by':'environment_id'}"/>
                 <filter string="Instance" context="{'group_by':'instance_id'}"/>
+                <filter string="Update State" context="{'group_by':'update_state'}"/>
             </group>
         </search>
     </field>
@@ -99,6 +101,17 @@
                                 class="oe_link"/>
                         </div>
                         <field name="main_hostname" widget="url"/>
+                        <label for="update_state"/>
+                        <div>
+                            <field
+                                name="update_state"
+                                class="oe_inline"/>
+                            <button name="update_db"
+                                string="⇒ Update Database"
+                                attrs="{'invisible': [('update_state', '=', 'ok')]}"
+                                type="object"
+                                class="oe_link"/>
+                        </div>
                     </group>
                     <group>
                         <field name="demo_data"/>
@@ -148,12 +161,12 @@
                         <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
                         <button type="object" name="install_base_modules" string="Install Modules"/>
                         <field name="base_module_ids" context="{'database_id':id}">
-                            <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed';orange:state=='not_available'" create="false" string="Modules">
+<!--                             <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed';orange:state=='not_available'" create="false" string="Modules">
                                 <field name="shortdesc"/>
                                 <field name="name" groups="base.group_no_one"/>
                                 <field name="author"/>
                                 <field name="state"/>
-                            </tree>
+                            </tree> -->
                         </field>
                     </page>
                     <page string="Users" states="active">
@@ -180,7 +193,7 @@
     <field name="arch" type="xml">
         <tree string="database"
             fonts="bold:message_unread==True"
-            colors="grey:state=='cancelled';blue:state in ('draft',);black:state in ('active', 'deactivated', 'maintenance'); red:state in ()"
+            colors="red:update_state not in  ('ok', 'optional_update'); grey:state=='cancelled';blue:state in ('draft',); black:state in ('active', 'deactivated', 'maintenance')"
             >
             <field name="message_unread" invisible="1"/>
             <field name="database_type_id"/>
@@ -190,6 +203,7 @@
             <field name="environment_id" invisible="1"/>
             <field name="instance_id"/>
             <field name="state"/>
+            <field name="update_state"/>
         </tree>
     </field>
 </record>
@@ -204,12 +218,14 @@
             <field name="main_hostname"/>
             <field name="color"/>
             <field name="state"/>
+            <field name="update_state"/>
             <templates>
                 <t t-name="kanban-box">
                     <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
                         <div class="oe_kanban_content" style="width: 150px; height: 80px; margin: 0 auto;">
                             <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
-                            <a  t-att-href="record.main_hostname.value" target="_blank"><field name="main_hostname"/></a>
+                            <a t-att-href="record.main_hostname.value" target="_blank"><field name="main_hostname"/></a>
+                            <h5>Update Status:<field name="update_state"/></h5>
                         </div>
                         <div class="oe_clear"/> 
                     </div>

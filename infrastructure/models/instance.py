@@ -357,6 +357,10 @@ class instance(models.Model):
         # required=True,
         )
     # COMMANDS
+    update_cmd = fields.Char(
+        string='Update All',
+        compute='get_commands',
+        )
     update_all_cmd = fields.Char(
         string='Update All',
         compute='get_commands',
@@ -541,6 +545,10 @@ class instance(models.Model):
             _("Password for user"),
             _("%s") % self.admin_pass
         )
+
+    @api.multi
+    def action_check_databases(self):
+        return self.database_ids.check_modules_update_state()
 
     @api.multi
     def action_wfk_set_draft(self):
@@ -788,12 +796,32 @@ class instance(models.Model):
         if self.module_load:
             odoo_sufix += ' --load=%s' % (self.module_load or '')
 
-        # odoo start commands
-        self.run_odoo_cmd = 'docker run %s %s %s %s %s --name %s %s -- %s' % (
+        # odoo run base command
+        run_odoo_d_cmd = 'docker run %s %s %s %s %s --name %s %s' % (
             prefix, self.odoo_image_id.prefix or '',
             odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_container, odoo_image_name, odoo_sufix)
+            self.odoo_container, odoo_image_name)
+        run_odoo_rm_cmd = 'docker run %s %s %s %s %s --name %s %s' % (
+            '--rm -ti', self.odoo_image_id.prefix or '',
+            odoo_port_links, odoo_volume_links, odoo_pg_link,
+            self.odoo_container, odoo_image_name)
 
+        # odoo start commands
+        self.run_odoo_cmd = '%s -- %s' % (run_odoo_d_cmd, odoo_sufix)
+
+        # odoo command for update conf
+        self.update_conf_cmd = '%s -- %s' % (
+            run_odoo_rm_cmd, self.get_update_conf_command_sufix())
+
+        # odoo update all command
+        self.update_cmd = '%s -- %s' % (
+            run_odoo_rm_cmd, '--stop-after-init --workers=0')
+
+        # todo eliminar tal vez el update all
+        self.update_all_cmd = '%s -- %s' % (
+            run_odoo_rm_cmd, '--stop-after-init --workers=0 -u all')
+
+        # run attached commands
         self.run_attach_odoo_cmd = (
             'docker run %s %s %s %s %s --name %s %s %s' % (
                 '-ti --rm -u root', self.odoo_image_id.prefix or '',
@@ -808,22 +836,6 @@ class instance(models.Model):
             'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf\
             --logfile=False %s' % (
                 user, odoo_sufix))
-
-        # odoo command for update conf
-        self.update_conf_cmd = (
-            'docker run %s %s %s %s %s --name %s %s -- %s' % (
-                '--rm', self.odoo_image_id.prefix or '',
-                odoo_port_links, odoo_volume_links, odoo_pg_link,
-                self.odoo_container, odoo_image_name,
-                self.get_update_conf_command_sufix()))
-
-        # odoo update all command
-        self.update_all_cmd = (
-            'docker run %s %s %s %s %s --name %s %s -- %s' % (
-                '--rm -ti', self.odoo_image_id.prefix or '',
-                odoo_port_links, odoo_volume_links, odoo_pg_link,
-                self.odoo_container, odoo_image_name,
-                odoo_sufix + ' --stop-after-init --workers=0 -u all'))
 
         # pg start command
         self.run_pg_cmd = 'docker run %s %s %s %s --name %s %s' % (
