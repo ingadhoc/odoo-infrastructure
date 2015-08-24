@@ -31,4 +31,3 @@ class database(models.Model):
             _logger.warning(
                 "Unable to install modules %s. This is what we get %s." % (
                     str(modules), e))
-        self.update_modules_data(fields=['state'])

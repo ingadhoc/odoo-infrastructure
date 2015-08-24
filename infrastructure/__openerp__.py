@@ -26,7 +26,10 @@
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
-    'depends': ['mail'],
+    'depends': [
+        'mail',
+        # 'web_ir_actions_act_window_message',
+        ],
     'external_dependencies': {
         'python': ['fabric', 'fabtools', 'erppeek']
         },
@@ -50,7 +53,6 @@
         'view/mailserver_view.xml',
         'view/repository_view.xml',
         'view/odoo_version_view.xml',
-        'view/database_module_view.xml',
         'view/database_view.xml',
         'view/db_filter_view.xml',
         'view/instance_view.xml',

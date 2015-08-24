@@ -7,6 +7,7 @@ from openerp import models, fields, api, SUPERUSER_ID, _
 from openerp.exceptions import except_orm
 import xmlrpclib
 import socket
+import time
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from .server import custom_sudo as sudo
@@ -18,6 +19,15 @@ import requests
 import simplejson
 import logging
 _logger = logging.getLogger(__name__)
+_update_state_vals = [
+    ('init_and_conf', 'Init and Config'),
+    ('update', 'Update'),
+    ('optional_update', 'Optional Update'),
+    ('to_install_modules', 'Modules on To Install'),
+    ('to_remove_modules', 'Modules on To Remove'),
+    ('to_upgrade_modules', 'Modules on To Upgrade'),
+    ('ok', 'Ok'),
+    ]
 
 
 class database(models.Model):
@@ -33,14 +43,7 @@ class database(models.Model):
         ('deactivated', 'Deactivated'),
         ('cancel', 'Cancel'),
     ]
-
     _mail_post_access = 'read'
-
-    @api.model
-    def _get_base_modules(self):
-        base_modules = self.env['infrastructure.base.module'].search([
-            ('default_on_new_db', '=', True)])
-        return [(6, _, base_modules.ids)]
 
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
@@ -155,23 +158,15 @@ class database(models.Model):
         string='Backups',
         readonly=True,
         )
-    module_ids = fields.One2many(
-        'infrastructure.database.module',
-        'database_id',
-        string='Modules',
-        )
+    # module_ids = fields.One2many(
+    #     'infrastructure.database.module',
+    #     'database_id',
+    #     string='Modules',
+    #     )
     user_ids = fields.One2many(
         'infrastructure.database.user',
         'database_id',
         string='Users',
-        )
-    base_module_ids = fields.Many2many(
-        'infrastructure.base.module',
-        'infrastructure_database_ids_base_module_rel',
-        'database_id',
-        'base_module_id',
-        string='Base Modules',
-        default=_get_base_modules,
         )
     admin_password = fields.Char(
         string='Admin Password',
@@ -208,10 +203,6 @@ class database(models.Model):
         readonly=True,
         copy=False,
         )
-    module_count = fields.Integer(
-        string='# Modules',
-        compute='_get_modules',
-        )
     backups_enable = fields.Boolean(
         'Backups Enable',
         copy=False,
@@ -220,7 +211,7 @@ class database(models.Model):
         ('zip', 'zip (With Filestore)'),
         ('pg_dump', 'pg_dump (Without Filestore)')],
         'Backup Format',
-        default='pg_dump',
+        default='zip',
         required=True,
         copy=False,
         )
@@ -228,61 +219,206 @@ class database(models.Model):
         'Catchall Enable',
         copy=False,
         )
-    update_state = fields.Selection([
-        ('to_init_and_conf', 'To Init and Config'),
-        ('to_update', 'To Update'),
-        ('optional_update', 'Optional Updaet'),
-        ('ok', 'Ok'),
-        ],
+    update_state = fields.Selection(
+        _update_state_vals,
         'Update Status',
         readonly=True,
-        compute='get_update_state',
-        store=True,
+        )
+    update_state_detail = fields.Text(
+        'Update Status Detail',
+        readonly=True,
+        )
+    base_modules_state = fields.Selection(
+        [('ok', 'OK'), ('error', 'Error')],
+        'Base Modules Status',
+        readonly=True,
+        )
+    base_modules_state_detail = fields.Text(
+        'Base Modules Detail',
+        readonly=True,
+        )
+    backups_state = fields.Selection(
+        [('ok', 'OK'), ('error', 'Error')],
+        'Backups Status',
+        readonly=True,
+        )
+    backups_state_detail = fields.Text(
+        'Backups Detail',
+        readonly=True,
         )
 
-    @api.one
-    @api.depends('module_ids.update_state')
-    def get_update_state(self):
-        modules_update_states = self.mapped('module_ids.update_state')
-        if 'to_init_and_conf' in modules_update_states:
-            update_state = 'to_init_and_conf'
-        elif 'to_update' in modules_update_states:
-            update_state = 'to_update'
-        elif 'optional_update' in modules_update_states:
-            update_state = 'optional_update'
-        else:
-            update_state = 'ok'
-        self.update_state = update_state
+    # @api.multi
+    # def refresh_states(self):
+    #     self.refresh_backups_state()
+    #     self.refresh_base_modules_state()
+    #     self.refresh_update_state()
+
+    @api.multi
+    def refresh_base_modules_state(self):
+        self.ensure_one()
+        client = self.get_client()
+        base_modules_state = 'ok'
+        base_modules = self.env[
+            'infrastructure.base.module'].search([]).mapped('name')
+        installed_modules = client.modules(installed=True)['installed']
+        uninstalled_modules = list(
+            set(base_modules) - set(installed_modules))
+        if uninstalled_modules:
+            base_modules_state = 'error'
+        self.base_modules_state = base_modules_state
+        self.base_modules_state_detail = (
+            '*Base modules: %s\n\n'
+            '*Installed modules: %s\n' % (base_modules, installed_modules))
+
+    @api.multi
+    def refresh_backups_state(self):
+        self.ensure_one()
+        client = self.get_client()
+        modules = ['database_tools']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(_(
+                    "You can not refresh backups state if module '%s' is not "
+                    "installed in the database") % (module))
+        try:
+            backups_state = client.model(
+                'db.database').get_overall_backups_state()
+        except Exception, e:
+                raise Warning(_(
+                    'Could not get state!\n'
+                    'This is what we get %s' % e))
+        state = backups_state.get('state', False)
+        detail = backups_state.get('detail', False)
+
+        print 'state', state
+        if state not in ['ok', 'error']:
+            raise Warning(_(
+                'Could not get state! Unknow error, we could not get state '
+                'from "%s"' % (backups_state)))
+        self.backups_state = state
+        self.backups_state_detail = detail
+        return backups_state
+
+    @api.multi
+    def refresh_update_state(self):
+        self.ensure_one()
+        client = self.get_client()
+        modules = ['database_tools']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(_(
+                    "You can not refresh modules update status if module '%s' "
+                    "is not installed in the database") % (module))
+        try:
+            update_state = client.model(
+                'ir.module.module').get_overall_update_state()
+        except Exception, e:
+                raise Warning(_(
+                    'Could not get state!\n'
+                    'This is what we get %s' % e))
+        state = update_state.get('state', False)
+        detail = update_state.get('detail', False)
+        update_state_keys = [x[0] for x in _update_state_vals]
+
+        if state not in update_state_keys:
+            raise Warning(_(
+                'Could not get state! Unknow error, we could not get state '
+                'from "%s"' % (update_state)))
+        self.update_state = state
+        self.update_state_detail = detail
+        return update_state
 
     @api.one
     def update_db(self):
-        self.server_id.get_env()
-        to_init_modules = self.module_ids.filtered(
-            lambda r: r.update_state == 'to_init_and_conf')
-        if to_init_modules:
-            self.instance_id.remove_odoo_service()
-            init_command = ('%s -i %s -d %s' % (
-                self.instance_id.update_cmd,
-                ','.join(to_init_modules.mapped('name')),
-                self.name)
-            )
-            _logger.info('Running init modules commmand: %s' % init_command)
-            sudo(init_command)
-            self.instance_id.run_odoo_service()
+        update_state = self.refresh_update_state()
+        detail = update_state.get('detail', False)
+        init_and_conf_modules = detail.get('init_and_conf_modules')
+        _logger.info('Trying to update db %s' % self.name)
 
-        # update modules
-        self.module_ids.filtered(
-            lambda r: r.update_state in (
-                'to_update', 'optional_update')).upgrade_modules()
-        self.update_modules_data()
+        if init_and_conf_modules:
+            # re init modules
+            self.reinit_modules(init_and_conf_modules)
+
+            # refresh update state
+            update_state = self.refresh_update_state()
+            detail = update_state.get('detail', False)
+            init_and_conf_modules = detail.get('init_and_conf_modules')
+            if init_and_conf_modules:
+                raise Warning(_(
+                    'Could not fix db, try it manually and run again'))
+
+        # updated detail if an init have been run
+        update_modules = detail.get('update_modules')
+        optional_update_modules = detail.get('optional_update_modules')
+        to_update = update_modules + optional_update_modules
+        if to_update:
+            self.upgrade_modules(to_update)
+            update_state = self.refresh_update_state()
         return True
 
-    @api.one
-    def check_modules_update_state(self):
-        self.update_modules_data()
-        if self.update_state not in ('ok', 'optional_update'):
-            raise Warning(_('Database "%s" is in "%s" update status') % (
-                self.name, self.update_state))
+    @api.multi
+    def reinit_modules(self, modules_names):
+        """
+        modules_names is a list of modules names to be reinit
+        """
+        # TODO lo ideal sería hacer un metodo algo mas lindo pero no encontre
+        # la manera
+        _logger.info('Initializing modules: %s' % modules_names)
+
+        # update module list
+        self.update_module_list()
+
+        # remove odoo server
+        self.server_id.get_env()
+        self.instance_id.remove_odoo_service()
+
+        # prepare and run odoo initializing modules
+        init_command = ('%s -i %s -d %s' % (
+            self.instance_id.update_cmd,
+            ','.join(modules_names),
+            self.name)
+        )
+        _logger.info('Running init modules commmand: %s' % init_command)
+        sudo(init_command)
+
+        # run again odoo server
+        self.instance_id.run_odoo_service()
+
+        # TODO mejorar esto y ver que el servicio este andando
+        time.sleep(10)
+
+    @api.multi
+    def install_base_modules(self):
+        base_modules = self.env[
+            'infrastructure.base.module'].search([]).mapped('name')
+        self.install_modules(base_modules)
+        self.refresh_base_modules_state()
+
+    @api.multi
+    def install_modules(self, modules_names):
+        """
+        modules_names is a list of modules names to be upgraded
+        """
+        _logger.info('Installing modules: %s' % modules_names)
+        client = self.get_client()
+        client.install(*modules_names)
+
+    @api.multi
+    def upgrade_modules(self, modules_names):
+        """
+        modules_names is a list of modules names to be upgraded
+        """
+        _logger.info('Updating modules: %s' % modules_names)
+        client = self.get_client()
+        client.upgrade(*modules_names)
+
+    @api.multi
+    def update_module_list(self):
+        """
+        modules_names is a list of modules names to be upgraded
+        """
+        client = self.get_client()
+        client.model('ir.module.module').update_list()
 
     @api.one
     @api.depends('state')
@@ -319,11 +455,6 @@ class database(models.Model):
                 self.instance_id.main_hostname_id.name
                 )
         self.main_hostname = main_hostname
-
-    @api.one
-    @api.depends('module_ids')
-    def _get_modules(self):
-        self.module_count = len(self.module_ids)
 
     @api.one
     @api.depends(
@@ -465,8 +596,6 @@ class database(models.Model):
             demo=self.demo_data,
             lang=lang,
             user_password=self.admin_password or 'admin')
-        client = self.get_client()
-        self.update_modules_data()
         self.install_base_modules()
         self.signal_workflow('sgn_to_active')
 
@@ -575,7 +704,7 @@ class database(models.Model):
     @api.model
     def restore(
             self, host, admin_pass, db_name, file_path, file_name,
-            backups_state, remote_server=False, overwrite=False):
+            backups_enable, remote_server=False, overwrite=False):
         """Used on restore from file"""
         try:
             url = "%s/%s" % (host, 'restore_db')
@@ -588,7 +717,7 @@ class database(models.Model):
                     'db_name': db_name,
                     'file_path': file_path,
                     'file_name': file_name,
-                    'backups_state': backups_state,
+                    'backups_state': backups_enable,
                     'remote_server': remote_server,
                     'overwrite': overwrite,
                     },
@@ -760,6 +889,7 @@ class database(models.Model):
             'name',
             'path',
             'type',
+            'keep_till_date',
             ]
         rows = []
         for backup in backups_data:
@@ -770,6 +900,7 @@ class database(models.Model):
                 backup['name'],
                 backup['path'],
                 backup['type'],
+                backup['keep_till_date'],
             ]
             rows.append(row)
         self.env['infrastructure.database.backup'].load(imp_fields, rows)
@@ -780,84 +911,6 @@ class database(models.Model):
         self.backup_ids.search([('name', 'in', removed_backups)]).unlink()
 
 # Modules management
-    @api.one
-    def install_base_modules(self):
-        client = self.get_client()
-        modules = self.mapped('base_module_ids.name')
-        _logger.info('Installing modules %s' % str(modules))
-        try:
-            client.install(*modules)
-        except Exception, e:
-            _logger.warning(
-                "Unable to install modules %s. This is what we get %s." % (
-                    str(modules), e))
-        self.update_modules_data(fields=['state'])
-
-    @api.multi
-    def action_update_modules_data(self):
-        self.update_modules_data(update_list=True)
-
-    @api.multi
-    def update_modules_data(self, fields=None, update_list=False):
-        self.ensure_one()
-
-        client = self.get_client()
-        # si viene fields verificamos que este name o lo agregamos porque lo
-        # usamos siempre
-        if fields:
-            if 'name' not in fields:
-                fields.append('name')
-        # si no viene fields lo creamos nosotros
-        else:
-            fields = [
-                'name',
-                'sequence',
-                'author',
-                'auto_install',
-                'installed_version',
-                'latest_version',
-                'published_version',
-                'shortdesc',
-                'state']
-
-        _logger.info('Updating modules list on db %s' % self.name)
-        if update_list:
-            client.model('ir.module.module').update_list()
-
-        module_ids = client.model('ir.module.module').search([])
-
-        _logger.info('Reading modules data for db %s' % self.name)
-        exp_modules_data = client.model('ir.module.module').read(
-            module_ids, fields)
-
-        imp_modules_data = []
-        # construimos y agregamos los identificadores al princio
-        _logger.info('Building modules data to import for db %s' % self.name)
-        for exp_module in exp_modules_data:
-            module_name = 'infra_db_%i_module' % self.id
-            row = [
-                '%s.%s' % (module_name, exp_module['name'].replace('.', '_')),
-                self.id
-                ]
-            for field in fields:
-                # this way because this boolean field takes to an error
-                if field == 'auto_install':
-                    row.append(str(exp_module[field]))
-                else:
-                    row.append(exp_module[field])
-            imp_modules_data.append(row)
-
-        # LOAD data
-        _logger.info('Loading modules data for db %s' % self.name)
-        self.env['infrastructure.database.module'].load(
-            ['id', 'database_id/.id'] + fields, imp_modules_data,
-            context={'default_noupdate': True})
-
-        # Remove old data only
-        _logger.info('Removing old modules data for db %s' % self.name)
-        res = self.env['ir.model.data']._process_end([module_name])
-        return res
-
     @api.multi
     def update_users_data(self):
         self.ensure_one()

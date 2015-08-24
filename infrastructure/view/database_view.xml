@@ -73,9 +73,6 @@
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_database_module)d" states="active" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_database_id': id,'search_default_installed': 1}">
-                        <field name="module_count" widget="statinfo"/>
-                    </button>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons_action">
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
@@ -106,10 +103,42 @@
                             <field
                                 name="update_state"
                                 class="oe_inline"/>
+                            <button name="refresh_update_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
+                                class="oe_link"/>
                             <button name="update_db"
                                 string="⇒ Update Database"
-                                attrs="{'invisible': [('update_state', '=', 'ok')]}"
+                                attrs="{'invisible': ['|', ('update_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 type="object"
+                                class="oe_link"/>
+                        </div>
+                        <label for="base_modules_state"/>
+                        <div>
+                            <field
+                                name="base_modules_state"
+                                class="oe_inline"/>
+                            <button name="refresh_base_modules_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
+                                class="oe_link"/>
+                            <button name="install_base_modules"
+                                string="⇒ Install Base Modules"
+                                attrs="{'invisible': ['|', ('base_modules_state', '=', 'ok'), ('state', '!=', 'active')]}"
+                                type="object"
+                                class="oe_link"/>
+                        </div>
+                        <label for="backups_state"/>
+                        <div>
+                            <field
+                                name="backups_state"
+                                class="oe_inline"/>
+                            <button name="refresh_backups_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
                                 class="oe_link"/>
                         </div>
                     </group>
@@ -157,21 +186,16 @@
                             <field name="local_alias"/>
                         </group>
                     </page>
-                    <page string="Base Modules" states="active" name="base_module_ids">
-                        <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
-                        <button type="object" name="install_base_modules" string="Install Modules"/>
-                        <field name="base_module_ids" context="{'database_id':id}">
-<!--                             <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed';orange:state=='not_available'" create="false" string="Modules">
-                                <field name="shortdesc"/>
-                                <field name="name" groups="base.group_no_one"/>
-                                <field name="author"/>
-                                <field name="state"/>
-                            </tree> -->
-                        </field>
-                    </page>
                     <page string="Users" states="active">
                         <button name="update_users_data" string="Update" type="object"/>
                         <field name="user_ids"/>
+                    </page>
+                    <page string="Errors">
+                        <group col="1">
+                            <field name="update_state_detail"/>
+                            <field name="base_modules_state_detail"/>
+                            <field name="backups_state_detail"/>
+                        </group>
                     </page>
                     <page string="Notes">
                         <field name="note"/>

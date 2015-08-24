@@ -548,7 +548,8 @@ class instance(models.Model):
 
     @api.multi
     def action_check_databases(self):
-        return self.database_ids.check_modules_update_state()
+        raise Warning('Not implemented yet')
+        # return self.database_ids.xx
 
     @api.multi
     def action_wfk_set_draft(self):

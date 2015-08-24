@@ -11,7 +11,6 @@ from . import base_module
 from . import database
 from . import database_type
 from . import database_backup
-from . import database_module
 from . import database_user
 from . import db_filter
 from . import environment
