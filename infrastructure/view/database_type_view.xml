@@ -37,8 +37,8 @@
                 <field name="sources_from_id"/>
                 <field name="workers"/>
                 <field name="workers_number" attrs="{'invisible':[('workers','=','clasic_rule')],'required':[('workers','!=','clasic_rule')]}"/>
-                <label for="instance_admin_pass"/>
                 <field name="instance_log_level"/>
+                <label for="instance_admin_pass"/>
                 <div>
                     <field
                         name="instance_admin_pass"
