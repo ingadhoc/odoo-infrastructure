@@ -131,9 +131,8 @@ class instance_repository(models.Model):
         source_repository.repository_pull_clone_and_checkout()
         return self.repository_pull_clone_and_checkout()
 
-    @api.multi
+    @api.one
     def repository_pull_clone_and_checkout(self, update=True):
-        self.ensure_one()
         _logger.info("Updateing/getting repository %s with update=%s" % (
             self.repository_id.name, update))
         if self.actual_commit and not update:
