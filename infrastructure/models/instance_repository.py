@@ -165,6 +165,8 @@ class instance_repository(models.Model):
         # marcamos que un instance restart requerido y un refresh_dbs_required
         self.instance_id.write({
             'odoo_service_state': 'restart_required',
-            'databases_state': 'refresh_dbs_required',
+            # 'databases_state': 'refresh_dbs_required',
             })
+        for database in self.instance_id.database_ids:
+            database.refresh_update_state()
         return True

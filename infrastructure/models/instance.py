@@ -439,10 +439,12 @@ class instance(models.Model):
         )
     databases_state = fields.Selection([
             ('ok', 'Ok'),
-            ('refresh_dbs_required', 'Refresh Dbs Required'),
+            # ('refresh_dbs_required', 'Refresh Dbs Required'),
             ('actions_required', 'Actions Required'),
         ],
         'Databases Status',
+        compute='get_databases_state',
+        store=True,
         readonly=True,
         )
 
@@ -496,15 +498,15 @@ class instance(models.Model):
                 ], limit=1)
         self.sources_from_id = sources_from_id
 
-    @api.one
-    def refresh_dbs_update_state(self):
-        for database in self.database_ids:
-            database.refresh_update_state()
-        self.refresh_instance_update_state()
+    # @api.one
+    # def refresh_dbs_update_state(self):
+    #     for database in self.database_ids:
+    #         database.refresh_update_state()
+    #     self.refresh_instance_update_state()
 
     @api.one
-    @api.depends('refresh_dbs_required', 'database_ids.update_state')
-    def refresh_instance_update_state(self):
+    @api.depends('database_ids.update_state')
+    def get_databases_state(self):
         databases_state = 'ok'
         dbs_update_states = self.mapped('database_ids.update_state')
         actions_required_states = [
@@ -521,6 +523,26 @@ class instance(models.Model):
             if state in dbs_update_states:
                 databases_state = 'actions_required'
         self.databases_state = databases_state
+
+    # TODO remove
+    # @api.one
+    # def refresh_instance_update_state(self):
+    #     databases_state = 'ok'
+    #     dbs_update_states = self.mapped('database_ids.update_state')
+    #     actions_required_states = [
+    #         'init_and_conf',
+    #         'update',
+    #         'optional_update',
+    #         'to_install_modules',
+    #         'to_remove_modules',
+    #         'to_upgrade_modules',
+    #         ]
+    #     # TODO mejorar esta forma horrible, el tema es que el mapped me
+    #     # devuevle algo raro
+    #     for state in actions_required_states:
+    #         if state in dbs_update_states:
+    #             databases_state = 'actions_required'
+    #     self.databases_state = databases_state
 
     @api.one
     @api.depends('server_id')

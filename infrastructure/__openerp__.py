@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Infrastructure',
-    'version': '0.2.0',
+    'version': '8.0.0.3.0',
     'description': 'Infrastructure Management',
     'category': 'base.module_category_knowledge_management',
     'author': 'ADHOC SA',
@@ -44,6 +44,7 @@
         'wizard/infrastructure_database_backup_now_view.xml',
         'wizard/infrastructure_database_drop_wizard_view.xml',
         'wizard/infrastructure_instance_delete_wizard_view.xml',
+        'wizard/infrastructure_database_fix_wizard_view.xml',
         'security/infrastructure_group.xml',
         'view/infrastructure_menuitem.xml',
         'view/base_module_view.xml',

@@ -358,14 +358,27 @@ class database(models.Model):
                 'from "%s"' % (update_state)))
         self.update_state = state
         self.update_state_detail = detail
-        self.instance_id.refresh_instance_update_state()
+        # self.instance_id.refresh_instance_update_state()
         return update_state
 
     @api.one
-    def update_db(self):
+    def fix_db_auto(self):
+        """This method is not used yet"""
         update_state = self.refresh_update_state()
         detail = update_state.get('detail', False)
         init_and_conf_modules = detail.get('init_and_conf_modules')
+        update_modules = detail.get('update_modules')
+        optional_update_modules = detail.get('optional_update_modules')
+        return self.fix_db(
+            init_and_conf_modules,
+            update_modules + optional_update_modules,
+            )
+
+    @api.one
+    def fix_db(self, init_and_conf_modules, to_update_modules):
+        """
+        Method to be called from wizard or automatic
+        """
         _logger.info('Trying to update db %s' % self.name)
 
         if init_and_conf_modules:
@@ -379,13 +392,13 @@ class database(models.Model):
             if init_and_conf_modules:
                 raise Warning(_(
                     'Could not fix db, try it manually and run again'))
+            # updated detail if an init have been run
+            update_modules = detail.get('update_modules')
+            optional_update_modules = detail.get('optional_update_modules')
+            to_update_modules = update_modules + optional_update_modules
 
-        # updated detail if an init have been run
-        update_modules = detail.get('update_modules')
-        optional_update_modules = detail.get('optional_update_modules')
-        to_update = update_modules + optional_update_modules
-        if to_update:
-            self.upgrade_modules(to_update)
+        if to_update_modules:
+            self.upgrade_modules(to_update_modules)
             update_state = self.refresh_update_state()
         return True
 
