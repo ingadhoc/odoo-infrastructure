@@ -295,8 +295,10 @@ class database(models.Model):
             base_modules_state = 'error'
         self.base_modules_state = base_modules_state
         self.base_modules_state_detail = (
+            '*Uninstalled modules: %s\n\n'
             '*Base modules: %s\n\n'
-            '*Installed modules: %s\n' % (base_modules, installed_modules))
+            '*Installed modules: %s\n' % (
+                uninstalled_modules, base_modules, installed_modules))
 
     @api.multi
     def refresh_backups_state(self):
