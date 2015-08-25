@@ -134,7 +134,7 @@
                             <button name="refresh_dbs_update_state"
                                 string="⇒ Refresh"
                                 type="object"
-                                states="active"
+                                attrs="{'invisible': ['|', ('databases_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 class="oe_link"/>
                         </div>
                     </group>
