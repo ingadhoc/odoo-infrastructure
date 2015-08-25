@@ -110,10 +110,10 @@
                                 type="object"
                                 states="active"
                                 class="oe_link"/>
-                            <button name="fix_db"
+                            <button name="%(action_infrastructure_database_fix_wizard)d"
                                 string="⇒ Fix Database"
                                 attrs="{'invisible': ['|', ('update_state', '=', 'ok'), ('state', '!=', 'active')]}"
-                                type="object"
+                                type="action"
                                 class="oe_link"/>
                         </div>
                         <label for="base_modules_state"/>
