@@ -432,6 +432,19 @@ class instance(models.Model):
         string='Odoo Version',
         compute='get_odoo_version',
         )
+    odoo_service_state = fields.Selection(
+        [('ok', 'Ok'), ('restart_required', 'Restart Required')],
+        'Odoo Service Status',
+        readonly=True,
+        )
+    databases_state = fields.Selection([
+            ('ok', 'Ok'),
+            ('refresh_dbs_required', 'Refresh Dbs Required'),
+            ('actions_required', 'Actions Required'),
+        ],
+        'Databases Status',
+        readonly=True,
+        )
 
     _sql_constraints = [
         # TODO move this constraints to a normal contraint because now they are
@@ -482,6 +495,32 @@ class instance(models.Model):
                 ('environment_id', '=', self.environment_id.id),
                 ], limit=1)
         self.sources_from_id = sources_from_id
+
+    @api.one
+    def refresh_dbs_update_state(self):
+        for database in self.database_ids:
+            database.refresh_update_state()
+        self.refresh_instance_update_state()
+
+    @api.one
+    @api.depends('refresh_dbs_required', 'database_ids.update_state')
+    def refresh_instance_update_state(self):
+        databases_state = 'ok'
+        dbs_update_states = self.mapped('database_ids.update_state')
+        actions_required_states = [
+            'init_and_conf',
+            'update',
+            'optional_update',
+            'to_install_modules',
+            'to_remove_modules',
+            'to_upgrade_modules',
+            ]
+        # TODO mejorar esta forma horrible, el tema es que el mapped me
+        # devuevle algo raro
+        for state in actions_required_states:
+            if state in dbs_update_states:
+                databases_state = 'actions_required'
+        self.databases_state = databases_state
 
     @api.one
     @api.depends('server_id')
@@ -548,7 +587,8 @@ class instance(models.Model):
 
     @api.multi
     def action_check_databases(self):
-        return self.database_ids.check_modules_update_state()
+        raise Warning('Not implemented yet')
+        # return self.database_ids.xx
 
     @api.multi
     def action_wfk_set_draft(self):
@@ -1189,12 +1229,16 @@ class instance(models.Model):
         self.environment_id.server_id.get_env()
         _logger.info("Starting Odoo Service %s " % self.name)
         sudo(self.start_odoo_cmd)
+        if self.odoo_service_state == 'restart_required':
+            self.odoo_service_state = 'ok'
 
     @api.one
     def restart_odoo_service(self):
         self.environment_id.server_id.get_env()
         _logger.info("Restarting Odoo Service %s " % self.name)
         sudo(self.restart_odoo_cmd)
+        if self.odoo_service_state == 'restart_required':
+            self.odoo_service_state = 'ok'
 
     @api.one
     def remove_odoo_service(self):

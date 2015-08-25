@@ -36,6 +36,11 @@ class database_backup(models.Model):
         [('manual', 'Manual'), ('automatic', 'Automatic')],
         string='Type',
     )
+    keep_till_date = fields.Datetime(
+        string='Keep Till date',
+        help="Only for manual backups, if not date is configured then backup "
+        "won't be deleted.",
+    )
     backup_cmd = fields.Char(
         compute='get_backup_cmd',
         string='Get Backup',

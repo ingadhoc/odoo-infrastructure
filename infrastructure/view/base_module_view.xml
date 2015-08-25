@@ -37,7 +37,6 @@
                     <group>
                         <group name="gral_info">
                             <field name="name"/>
-                            <field name="default_on_new_db"/>
                         </group>
                     </group>
                 </page>
@@ -56,7 +55,6 @@
         <tree string="Modules">
             <field name="shortdesc"/>
             <field name="name" groups="base.group_no_one"/>
-            <field name="default_on_new_db"/>
             <field name="author"/>
         </tree>
     </field>

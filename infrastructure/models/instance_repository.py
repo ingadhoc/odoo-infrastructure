@@ -94,11 +94,12 @@ class instance_repository(models.Model):
                 You should first delete it with the delete button.'))
         return super(instance_repository, self).unlink()
 
-    @api.one
+    @api.multi
     def action_repository_pull_clone_and_checkout(self):
+        # TODO view is not refreshing
         return self.repository_pull_clone_and_checkout()
 
-    @api.one
+    @api.multi
     def action_delete(self):
         self.instance_id.environment_id.server_id.get_env()
         try:
@@ -109,11 +110,12 @@ class instance_repository(models.Model):
             raise Warning(_('Error Removing Folder %s. This is what we get:\
                 \n%s' % (self.path, e)))
 
-    @api.one
+    @api.multi
     def action_pull_source_and_active(self):
         """This method is used from instance that clone repositories from other
         instance, with this method, first source repository is pulled, then
         active one."""
+        self.ensure_one()
         if not self.sources_from_id:
             raise Warning(_('this method must be call from a repository that\
                 belongs to an instance with Other Instance Repositories'))
@@ -129,8 +131,9 @@ class instance_repository(models.Model):
         source_repository.repository_pull_clone_and_checkout()
         return self.repository_pull_clone_and_checkout()
 
-    @api.one
+    @api.multi
     def repository_pull_clone_and_checkout(self, update=True):
+        self.ensure_one()
         _logger.info("Updateing/getting repository %s with update=%s" % (
             self.repository_id.name, update))
         if self.actual_commit and not update:
@@ -159,3 +162,10 @@ class instance_repository(models.Model):
         # por ahora lo usamos para chequear que ya se descargo
         self.actual_commit = fields.Datetime.to_string(
             fields.Datetime.context_timestamp(self, datetime.now()))
+
+        # marcamos que un instance restart requerido y un refresh_dbs_required
+        self.instance_id.write({
+            'odoo_service_state': 'restart_required',
+            'databases_state': 'refresh_dbs_required',
+            })
+        return True

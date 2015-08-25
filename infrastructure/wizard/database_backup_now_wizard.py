@@ -23,7 +23,7 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
         ('zip', 'zip (With Filestore)'),
         ('pg_dump', 'pg_dump (Without Filestore)')],
         'Backup Format',
-        default='pg_dump',
+        default='zip',
         required=True,
         )
     name = fields.Char(

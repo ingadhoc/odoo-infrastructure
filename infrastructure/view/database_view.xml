@@ -16,6 +16,7 @@
             <field name="environment_id"/>
             <field name="instance_id"/>
             <field name="update_state"/>
+            <field name="overall_state"/>
             <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Partner" context="{'group_by':'partner_id'}"/>
@@ -24,6 +25,7 @@
                 <filter string="Environment" context="{'group_by':'environment_id'}"/>
                 <filter string="Instance" context="{'group_by':'instance_id'}"/>
                 <filter string="Update State" context="{'group_by':'update_state'}"/>
+                <filter string="Overall State" context="{'group_by':'overall_state'}"/>
             </group>
         </search>
     </field>
@@ -73,9 +75,6 @@
                     </h1>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons">
-                    <button name="%(infrastructure.action_infrastructure_database_module)d" states="active" icon="fa-th" type="action" class="oe_inline oe_stat_button" context="{'search_default_database_id': id,'search_default_installed': 1}">
-                        <field name="module_count" widget="statinfo"/>
-                    </button>
                 </div>
                 <div class="oe_right oe_button_box" name="buttons_action">
                     <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
@@ -106,10 +105,42 @@
                             <field
                                 name="update_state"
                                 class="oe_inline"/>
+                            <button name="refresh_update_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
+                                class="oe_link"/>
                             <button name="update_db"
                                 string="⇒ Update Database"
-                                attrs="{'invisible': [('update_state', '=', 'ok')]}"
+                                attrs="{'invisible': ['|', ('update_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 type="object"
+                                class="oe_link"/>
+                        </div>
+                        <label for="base_modules_state"/>
+                        <div>
+                            <field
+                                name="base_modules_state"
+                                class="oe_inline"/>
+                            <button name="refresh_base_modules_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
+                                class="oe_link"/>
+                            <button name="install_base_modules"
+                                string="⇒ Install Base Modules"
+                                attrs="{'invisible': ['|', ('base_modules_state', '=', 'ok'), ('state', '!=', 'active')]}"
+                                type="object"
+                                class="oe_link"/>
+                        </div>
+                        <label for="backups_state"/>
+                        <div>
+                            <field
+                                name="backups_state"
+                                class="oe_inline"/>
+                            <button name="refresh_backups_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
                                 class="oe_link"/>
                         </div>
                     </group>
@@ -119,6 +150,7 @@
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
                         <field name="drop_date"/>
+                        <field name="check_database"/>
                     </group>
                  </group>
                 <notebook>
@@ -157,21 +189,16 @@
                             <field name="local_alias"/>
                         </group>
                     </page>
-                    <page string="Base Modules" states="active" name="base_module_ids">
-                        <button type="object" name="action_update_modules_data" string="Update Modules Data"/>
-                        <button type="object" name="install_base_modules" string="Install Modules"/>
-                        <field name="base_module_ids" context="{'database_id':id}">
-<!--                             <tree colors="blue:state=='to upgrade' or state=='to install';red:state=='uninstalled';grey:state=='uninstallable';black:state=='installed';orange:state=='not_available'" create="false" string="Modules">
-                                <field name="shortdesc"/>
-                                <field name="name" groups="base.group_no_one"/>
-                                <field name="author"/>
-                                <field name="state"/>
-                            </tree> -->
-                        </field>
-                    </page>
                     <page string="Users" states="active">
                         <button name="update_users_data" string="Update" type="object"/>
                         <field name="user_ids"/>
+                    </page>
+                    <page string="Errors">
+                        <group col="1">
+                            <field name="update_state_detail"/>
+                            <field name="base_modules_state_detail"/>
+                            <field name="backups_state_detail"/>
+                        </group>
                     </page>
                     <page string="Notes">
                         <field name="note"/>
@@ -193,7 +220,7 @@
     <field name="arch" type="xml">
         <tree string="database"
             fonts="bold:message_unread==True"
-            colors="red:update_state not in  ('ok', 'optional_update'); grey:state=='cancelled';blue:state in ('draft',); black:state in ('active', 'deactivated', 'maintenance')"
+            colors="red:overall_state =  'error'; grey:state=='cancelled';blue:state in ('draft',); black:state in ('active', 'deactivated', 'maintenance')"
             >
             <field name="message_unread" invisible="1"/>
             <field name="database_type_id"/>
@@ -203,7 +230,8 @@
             <field name="environment_id" invisible="1"/>
             <field name="instance_id"/>
             <field name="state"/>
-            <field name="update_state"/>
+            <!-- <field name="update_state"/> -->
+            <field name="overall_state"/>
         </tree>
     </field>
 </record>
@@ -219,13 +247,15 @@
             <field name="color"/>
             <field name="state"/>
             <field name="update_state"/>
+            <field name="overall_state"/>
             <templates>
                 <t t-name="kanban-box">
                     <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
                         <div class="oe_kanban_content" style="width: 150px; height: 80px; margin: 0 auto;">
                             <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
                             <a t-att-href="record.main_hostname.value" target="_blank"><field name="main_hostname"/></a>
-                            <h5>Update Status:<field name="update_state"/></h5>
+                            <!-- <h5>Update Status:<field name="update_state"/></h5> -->
+                            <h5>Overall Status:<field name="overall_state"/></h5>
                         </div>
                         <div class="oe_clear"/> 
                     </div>
@@ -246,6 +276,17 @@
     <field name="context">{'search_default_not_cancel': 1}</field>
 </record>
 
+<record id="action_infrastructure_databases_to_correct" model="ir.actions.act_window">
+    <field name="name">Databases To Correct</field>
+    <field name="res_model">infrastructure.database</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="view_id" ref="view_database_kanban"/>
+    <field name="search_view_id" ref="view_infrastructure_database_filter"/>
+    <field name="domain">[]</field>
+    <field name="context">{'search_default_overall_state': 'error'}</field>
+</record>
+
 <menuitem
     name="Databases"
     id="menu_databases"
@@ -253,6 +294,13 @@
     action="action_infrastructure_database_databases"
     parent="menu_infra_main"
     groups="group_user"
+    />
+
+<menuitem
+    id="menu_databases_to_correct"
+    sequence="5"
+    action="action_infrastructure_databases_to_correct"
+    parent="menu_infra_main"
     />
 
 <menuitem

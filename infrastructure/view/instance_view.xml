@@ -125,6 +125,18 @@
                             <button name="remove_pg_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
                         </div>
                         <field name="service_type"/>
+                        <field name="odoo_service_state"/>
+                        <label for="databases_state"/>
+                        <div>
+                            <field
+                                name="databases_state"
+                                class="oe_inline"/>
+                            <button name="refresh_dbs_update_state"
+                                string="⇒ Refresh"
+                                type="object"
+                                states="active"
+                                class="oe_link"/>
+                        </div>
                     </group>
                 </group>
                 <notebook>
@@ -178,12 +190,6 @@
                             attrs="{'invisible': ['|',('sources_from_id','=',False), ('state','!=','active')]}"
                             name="repositories_pull_clone_and_checkout"/> -->
                         <!-- <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}" class="oe_inline"/> -->
-                        <button string="Check Databases"
-                            type="object"
-                            states="active"
-                            class="oe_highlight"
-                            help='Recommended after a repository pull and a server restart, it update modules information and check if a database requires modules update.'
-                            name="action_check_databases"/>
                             <!-- we are not using for now -->
 <!--                         <button string="Update all modules and databases"
                             type="object"
