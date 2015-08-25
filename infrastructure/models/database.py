@@ -303,6 +303,9 @@ class database(models.Model):
     @api.multi
     def refresh_backups_state(self):
         self.ensure_one()
+        if not self.backups_enable:
+            self.backups_state = False
+            return True
         client = self.get_client()
         modules = ['database_tools']
         for module in modules:
