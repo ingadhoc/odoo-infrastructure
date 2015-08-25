@@ -246,12 +246,40 @@ class database(models.Model):
         'Backups Detail',
         readonly=True,
         )
+    # TODO mejorar esto usando algo de database type
+    check_database = fields.Boolean(
+        'Check Databse with cron'
+        )
+    overall_state = fields.Selection(
+        [('ok', 'OK'), ('error', 'Error')],
+        'Overall State',
+        compute='get_overall_state',
+        store=True,
+        )
 
-    # @api.multi
-    # def refresh_states(self):
-    #     self.refresh_backups_state()
-    #     self.refresh_base_modules_state()
-    #     self.refresh_update_state()
+    @api.model
+    def cron_check_databases(self):
+        databases = self.search([('check_database', '=', True)])
+        for db in databases:
+            _logger.info('Checking database id: "%s"' % db.id)
+            db.refresh_base_modules_state()
+            db.refresh_backups_state()
+            db.refresh_update_state()
+            db._cr.commit()
+        return True
+
+    @api.one
+    @api.depends('backups_state', 'base_modules_state', 'update_state')
+    def get_overall_state(self):
+        overall_state = 'ok'
+        if self.backups_state and self.backups_state != 'ok':
+            overall_state = 'error'
+        elif self.base_modules_state and self.base_modules_state != 'ok':
+            overall_state = 'error'
+        elif self.update_state and self.update_state not in [
+                'ok', 'optional_update']:
+            overall_state = 'error'
+        self.overall_state = overall_state
 
     @api.multi
     def refresh_base_modules_state(self):
@@ -290,7 +318,6 @@ class database(models.Model):
         state = backups_state.get('state', False)
         detail = backups_state.get('detail', False)
 
-        print 'state', state
         if state not in ['ok', 'error']:
             raise Warning(_(
                 'Could not get state! Unknow error, we could not get state '
@@ -326,6 +353,7 @@ class database(models.Model):
                 'from "%s"' % (update_state)))
         self.update_state = state
         self.update_state_detail = detail
+        self.instance_id.refresh_instance_update_state()
         return update_state
 
     @api.one
@@ -428,7 +456,7 @@ class database(models.Model):
             color = 7
         elif self.state == 'cancel':
             color = 1
-        if self.update_state not in ('ok', 'optional_update'):
+        if self.overall_state != 'ok':
             color = 2
         self.color = color
 
