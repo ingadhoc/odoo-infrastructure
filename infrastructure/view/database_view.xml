@@ -110,8 +110,8 @@
                                 type="object"
                                 states="active"
                                 class="oe_link"/>
-                            <button name="update_db"
-                                string="⇒ Update Database"
+                            <button name="fix_db"
+                                string="⇒ Fix Database"
                                 attrs="{'invisible': ['|', ('update_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 type="object"
                                 class="oe_link"/>

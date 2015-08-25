@@ -362,7 +362,7 @@ class database(models.Model):
         return update_state
 
     @api.one
-    def update_db(self):
+    def fix_db(self):
         update_state = self.refresh_update_state()
         detail = update_state.get('detail', False)
         init_and_conf_modules = detail.get('init_and_conf_modules')
