@@ -126,7 +126,8 @@
                         </div>
                         <field name="service_type"/>
                         <field name="odoo_service_state"/>
-                        <label for="databases_state"/>
+                        <field name="databases_state"/>
+<!--                         <label for="databases_state"/>
                         <div>
                             <field
                                 name="databases_state"
@@ -136,7 +137,7 @@
                                 type="object"
                                 attrs="{'invisible': ['|', ('databases_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 class="oe_link"/>
-                        </div>
+                        </div> -->
                     </group>
                 </group>
                 <notebook>

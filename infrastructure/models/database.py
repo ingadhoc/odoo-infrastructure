@@ -358,7 +358,7 @@ class database(models.Model):
                 'from "%s"' % (update_state)))
         self.update_state = state
         self.update_state_detail = detail
-        self.instance_id.refresh_instance_update_state()
+        # self.instance_id.refresh_instance_update_state()
         return update_state
 
     @api.one
