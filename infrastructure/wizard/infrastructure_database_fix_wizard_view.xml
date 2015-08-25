@@ -11,11 +11,10 @@
                 <field name="database_id"/>
                 <field name="update_state"/>
                 <field name="init_and_conf_modules"/>
-                <p>You should check if any of this module needs another manuall configuration</p>
                 <field name="update_modules"/>
             </group>
             <footer>
-                <button name="confirm" string="Change" type="object" class="oe_highlight"/>
+                <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
                 or
                 <button string="Cancel" class="oe_link" special="cancel"/>
             </footer>

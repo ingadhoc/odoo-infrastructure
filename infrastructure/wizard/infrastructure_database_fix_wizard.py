@@ -6,7 +6,8 @@
 
 from openerp import fields, api, _, models
 from openerp.exceptions import Warning
-from openerp.addons.models.database import _update_state_vals
+from openerp.addons.infrastructure.models.database import _update_state_vals
+from ast import literal_eval
 
 
 class infrastructure_database_fix_wizard(models.TransientModel):
@@ -20,15 +21,17 @@ class infrastructure_database_fix_wizard(models.TransientModel):
     update_state = fields.Selection(
         _update_state_vals,
         'Update Status',
-        readonly=True,
+        compute='get_data',
         )
     init_and_conf_modules = fields.Text(
-        string='Modules to Init',
-        readonly=True
+        string='Modules to Init (Check if they need a manual configuration)',
+        compute='get_data',
+        help='Sometimes, modules on this state need adittional configurations'
+        ' or others modules to be installed manually. Check module changes.'
         )
     update_modules = fields.Char(
         string='Modules to Update',
-        readonly=True
+        compute='get_data',
         )
     database_id = fields.Many2one(
         'infrastructure.database',
@@ -40,7 +43,7 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         )
 
     @api.onchange('database_id')
-    def change_db_passwd(self):
+    def get_data(self):
         update_state = self.database_id.refresh_update_state()
         state = update_state.get('state', False)
         detail = update_state.get('detail', False)
@@ -54,9 +57,11 @@ class infrastructure_database_fix_wizard(models.TransientModel):
     @api.multi
     def confirm(self):
         self.ensure_one()
-        if self.state not in ['init_and_conf', 'update', 'optional_update']:
+        if self.update_state not in [
+                'init_and_conf', 'update', 'optional_update']:
             raise Warning(_(
                 'Fix form state "%s" not implemented yet. You should fix it '
-                'manually') % (self.state))
+                'manually') % (self.update_state))
         return self.database_id.fix_db(
-            self.init_and_conf_modules, self.update_modules)
+            literal_eval(self.init_and_conf_modules),
+            literal_eval(self.update_modules))
