@@ -334,7 +334,7 @@ class database(models.Model):
     @api.multi
     def refresh_update_state(self, do_not_raise=False):
         self.ensure_one()
-        client = self.get_client()
+        client = self.get_client(do_not_raise=do_not_raise)
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:

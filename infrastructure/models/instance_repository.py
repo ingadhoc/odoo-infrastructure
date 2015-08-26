@@ -167,6 +167,10 @@ class instance_repository(models.Model):
             'odoo_service_state': 'restart_required',
             # 'databases_state': 'refresh_dbs_required',
             })
-        for database in self.instance_id.database_ids:
-            database.refresh_update_state(do_not_raise=True)
+
+        # only if docker restart because if not instance may be down
+        # TODO analizar si es la mejor manera
+        if self.instance_id.service_type == 'docker':
+            for database in self.instance_id.database_ids:
+                database.refresh_update_state(do_not_raise=True)
         return True
