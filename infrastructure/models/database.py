@@ -332,22 +332,30 @@ class database(models.Model):
         return backups_state
 
     @api.multi
-    def refresh_update_state(self):
+    def refresh_update_state(self, do_not_raise=False):
         self.ensure_one()
         client = self.get_client()
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_(
+                msg = (_(
                     "You can not refresh modules update status if module '%s' "
                     "is not installed in the database") % (module))
+                if do_not_raise:
+                    _logger.warning(msg)
+                else:
+                    raise Warning(msg)
         try:
             update_state = client.model(
                 'ir.module.module').get_overall_update_state()
         except Exception, e:
-                raise Warning(_(
+                msg = (_(
                     'Could not get state!\n'
                     'This is what we get %s' % e))
+                if do_not_raise:
+                    _logger.warning(msg)
+                else:
+                    raise Warning(msg)
         state = update_state.get('state', False)
         detail = update_state.get('detail', False)
         update_state_keys = [x[0] for x in _update_state_vals]

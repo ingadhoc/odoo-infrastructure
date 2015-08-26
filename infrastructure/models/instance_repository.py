@@ -168,5 +168,5 @@ class instance_repository(models.Model):
             # 'databases_state': 'refresh_dbs_required',
             })
         for database in self.instance_id.database_ids:
-            database.refresh_update_state()
+            database.refresh_update_state(do_not_raise=True)
         return True
