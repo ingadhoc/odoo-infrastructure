@@ -350,6 +350,7 @@ class database(models.Model):
                     "is not installed in the database") % (module))
                 if do_not_raise:
                     _logger.warning(msg)
+                    return True
                 else:
                     raise Warning(msg)
         try:
@@ -361,6 +362,7 @@ class database(models.Model):
                     'This is what we get %s' % e))
                 if do_not_raise:
                     _logger.warning(msg)
+                    return True
                 else:
                     raise Warning(msg)
         state = update_state.get('state', False)
