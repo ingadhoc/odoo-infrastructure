@@ -334,7 +334,14 @@ class database(models.Model):
     @api.multi
     def refresh_update_state(self, do_not_raise=False):
         self.ensure_one()
-        client = self.get_client()
+        # we make a try because perhups instances is not up
+        try:
+            client = self.get_client()
+        except:
+            if do_not_raise:
+                return True
+            else:
+                raise Warning(_('Could not get client'))
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
