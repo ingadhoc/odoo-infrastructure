@@ -439,7 +439,6 @@ class instance(models.Model):
         )
     databases_state = fields.Selection([
             ('ok', 'Ok'),
-            # ('refresh_dbs_required', 'Refresh Dbs Required'),
             ('actions_required', 'Actions Required'),
         ],
         'Databases Status',

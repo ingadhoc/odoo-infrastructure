@@ -162,10 +162,8 @@ class instance_repository(models.Model):
         self.actual_commit = fields.Datetime.to_string(
             fields.Datetime.context_timestamp(self, datetime.now()))
 
-        # marcamos que un instance restart requerido y un refresh_dbs_required
         self.instance_id.write({
             'odoo_service_state': 'restart_required',
-            # 'databases_state': 'refresh_dbs_required',
             })
         for database in self.instance_id.database_ids:
             database.refresh_update_state(do_not_raise=True)

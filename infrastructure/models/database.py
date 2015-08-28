@@ -224,6 +224,10 @@ class database(models.Model):
         'Update Status',
         readonly=True,
         )
+    last_overall_check_date = fields.Datetime(
+        'Last Overall Check',
+        readonly=False,
+        )
     update_state_detail = fields.Text(
         'Update Status Detail',
         readonly=True,
@@ -261,14 +265,18 @@ class database(models.Model):
     def cron_check_databases(self):
         databases = self.search([('check_database', '=', True)])
         for db in databases:
-            _logger.info('Checking database id: "%s"' % db.id)
-            db.refresh_base_modules_state()
-            db.refresh_backups_state()
-            db.refresh_update_state()
+            db.refresh_overall_state()
             db._cr.commit()
         return True
 
     @api.one
+    def refresh_overall_state(self):
+        _logger.info('Checking database id: "%s"' % self.id)
+        self.refresh_base_modules_state()
+        self.refresh_backups_state()
+        self.refresh_update_state()
+        self.last_overall_check_date = fields.Datetime.now()
+
     @api.depends('backups_state', 'base_modules_state', 'update_state')
     def get_overall_state(self):
         overall_state = 'ok'

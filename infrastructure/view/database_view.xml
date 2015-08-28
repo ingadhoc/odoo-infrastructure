@@ -143,6 +143,17 @@
                                 states="active"
                                 class="oe_link"/>
                         </div>
+                        <label for="last_overall_check_date"/>
+                        <div>
+                            <field
+                                name="last_overall_check_date"
+                                class="oe_inline"/>
+                            <button name="refresh_overall_state"
+                                string="⇒ Refresh Overall State"
+                                type="object"
+                                states="active"
+                                class="oe_link"/>
+                        </div>
                     </group>
                     <group>
                         <field name="demo_data"/>
