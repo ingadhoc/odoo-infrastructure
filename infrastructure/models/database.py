@@ -23,9 +23,9 @@ _update_state_vals = [
     ('init_and_conf', 'Init and Config'),
     ('update', 'Update'),
     ('optional_update', 'Optional Update'),
-    ('to_install_modules', 'Modules on To Install'),
-    ('to_remove_modules', 'Modules on To Remove'),
-    ('to_upgrade_modules', 'Modules on To Upgrade'),
+    ('modules_on_to_install', 'Modules on To Install'),
+    ('modules_on_to_remove', 'Modules on To Remove'),
+    ('modules_on_to_upgrade', 'Modules on To Upgrade'),
     ('ok', 'Ok'),
     ]
 
@@ -226,7 +226,7 @@ class database(models.Model):
         )
     last_overall_check_date = fields.Datetime(
         'Last Overall Check',
-        readonly=False,
+        readonly=True,
         )
     update_state_detail = fields.Text(
         'Update Status Detail',
