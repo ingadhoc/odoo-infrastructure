@@ -252,7 +252,8 @@ class database(models.Model):
         )
     # TODO mejorar esto usando algo de database type
     check_database = fields.Boolean(
-        'Check Databse with cron'
+        'Check Databse with cron',
+        copy=False,
         )
     overall_state = fields.Selection(
         [('ok', 'OK'), ('error', 'Error')],
