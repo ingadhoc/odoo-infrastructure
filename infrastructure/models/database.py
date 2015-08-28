@@ -273,9 +273,9 @@ class database(models.Model):
     @api.one
     def refresh_overall_state(self):
         _logger.info('Checking database id: "%s"' % self.id)
-        self.refresh_base_modules_state()
-        self.refresh_backups_state()
-        self.refresh_update_state()
+        self.refresh_base_modules_state(do_not_raise=True)
+        self.refresh_backups_state(do_not_raise=True)
+        self.refresh_update_state(do_not_raise=True)
         self.last_overall_check_date = fields.Datetime.now()
 
     @api.depends('backups_state', 'base_modules_state', 'update_state')
@@ -291,9 +291,16 @@ class database(models.Model):
         self.overall_state = overall_state
 
     @api.multi
-    def refresh_base_modules_state(self):
+    def refresh_base_modules_state(self, do_not_raise=False):
         self.ensure_one()
-        client = self.get_client()
+        try:
+            client = self.get_client()
+        except:
+            if do_not_raise:
+                return True
+            else:
+                raise Warning(_('Could not get client'))
+        # TODO extend do_not_raise to following warnings
         base_modules_state = 'ok'
         base_modules = self.env[
             'infrastructure.base.module'].search([]).mapped('name')
@@ -310,12 +317,19 @@ class database(models.Model):
                 uninstalled_modules, base_modules, installed_modules))
 
     @api.multi
-    def refresh_backups_state(self):
+    def refresh_backups_state(self, do_not_raise=False):
         self.ensure_one()
         if not self.backups_enable:
             self.backups_state = False
             return True
-        client = self.get_client()
+        try:
+            client = self.get_client()
+        except:
+            if do_not_raise:
+                return True
+            else:
+                raise Warning(_('Could not get client'))
+        # TODO extend do_not_raise to following warnings
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
