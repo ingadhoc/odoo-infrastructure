@@ -166,5 +166,6 @@ class instance_repository(models.Model):
             'odoo_service_state': 'restart_required',
             })
         for database in self.instance_id.database_ids:
-            database.refresh_update_state(do_not_raise=True)
+            database.with_context(
+                do_not_raise=True).refresh_update_state()
         return True

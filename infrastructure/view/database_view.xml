@@ -145,8 +145,11 @@
                                 states="active"
                                 class="oe_link"/>
                         </div>
-                        <label for="last_overall_check_date"/>
+                        <label for="overall_state"/>
                         <div>
+                            <field
+                                name="overall_state"
+                                class="oe_inline"/> - 
                             <field
                                 name="last_overall_check_date"
                                 class="oe_inline"/>

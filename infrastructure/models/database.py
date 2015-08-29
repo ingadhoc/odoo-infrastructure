@@ -20,6 +20,7 @@ import simplejson
 import logging
 _logger = logging.getLogger(__name__)
 _update_state_vals = [
+    ('unknown', 'Unknown'),
     ('init_and_conf', 'Init and Config'),
     ('update', 'Update'),
     ('optional_update', 'Optional Update'),
@@ -233,7 +234,7 @@ class database(models.Model):
         readonly=True,
         )
     base_modules_state = fields.Selection(
-        [('ok', 'OK'), ('error', 'Error')],
+        [('ok', 'OK'), ('error', 'Error'), ('unknown', 'Unknown')],
         'Base Modules Status',
         readonly=True,
         )
@@ -242,7 +243,7 @@ class database(models.Model):
         readonly=True,
         )
     backups_state = fields.Selection(
-        [('ok', 'OK'), ('error', 'Error')],
+        [('ok', 'OK'), ('error', 'Error'), ('unknown', 'Unknown')],
         'Backups Status',
         readonly=True,
         )
@@ -264,7 +265,8 @@ class database(models.Model):
 
     @api.model
     def cron_check_databases(self):
-        databases = self.search([('check_database', '=', True)])
+        databases = self.with_context(
+            do_not_raise=True).search([('check_database', '=', True)])
         for db in databases:
             db.refresh_overall_state()
             db._cr.commit()
@@ -273,9 +275,9 @@ class database(models.Model):
     @api.one
     def refresh_overall_state(self):
         _logger.info('Checking database id: "%s"' % self.id)
-        self.refresh_base_modules_state(do_not_raise=True)
-        self.refresh_backups_state(do_not_raise=True)
-        self.refresh_update_state(do_not_raise=True)
+        self.refresh_base_modules_state()
+        self.refresh_backups_state()
+        self.refresh_update_state()
         self.last_overall_check_date = fields.Datetime.now()
 
     @api.depends('backups_state', 'base_modules_state', 'update_state')
@@ -290,13 +292,18 @@ class database(models.Model):
             overall_state = 'error'
         self.overall_state = overall_state
 
+    # TODO mejorar el codigo este de do_not_raise, hacerlo mucho mas siemple
+    # se repite lo mismo en tres funciones distintas en distintos momentos
     @api.multi
-    def refresh_base_modules_state(self, do_not_raise=False):
+    def refresh_base_modules_state(self):
         self.ensure_one()
+        do_not_raise = self._context.get('do_not_raise', False)
         try:
             client = self.get_client()
         except:
             if do_not_raise:
+                self.base_modules_state = 'unknown'
+                self.base_modules_state_detail
                 return True
             else:
                 raise Warning(_('Could not get client'))
@@ -317,54 +324,85 @@ class database(models.Model):
                 uninstalled_modules, base_modules, installed_modules))
 
     @api.multi
-    def refresh_backups_state(self, do_not_raise=False):
+    def refresh_backups_state(self):
         self.ensure_one()
+        do_not_raise = self._context.get('do_not_raise', False)
         if not self.backups_enable:
             self.backups_state = False
             return True
         try:
             client = self.get_client()
-        except:
+        except Exception, e:
+            msg = _(
+                'Could not get state!\n'
+                'This is what we get %s' % e)
             if do_not_raise:
+                self.backups_state = 'unknown'
+                self.backups_state_detail = msg
                 return True
             else:
-                raise Warning(_('Could not get client'))
-        # TODO extend do_not_raise to following warnings
+                raise Warning(msg)
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_(
+                msg = _(
                     "You can not refresh backups state if module '%s' is not "
-                    "installed in the database") % (module))
+                    "installed in the database") % (module)
+                if do_not_raise:
+                    _logger.warning(msg)
+                    self.backups_state = ''
+                    self.backups_state_detail = msg
+                    return True
+                else:
+                    raise Warning(msg)
         try:
             backups_state = client.model(
                 'db.database').get_overall_backups_state()
         except Exception, e:
-                raise Warning(_(
-                    'Could not get state!\n'
-                    'This is what we get %s' % e))
+            msg = _(
+                'Could not get state!\n'
+                'This is what we get %s' % e)
+            if do_not_raise:
+                self.backups_state = 'unknown'
+                self.backups_state_detail = msg
+                return True
+            else:
+                raise Warning(msg)
         state = backups_state.get('state', False)
         detail = backups_state.get('detail', False)
 
         if state not in ['ok', 'error']:
-            raise Warning(_(
+            msg = _(
                 'Could not get state! Unknow error, we could not get state '
-                'from "%s"' % (backups_state)))
+                'from "%s"' % (backups_state))
+            if do_not_raise:
+                _logger.warning(msg)
+                self.backups_state = ''
+                self.backups_state_detail = msg
+                return True
+            else:
+                raise Warning(msg)
         self.backups_state = state
         self.backups_state_detail = detail
         return backups_state
 
     @api.multi
-    def refresh_update_state(self, do_not_raise=False):
+    def refresh_update_state(self):
         self.ensure_one()
+        do_not_raise = self._context.get('do_not_raise', False)
         # we make a try because perhups instances is not up
         try:
             client = self.get_client()
-        except:
+        except Exception, e:
+            msg = _(
+                'Could not get state!\n'
+                'This is what we get %s' % e)
             if do_not_raise:
+                self.update_state = 'unknown'
+                self.update_state_detail = msg
                 return True
             else:
-                raise Warning(_('Could not get client'))
+                raise Warning(msg)
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
@@ -373,6 +411,8 @@ class database(models.Model):
                     "is not installed in the database") % (module))
                 if do_not_raise:
                     _logger.warning(msg)
+                    self.update_state = 'unknown'
+                    self.update_state_detail = msg
                     return True
                 else:
                     raise Warning(msg)
@@ -385,6 +425,8 @@ class database(models.Model):
                     'This is what we get %s' % e))
                 if do_not_raise:
                     _logger.warning(msg)
+                    self.update_state = 'unknown'
+                    self.update_state_detail = msg
                     return True
                 else:
                     raise Warning(msg)
@@ -393,12 +435,18 @@ class database(models.Model):
         update_state_keys = [x[0] for x in _update_state_vals]
 
         if state not in update_state_keys:
-            raise Warning(_(
+            msg = (_(
                 'Could not get state! Unknow error, we could not get state '
                 'from "%s"' % (update_state)))
+            if do_not_raise:
+                _logger.warning(msg)
+                self.update_state = 'unknown'
+                self.update_state_detail = msg
+                return True
+            else:
+                raise Warning(msg)
         self.update_state = state
         self.update_state_detail = detail
-        # self.instance_id.refresh_instance_update_state()
         return update_state
 
     @api.one
