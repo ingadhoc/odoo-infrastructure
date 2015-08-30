@@ -292,6 +292,14 @@ class database(models.Model):
             overall_state = 'error'
         self.overall_state = overall_state
 
+    @api.multi
+    def clean_overall_state(self):
+        self.write({
+            'base_modules_state': False,
+            'backups_state': False,
+            'update_state': False,
+            })
+
     # TODO mejorar el codigo este de do_not_raise, hacerlo mucho mas siemple
     # se repite lo mismo en tres funciones distintas en distintos momentos
     @api.multi

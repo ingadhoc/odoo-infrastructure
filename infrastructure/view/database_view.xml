@@ -154,9 +154,13 @@
                                 name="last_overall_check_date"
                                 class="oe_inline"/>
                             <button name="refresh_overall_state"
-                                string="⇒ Refresh Overall State"
+                                string="⇒ Refresh"
                                 type="object"
                                 states="active"
+                                class="oe_link"/>
+                            <button name="clean_overall_state"
+                                string="⇒ Clean"
+                                type="object"
                                 class="oe_link"/>
                         </div>
                     </group>
