@@ -34,7 +34,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         'Database full name',
         )
     target_advance_type = fields.Selection(
-        related='target_database_id.database_type_id.type',
+        related='target_database_id.advance_type',
         string='Type',
         readonly=True,
         )
@@ -59,11 +59,11 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         default=_get_instance,
         ondelete='cascade',
     )
-    database_type_id = fields.Many2one(
-        'infrastructure.database_type',
-        string='Database Type',
-        # required=True,
-    )
+    # database_type_id = fields.Many2one(
+    #     'infrastructure.database_type',
+    #     string='Database Type',
+    #     # required=True,
+    # )
     new_db_name = fields.Char(
         string='New db Name',
         # required=True
@@ -72,15 +72,15 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         'Backups Enable on new DB?'
     )
 
-    @api.onchange('instance_id')
-    def change_instance(self):
-        if self.instance_id:
-            self.database_type_id = self.instance_id.database_type_id
+    # @api.onchange('instance_id')
+    # def change_instance(self):
+    #     if self.instance_id:
+    #         self.database_type_id = self.instance_id.database_type_id
 
-    @api.onchange('database_type_id')
-    def onchange_database_type_id(self):
-        if self.database_type_id:
-            self.new_db_name = self.database_type_id.prefix + '_'
+    # @api.onchange('database_type_id')
+    # def onchange_database_type_id(self):
+    #     if self.database_type_id:
+    #         self.new_db_name = self.database_type_id.prefix + '_'
 
     @api.multi
     def restore_database(self):
@@ -89,7 +89,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         db_name = self.new_db_name
         instance = self.instance_id
         backups_enable = self.backups_enable
-        database_type = self.database_type_id
+        # database_type = self.database_type_id
         if self.type == 'overwrite':
             if (
                     self.target_advance_type == 'protected' and
@@ -111,7 +111,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
                 'name': db_name,
                 'backups_enable': backups_enable,
                 'issue_date': fields.Date.today(),
-                'database_type_id': database_type.id,
+                # 'database_type_id': database_type.id,
                 'instance_id': instance.id,
                 })
         database.signal_workflow('sgn_to_active')

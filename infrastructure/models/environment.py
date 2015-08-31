@@ -23,6 +23,7 @@ class environment(models.Model):
         # State machine: untitle
         ('draft', 'Draft'),
         ('active', 'Active'),
+        ('inactive', 'Inactive'),
         ('cancel', 'Cancel'),
     ]
 
@@ -126,6 +127,8 @@ class environment(models.Model):
             color = 7
         elif self.state == 'cancel':
             color = 1
+        elif self.state == 'inactive':
+            color = 3
         self.color = color
 
     @api.one
@@ -196,6 +199,16 @@ class environment(models.Model):
     def create_environment(self):
         self.make_env_paths()
         self.signal_workflow('sgn_to_active')
+
+    @api.one
+    def check_to_inactive(self):
+        for instance in self.instance_ids:
+            if instance.service_type != 'no_service':
+                raise Warning(_(
+                    'To set and environment as inactive you should set all '
+                    'env instances with Service Type "No Service" and better'
+                    ' if you stop all of them'))
+        return True
 
     @api.multi
     def delete(self):

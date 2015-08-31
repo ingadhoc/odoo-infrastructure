@@ -15,7 +15,7 @@
                 <field name="type"/>
                 <field name="instance_id" options="{'no_create': True}"/>
                 <field name="target_database_id" attrs="{'invisible': [('type', '!=', 'overwrite')], 'required': [('type', '=', 'overwrite')]}" options="{'no_create': True}"/>
-                <field name="database_type_id" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}" options="{'no_create': True}"/>
+                <!-- <field name="database_type_id" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}" options="{'no_create': True}"/> -->
                 <field name="new_db_name" attrs="{'invisible': [('type', '!=', 'new')], 'required': [('type', '=', 'new')]}"/>
                 <field name="backups_enable"/>
             </group>

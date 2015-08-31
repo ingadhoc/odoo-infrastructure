@@ -33,14 +33,7 @@
         </field>
         <sheet position="inside">
             <label for="database_ids"/>
-            <field name="database_ids">
-                <tree>
-                    <field name="name"/>
-                    <field name="database_type_id"/>
-                    <field name="instance_id"/>
-                    <field name="state"/>
-                </tree>
-            </field>
+            <field name="database_ids"/>
         </sheet>
     </field>
 </record>

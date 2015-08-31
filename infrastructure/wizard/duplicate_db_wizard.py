@@ -32,16 +32,17 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
     backups_enable = fields.Boolean(
         'Backups Enable on new DB?'
         )
-    database_type_id = fields.Many2one(
-        'infrastructure.database_type',
-        string='Database Type',
-        required=True,
-    )
+    # database_type_id = fields.Many2one(
+    #     'infrastructure.database_type',
+    #     string='Database Type',
+    #     required=True,
+    # )
 
-    @api.onchange('database_type_id')
-    def onchange_database_type_id(self):
-        if self.database_type_id:
-            self.new_db_name = self.database_type_id.prefix + '_'
+    # TODO remove this, we no longer use prefix for databases
+    # @api.onchange('database_type_id')
+    # def onchange_database_type_id(self):
+    #     if self.database_type_id:
+    #         self.new_db_name = self.database_type_id.prefix + '_'
             # TODO send suggested backup data
 
     @api.one
@@ -57,4 +58,4 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
             [('id', 'in', active_ids)])
         for database in databases:
             database.duplicate_db(
-                self.new_db_name, self.backups_enable, self.database_type_id)
+                self.new_db_name, self.backups_enable)
