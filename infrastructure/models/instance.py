@@ -120,6 +120,9 @@ class instance(models.Model):
         string='Repositories',
         copy=True,
         )
+    sources_type = fields.Selection(
+        related='database_type_id.sources_type',
+        )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
         compute='get_sources_from',
@@ -491,7 +494,7 @@ class instance(models.Model):
     def get_sources_from(self):
         sources_from_id = False
         db_type = self.database_type_id
-        if db_type.sources_from_id:
+        if db_type.sources_type != 'own' and db_type.sources_from_id:
             sources_from_id = self.search([
                 ('database_type_id', '=', db_type.sources_from_id.id),
                 ('environment_id', '=', self.environment_id.id),
@@ -637,6 +640,8 @@ class instance(models.Model):
     @api.one
     @api.depends('environment_id')
     def _get_module_load(self):
+        if self.sources_type == 'use_from':
+            module_load = self.sources_from_id.module_load
         module_load = ','.join(
             [x.repository_id.server_wide_modules for x in (
                 self.instance_repository_ids) if (
@@ -657,6 +662,9 @@ class instance(models.Model):
     @api.multi
     def add_repositories(self):
         _logger.info("Adding Repositories")
+        # if sources from another instance we dont add any repository
+        if self.sources_type == 'use_from':
+            return True
         # TODO cambiar cuando hagamos el campo este m2o y no bolean
         branch_id = self.environment_id.odoo_version_id.default_branch_id.id
         if self.default_repositories_id:
@@ -679,13 +687,19 @@ class instance(models.Model):
     @api.one
     @api.depends(
         'instance_repository_ids.repository_id.addons_path',
+        'sources_type',
+        'sources_from_id.addons_path',
     )
     def _get_addons_path(self):
         _logger.info("Getting Addons Path")
-        addons_paths = [
-            x.repository_id.addons_path for x in (
-                self.instance_repository_ids) if x.repository_id.addons_path]
-        self.addons_path = ','.join(addons_paths)
+        # if sources are from another instance, we get that instance path
+        if self.sources_type == 'use_from':
+            self.addons_path = self.sources_from_id.addons_path
+        else:
+            addons_paths = [
+                x.repository_id.addons_path for x in (
+                    self.instance_repository_ids) if x.repository_id.addons_path]
+            self.addons_path = ','.join(addons_paths)
 
     @api.onchange('environment_id')
     def _onchange_environment(self):
@@ -779,7 +793,10 @@ class instance(models.Model):
             conf_file_path = os.path.join(conf_path, 'openerp-server.conf')
             logfile = os.path.join(conf_path, 'odoo.log')
             data_dir = os.path.join(base_path, 'data_dir')
-            sources_path = os.path.join(base_path, 'sources')
+            if self.sources_type == 'use_from':
+                sources_path = self.sources_from_id.sources_path
+            else:
+                sources_path = os.path.join(base_path, 'sources')
         self.pg_data_path = pg_data_path
         self.backups_path = backups_path
         self.syncked_backup_path = syncked_backup_path
