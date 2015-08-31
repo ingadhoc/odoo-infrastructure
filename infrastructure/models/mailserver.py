@@ -25,3 +25,8 @@ class mailserver(models.Model):
         help='External ID used to identify record on record update. It is\
         suggested that all mail servers has the same external id to make the\
         replaceable')
+    database_ids = fields.One2many(
+        'infrastructure.database',
+        'smtp_server_id',
+        'Databases',
+        )
