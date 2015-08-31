@@ -26,6 +26,13 @@
     <field name="kind">function</field>
 </record>
 
+<record id="activity_inactive" model="workflow.activity">
+    <field name="wkf_id" ref="environment_untitle_wkf"/>
+    <field name="name">Inactive</field>
+    <field name="action">write({'state':'inactive'})</field>
+    <field name="kind">function</field>
+</record>
+
 <record id="a_1474_138E" model="workflow.activity">
     <field name="wkf_id" ref="environment_untitle_wkf"/>
     <field name="flow_stop">True</field>
@@ -40,6 +47,20 @@
     <field name="act_to" ref="a_1474_138D"/>
     <field name="signal">sgn_to_active</field>
     <field name="condition">True</field>
+</record>
+
+<record id="tran_inactive_active" model="workflow.transition">
+    <field name="act_from" ref="activity_inactive"/>
+    <field name="act_to" ref="a_1474_138D"/>
+    <field name="signal">sgn_to_active</field>
+    <field name="condition">True</field>
+</record>
+
+<record id="tran_active_inactive" model="workflow.transition">
+    <field name="act_from" ref="a_1474_138D"/>
+    <field name="act_to" ref="activity_inactive"/>
+    <field name="signal">sgn_to_inactive</field>
+    <field name="condition">check_to_inactive()</field>
 </record>
 
 <record id="t_1474_1391" model="workflow.transition">

@@ -21,6 +21,15 @@ class database_type(models.Model):
         string='Name',
         required=True
         )
+    check_database = fields.Boolean(
+        'Check Databse with cron',
+        help="Suggest Check Databases Automatically. Suggested for instances "
+        "that restart automatically"
+        )
+    demo_data = fields.Boolean(
+        string='Demo Data?',
+        help='Use demo data by default on databases?'
+        )
     prefix = fields.Char(
         string='Prefix',
         required=True,
@@ -123,3 +132,10 @@ class database_type(models.Model):
     @api.multi
     def show_db_admin_pass(self):
         raise Warning(_("Password: '%s'") % self.db_admin_pass)
+
+    @api.onchange('service_type')
+    def change_service_type(self):
+        if self.service_type != 'no_service':
+            self.check_database = True
+        else:
+            self.check_database = False

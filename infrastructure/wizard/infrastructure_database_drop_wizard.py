@@ -25,7 +25,7 @@ class infrastructure_database_drop_wizard(models.TransientModel):
         ondelete='cascade',
         )
     advance_type = fields.Selection(
-        related='database_id.database_type_id.type',
+        related='database_id.advance_type',
         readonly=True,
         )
     db_name_check = fields.Char(

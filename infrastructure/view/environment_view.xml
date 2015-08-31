@@ -33,8 +33,12 @@
             <field name="id" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
-                    states="draft"
+                    states="draft,inactive"
                     string="to Active"
+                    />
+                <button name="sgn_to_inactive"
+                    states="active"
+                    string="to Inactive"
                     />
                 <button name="action_wfk_set_draft"
                     type="object"

@@ -25,44 +25,52 @@
             <header>
             </header>
             <sheet string="database_type">
-             <group>
-                <field name="name"/>
-                <field name="type"/>
-                <field name="prefix"/>
-                <field name="url_prefix"/>
-                <field name="service_type"/>
-                <field name="auto_deactivation_days"/>
-                <field name="auto_drop_days"/>
-                <field name="install_lang_id"/>
-                <field name="sources_from_id"/>
-                <field name="workers"/>
-                <field name="workers_number" attrs="{'invisible':[('workers','=','clasic_rule')],'required':[('workers','!=','clasic_rule')]}"/>
-                <field name="instance_log_level"/>
-                <label for="instance_admin_pass"/>
-                <div>
-                    <field
-                        name="instance_admin_pass"
-                        password="True"
-                        class="oe_inline"/>
-                    <button name="show_instance_admin_pass"
-                        string="⇒ View Password"
-                        type="object"
-                        class="oe_link oe_read_only"/>
-                </div>
-                <label for="db_admin_pass"/>
-                <div>
-                    <field
-                        name="db_admin_pass"
-                        password="True"
-                        class="oe_inline"/>
-                    <button name="show_db_admin_pass"
-                        string="⇒ View Password"
-                        type="object"
-                        class="oe_link oe_read_only"/>
-                </div>
-                <field name="db_filter"/>
-                <field name="server_mode_value"/>
-             </group>
+                <group>
+                    <field name="name"/>
+                    <field name="type"/>
+                    <field name="prefix"/>
+                </group>
+                <group>
+                    <group string="Instance Parameters">
+                        <field name="url_prefix"/>
+                        <field name="service_type"/>
+                        <field name="sources_from_id"/>
+                        <field name="workers"/>
+                        <field name="workers_number" attrs="{'invisible':[('workers','=','clasic_rule')],'required':[('workers','!=','clasic_rule')]}"/>
+                        <field name="instance_log_level"/>
+                        <label for="instance_admin_pass"/>
+                        <div>
+                            <field
+                                name="instance_admin_pass"
+                                password="True"
+                                class="oe_inline"/>
+                            <button name="show_instance_admin_pass"
+                                string="⇒ View Password"
+                                type="object"
+                                class="oe_link oe_read_only"/>
+                        </div>
+                        <field name="db_filter"/>
+                        <field name="server_mode_value"/>
+                    </group>
+                    <group string="Database Parameters">
+                        <field name="check_database"/>
+                        <field name="auto_deactivation_days"/>
+                        <field name="auto_drop_days"/>
+                        <field name="install_lang_id"/>
+                        <field name="demo_data"/>
+                        <label for="db_admin_pass"/>
+                        <div>
+                            <field
+                                name="db_admin_pass"
+                                password="True"
+                                class="oe_inline"/>
+                            <button name="show_db_admin_pass"
+                                string="⇒ View Password"
+                                type="object"
+                                class="oe_link oe_read_only"/>
+                        </div>
+                    </group>
+                </group>
             </sheet>
         </form>
     </field>

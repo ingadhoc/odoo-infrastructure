@@ -11,7 +11,8 @@
             <field name="name"/>
             <field name="demo_data"/>
             <field name="partner_id"/>
-            <field name="database_type_id"/>
+            <!-- <field name="database_type_id"/> -->
+            <!-- <field name="instance_type_id"/> -->
             <field name="server_id"/>
             <field name="environment_id"/>
             <field name="instance_id"/>
@@ -22,7 +23,8 @@
             <!-- <filter string="Not Cancel" name="check_database" domain="[('check_database', '=', True)]"/> -->
             <group expand="0" string="Group By...">
                 <filter string="Partner" context="{'group_by':'partner_id'}"/>
-                <filter string="Type" context="{'group_by':'database_type_id'}"/>
+                <!-- <filter string="Type" context="{'group_by':'database_type_id'}"/> -->
+                <filter string="Type" context="{'group_by':'instance_type_id'}"/>
                 <filter string="Server" context="{'group_by':'server_id'}"/>
                 <filter string="Environment" context="{'group_by':'environment_id'}"/>
                 <filter string="Instance" context="{'group_by':'instance_id'}"/>
@@ -71,7 +73,7 @@
                     <h2>
                         <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/> / <field name="instance_id" options="{'no_create': True}" class="oe_inline"/>
                     </h2>
-                    <field name="database_type_id" options="{'no_create': True}" class="oe_edit_only" default_focus="1" placeholder="Type..."/>
+                    <!-- <field name="database_type_id" options="{'no_create': True}" class="oe_edit_only" default_focus="1" placeholder="Type..."/> -->
                     <h1>
                         <field name="name" placeholder="Name..."/>
                     </h1>
@@ -240,10 +242,11 @@
     <field name="arch" type="xml">
         <tree string="database"
             fonts="bold:message_unread==True"
-            colors="red:overall_state =  'error'; grey:state=='cancelled';blue:state in ('draft',); black:state in ('active', 'deactivated', 'maintenance')"
+            colors="red:overall_state == 'error'; grey:state=='cancelled';blue:state in ('draft',); black:state in ('active', 'deactivated', 'maintenance')"
             >
             <field name="message_unread" invisible="1"/>
-            <field name="database_type_id"/>
+            <!-- <field name="database_type_id"/> -->
+            <field name="instance_type_id"/>
             <field name="name"/>
             <field name="partner_id"/>
             <field name="server_id"/>

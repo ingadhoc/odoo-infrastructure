@@ -37,6 +37,7 @@ class database(models.Model):
     _name = 'infrastructure.database'
     _description = 'database'
     _inherit = ['ir.needaction_mixin', 'mail.thread']
+    _rec_name = 'display_name'
     _states_ = [
         ('draft', 'Draft'),
         ('maintenance', 'Maintenance'),
@@ -47,13 +48,24 @@ class database(models.Model):
     _mail_post_access = 'read'
 
     database_type_id = fields.Many2one(
+        # TODO remove this field as it is no more longer needed
         'infrastructure.database_type',
         string='Database Type',
         readonly=True,
-        required=True,
+        # required=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='onchange',
+        # track_visibility='onchange',
         copy=False,
+        )
+    instance_type_id = fields.Many2one(
+        # 'infrastructure.database_type',
+        string='Instance Type',
+        store=True,
+        related='instance_id.database_type_id',
+        )
+    display_name = fields.Char(
+        compute='_get_display_name',
+        store=True,
         )
     name = fields.Char(
         string='Name',
@@ -117,10 +129,11 @@ class database(models.Model):
         automatically dropped on this date',
         )
     advance_type = fields.Selection(
-        related='database_type_id.type',
+        related='instance_type_id.type',
+        # related='database_type_id.type',
         string='Type',
         readonly=True,
-        store=True,
+        # store=True,
         )
     state = fields.Selection(
         _states_,
@@ -251,7 +264,6 @@ class database(models.Model):
         'Backups Detail',
         readonly=True,
         )
-    # TODO mejorar esto usando algo de database type
     check_database = fields.Boolean(
         'Check Databse with cron',
         copy=False,
@@ -262,6 +274,12 @@ class database(models.Model):
         compute='get_overall_state',
         store=True,
         )
+
+    @api.one
+    @api.depends('name', 'instance_type_id.prefix')
+    def _get_display_name(self):
+        self.display_name = "%s (%s)" % (
+            self.name, self.instance_type_id.prefix)
 
     @api.model
     def cron_check_databases(self):
@@ -578,7 +596,7 @@ class database(models.Model):
     def _onchange_instance(self):
         instance = self.instance_id
         self.partner_id = instance.environment_id.partner_id
-        self.database_type_id = instance.database_type_id
+        # self.database_type_id = instance.database_type_id
         main_hostname = instance.main_hostname_id
         if main_hostname:
             self.alias_hostname_id = main_hostname.server_hostname_id
@@ -657,29 +675,35 @@ class database(models.Model):
                     or cancelled.'))
         return super(database, self).unlink()
 
-    @api.onchange('database_type_id', 'instance_id')
-    def onchange_database_type_id(self):
-        if self.database_type_id and self.instance_id:
-            self.name = ('%s_%s') % (
-                self.database_type_id.prefix,
+    # @api.onchange('database_type_id', 'instance_id')
+    # def onchange_database_type_id(self):
+    @api.onchange('instance_type_id', 'instance_id')
+    def onchange_instance_type_id(self):
+        # if self.database_type_id and self.instance_id:
+        if self.instance_id:
+            self.name = ('%s') % (
+                # self.instance_type_id.prefix,
                 self.instance_id.environment_id.name.replace('-', '_')
                 )
-            self.admin_password = self.database_type_id.db_admin_pass or \
+            self.demo_data = self.instance_type_id.demo_data
+            self.check_database = self.instance_type_id.check_database
+            self.admin_password = self.instance_type_id.db_admin_pass or \
                 self.instance_id.name
 
-    @api.onchange('database_type_id', 'issue_date')
+    # @api.onchange('database_type_id', 'issue_date')
+    @api.onchange('instance_type_id', 'issue_date')
     def get_deact_date(self):
         deactivation_date = False
         drop_date = False
         if self.issue_date:
-            if self.database_type_id.auto_deactivation_days:
+            if self.instance_type_id.auto_deactivation_days:
                 deactivation_date = (datetime.strptime(
                     self.issue_date, '%Y-%m-%d') + relativedelta(
-                    days=self.database_type_id.auto_deactivation_days))
-            if self.database_type_id.auto_drop_days:
+                    days=self.instance_type_id.auto_deactivation_days))
+            if self.instance_type_id.auto_drop_days:
                 drop_date = (datetime.strptime(
                     self.issue_date, '%Y-%m-%d') + relativedelta(
-                    days=self.database_type_id.auto_drop_days))
+                    days=self.instance_type_id.auto_drop_days))
         self.deactivation_date = deactivation_date
         self.drop_date = drop_date
 
@@ -731,7 +755,7 @@ class database(models.Model):
         """Funcion que utliza erpeek para crear bds"""
         _logger.info("Creating db '%s'" % (self.name))
         client = self.get_client(not_database=True)
-        lang = self.database_type_id.install_lang_id or 'en_US'
+        lang = self.instance_type_id.install_lang_id or 'en_US'
         client.create_database(
             self.instance_id.admin_pass,
             self.name,
@@ -892,7 +916,7 @@ class database(models.Model):
         return True
 
     @api.multi
-    def duplicate_db(self, new_database_name, backups_enable, database_type):
+    def duplicate_db(self, new_database_name, backups_enable):
         """Funcion que utiliza ws nativos de odoo para hacer duplicar bd"""
         self.ensure_one()
         sock = self.get_sock()
@@ -901,7 +925,7 @@ class database(models.Model):
             'name': new_database_name,
             'backups_enable': backups_enable,
             'issue_date': fields.Date.today(),
-            'database_type_id': database_type.id,
+            # 'database_type_id': database_type.id,
             })
         try:
             sock.duplicate_database(

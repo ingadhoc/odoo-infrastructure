@@ -34,6 +34,7 @@ class instance(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
+    # TODO rename to instance_type_id
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
         string='Database Type',
