@@ -63,12 +63,19 @@ class database_type(models.Model):
         required=True,
         default='normal'
         )
+    sources_type = fields.Selection([
+        ('own', 'Own'), ('clone_from', 'Clone From'), ('use_from', 'Use From')
+        ],
+        'Sources Type',
+        required=True,
+        default='own',
+        help='* own: sources are cloned from host (git, bitbucet, etc)\n'
+        '* clone_from: sources are cloned from another instance'
+        '* use_from: sources are used from another instance'
+        )
     sources_from_id = fields.Many2one(
         'infrastructure.database_type',
         string='Sources From',
-        help='If none is selected sources are cloned from host, if you want to\
-        clone them from other instance, choose the databse type from where the\
-        sources are going to be clone',
         )
     color = fields.Integer(
         string='Color'

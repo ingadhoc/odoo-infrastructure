@@ -41,10 +41,14 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
     def get_server_and_source_instance(self):
         self.server_id = self.target_instance_id.server_id
         target_instance = self.target_instance_id
-        self.source_instance_id = self.env['infrastructure.instance'].search(
-            [('environment_id', '=', target_instance.environment_id.id),
-                ('id', '!=', target_instance.id)],
+        self.env['infrastructure.instance'].search([
+            ('environment_id', '=', target_instance.environment_id.id),
+            ('advance_type', '=', 'protected')],
             limit=1)
+        # self.source_instance_id = self.env['infrastructure.instance'].search(
+        #     [('environment_id', '=', target_instance.environment_id.id),
+        #         ('id', '!=', target_instance.id)],
+        #     limit=1)
 
     @api.multi
     def action_confirm(self):

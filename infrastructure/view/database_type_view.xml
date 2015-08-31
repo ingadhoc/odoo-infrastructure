@@ -34,7 +34,8 @@
                     <group string="Instance Parameters">
                         <field name="url_prefix"/>
                         <field name="service_type"/>
-                        <field name="sources_from_id"/>
+                        <field name="sources_type"/>
+                        <field name="sources_from_id" attrs="{'invisible': [('sources_type', '=', 'own')], 'required': [('sources_type', '!=', 'own')]}"/>
                         <field name="workers"/>
                         <field name="workers_number" attrs="{'invisible':[('workers','=','clasic_rule')],'required':[('workers','!=','clasic_rule')]}"/>
                         <field name="instance_log_level"/>

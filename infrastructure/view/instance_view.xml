@@ -37,6 +37,7 @@
             <field name="name" invisible="1"/>
             <field name="docker_image_ids" invisible="1"/>
             <field name="advance_type" invisible="1"/>
+            <field name="sources_type" invisible="1"/>
             <header>
                 <button name="sgn_to_active"
                     states="draft"
@@ -138,6 +139,7 @@
                                 attrs="{'invisible': ['|', ('databases_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 class="oe_link"/>
                         </div> -->
+                        <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}" class="oe_inline"/>
                     </group>
                 </group>
                 <notebook>
@@ -174,7 +176,7 @@
                             <field name="run_pg_cmd"/>
                         </group>
                     </page>
-                    <page string="Repositories">
+                    <page string="Repositories" attrs="{'invisible': [('sources_type', '=', 'use_from')]}">
                         <button string="Add default repositories"
                             type="object"
                             name="add_repositories"/>
