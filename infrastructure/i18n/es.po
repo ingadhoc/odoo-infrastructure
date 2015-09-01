@@ -3,25 +3,26 @@
 # * infrastructure
 # 
 # Translators:
+# Juan Jose Scarafia <scarafia.juanjose@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: odoo-infrastructure (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-01 12:23+0000\n"
-"PO-Revision-Date: 2015-08-31 22:51+0000\n"
+"PO-Revision-Date: 2015-09-01 12:17+0000\n"
 "Last-Translator: Juan Jose Scarafia <scarafia.juanjose@gmail.com>\n"
-"Language-Team: English (United States) (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/en_US/)\n"
+"Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: en_US\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server_hostname.py:106
 #, python-format
 msgid " - Wildcard"
-msgstr " - Wildcard"
+msgstr "- Comodín"
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:714
@@ -30,12 +31,12 @@ msgstr " - Wildcard"
 #: code:addons/infrastructure/models/server.py:546
 #, python-format
 msgid "%s"
-msgstr "%s"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "(Re)Start"
-msgstr "(Re)Start"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,sources_type:0
@@ -47,42 +48,42 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.server,afip_homo_cert_content:0
 msgid "AFIP homo cert Content"
-msgstr "AFIP homo cert Content"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_homo_cert_file:0
 msgid "AFIP homo cert file"
-msgstr "AFIP homo cert file"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_homo_pkey_content:0
 msgid "AFIP homo pkey Content"
-msgstr "AFIP homo pkey Content"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_homo_pkey_file:0
 msgid "AFIP homo pkey file"
-msgstr "AFIP homo pkey file"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_prod_cert_content:0
 msgid "AFIP prod cert Content"
-msgstr "AFIP prod cert Content"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_prod_cert_file:0
 msgid "AFIP prod cert file"
-msgstr "AFIP prod cert file"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_prod_pkey_content:0
 msgid "AFIP prod pkey Content"
-msgstr "AFIP prod pkey Content"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,afip_prod_pkey_file:0
 msgid "AFIP prod pkey file"
-msgstr "AFIP prod pkey file"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.instance,databases_state:0
@@ -92,7 +93,7 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Activate"
-msgstr "Activate"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,state:0
@@ -101,98 +102,98 @@ msgstr "Activate"
 #: field:infrastructure.mailserver,active:0
 #: selection:infrastructure.server,state:0
 msgid "Active"
-msgstr "Active"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_repository,actual_commit:0
 msgid "Actual Commit"
-msgstr "Actual Commit"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.db_filter,add_bd_name_to_host:0
 msgid ""
 "Add BD name to host on databases, for example        [bd_name].adhoc.com.ar"
-msgstr "Add BD name to host on databases, for example        [bd_name].adhoc.com.ar"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.db_filter,add_bd_name_to_host:0
 msgid "Add BD to host"
-msgstr "Add BD to host"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Add default repositories"
-msgstr "Add default repositories"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid ""
 "Add to postfix virutal domains so that you can use them in catchall and Also"
 " Load SSL Certificates"
-msgstr "Add to postfix virutal domains so that you can use them in catchall and Also Load SSL Certificates"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.repository,addons_subdirectory:0
 msgid "Addons Subdirectory"
-msgstr "Addons Subdirectory"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,admin_password:0
 #: field:infrastructure.instance,admin_pass:0
 msgid "Admin Password"
-msgstr "Admin Password"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Advance Info"
-msgstr "Advance Info"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Advanced Conf"
-msgstr "Advanced Conf"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 msgid "Advanced Conf."
-msgstr "Advanced Conf."
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Afip DATA"
-msgstr "Afip DATA"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Albanian / Shqip"
-msgstr "Albanian / Shqip"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,alias_hostname_id:0
 msgid "Alias Hostname"
-msgstr "Alias Hostname"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,alias_prefix:0
 msgid "Alias Prefix"
-msgstr "Alias Prefix"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
 msgid ""
 "All database data and filestore data will be delete and can not be "
 "recovered, are you sure you want to continue?"
-msgstr "All database data and filestore data will be delete and can not be recovered, are you sure you want to continue?"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Amharic / አምሃርኛ"
-msgstr "Amharic / አምሃርኛ"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Arabic / الْعَرَبيّة"
-msgstr "Arabic / الْعَرَبيّة"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
@@ -204,75 +205,75 @@ msgstr ""
 msgid ""
 "Are you sure you want to delete this repository folder? After deletion "
 "remembet to reconfig odoo config file."
-msgstr "Are you sure you want to delete this repository folder? After deletion remembet to reconfig odoo config file."
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.drop.wizard:infrastructure.infrastructure_database_drop_wizard_view
 msgid "Are you sure you want to drop this database? This can not be undone"
-msgstr "Are you sure you want to drop this database? This can not be undone"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 msgid ""
 "Are you sure you want to force an update of source repository and actual "
 "repository?"
-msgstr "Are you sure you want to force an update of source repository and actual repository?"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Are you sure you want to reboot the server?"
-msgstr "Are you sure you want to reboot the server?"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Are you sure you want to restart nxginx?"
-msgstr "Are you sure you want to restart nxginx?"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,attachment_location:0
 msgid "Attachment Location"
-msgstr "Attachment Location"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,attachment_loc_type:0
 msgid "Attachment Location Type"
-msgstr "Attachment Location Type"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.base.module:infrastructure.view_base_module_filter
 #: field:infrastructure.base.module,author:0
 msgid "Author"
-msgstr "Author"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,type:0
 msgid "Auto Deactivation"
-msgstr "Auto Deactivation"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,type:0
 msgid "Auto Deactivation and Drop"
-msgstr "Auto Deactivation and Drop"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,type:0
 msgid "Auto Drop"
-msgstr "Auto Drop"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database.backup,type:0
 msgid "Automatic"
-msgstr "Automatic"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,auto_deactivation_days:0
 msgid "Automatic Deactivation Days"
-msgstr "Automatic Deactivation Days"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,auto_drop_days:0
 msgid "Automatic Drop Days"
-msgstr "Automatic Drop Days"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,backup_format:0
@@ -283,19 +284,19 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
 msgid "Backup Must be in a path that the container can see"
-msgstr "Backup Must be in a path that the container can see"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: view:infrastructure.database.backup_now.wizard:infrastructure.infrastructure_database_backup_now_wizard
 msgid "Backup Now"
-msgstr "Backup Now"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: field:infrastructure.database,backup_ids:0
 msgid "Backups"
-msgstr "Backups"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,backups_state_detail:0
@@ -305,18 +306,18 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.database,backups_enable:0
 msgid "Backups Enable"
-msgstr "Backups Enable"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.duplicate_db.wizard,backups_enable:0
 #: field:infrastructure.restore_database.wizard,backups_enable:0
 msgid "Backups Enable on new DB?"
-msgstr "Backups Enable on new DB?"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,backups_path:0
 msgid "Backups Path"
-msgstr "Backups Path"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,backups_state:0
@@ -327,7 +328,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:infrastructure.action_base_module
 #: model:ir.ui.menu,name:infrastructure.menu_base_module
 msgid "Base Modules"
-msgstr "Base Modules"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,base_modules_state_detail:0
@@ -342,24 +343,24 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.server,base_path:0
 msgid "Base path"
-msgstr "Base path"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Bosnian / bosanski jezik"
-msgstr "Bosnian / bosanski jezik"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.repository,branch_ids:0
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_repository_branch_branches
 #: model:ir.ui.menu,name:infrastructure.menu_branches
 msgid "Branches"
-msgstr "Branches"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Bulgarian / български език"
-msgstr "Bulgarian / български език"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
@@ -367,7 +368,7 @@ msgstr "Bulgarian / български език"
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
 msgid "By Attribute"
-msgstr "By Attribute"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
@@ -375,13 +376,13 @@ msgstr "By Attribute"
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
 msgid "By object"
-msgstr "By object"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:1365
 #, python-format
 msgid "Can Not Configure Nginx if Main Site is not Seted!"
-msgstr "Can Not Configure Nginx if Main Site is not Seted!"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:1188
@@ -389,13 +390,13 @@ msgstr "Can Not Configure Nginx if Main Site is not Seted!"
 msgid ""
 "Can not create/update configuration file,                this is what we get: \n"
 " %s"
-msgstr "Can not create/update configuration file,                this is what we get: \n %s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/duplicate_db_wizard.py:56
 #, python-format
 msgid "Can not duplicate database, no active_ids on context"
-msgstr "Can not duplicate database, no active_ids on context"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/database_backup_now_wizard.py:46
@@ -411,7 +412,7 @@ msgid ""
 "%s\n"
 "This is what we get:\n"
 "%s"
-msgstr "Can not run command:\n%s\nThis is what we get:\n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:616
@@ -420,7 +421,7 @@ msgid ""
 "Can not run upload mailgate file:\n"
 "                This is what we get:\n"
 "%s"
-msgstr "Can not run upload mailgate file:\n                This is what we get:\n%s"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
@@ -443,43 +444,43 @@ msgstr "Can not run upload mailgate file:\n                This is what we get:\
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 #: selection:infrastructure.server,state:0
 msgid "Cancel"
-msgstr "Cancel"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Catalan / Català"
-msgstr "Catalan / Català"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,catchall_enable:0
 msgid "Catchall Enable"
-msgstr "Catchall Enable"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
 msgid "Change"
-msgstr "Change"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_change_db_passwd_wizard
 msgid "Change Database Password"
-msgstr "Change Database Password"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.duplicate_db.wizard,change_user:0
 msgid "Change Instance?"
-msgstr "Change Instance?"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Change Pass"
-msgstr "Change Pass"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 #: field:infrastructure.server,change_ids:0
 msgid "Changes"
-msgstr "Changes"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -495,17 +496,17 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Chinese (CN) / 简体中文"
-msgstr "Chinese (CN) / 简体中文"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Chinese (HK)"
-msgstr "Chinese (HK)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Chinese (TW) / 正體字"
-msgstr "Chinese (TW) / 正體字"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,smtp_encryption:0
@@ -514,17 +515,17 @@ msgid ""
 "- None: SMTP sessions are done in cleartext.\n"
 "- TLS (STARTTLS): TLS encryption is requested at start of SMTP session (Recommended)\n"
 "- SSL/TLS: SMTP sessions are encrypted with SSL/TLS through a dedicated port (default: 465)"
-msgstr "Choose the connection encryption scheme:\n- None: SMTP sessions are done in cleartext.\n- TLS (STARTTLS): TLS encryption is requested at start of SMTP session (Recommended)\n- SSL/TLS: SMTP sessions are encrypted with SSL/TLS through a dedicated port (default: 465)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,workers:0
 msgid "Clasic Rule"
-msgstr "Clasic Rule"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,workers:0
 msgid "Clasic Rule means workers = server_processors * 2 + 1"
-msgstr "Clasic Rule means workers = server_processors * 2 + 1"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,sources_type:0
@@ -534,60 +535,60 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 msgid "Clone, Pull and Checkout"
-msgstr "Clone, Pull and Checkout"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,color:0
 msgid "Color"
-msgstr "Color"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.command,command:0
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
 #: field:infrastructure.server_configuration_command,command:0
 msgid "Command"
-msgstr "Command"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Commands"
-msgstr "Commands"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.instance,odoo_sufix:0
 msgid "Commonly used only on debuggin, use for eg. \"-u all\""
-msgstr "Commonly used only on debuggin, use for eg. \"-u all\""
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.docker_image,odoo_image_ids:0
 msgid "Compatible Odoo Images"
-msgstr "Compatible Odoo Images"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.docker_image,pg_image_ids:0
 msgid "Compatible Postgresql Images"
-msgstr "Compatible Postgresql Images"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Config Backups"
-msgstr "Config Backups"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Config Catchall"
-msgstr "Config Catchall"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 #: model:ir.ui.menu,name:infrastructure.menu_configuration
 msgid "Configuration"
-msgstr "Configuration"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Configure Hosts"
-msgstr "Configure Hosts"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.backup_now.wizard:infrastructure.infrastructure_database_backup_now_wizard
@@ -596,39 +597,39 @@ msgstr "Configure Hosts"
 #: view:infrastructure.duplicate_instance.wizard:infrastructure.infrastructure_duplicate_instance_wizard_view
 #: view:infrastructure.instance.delete.wizard:infrastructure.infrastructure_instance_delete_wizard_view
 msgid "Confirm"
-msgstr "Confirm"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.change_db_passwd.wizard,confirm_passwd:0
 msgid "Confirm Password"
-msgstr "Confirm Password"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,smtp_encryption:0
 msgid "Connection Security"
-msgstr "Connection Security"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:495
 #, python-format
 msgid "Connection successful!"
-msgstr "Connection successful!"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
 msgid "Copy Data"
-msgstr "Copy Data"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.copy_data_from_instance.wizard:infrastructure.infrastructure_copy_data_from_instance_wizard_view
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_copy_data_from_instance_wizard
 msgid "Copy Data From Instance"
-msgstr "Copy Data From Instance"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Copy Data From..."
-msgstr "Copy Data From..."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:595
@@ -636,7 +637,7 @@ msgstr "Copy Data From..."
 msgid ""
 "Could Not Reload Nginx! This is what we get: \n"
 " %s"
-msgstr "Could Not Reload Nginx! This is what we get: \n %s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:585
@@ -644,13 +645,13 @@ msgstr "Could Not Reload Nginx! This is what we get: \n %s"
 msgid ""
 "Could Not Restart Nginx! This is what we get: \n"
 " %s"
-msgstr "Could Not Restart Nginx! This is what we get: \n %s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:491
 #, python-format
 msgid "Could not connect to host. Please check credentials"
-msgstr "Could not connect to host. Please check credentials"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:438
@@ -661,13 +662,13 @@ msgid ""
 "                * You can also connect to server and check ports with \"%s\"\n"
 "                * You can try opening port with %s\n"
 "                * If still can not connect, contact server admin\n"
-msgstr "Could not connect to port %s.\n                * Check connection with: \"telnet %s %s\"\n                * You can also connect to server and check ports with \"%s\"\n                * You can try opening port with %s\n                * If still can not connect, contact server admin\n"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:750
 #, python-format
 msgid "Could not connect to socket '%s'"
-msgstr "Could not connect to socket '%s'"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database_backup.py:71
@@ -709,35 +710,35 @@ msgstr ""
 #: code:addons/infrastructure/models/database.py:810
 #, python-format
 msgid "Could not make backup!                    This is what we get %s"
-msgstr "Could not make backup!                    This is what we get %s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:814
 #, python-format
 msgid "Could not make backup!                This is what we get %s"
-msgstr "Could not make backup!                This is what we get %s"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Create"
-msgstr "Create"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Create / Update"
-msgstr "Create / Update"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 msgid "Create Environment"
-msgstr "Create Environment"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid ""
 "Create or update User, Config File, Service File, Start Service and add to "
 "System Start Up"
-msgstr "Create or update User, Config File, Service File, Start Service and add to System Start Up"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,create_uid:0
@@ -775,7 +776,7 @@ msgstr "Create or update User, Config File, Service File, Start Service and add 
 #: field:infrastructure.server_docker_image,create_uid:0
 #: field:infrastructure.server_hostname,create_uid:0
 msgid "Created by"
-msgstr "Created by"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,create_date:0
@@ -813,22 +814,22 @@ msgstr "Created by"
 #: field:infrastructure.server_docker_image,create_date:0
 #: field:infrastructure.server_hostname,create_date:0
 msgid "Created on"
-msgstr "Created on"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Croatian / hrvatski jezik"
-msgstr "Croatian / hrvatski jezik"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.server,server_use_type:0
 msgid "Customer"
-msgstr "Customer"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Czech / Čeština"
-msgstr "Czech / Čeština"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
@@ -838,40 +839,40 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.database_type,db_admin_pass:0
 msgid "DB Admin Password"
-msgstr "DB Admin Password"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,db_filter:0
 #: field:infrastructure.instance,db_filter:0
 msgid "DB Filter"
-msgstr "DB Filter"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_db_filter_db_filters
 #: model:ir.ui.menu,name:infrastructure.menu_db_filters
 msgid "DB Filters"
-msgstr "DB Filters"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,db_maxconn:0
 msgid "DB Max connections"
-msgstr "DB Max connections"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Danish / Dansk"
-msgstr "Danish / Dansk"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 #: model:ir.ui.menu,name:infrastructure.menu_data
 msgid "Data"
-msgstr "Data"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,without_demo:0
 msgid "Data Dir"
-msgstr "Data Dir"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database.backup,database_id:0
@@ -884,12 +885,12 @@ msgstr "Data Dir"
 #: view:infrastructure.server:infrastructure.view_server_kanban
 #: model:ir.actions.act_window,name:infrastructure.act_database_server_instances_all
 msgid "Database"
-msgstr "Database"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_database_backup
 msgid "Database Backup"
-msgstr "Database Backup"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_backup_now_wizard
@@ -899,7 +900,7 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
 msgid "Database Backups"
-msgstr "Database Backups"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.drop.wizard:infrastructure.infrastructure_database_drop_wizard_view
@@ -916,7 +917,7 @@ msgstr ""
 #. module: infrastructure
 #: sql_constraint:infrastructure.database:0
 msgid "Database Name Must be Unique per instance"
-msgstr "Database Name Must be Unique per instance"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_form
@@ -928,18 +929,18 @@ msgstr ""
 #: field:infrastructure.duplicate_instance.wizard,database_type_id:0
 #: field:infrastructure.instance,database_type_id:0
 msgid "Database Type"
-msgstr "Database Type"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_database_type_database_types
 #: model:ir.ui.menu,name:infrastructure.menu_database_types
 msgid "Database Types"
-msgstr "Database Types"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.user:infrastructure.view_infrastructure_database_user_tree
 msgid "Database Users"
-msgstr "Database Users"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database.drop.wizard,db_name_check:0
@@ -950,7 +951,7 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.database.user,database_id:0
 msgid "Database id"
-msgstr "Database id"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/infrastructure_database_drop_wizard.py:41
@@ -969,7 +970,7 @@ msgstr ""
 #: model:ir.ui.menu,name:infrastructure.menu_databases
 #: model:ir.ui.menu,name:infrastructure.menu_databases_conf
 msgid "Databases"
-msgstr "Databases"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,databases_state:0
@@ -987,7 +988,7 @@ msgstr ""
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: field:infrastructure.server_change,date:0
 msgid "Date"
-msgstr "Date"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,message_last_post:0
@@ -995,49 +996,49 @@ msgstr "Date"
 #: help:infrastructure.instance,message_last_post:0
 #: help:infrastructure.server,message_last_post:0
 msgid "Date of the last message posted on the record."
-msgstr "Date of the last message posted on the record."
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Deactivate"
-msgstr "Deactivate"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,state:0
 msgid "Deactivated"
-msgstr "Deactivated"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,deactivation_date:0
 msgid "Deactivation Date"
-msgstr "Deactivation Date"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,smtp_debug:0
 msgid "Debugging"
-msgstr "Debugging"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.odoo_version,default_branch_id:0
 msgid "Default Branch"
-msgstr "Default Branch"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,instance_log_level:0
 msgid "Default Instance Log Level"
-msgstr "Default Instance Log Level"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.repository,default_in_new_env:0
 msgid "Default in new Environment?"
-msgstr "Default in new Environment?"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 msgid "Delete"
-msgstr "Delete"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
@@ -1047,13 +1048,13 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 msgid "Delte repository forlder"
-msgstr "Delte repository forlder"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,demo_data:0
 #: field:infrastructure.database_type,demo_data:0
 msgid "Demo Data?"
-msgstr "Demo Data?"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,type:0
@@ -1064,21 +1065,21 @@ msgid ""
 "Drop: automatically dropped on deactivation date        * Auto Deactivation "
 "and Drop: automatically deactivated on        deactivation date and "
 "automatically dropped on deactivation date        "
-msgstr "Depending on the type:        * Normal: nothing special is made        * Protected: needs special confirmation before some operations        * Auto Deactivation: automatically deactivated on deactivation date        * Auto Drop: automatically dropped on deactivation date        * Auto Deactivation and Drop: automatically deactivated on        deactivation date and automatically dropped on deactivation date        "
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,deactivation_date:0
 msgid ""
 "Depending on type it could be onl informative or could be        "
 "automatically deactivated on this date"
-msgstr "Depending on type it could be onl informative or could be        automatically deactivated on this date"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,drop_date:0
 msgid ""
 "Depending on type it could be onl informative or could be        "
 "automatically dropped on this date"
-msgstr "Depending on type it could be onl informative or could be        automatically dropped on this date"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.environment,description:0
@@ -1086,13 +1087,13 @@ msgstr "Depending on type it could be onl informative or could be        automat
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: field:infrastructure.server_change,description:0
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
 #: field:infrastructure.repository,directory:0
 msgid "Directory"
-msgstr "Directory"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,display_name:0
@@ -1102,13 +1103,13 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.server_configuration,distrib_codename:0
 msgid "Distribution Codename"
-msgstr "Distribution Codename"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.environment,type:0
 #: model:ir.ui.menu,name:infrastructure.menu_docker
 msgid "Docker"
-msgstr "Docker"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.docker_image:infrastructure.view_infrastructure_docker_image
@@ -1116,17 +1117,17 @@ msgstr "Docker"
 #: field:infrastructure.server_docker_image,docker_image_id:0
 #: model:ir.model,name:infrastructure.model_infrastructure_docker_image
 msgid "Docker Image"
-msgstr "Docker Image"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.server_docker_image:0
 msgid "Docker Image Must be Unique per server"
-msgstr "Docker Image Must be Unique per server"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_docker_image_tag
 msgid "Docker Image Tag"
-msgstr "Docker Image Tag"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
@@ -1134,18 +1135,18 @@ msgstr "Docker Image Tag"
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_docker_image
 #: model:ir.ui.menu,name:infrastructure.menu_docker_images
 msgid "Docker Images"
-msgstr "Docker Images"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,service_type:0
 #: selection:infrastructure.instance,service_type:0
 msgid "Docker Restart"
-msgstr "Docker Restart"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_hostname,domain_regex:0
 msgid "Domain Regex"
-msgstr "Domain Regex"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,state:0
@@ -1153,76 +1154,76 @@ msgstr "Domain Regex"
 #: selection:infrastructure.instance,state:0
 #: selection:infrastructure.server,state:0
 msgid "Draft"
-msgstr "Draft"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Drop"
-msgstr "Drop"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,drop_date:0
 msgid "Drop Date"
-msgstr "Drop Date"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.restore_database.wizard,database_backup_id:0
 msgid "Dump File"
-msgstr "Dump File"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Duplicate"
-msgstr "Duplicate"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
 #: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
 msgid "Duplicate DB"
-msgstr "Duplicate DB"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.duplicate_instance.wizard:infrastructure.infrastructure_duplicate_instance_wizard_view
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_duplicate_instance_wizard
 msgid "Duplicate Instance"
-msgstr "Duplicate Instance"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_duplicate_db_wizard
 msgid "Duplicate db Wizard"
-msgstr "Duplicate db Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Dutch (BE) / Nederlands (BE)"
-msgstr "Dutch (BE) / Nederlands (BE)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Dutch / Nederlands"
-msgstr "Dutch / Nederlands"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,unaccent:0
 msgid "Enable Unaccent"
-msgstr "Enable Unaccent"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "English (AU)"
-msgstr "English (AU)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "English (UK)"
-msgstr "English (UK)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "English (US)"
-msgstr "English (US)"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -1233,12 +1234,12 @@ msgstr "English (US)"
 #: view:infrastructure.server:infrastructure.view_server_kanban
 #: model:ir.actions.act_window,name:infrastructure.act_infrastructure_server_environment_all
 msgid "Environment"
-msgstr "Environment"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
 msgid "Environment Version"
-msgstr "Environment Version"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:1172
@@ -1246,21 +1247,21 @@ msgstr "Environment Version"
 msgid ""
 "Environment path '%s' does not exists.                                 "
 "Please create it first!"
-msgstr "Environment path '%s' does not exists.                                 Please create it first!"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 msgid ""
 "Environment will be delated from server and will be unrecoverable, are you "
 "sure you want to continue?"
-msgstr "Environment will be delated from server and will be unrecoverable, are you sure you want to continue?"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,environment_ids:0
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_environment_environments
 #: model:ir.ui.menu,name:infrastructure.menu_environments
 msgid "Environments"
-msgstr "Environments"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,backups_state:0
@@ -1275,7 +1276,7 @@ msgstr ""
 msgid ""
 "Error Removing Folder %s. This is what we get:                \n"
 "%s"
-msgstr "Error Removing Folder %s. This is what we get:                \n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance_repository.py:159
@@ -1283,7 +1284,7 @@ msgstr "Error Removing Folder %s. This is what we get:                \n%s"
 msgid ""
 "Error pulling git repository. This is what we get:                \n"
 "%s"
-msgstr "Error pulling git repository. This is what we get:                \n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1009
@@ -1292,7 +1293,7 @@ msgstr "Error pulling git repository. This is what we get:                \n%s"
 #: code:addons/infrastructure/models/database.py:1167
 #, python-format
 msgid "Error: %s"
-msgstr "Error: %s"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
@@ -1302,22 +1303,22 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Estonian / Eesti keel"
-msgstr "Estonian / Eesti keel"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_tree
 msgid "Execute"
-msgstr "Execute"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_tree
 msgid "Execute Command"
-msgstr "Execute Command"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,external_id:0
 msgid "External ID"
-msgstr "External ID"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,external_id:0
@@ -1325,33 +1326,33 @@ msgid ""
 "External ID used to identify record on record update. It is        suggested"
 " that all mail servers has the same external id to make the        "
 "replaceable"
-msgstr "External ID used to identify record on record update. It is        suggested that all mail servers has the same external id to make the        replaceable"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.restore_from_file.wizard,file_name:0
 msgid "File Name"
-msgstr "File Name"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.restore_from_file.wizard,file_path:0
 msgid "File Path"
-msgstr "File Path"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/restore_from_file.py:45
 #, python-format
 msgid "File was not found on path '%s'"
-msgstr "File was not found on path '%s'"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Finnish / Suomi"
-msgstr "Finnish / Suomi"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,workers:0
 msgid "Fix Number"
-msgstr "Fix Number"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/infrastructure_database_fix_wizard.py:62
@@ -1363,7 +1364,7 @@ msgstr ""
 #: code:addons/infrastructure/models/environment.py:194
 #, python-format
 msgid "Folder '%s' already exists"
-msgstr "Folder '%s' already exists"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,message_follower_ids:0
@@ -1371,7 +1372,7 @@ msgstr "Folder '%s' already exists"
 #: field:infrastructure.instance,message_follower_ids:0
 #: field:infrastructure.server,message_follower_ids:0
 msgid "Followers"
-msgstr "Followers"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.instance,pg_custom_commands:0
@@ -1381,72 +1382,72 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "French (BE) / Français (BE)"
-msgstr "French (BE) / Français (BE)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "French (CA) / Français (CA)"
-msgstr "French (CA) / Français (CA)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "French (CH) / Français (CH)"
-msgstr "French (CH) / Français (CH)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "French / Français"
-msgstr "French / Français"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Galician / Galego"
-msgstr "Galician / Galego"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,gdrive_account:0
 msgid "Gdrive Account"
-msgstr "Gdrive Account"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,gdrive_passw:0
 msgid "Gdrive Password"
-msgstr "Gdrive Password"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,gdrive_space:0
 msgid "Gdrive Space"
-msgstr "Gdrive Space"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Georgian / ქართული ენა"
-msgstr "Georgian / ქართული ენა"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "German / Deutsch"
-msgstr "German / Deutsch"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
 msgid "Get Backup"
-msgstr "Get Backup"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Gral. Info"
-msgstr "Gral. Info"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Greek / Ελληνικά"
-msgstr "Greek / Ελληνικά"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.base.module:infrastructure.view_base_module_filter
 msgid "Group By"
-msgstr "Group By"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -1454,38 +1455,38 @@ msgstr "Group By"
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
 msgid "Group By..."
-msgstr "Group By..."
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Gujarati / ગુજરાતી"
-msgstr "Gujarati / ગુજરાતી"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,http_port:0
 msgid "HTTP Port"
-msgstr "HTTP Port"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,https_port:0
 msgid "HTTPS Port"
-msgstr "HTTPS Port"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Hebrew / עִבְרִי"
-msgstr "Hebrew / עִבְרִי"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Hindi / हिंदी"
-msgstr "Hindi / हिंदी"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
 #: field:infrastructure.server,holder_id:0
 msgid "Holder"
-msgstr "Holder"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,message_summary:0
@@ -1495,33 +1496,33 @@ msgstr "Holder"
 msgid ""
 "Holds the Chatter summary (number of messages, ...). This summary is "
 "directly in html format in order to be inserted in kanban views."
-msgstr "Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views."
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,smtp_host:0
 msgid "Hostname or IP of SMTP server"
-msgstr "Hostname or IP of SMTP server"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.server_hostname:0
 msgid "Hostname/wildcard must be unique per server!"
-msgstr "Hostname/wildcard must be unique per server!"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 #: field:infrastructure.server,hostname_ids:0
 msgid "Hostnames"
-msgstr "Hostnames"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,instance_host_ids:0
 msgid "Hosts"
-msgstr "Hosts"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Hungarian / Magyar"
-msgstr "Hungarian / Magyar"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,id:0
@@ -1555,7 +1556,7 @@ msgstr "Hungarian / Magyar"
 #: field:infrastructure.server_docker_image,id:0
 #: field:infrastructure.server_hostname,id:0
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
@@ -1565,7 +1566,7 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.server,ip_address:0
 msgid "IP Address"
-msgstr "IP Address"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,message_unread:0
@@ -1573,28 +1574,28 @@ msgstr "IP Address"
 #: help:infrastructure.instance,message_unread:0
 #: help:infrastructure.server,message_unread:0
 msgid "If checked new messages require your attention."
-msgstr "If checked new messages require your attention."
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,smtp_debug:0
 msgid ""
 "If enabled, the full output of SMTP sessions will be written to the server "
 "log at DEBUG level(this is very verbose and may include confidential info!)"
-msgstr "If enabled, the full output of SMTP sessions will be written to the server log at DEBUG level(this is very verbose and may include confidential info!)"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server_hostname,partner_id:0
 msgid ""
 "If partner is set, then this hostname will be only availble        for this "
 "partner databases and instances"
-msgstr "If partner is set, then this hostname will be only availble        for this partner databases and instances"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,partner_id:0
 msgid ""
 "If partner is set, then this mailserver will be only availble        for "
 "this partner databases"
-msgstr "If partner is set, then this mailserver will be only availble        for this partner databases"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.environment,state:0
@@ -1604,34 +1605,34 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Indonesian / Bahasa Indonesia"
-msgstr "Indonesian / Bahasa Indonesia"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.base.module:infrastructure.view_base_module_form
 msgid "Information"
-msgstr "Information"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.module.category,description:infrastructure.module_category_infrastructure
 #: model:ir.module.category,name:infrastructure.module_category_infrastructure
 #: model:ir.ui.menu,name:infrastructure.menu_infrastructure
 msgid "Infrastructure"
-msgstr "Infrastructure"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_base_module
 msgid "Infrastructure Base Module"
-msgstr "Infrastructure Base Module"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_change_db_passwd_wizard
 msgid "Infrastructure Change Database Password Wizard"
-msgstr "Infrastructure Change Database Password Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_copy_data_from_instance_wizard
 msgid "Infrastructure Copy Data From Instance Wizard"
-msgstr "Infrastructure Copy Data From Instance Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_database_backup_now_wizard
@@ -1641,37 +1642,37 @@ msgstr ""
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_database_user
 msgid "Infrastructure Database User"
-msgstr "Infrastructure Database User"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_duplicate_instance_wizard
 msgid "Infrastructure Duplicate Instance Wizard"
-msgstr "Infrastructure Duplicate Instance Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_duplicate_db_wizard
 msgid "Infrastructure Duplicate db Wizard"
-msgstr "Infrastructure Duplicate db Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.mailserver:infrastructure.view_infrastructure_mailserver_form
 msgid "Infrastructure Mailserver"
-msgstr "Infrastructure Mailserver"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_rename_database_name
 msgid "Infrastructure Rename Database Name Wizard"
-msgstr "Infrastructure Rename Database Name Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_restore_database_wizard
 msgid "Infrastructure Restore Database Wizard"
-msgstr "Infrastructure Restore Database Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_restore_from_file_wizard
 msgid "Infrastructure Restore From File Wizard"
-msgstr "Infrastructure Restore From File Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.model,name:infrastructure.model_infrastructure_database_drop_wizard
@@ -1687,22 +1688,22 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.database_type,install_lang_id:0
 msgid "Install Language"
-msgstr "Install Language"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Install Posftix"
-msgstr "Install Posftix"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Installation"
-msgstr "Installation"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_configuration,install_command_ids:0
 msgid "Installation Commands"
-msgstr "Installation Commands"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -1711,12 +1712,12 @@ msgstr "Installation Commands"
 #: field:infrastructure.instance_repository,instance_id:0
 #: field:infrastructure.restore_database.wizard,instance_id:0
 msgid "Instance"
-msgstr "Instance"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,instance_admin_pass:0
 msgid "Instance Admin Password"
-msgstr "Instance Admin Password"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance.delete.wizard:infrastructure.infrastructure_instance_delete_wizard_view
@@ -1737,14 +1738,14 @@ msgstr ""
 #: field:infrastructure.database,instance_type_id:0
 #: field:infrastructure.instance,type:0
 msgid "Instance Type"
-msgstr "Instance Type"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance.delete.wizard:infrastructure.infrastructure_instance_delete_wizard_view
 msgid ""
 "Instance data will be delated from server and will be unrecoverable, are you"
 " sure you want to continue?"
-msgstr "Instance data will be delated from server and will be unrecoverable, are you sure you want to continue?"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance.delete.wizard,instance_name_check:0
@@ -1765,7 +1766,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_instance_instances
 #: model:ir.ui.menu,name:infrastructure.menu_instances
 msgid "Instances"
-msgstr "Instances"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,message_is_follower:0
@@ -1773,46 +1774,46 @@ msgstr "Instances"
 #: field:infrastructure.instance,message_is_follower:0
 #: field:infrastructure.server,message_is_follower:0
 msgid "Is a Follower"
-msgstr "Is a Follower"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,issue_date:0
 msgid "Issue Data"
-msgstr "Issue Data"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,db_admin_pass:0
 msgid ""
 "It will be used as default on Database Admin Password,        if not value "
 "defined instance name will be suggested"
-msgstr "It will be used as default on Database Admin Password,        if not value defined instance name will be suggested"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,db_filter:0
 msgid "It will be used as default on Instances"
-msgstr "It will be used as default on Instances"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,instance_admin_pass:0
 msgid ""
 "It will be used on OWN SERVERS as default on Instance Admin        Password,"
 " if not value defined instance name will be suggested"
-msgstr "It will be used on OWN SERVERS as default on Instance Admin        Password, if not value defined instance name will be suggested"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Italian / Italiano"
-msgstr "Italian / Italiano"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Japanese / 日本語"
-msgstr "Japanese / 日本語"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Kabyle / Taqbaylit"
-msgstr "Kabyle / Taqbaylit"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database.backup_now.wizard,keep_till_date:0
@@ -1827,17 +1828,17 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Korean (KP) / 한국어 (KP)"
-msgstr "Korean (KP) / 한국어 (KP)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Korean (KR) / 한국어 (KR)"
-msgstr "Korean (KR) / 한국어 (KR)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Lao / ພາສາລາວ"
-msgstr "Lao / ພາສາລາວ"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,message_last_post:0
@@ -1845,7 +1846,7 @@ msgstr "Lao / ພາສາລາວ"
 #: field:infrastructure.instance,message_last_post:0
 #: field:infrastructure.server,message_last_post:0
 msgid "Last Message Date"
-msgstr "Last Message Date"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,last_overall_check_date:0
@@ -1888,7 +1889,7 @@ msgstr ""
 #: field:infrastructure.server_docker_image,write_uid:0
 #: field:infrastructure.server_hostname,write_uid:0
 msgid "Last Updated by"
-msgstr "Last Updated by"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,write_date:0
@@ -1926,75 +1927,75 @@ msgstr "Last Updated by"
 #: field:infrastructure.server_docker_image,write_date:0
 #: field:infrastructure.server_hostname,write_date:0
 msgid "Last Updated on"
-msgstr "Last Updated on"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Latvian / latviešu valoda"
-msgstr "Latvian / latviešu valoda"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,limit_time_cpu:0
 msgid "Limit Time CPU"
-msgstr "Limit Time CPU"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,limit_time_real:0
 msgid "Limit Time Real"
-msgstr "Limit Time Real"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Lithuanian / Lietuvių kalba"
-msgstr "Lithuanian / Lietuvių kalba"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,local_alias_path:0
 msgid "Local Alias Path For Catch All Configuration"
-msgstr "Local Alias Path For Catch All Configuration"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,local_alias_path:0
 msgid "Local Aliases Path"
-msgstr "Local Aliases Path"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,log_level:0
 msgid "Log Level"
-msgstr "Log Level"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database.user,login:0
 msgid "Login"
-msgstr "Login"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,logrotate:0
 msgid "Logrotate"
-msgstr "Logrotate"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Macedonian / македонски јазик"
-msgstr "Macedonian / македонски јазик"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_mailserver_mail_servers
 #: model:ir.ui.menu,name:infrastructure.menu_mail_servers
 msgid "Mail Servers"
-msgstr "Mail Servers"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,mailgate_file:0
 msgid "Mailgate File"
-msgstr "Mailgate File"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,mailgate_file:0
 msgid ""
 "Mailgate File is Copided to Server and Computed when installing        "
 "postfix"
-msgstr "Mailgate File is Copided to Server and Computed when installing        postfix"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1216
@@ -2002,57 +2003,57 @@ msgstr "Mailgate File is Copided to Server and Computed when installing        p
 msgid ""
 "Mailgate file was not found on mailgate path '%s' base path                "
 "found for mail module"
-msgstr "Mailgate file was not found on mailgate path '%s' base path                found for mail module"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.instance_host,type:0
 #: model:ir.ui.menu,name:infrastructure.menu_infra_main
 msgid "Main"
-msgstr "Main"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,main_hostname:0
 msgid "Main Hostname"
-msgstr "Main Hostname"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Main Hostname..."
-msgstr "Main Hostname..."
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_host,type:0
 msgid "Main?"
-msgstr "Main?"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,state:0
 msgid "Maintenance"
-msgstr "Maintenance"
+msgstr ""
 
 #. module: infrastructure
 #: model:res.groups,name:infrastructure.group_manager
 msgid "Manager"
-msgstr "Manager"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database.backup,type:0
 msgid "Manual"
-msgstr "Manual"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.instance,limit_time_cpu:0
 msgid ""
 "Maximum allowed CPU time per request. The default odoo value is        60 "
 "but sometimes we use 120 to avoid some workers timeout error"
-msgstr "Maximum allowed CPU time per request. The default odoo value is        60 but sometimes we use 120 to avoid some workers timeout error"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.instance,limit_time_real:0
 msgid ""
 "Maximum allowed Real time per request. The default odoo value is        120 "
 "but sometimes we use 240 to avoid some workers timeout error"
-msgstr "Maximum allowed Real time per request. The default odoo value is        120 but sometimes we use 240 to avoid some workers timeout error"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,message_ids:0
@@ -2060,7 +2061,7 @@ msgstr "Maximum allowed Real time per request. The default odoo value is        
 #: field:infrastructure.instance,message_ids:0
 #: field:infrastructure.server,message_ids:0
 msgid "Messages"
-msgstr "Messages"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,message_ids:0
@@ -2068,28 +2069,28 @@ msgstr "Messages"
 #: help:infrastructure.instance,message_ids:0
 #: help:infrastructure.server,message_ids:0
 msgid "Messages and communication history"
-msgstr "Messages and communication history"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.ui.menu,name:infrastructure.menu_miscellaneous
 msgid "Miscellaneous"
-msgstr "Miscellaneous"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.base.module:infrastructure.view_base_module_filter
 #: view:infrastructure.base.module:infrastructure.view_base_module_form
 msgid "Module"
-msgstr "Module"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,shortdesc:0
 msgid "Module Name"
-msgstr "Module Name"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.base.module:infrastructure.view_base_module_tree
 msgid "Modules"
-msgstr "Modules"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,update_state:0
@@ -2109,12 +2110,12 @@ msgstr ""
 #. module: infrastructure
 #: help:infrastructure.repository,server_wide_modules:0
 msgid "Modules to be load in intance. Eg. web,web_kanban"
-msgstr "Modules to be load in intance. Eg. web,web_kanban"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Mongolian / монгол"
-msgstr "Mongolian / монгол"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,name:0 field:infrastructure.command,name:0
@@ -2143,24 +2144,24 @@ msgstr "Mongolian / монгол"
 #: field:infrastructure.server_configuration_command,name:0
 #: field:infrastructure.server_hostname,name:0
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.instance:0
 msgid "Name must be unique per environment!"
-msgstr "Name must be unique per environment!"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.environment:0
 #: sql_constraint:infrastructure.instance_host:0
 msgid "Name must be unique per server!"
-msgstr "Name must be unique per server!"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Name..."
-msgstr "Name..."
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.restore_database.wizard,type:0
@@ -2170,47 +2171,47 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.rename_database.name,name:0
 msgid "New Database Name"
-msgstr "New Database Name"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.change_db_passwd.wizard,new_passwd:0
 msgid "New Password"
-msgstr "New Password"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.duplicate_db.wizard,new_db_name:0
 #: field:infrastructure.restore_database.wizard,new_db_name:0
 msgid "New db Name"
-msgstr "New db Name"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:1443
 #, python-format
 msgid ""
 "Nginx '%s' directory not found!                 Check if Nginx is installed!"
-msgstr "Nginx '%s' directory not found!                 Check if Nginx is installed!"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,nginx_log_path:0
 msgid "Nginx Log Path"
-msgstr "Nginx Log Path"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,nginx_sites_path:0
 msgid "Nginx Sites Path"
-msgstr "Nginx Sites Path"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:1171
 #, python-format
 msgid "No Environment Path!"
-msgstr "No Environment Path!"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,service_type:0
 #: selection:infrastructure.instance,service_type:0
 msgid "No Service"
-msgstr "No Service"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database_backup.py:67
@@ -2222,27 +2223,27 @@ msgstr ""
 #: code:addons/infrastructure/models/server_configuration_command.py:40
 #, python-format
 msgid "No server in context"
-msgstr "No server in context"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.mailserver,smtp_encryption:0
 msgid "None"
-msgstr "None"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.instance,type:0
 msgid "None Secure"
-msgstr "None Secure"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,type:0
 msgid "Normal"
-msgstr "Normal"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Norwegian Bokmål / Norsk bokmål"
-msgstr "Norwegian Bokmål / Norsk bokmål"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -2250,66 +2251,66 @@ msgstr "Norwegian Bokmål / Norsk bokmål"
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
 msgid "Not Cancel"
-msgstr "Not Cancel"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/duplicate_db_wizard.py:52
 #, python-format
 msgid "Not Implemented Yet!"
-msgstr "Not Implemented Yet!"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.repository,default_in_new_env:0
 msgid "Not implemented yet"
-msgstr "Not implemented yet"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,note:0
 #: field:infrastructure.environment,note:0
 #: field:infrastructure.instance,note:0 field:infrastructure.server,note:0
 msgid "Note"
-msgstr "Note"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Notes"
-msgstr "Notes"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.duplicate_instance.wizard,number:0
 #: field:infrastructure.environment,number:0
 #: field:infrastructure.instance,number:0
 msgid "Number"
-msgstr "Number"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.instance:0
 msgid "Number must be unique per environment!"
-msgstr "Number must be unique per environment!"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.environment:0
 msgid "Number must be unique per server!"
-msgstr "Number must be unique per server!"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,number_of_processors:0
 msgid "Number of Processors"
-msgstr "Number of Processors"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:629
 #, python-format
 msgid "Number should be between 1 and 9"
-msgstr "Number should be between 1 and 9"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/environment.py:148
 #, python-format
 msgid "Number should be between 10 and 99"
-msgstr "Number should be between 10 and 99"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,backups_state:0
@@ -2322,22 +2323,22 @@ msgstr ""
 #: selection:infrastructure.docker_image,service:0
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Odoo"
-msgstr "Odoo"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,odoo_container:0
 msgid "Odoo Container"
-msgstr "Odoo Container"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,odoo_image_id:0
 msgid "Odoo Image"
-msgstr "Odoo Image"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.docker_image,odoo_image_ids:0
 msgid "Odoo Images"
-msgstr "Odoo Images"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,odoo_service_state:0
@@ -2347,7 +2348,7 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.instance,odoo_sufix:0
 msgid "Odoo Sufix"
-msgstr "Odoo Sufix"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.docker_image,odoo_version_id:0
@@ -2357,18 +2358,18 @@ msgstr "Odoo Sufix"
 #: view:infrastructure.odoo_version:infrastructure.view_infrastructure_odoo_version_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_odoo_version
 msgid "Odoo Version"
-msgstr "Odoo Version"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 msgid "Odoo Version..."
-msgstr "Odoo Version..."
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_odoo_version_odoo_versions
 #: model:ir.ui.menu,name:infrastructure.menu_odoo_versions
 msgid "Odoo Versions"
-msgstr "Odoo Versions"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,update_state:0
@@ -2393,18 +2394,18 @@ msgstr ""
 #. module: infrastructure
 #: help:infrastructure.mailserver,smtp_pass:0
 msgid "Optional password for SMTP authentication"
-msgstr "Optional password for SMTP authentication"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,smtp_user:0
 msgid "Optional username for SMTP authentication"
-msgstr "Optional username for SMTP authentication"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.docker_image,service:0
 #: selection:infrastructure.instance_host,type:0
 msgid "Other"
-msgstr "Other"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -2426,26 +2427,26 @@ msgstr ""
 #: selection:infrastructure.database_type,sources_type:0
 #: selection:infrastructure.server,server_use_type:0
 msgid "Own"
-msgstr "Own"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
 #: field:infrastructure.server,owner_id:0
 msgid "Owner"
-msgstr "Owner"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,owner_id:0
 msgid ""
 "Owner of the server, the one you should contacto to make        changes on, "
 "for example, hardware."
-msgstr "Owner of the server, the one you should contacto to make        changes on, for example, hardware."
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
 #: field:infrastructure.repository,pip_packages:0
 msgid "PIP Packages"
-msgstr "PIP Packages"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -2455,49 +2456,49 @@ msgstr "PIP Packages"
 #: field:infrastructure.mailserver,partner_id:0
 #: field:infrastructure.server_hostname,partner_id:0
 msgid "Partner"
-msgstr "Partner"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,used_by_id:0
 msgid ""
 "Partner that can contact you and ask for changes on server        "
 "configuration"
-msgstr "Partner that can contact you and ask for changes on server        configuration"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,holder_id:0
 msgid "Partner that you should contact related to server service."
-msgstr "Partner that you should contact related to server service."
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
 msgid "Partner..."
-msgstr "Partner..."
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_partner_partners
 #: model:ir.ui.menu,name:infrastructure.menu_partners
 msgid "Partners"
-msgstr "Partners"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,smtp_pass:0
 #: field:infrastructure.server,password:0
 msgid "Password"
-msgstr "Password"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:609
 #, python-format
 msgid "Password for user"
-msgstr "Password for user"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:537
 #: code:addons/infrastructure/models/server.py:545
 #, python-format
 msgid "Password for user '%s':"
-msgstr "Password for user '%s':"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/change_db_passwd_wizard.py:25
@@ -2505,42 +2506,42 @@ msgstr "Password for user '%s':"
 msgid ""
 "Password is too short.                       At least 5 characters are "
 "required."
-msgstr "Password is too short.                       At least 5 characters are required."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:713
 #, python-format
 msgid "Password:"
-msgstr "Password:"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database_type.py:137
 #: code:addons/infrastructure/models/database_type.py:141
 #, python-format
 msgid "Password: '%s'"
-msgstr "Password: '%s'"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/change_db_passwd_wizard.py:29
 #, python-format
 msgid "Passwords mismatch!"
-msgstr "Passwords mismatch!"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database.backup,path:0
 #: field:infrastructure.environment,path:0
 msgid "Path"
-msgstr "Path"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.environment:0
 msgid "Path must be unique per server!"
-msgstr "Path must be unique per server!"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Persian / فارس"
-msgstr "Persian / فارس"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,pg_custom_commands:0
@@ -2554,157 +2555,157 @@ msgid ""
 "Please log in into the server and run:\n"
 "            * drive init %s\n"
 "            Follow onscreen steps            "
-msgstr "Please log in into the server and run:\n            * drive init %s\n            Follow onscreen steps            "
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Polish / Język polski"
-msgstr "Polish / Język polski"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,smtp_port:0
 msgid "Port used for incoming emails"
-msgstr "Port used for incoming emails"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,ssh_port:0
 msgid "Port used for ssh connection to the server"
-msgstr "Port used for ssh connection to the server"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,http_port:0
 msgid "Port used to access odoo via web browser"
-msgstr "Port used to access odoo via web browser"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,https_port:0
 msgid "Port used to access odoo via web browser over ssl"
-msgstr "Port used to access odoo via web browser over ssl"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Portuguese (BR) / Português (BR)"
-msgstr "Portuguese (BR) / Português (BR)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Portuguese / Português"
-msgstr "Portuguese / Português"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,postfix_hostname:0
 msgid "Postfix Hostname"
-msgstr "Postfix Hostname"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Postgres"
-msgstr "Postgres"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,pg_image_id:0
 msgid "Postgres Image"
-msgstr "Postgres Image"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.docker_image,service:0
 msgid "Postgresql"
-msgstr "Postgresql"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.docker_image,pg_image_ids:0
 msgid "Postgresql Images"
-msgstr "Postgresql Images"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,prefix:0
 #: field:infrastructure.docker_image,prefix:0
 #: field:infrastructure.instance_host,prefix:0
 msgid "Prefix"
-msgstr "Prefix"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,sequence:0
 msgid "Priority"
-msgstr "Priority"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,protect_db:0
 msgid "Protect Databases?"
-msgstr "Protect Databases?"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,type:0
 msgid "Protected"
-msgstr "Protected"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,proxy_mode:0
 msgid "Proxy Mode?"
-msgstr "Proxy Mode?"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_form
 #: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_tree
 msgid "Pull Image"
-msgstr "Pull Image"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_tree
 msgid "Pull Image Detached"
-msgstr "Pull Image Detached"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.docker_image,pull_name:0
 msgid "Pull Name"
-msgstr "Pull Name"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 msgid "Pull Source and Active Repository"
-msgstr "Pull Source and Active Repository"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Reboot Server"
-msgstr "Reboot Server"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.instance_host,type:0
 msgid "Redirect To Main"
-msgstr "Redirect To Main"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database.user,partner_id:0
 msgid "Related Partner"
-msgstr "Related Partner"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.duplicate_db.wizard:infrastructure.infrastructure_duplicate_db_wizard_view
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
 msgid "Rembember to reconfigure catchall on new database"
-msgstr "Rembember to reconfigure catchall on new database"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Remove"
-msgstr "Remove"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: view:infrastructure.rename_database.name:infrastructure.infrastructure_rename_database_wizard_view
 msgid "Rename"
-msgstr "Rename"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.rename_database.name:infrastructure.infrastructure_rename_database_wizard_view
 msgid "Rename Database"
-msgstr "Rename Database"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_rename_database_wizard
 msgid "Rename Database Wizard"
-msgstr "Rename Database Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
@@ -2713,27 +2714,27 @@ msgstr "Rename Database Wizard"
 #: model:ir.ui.menu,name:infrastructure.menu_repositories
 #: model:ir.ui.menu,name:infrastructure.menu_repositories_conf
 msgid "Repositories"
-msgstr "Repositories"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_repository,repository_id:0
 msgid "Repository"
-msgstr "Repository"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.instance_repository:0
 msgid "Repository Must be Unique per Ìnstance"
-msgstr "Repository Must be Unique per Ìnstance"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,requires_vpn:0
 msgid "Requires VPN?"
-msgstr "Requires VPN?"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Restart Nginx"
-msgstr "Restart Nginx"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.instance,odoo_service_state:0
@@ -2745,59 +2746,59 @@ msgstr ""
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
 #: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
 msgid "Restore"
-msgstr "Restore"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_form
 #: view:infrastructure.database.backup:infrastructure.view_infrastructure_database_backup_tree
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
 msgid "Restore Database"
-msgstr "Restore Database"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_restore_database_wizard
 msgid "Restore Database Wizard"
-msgstr "Restore Database Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
 msgid "Restore From File"
-msgstr "Restore From File"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_restore_from_file_wizard
 msgid "Restore From File Wizard"
-msgstr "Restore From File Wizard"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Romanian / română"
-msgstr "Romanian / română"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.db_filter,rule:0
 msgid "Rule"
-msgstr "Rule"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Run"
-msgstr "Run"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Run docker restart"
-msgstr "Run docker restart"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Run docker run"
-msgstr "Run docker run"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Run docker stop"
-msgstr "Run docker stop"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database_backup.py:79
@@ -2806,83 +2807,83 @@ msgid ""
 "Run on your terminal:\n"
 "            %s\n"
 "            Password: %s"
-msgstr "Run on your terminal:\n            %s\n            Password: %s"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Russian / русский язык"
-msgstr "Russian / русский язык"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,smtp_port:0
 #: field:infrastructure.server,smtp_port:0
 msgid "SMTP Port"
-msgstr "SMTP Port"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,smtp_port:0
 msgid "SMTP Port. Usually 465 for SSL, and 25 or 587 for other cases."
-msgstr "SMTP Port. Usually 465 for SSL, and 25 or 587 for other cases."
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,smtp_server_id:0
 #: field:infrastructure.mailserver,smtp_host:0
 msgid "SMTP Server"
-msgstr "SMTP Server"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,ssh_port:0
 msgid "SSH Port"
-msgstr "SSH Port"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_hostname,ssl_available:0
 msgid "SSL Available?"
-msgstr "SSL Available?"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,ssl_certificate:0
 #: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
 #: field:infrastructure.server_hostname,ssl_certificate:0
 msgid "SSL Certificate"
-msgstr "SSL Certificate"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,ssl_certificate_key:0
 #: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
 #: field:infrastructure.server_hostname,ssl_certificate_key:0
 msgid "SSL Certificate KEY"
-msgstr "SSL Certificate KEY"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_form
 msgid "SSL Intermadiate Certificate"
-msgstr "SSL Intermadiate Certificate"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_hostname,ssl_intermediate_certificate:0
 msgid "SSL Intermediate Certificate"
-msgstr "SSL Intermediate Certificate"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,ssl_path:0
 msgid "SSL path"
-msgstr "SSL path"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.mailserver,smtp_encryption:0
 msgid "SSL/TLS"
-msgstr "SSL/TLS"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.base.module:infrastructure.view_base_module_filter
 msgid "Search modules"
-msgstr "Search modules"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.instance,type:0
 msgid "Secure"
-msgstr "Secure"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.base.module,sequence:0
@@ -2892,22 +2893,22 @@ msgstr "Secure"
 #: field:infrastructure.server,sequence:0
 #: field:infrastructure.server_hostname,sequence:0
 msgid "Sequence"
-msgstr "Sequence"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Serbian (Cyrillic) / српски"
-msgstr "Serbian (Cyrillic) / српски"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Serbian (Latin) / srpski"
-msgstr "Serbian (Latin) / srpski"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.ui.menu,name:infrastructure.menu_serv__env_and_inst
 msgid "Serv. Env and Inst"
-msgstr "Serv. Env and Inst"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -2922,7 +2923,7 @@ msgstr "Serv. Env and Inst"
 #: field:infrastructure.server_docker_image,server_id:0
 #: field:infrastructure.server_hostname,server_id:0
 msgid "Server"
-msgstr "Server"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:461
@@ -2932,110 +2933,110 @@ msgid ""
 "                * Server Codename: %s\n"
 "                * Server Configuration Codename: %s\n"
 "                "
-msgstr "Server Codename is not the and Server configuration mismatch\n                * Server Codename: %s\n                * Server Configuration Codename: %s\n                "
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,server_configuration_id:0
 msgid "Server Config."
-msgstr "Server Config."
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
 msgid "Server Configuration"
-msgstr "Server Configuration"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Server Configuration..."
-msgstr "Server Configuration..."
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_server_configuration_server_configurations
 #: model:ir.ui.menu,name:infrastructure.menu_server_configurations
 msgid "Server Configurations"
-msgstr "Server Configurations"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_form
 #: view:infrastructure.server_docker_image:infrastructure.view_infrastructure_server_docker_image_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_server_docker_image
 msgid "Server Docker Image"
-msgstr "Server Docker Image"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_host,server_hostname_id:0
 msgid "Server Hostname"
-msgstr "Server Hostname"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_server_hostname
 #: model:ir.ui.menu,name:infrastructure.menu_server_hostname
 msgid "Server Hostnames"
-msgstr "Server Hostnames"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,server_mode_value:0
 msgid "Server Mode Value"
-msgstr "Server Mode Value"
+msgstr ""
 
 #. module: infrastructure
 #: sql_constraint:infrastructure.server:0
 msgid "Server Name must be unique!"
-msgstr "Server Name must be unique!"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,server_use_type:0
 msgid "Server Type"
-msgstr "Server Type"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.repository,server_wide_modules:0
 msgid "Server Wide Modules"
-msgstr "Server Wide Modules"
+msgstr ""
 
 #. module: infrastructure
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_server_servers
 #: model:ir.ui.menu,name:infrastructure.menu_servers
 msgid "Servers"
-msgstr "Servers"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.docker_image,service:0
 msgid "Service"
-msgstr "Service"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,service_type:0
 #: field:infrastructure.instance,service_type:0
 msgid "Service type"
-msgstr "Service type"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Slovak / Slovenský jazyk"
-msgstr "Slovak / Slovenský jazyk"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Slovenian / slovenščina"
-msgstr "Slovenian / slovenščina"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.copy_data_from_instance.wizard,source_instance_id:0
 #: field:infrastructure.duplicate_instance.wizard,source_instance_id:0
 msgid "Source Instance"
-msgstr "Source Instance"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance_repository.py:130
 #, python-format
 msgid "Source repository not found"
-msgstr "Source repository not found"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,sources_from_id:0
 msgid "Sources From"
-msgstr "Sources From"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,sources_type:0
@@ -3045,118 +3046,118 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (AR) / Español (AR)"
-msgstr "Spanish (AR) / Español (AR)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (BO) / Español (BO)"
-msgstr "Spanish (BO) / Español (BO)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (CL) / Español (CL)"
-msgstr "Spanish (CL) / Español (CL)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (CO) / Español (CO)"
-msgstr "Spanish (CO) / Español (CO)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (CR) / Español (CR)"
-msgstr "Spanish (CR) / Español (CR)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (DO) / Español (DO)"
-msgstr "Spanish (DO) / Español (DO)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (EC) / Español (EC)"
-msgstr "Spanish (EC) / Español (EC)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (GT) / Español (GT)"
-msgstr "Spanish (GT) / Español (GT)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (MX) / Español (MX)"
-msgstr "Spanish (MX) / Español (MX)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (PA) / Español (PA)"
-msgstr "Spanish (PA) / Español (PA)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (PE) / Español (PE)"
-msgstr "Spanish (PE) / Español (PE)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (PY) / Español (PY)"
-msgstr "Spanish (PY) / Español (PY)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (UY) / Español (UY)"
-msgstr "Spanish (UY) / Español (UY)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish (VE) / Español (VE)"
-msgstr "Spanish (VE) / Español (VE)"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Spanish / Español"
-msgstr "Spanish / Español"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_repository,branch_id:0
 msgid "Specific Branch"
-msgstr "Specific Branch"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.instance,db_maxconn:0
 msgid ""
 "Specify the the maximum number of physical connections to        posgresql. "
 "Default odoo config is 64, we use 32."
-msgstr "Specify the the maximum number of physical connections to        posgresql. Default odoo config is 64, we use 32."
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database,state:0
 #: field:infrastructure.environment,state:0
 #: field:infrastructure.instance,state:0 field:infrastructure.server,state:0
 msgid "State"
-msgstr "State"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Stop"
-msgstr "Stop"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Stop and then Run docker rm -f"
-msgstr "Stop and then Run docker rm -f"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_host,subdomain:0
 msgid "Subdomain"
-msgstr "Subdomain"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.duplicate_instance.wizard,sufix:0
 #: field:infrastructure.instance,sufix:0
 #: field:infrastructure.odoo_version,sufix:0
 msgid "Sufix"
-msgstr "Sufix"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database_type,check_database:0
@@ -3173,33 +3174,33 @@ msgstr ""
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: field:infrastructure.server_change,name:0
 msgid "Summary"
-msgstr "Summary"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Swedish / svenska"
-msgstr "Swedish / svenska"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,syncked_backups_path:0
 msgid "Syncked Backups Path"
-msgstr "Syncked Backups Path"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.mailserver,smtp_encryption:0
 msgid "TLS (STARTTLS)"
-msgstr "TLS (STARTTLS)"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,odoo_image_tag_id:0
 #: field:infrastructure.instance,pg_image_tag_id:0
 msgid "Tag"
-msgstr "Tag"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.docker_image,tag_ids:0
 msgid "Tags"
-msgstr "Tags"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.restore_database.wizard,target_database_id:0
@@ -3209,7 +3210,7 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.copy_data_from_instance.wizard,target_instance_id:0
 msgid "Target Instance"
-msgstr "Target Instance"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/wizard/restore_database_wizard.py:97
@@ -3220,35 +3221,35 @@ msgstr ""
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Telugu / తెలుగు"
-msgstr "Telugu / తెలుగు"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "Test connection, check distribution, get processors data and activate"
-msgstr "Test connection, check distribution, get processors data and activate"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Thai / ภาษาไทย"
-msgstr "Thai / ภาษาไทย"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,number_of_processors:0
 msgid ""
 "This is used to suggest instance workers qty, you can get this        "
 "information with: grep processor /proc/cpuinfo | wc -l"
-msgstr "This is used to suggest instance workers qty, you can get this        information with: grep processor /proc/cpuinfo | wc -l"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.server,state:0
 msgid "To Install"
-msgstr "To Install"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server_hostname.py:116
 #, python-format
 msgid "To configure SSL you need to set ssl certificates and keys"
-msgstr "To configure SSL you need to set ssl certificates and keys"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:553
@@ -3256,7 +3257,7 @@ msgstr "To configure SSL you need to set ssl certificates and keys"
 msgid ""
 "To configure google drive sync you need to set account and                "
 "password"
-msgstr "To configure google drive sync you need to set account and                password"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/environment.py:207
@@ -3269,7 +3270,7 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Tunnel to Posgres"
-msgstr "Tunnel to Posgres"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:954
@@ -3282,12 +3283,12 @@ msgid ""
 "            *Host: localhost\n"
 "            *Port: 5499\n"
 "            *Usarname and pass: odoo"
-msgstr "Tunneling command to access postgres:\n%s\n            Password: %s\n            In your pgadmin you should enter:\n            *Host: localhost\n            *Port: 5499\n            *Usarname and pass: odoo"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Turkish / Türkçe"
-msgstr "Turkish / Türkçe"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -3299,46 +3300,46 @@ msgstr "Turkish / Türkçe"
 #: field:infrastructure.repository,type:0
 #: field:infrastructure.restore_database.wizard,type:0
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Type..."
-msgstr "Type..."
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.repository,url:0
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,url_prefix:0
 msgid "URL Prefix"
-msgstr "URL Prefix"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Ukrainian / українська"
-msgstr "Ukrainian / українська"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1008
 #: code:addons/infrastructure/models/database.py:1029
 #, python-format
 msgid "Unable to Connect to Database."
-msgstr "Unable to Connect to Database."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1153
 #, python-format
 msgid "Unable to Upload SMTP Config."
-msgstr "Unable to Upload SMTP Config."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1166
 #, python-format
 msgid "Unable to change password."
-msgstr "Unable to change password."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:790
@@ -3346,7 +3347,7 @@ msgstr "Unable to change password."
 msgid ""
 "Unable to drop Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n"
 "%s"
-msgstr "Unable to drop Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:935
@@ -3354,7 +3355,7 @@ msgstr "Unable to drop Database. If you are working in an                     in
 msgid ""
 "Unable to duplicate Database. This is what we get:\n"
 "%s"
-msgstr "Unable to duplicate Database. This is what we get:\n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:831
@@ -3362,7 +3363,7 @@ msgstr "Unable to duplicate Database. This is what we get:\n%s"
 msgid ""
 "Unable to migrate Database. If you are working in an                 instance with \"workers\" then you can try                 restarting service. This is what we get:\n"
 "%s"
-msgstr "Unable to migrate Database. If you are working in an                 instance with \"workers\" then you can try                 restarting service. This is what we get:\n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:851
@@ -3370,7 +3371,7 @@ msgstr "Unable to migrate Database. If you are working in an                 ins
 msgid ""
 "Unable to rename Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n"
 "%s"
-msgstr "Unable to rename Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n%s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:906
@@ -3378,7 +3379,7 @@ msgstr "Unable to rename Database. If you are working in an                     
 msgid ""
 "Unable to restore bd %s, you can try restartin target                    instance. This is what we get: \n"
 " %s"
-msgstr "Unable to restore bd %s, you can try restartin target                    instance. This is what we get: \n %s"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:912
@@ -3386,7 +3387,7 @@ msgstr "Unable to restore bd %s, you can try restartin target                   
 msgid ""
 "Unable to restore bd %s, you can try restartin target                instance. This is what we get: \n"
 " %s"
-msgstr "Unable to restore bd %s, you can try restartin target                instance. This is what we get: \n %s"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,backups_state:0
@@ -3401,38 +3402,38 @@ msgstr ""
 #: field:infrastructure.instance,message_unread:0
 #: field:infrastructure.server,message_unread:0
 msgid "Unread Messages"
-msgstr "Unread Messages"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: selection:infrastructure.database,update_state:0
 msgid "Update"
-msgstr "Update"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Update Backups Data"
-msgstr "Update Backups Data"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Update Conf"
-msgstr "Update Conf"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Update Nginx"
-msgstr "Update Nginx"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Update Nginx Configuration"
-msgstr "Update Nginx Configuration"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "Update Odoo Config File"
-msgstr "Update Odoo Config File"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -3452,12 +3453,12 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "Upload Config"
-msgstr "Upload Config"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,default_repositories_id:0
 msgid "Use Default Repositories?"
-msgstr "Use Default Repositories?"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,sources_type:0
@@ -3473,95 +3474,95 @@ msgstr ""
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
 #: field:infrastructure.server,used_by_id:0
 msgid "Used By"
-msgstr "Used By"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: field:infrastructure.server_change,user_id:0
 #: model:res.groups,name:infrastructure.group_user
 msgid "User"
-msgstr "User"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,user_name:0
 msgid "User Name"
-msgstr "User Name"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.mailserver,smtp_user:0
 msgid "Username"
-msgstr "Username"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 #: field:infrastructure.database,user_ids:0
 msgid "Users"
-msgstr "Users"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Vietnamese / Tiếng Việt"
-msgstr "Vietnamese / Tiếng Việt"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,virtual_alias_path:0
 msgid "Virtual Alias Path For Postfix Catch All Configuration"
-msgstr "Virtual Alias Path For Postfix Catch All Configuration"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,virtual_alias_path:0
 msgid "Virtual Aliases Path"
-msgstr "Virtual Aliases Path"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server,virtual_domains_regex_path:0
 msgid "Virtual Domain Regex Path"
-msgstr "Virtual Domain Regex Path"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.server,virtual_domains_regex_path:0
 msgid "Virtual Domain Regex Path For Postfix Catch All Configuration"
-msgstr "Virtual Domain Regex Path For Postfix Catch All Configuration"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.mailserver,sequence:0
 msgid ""
 "When no specific mail server is requested for a mail, the highest priority "
 "one is used. Default priority is 10 (smaller number = higher priority)"
-msgstr "When no specific mail server is requested for a mail, the highest priority one is used. Default priority is 10 (smaller number = higher priority)"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.database,admin_password:0
 msgid ""
 "When trying to connect to the database first we are going to        try by "
 "using the instance password and then with thisone."
-msgstr "When trying to connect to the database first we are going to        try by using the instance password and then with thisone."
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_hostname,wildcard:0
 msgid "Wild Card"
-msgstr "Wild Card"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance,workers:0
 msgid "Workers"
-msgstr "Workers"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,workers:0
 msgid "Workers Filter"
-msgstr "Workers Filter"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,workers_number:0
 msgid "Workers Number"
-msgstr "Workers Number"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:1383
 #, python-format
 msgid "You Must set at least one instance host!"
-msgstr "You Must set at least one instance host!"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
@@ -3576,7 +3577,7 @@ msgstr ""
 msgid ""
 "You can not Update Backups Data if module '%s' is not                    "
 "installed in the database"
-msgstr "You can not Update Backups Data if module '%s' is not                    installed in the database"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1177
@@ -3584,7 +3585,7 @@ msgstr "You can not Update Backups Data if module '%s' is not                   
 msgid ""
 "You can not configure backups if module '%s' is not                    "
 "installed in the database"
-msgstr "You can not configure backups if module '%s' is not                    installed in the database"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1212
@@ -3592,7 +3593,7 @@ msgstr "You can not configure backups if module '%s' is not                    i
 msgid ""
 "You can not configure catchall if Local Alias is                not set. "
 "Probably this is because Mailgate File was not                found"
-msgstr "You can not configure catchall if Local Alias is                not set. Probably this is because Mailgate File was not                found"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1209
@@ -3600,13 +3601,13 @@ msgstr "You can not configure catchall if Local Alias is                not set.
 msgid ""
 "You can not configure catchall if module '%s'                     is not "
 "installed in the database"
-msgstr "You can not configure catchall if module '%s'                     is not installed in the database"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/environment.py:216
 #, python-format
 msgid "You can not delete an environment that has instances"
-msgstr "You can not delete an environment that has instances"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:817
@@ -3614,7 +3615,7 @@ msgstr "You can not delete an environment that has instances"
 msgid ""
 "You can not delete an instance that is of type protected,                you"
 " can change type, or drop it manually"
-msgstr "You can not delete an instance that is of type protected,                you can change type, or drop it manually"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:774
@@ -3622,7 +3623,7 @@ msgstr "You can not delete an instance that is of type protected,               
 msgid ""
 "You can not drop a database protected,                you can change "
 "database type, or drop it manually"
-msgstr "You can not drop a database protected,                you can change database type, or drop it manually"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:991
@@ -3630,7 +3631,7 @@ msgstr "You can not drop a database protected,                you can change dat
 msgid ""
 "You can not kill connections if module '%s' is not                    "
 "installed in the database"
-msgstr "You can not kill connections if module '%s' is not                    installed in the database"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:374
@@ -3654,14 +3655,14 @@ msgstr ""
 msgid ""
 "You can only choose hostnames that are configured in this server and that "
 "has partner = False or partner = this environment partner"
-msgstr "You can only choose hostnames that are configured in this server and that has partner = False or partner = this environment partner"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid ""
 "You can only choose smtp servers that has partner = False or partner = this "
 "environment partner"
-msgstr "You can only choose smtp servers that has partner = False or partner = this environment partner"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:674
@@ -3669,7 +3670,7 @@ msgstr "You can only choose smtp servers that has partner = False or partner = t
 msgid ""
 "You cannot delete a database which is not draft                     or "
 "cancelled."
-msgstr "You cannot delete a database which is not draft                     or cancelled."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/environment.py:154
@@ -3677,7 +3678,7 @@ msgstr "You cannot delete a database which is not draft                     or c
 msgid ""
 "You cannot delete a environment which is not                     draft or "
 "cancelled."
-msgstr "You cannot delete a environment which is not                     draft or cancelled."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance_repository.py:92
@@ -3685,13 +3686,13 @@ msgstr "You cannot delete a environment which is not                     draft o
 msgid ""
 "You cannot delete a repository that has Actual Commit                You "
 "should first delete it with the delete button."
-msgstr "You cannot delete a repository that has Actual Commit                You should first delete it with the delete button."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/server.py:388
 #, python-format
 msgid "You cannot delete a server which is not draft or cancelled."
-msgstr "You cannot delete a server which is not draft or cancelled."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance.py:634
@@ -3699,13 +3700,13 @@ msgstr "You cannot delete a server which is not draft or cancelled."
 msgid ""
 "You cannot delete an instance which                 is not draft or "
 "cancelled."
-msgstr "You cannot delete an instance which                 is not draft or cancelled."
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/database.py:1122
 #, python-format
 msgid "You must choose an SMTP server config in order to upload it"
-msgstr "You must choose an SMTP server config in order to upload it"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.command:infrastructure.view_infrastructure_command_filter
@@ -3713,13 +3714,13 @@ msgstr "You must choose an SMTP server config in order to upload it"
 #: view:infrastructure.command:infrastructure.view_infrastructure_command_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_command
 msgid "command"
-msgstr "command"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "critical"
-msgstr "critical"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
@@ -3728,7 +3729,7 @@ msgstr "critical"
 #: selection:infrastructure.database,attachment_loc_type:0
 #: model:ir.model,name:infrastructure.model_infrastructure_database
 msgid "database"
-msgstr "database"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_filter
@@ -3736,7 +3737,7 @@ msgstr "database"
 #: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_database_type
 msgid "database_type"
-msgstr "database_type"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.db_filter:infrastructure.view_infrastructure_db_filter_filter
@@ -3744,41 +3745,41 @@ msgstr "database_type"
 #: view:infrastructure.db_filter:infrastructure.view_infrastructure_db_filter_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_db_filter
 msgid "db_filter"
-msgstr "db_filter"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "debug"
-msgstr "debug"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "debug_rpc"
-msgstr "debug_rpc"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "debug_rpc_answer"
-msgstr "debug_rpc_answer"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "debug_sql"
-msgstr "debug_sql"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.docker_image:infrastructure.view_infrastructure_docker_image_tree
 msgid "docker_image"
-msgstr "docker_image"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "email Config"
-msgstr "email Config"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
@@ -3786,29 +3787,29 @@ msgstr "email Config"
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_environment
 msgid "environment"
-msgstr "environment"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "error"
-msgstr "error"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,attachment_loc_type:0
 msgid "filesystem"
-msgstr "filesystem"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.repository,type:0
 msgid "git"
-msgstr "git"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "info"
-msgstr "info"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
@@ -3816,7 +3817,7 @@ msgstr "info"
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_instance
 msgid "instance"
-msgstr "instance"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance_host:infrastructure.view_infrastructure_instance_host_filter
@@ -3824,12 +3825,12 @@ msgstr "instance"
 #: view:infrastructure.instance_host:infrastructure.view_infrastructure_instance_host_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_instance_host
 msgid "instance_host"
-msgstr "instance_host"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.instance_host,instance_id:0
 msgid "instance_id"
-msgstr "instance_id"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_filter
@@ -3837,12 +3838,12 @@ msgstr "instance_id"
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_instance_repository
 msgid "instance_repository"
-msgstr "instance_repository"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.odoo_version:infrastructure.view_infrastructure_odoo_version_form
 msgid "odoo_version"
-msgstr "odoo_version"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.change_db_passwd.wizard:infrastructure.infrastructure_change_db_passwd_wizard_view
@@ -3857,7 +3858,7 @@ msgstr "odoo_version"
 #: view:infrastructure.restore_database.wizard:infrastructure.infrastructure_restore_database_wizard_view
 #: view:infrastructure.restore_from_file.wizard:infrastructure.infrastructure_restore_from_file_wizard_view
 msgid "or"
-msgstr "or"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,backup_format:0
@@ -3871,7 +3872,7 @@ msgstr ""
 #: view:infrastructure.repository:infrastructure.view_infrastructure_repository_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_repository
 msgid "repository"
-msgstr "repository"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_filter
@@ -3879,18 +3880,18 @@ msgstr "repository"
 #: view:infrastructure.repository_branch:infrastructure.view_infrastructure_repository_branch_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_repository_branch
 msgid "repository_branch"
-msgstr "repository_branch"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.repository_branch,repository_ids:0
 msgid "repository_ids"
-msgstr "repository_ids"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.command,sequence:0
 #: field:infrastructure.server_configuration_command,sequence:0
 msgid "sequence"
-msgstr "sequence"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
@@ -3898,7 +3899,7 @@ msgstr "sequence"
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_server
 msgid "server"
-msgstr "server"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
@@ -3906,7 +3907,7 @@ msgstr "server"
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_server_change
 msgid "server_change"
-msgstr "server_change"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_configuration:infrastructure.view_infrastructure_server_configuration_filter
@@ -3914,7 +3915,7 @@ msgstr "server_change"
 #: view:infrastructure.server_configuration:infrastructure.view_infrastructure_server_configuration_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_server_configuration
 msgid "server_configuration"
-msgstr "server_configuration"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_filter
@@ -3922,12 +3923,12 @@ msgstr "server_configuration"
 #: view:infrastructure.server_configuration_command:infrastructure.view_infrastructure_server_configuration_command_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_server_configuration_command
 msgid "server_configuration_command"
-msgstr "server_configuration_command"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_configuration_command,server_configuration_id:0
 msgid "server_configuration_id"
-msgstr "server_configuration_id"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_filter
@@ -3935,18 +3936,18 @@ msgstr "server_configuration_id"
 #: view:infrastructure.server_hostname:infrastructure.view_infrastructure_server_hostname_tree
 #: model:ir.model,name:infrastructure.model_infrastructure_server_hostname
 msgid "server_hostname"
-msgstr "server_hostname"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.server_configuration,server_ids:0
 msgid "server_ids"
-msgstr "server_ids"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "test"
-msgstr "test"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/instance_repository.py:120
@@ -3954,7 +3955,7 @@ msgstr "test"
 msgid ""
 "this method must be call from a repository that                belongs to an"
 " instance with Other Instance Repositories"
-msgstr "this method must be call from a repository that                belongs to an instance with Other Instance Repositories"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
@@ -3962,7 +3963,7 @@ msgstr "this method must be call from a repository that                belongs t
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "to Active"
-msgstr "to Active"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
@@ -3970,7 +3971,7 @@ msgstr "to Active"
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "to Draft"
-msgstr "to Draft"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
@@ -3980,18 +3981,18 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "to Install"
-msgstr "to Install"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "to Maintenance"
-msgstr "to Maintenance"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
 #: selection:infrastructure.instance,log_level:0
 msgid "warn"
-msgstr "warn"
+msgstr ""
 
 #. module: infrastructure
 #: selection:infrastructure.database,backup_format:0
@@ -4007,7 +4008,7 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "⇒ Configure"
-msgstr "⇒ Configure"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
@@ -4027,7 +4028,7 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "⇒ Test Connection"
-msgstr "⇒ Test Connection"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
@@ -4035,4 +4036,4 @@ msgstr "⇒ Test Connection"
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "⇒ View Password"
-msgstr "⇒ View Password"
+msgstr ""
