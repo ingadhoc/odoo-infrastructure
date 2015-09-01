@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: odoo-infrastructure (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-01 12:23+0000\n"
-"PO-Revision-Date: 2015-09-01 12:17+0000\n"
+"PO-Revision-Date: 2015-09-01 13:33+0000\n"
 "Last-Translator: Juan Jose Scarafia <scarafia.juanjose@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
 msgid "(Re)Start"
-msgstr ""
+msgstr "(Re)Iniciar"
 
 #. module: infrastructure
 #: help:infrastructure.database_type,sources_type:0
