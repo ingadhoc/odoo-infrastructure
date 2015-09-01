@@ -1072,6 +1072,7 @@ class instance(models.Model):
 
     @api.one
     def copy_databases_from(self, instance):
+        # TODO implement overwrite
         if self.database_type_id.type == 'protected':
             raise Warning('You can not replace data in a instance of type\
                 protected, you should do it manually or change type.')
