@@ -33,7 +33,7 @@ class database_type(models.Model):
     prefix = fields.Char(
         string='Prefix',
         required=True,
-        size=4
+        size=8
         )
     url_prefix = fields.Char(
         string='URL Prefix'
