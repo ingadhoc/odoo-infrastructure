@@ -5,7 +5,9 @@
 ##############################################################################
 from openerp import models, fields, api, SUPERUSER_ID, _
 from openerp.exceptions import except_orm
+from openerp.tools.parse_version import parse_version
 import xmlrpclib
+import operator
 import socket
 import time
 from dateutil.relativedelta import relativedelta
@@ -579,6 +581,32 @@ class database(models.Model):
         """
         client = self.get_client()
         client.model('ir.module.module').update_list()
+
+    @api.multi
+    def check_module_version(self, module_name, version, operator_string):
+        database_ids = []
+        version = parse_version(version)
+        operators_dic = {
+            "=": operator.eq,
+            "<": operator.lt,
+            '<=': operator.le
+            }
+        op = operators_dic.get(operator_string)
+        if not op:
+            raise Warning(_('Operator must be one of: %s') % (
+                ', '.join(operators_dic.keys())))
+        for database in self:
+            client = database.get_client()
+            # on odoo is called latest but we call properly "installed"
+            installed_version = client.model('ir.module.module').browse(
+                ['name = %s' % module_name], limit=1).latest_version
+            # it should return a list with one element, if that element is
+            # false then module is not installed
+            if installed_version and installed_version[0]:
+                installed_version = parse_version(installed_version[0])
+                if op(installed_version, version):
+                    database_ids.append(database.id)
+        return self.browse(database_ids)
 
     @api.one
     @api.depends('state')

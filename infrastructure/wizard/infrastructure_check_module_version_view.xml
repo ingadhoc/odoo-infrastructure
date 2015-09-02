@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_check_module_version_wizard_view" model="ir.ui.view">
+     <field name="name">Check Module Version</field>
+     <field name="model">infrastructure.check.module.version.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Check Module Version">
+            <group>
+                <field name="name"/>
+                <field name="version"/>
+                <field name="operador"/>
+            </group>
+            <footer>
+                <button name="test" string="Test" type="object" class="oe_highlight"/>
+                or
+                <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<act_window
+    name="Check Modules Version"
+    res_model="infrastructure.check.module.version.wizard"
+    src_model="infrastructure.database"
+    view_mode="form"
+    target="new"
+    context="{}"
+    key2="client_action_multi"
+    id="action_infrastructure_check_module_version_wizard"/>
+        
+</data>
+</openerp>
