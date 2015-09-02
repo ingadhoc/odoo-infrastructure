@@ -43,11 +43,11 @@ class infrastructure_check_module_version_wizard(models.TransientModel):
         if not action:
             return False
         res = action.read()[0]
-        if not len(databases.ids) > 1:
+        res['res_id'] = databases.ids
+        if len(databases) == 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_database_form')
             res['views'] = [(form_view_id, 'form')]
-            res['res_id'] = databases and databases.ids[0] or False
         return res
 
     @api.multi
