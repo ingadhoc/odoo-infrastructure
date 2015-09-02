@@ -37,17 +37,17 @@ class infrastructure_check_module_version_wizard(models.TransientModel):
         databases = self.get_databases()
         if not databases:
             raise Warning(_('No databases found for the requested data'))
-
         action = self.env['ir.model.data'].xmlid_to_object(
             'infrastructure.action_infrastructure_database_databases')
         if not action:
             return False
         res = action.read()[0]
-        res['res_id'] = databases.ids
+        res['domain'] = [('id', 'in', databases.ids)]
         if len(databases) == 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_database_form')
             res['views'] = [(form_view_id, 'form')]
+            res['res_id'] = databases.ids
         return res
 
     @api.multi
