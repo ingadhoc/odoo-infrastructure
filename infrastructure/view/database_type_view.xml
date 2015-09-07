@@ -26,9 +26,14 @@
             </header>
             <sheet string="database_type">
                 <group>
-                    <field name="name"/>
-                    <field name="type"/>
-                    <field name="prefix"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="type"/>
+                        <field name="prefix"/>
+                    </group>
+                    <group>
+                        <field name="description" nolabel="1" placeholder="Description..."/>
+                    </group>
                 </group>
                 <group>
                     <group string="Instance Parameters">

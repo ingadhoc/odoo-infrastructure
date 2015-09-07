@@ -21,6 +21,9 @@ class database_type(models.Model):
         string='Name',
         required=True
         )
+    description = fields.Text(
+        string='Description',
+        )
     check_database = fields.Boolean(
         'Check Databse with cron',
         help="Suggest Check Databases Automatically. Suggested for instances "
