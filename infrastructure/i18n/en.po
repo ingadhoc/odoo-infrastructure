@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo-infrastructure (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-02 23:12+0000\n"
-"PO-Revision-Date: 2015-09-02 22:44+0000\n"
+"POT-Creation-Date: 2015-09-07 18:09+0000\n"
+"PO-Revision-Date: 2015-09-07 18:09+0000\n"
 "Last-Translator: Juan Jose Scarafia <scarafia.juanjose@gmail.com>\n"
 "Language-Team: English (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/en/)\n"
 "MIME-Version: 1.0\n"
@@ -343,6 +343,11 @@ msgstr "Base Modules Status"
 #: field:infrastructure.server,base_path:0
 msgid "Base path"
 msgstr "Base path"
+
+#. module: infrastructure
+#: selection:infrastructure.database_type,install_lang_id:0
+msgid "Basque / Euskara"
+msgstr "Basque / Euskara"
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
@@ -1101,12 +1106,18 @@ msgid ""
 msgstr "Depending on type it could be onl informative or could be        automatically dropped on this date"
 
 #. module: infrastructure
+#: field:infrastructure.database_type,description:0
 #: field:infrastructure.environment,description:0
 #: field:infrastructure.mailserver,name:0
 #: view:infrastructure.server_change:infrastructure.view_infrastructure_server_change_filter
 #: field:infrastructure.server_change,description:0
 msgid "Description"
 msgstr "Description"
+
+#. module: infrastructure
+#: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_form
+msgid "Description..."
+msgstr "Description..."
 
 #. module: infrastructure
 #: view:infrastructure.repository:infrastructure.view_infrastructure_repository_filter
@@ -2560,8 +2571,8 @@ msgid "Password:"
 msgstr "Password:"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database_type.py:137
-#: code:addons/infrastructure/models/database_type.py:141
+#: code:addons/infrastructure/models/database_type.py:140
+#: code:addons/infrastructure/models/database_type.py:144
 #, python-format
 msgid "Password: '%s'"
 msgstr "Password: '%s'"
