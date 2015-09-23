@@ -26,5 +26,8 @@ from . import server_hostname
 from . import docker_image
 from . import server_docker_image
 # To avoid error with auto generated certificates:
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
+try:
+    import ssl
+    ssl._create_default_https_context = ssl._create_unverified_context
+except:
+    print "Could not disable SSL checks on odoo infrastructure"
