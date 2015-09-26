@@ -38,7 +38,11 @@ class server_docker_image(models.Model):
         """ Tuvimos que ponerle el context porque desde la vista lo pasa sin
         enmascararlo en self"""
         self.server_id.get_env()
-        image_name = self.docker_image_id.pull_name
+        image = self.docker_image_id
+        image_name = image.pull_name
+        # if any tag, pull the first one
+        if image.tag_ids:
+            image_name = '%s:%s' % (image_name, image.tag_ids[0].name)
         _logger.info("Pulling Image %s" % image_name)
         if detached:
             sudo('dtach -n `mktemp -u /tmp/dtach.XXXX` docker pull %s' %

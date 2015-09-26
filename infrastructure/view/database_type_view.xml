@@ -59,6 +59,7 @@
                         <field name="server_mode_value"/>
                     </group>
                     <group string="Database Parameters">
+                        <field name="backups_enable"/>
                         <field name="check_database"/>
                         <field name="auto_deactivation_days"/>
                         <field name="auto_drop_days"/>

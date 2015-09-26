@@ -715,6 +715,7 @@ class database(models.Model):
                 )
             self.demo_data = self.instance_type_id.demo_data
             self.check_database = self.instance_type_id.check_database
+            self.backups_enable = self.instance_type_id.backups_enable
             self.admin_password = self.instance_type_id.db_admin_pass or \
                 self.instance_id.name
 
@@ -791,6 +792,8 @@ class database(models.Model):
             lang=lang,
             user_password=self.admin_password or 'admin')
         self.install_base_modules()
+        # config backups
+        self.config_backups()
         self.signal_workflow('sgn_to_active')
 
     @api.multi
