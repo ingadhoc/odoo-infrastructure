@@ -147,6 +147,17 @@
                                 states="active"
                                 class="oe_link"/>
                         </div>
+                        <label for="instante_state"/>
+                        <div>
+                            <field
+                                name="instante_state"
+                                class="oe_inline"/>
+                            <button name="restart_instance"
+                                string="⇒ Start/Restart"
+                                type="object"
+                                attrs="{'invisible': ['|', ('instante_state', '=', 'ok'), ('state', '!=', 'active')]}"
+                                class="oe_link"/>
+                        </div>
                         <label for="overall_state"/>
                         <div>
                             <field

@@ -244,6 +244,10 @@ class database(models.Model):
         'Last Overall Check',
         readonly=True,
         )
+    instante_state = fields.Selection(
+        related='instance_id.odoo_service_state',
+        string='Instance Status'
+        )
     update_state_detail = fields.Text(
         'Update Status Detail',
         readonly=True,
@@ -293,6 +297,10 @@ class database(models.Model):
         return True
 
     @api.one
+    def restart_instance(self):
+        self.instance_id.restart_all()
+
+    @api.one
     def refresh_overall_state(self):
         _logger.info('Checking database id: "%s"' % self.id)
         self.refresh_base_modules_state()
@@ -300,7 +308,11 @@ class database(models.Model):
         self.refresh_update_state()
         self.last_overall_check_date = fields.Datetime.now()
 
-    @api.depends('backups_state', 'base_modules_state', 'update_state')
+    @api.depends(
+        'backups_state',
+        'base_modules_state',
+        'update_state',
+        'instante_state')
     def get_overall_state(self):
         overall_state = 'ok'
         if self.backups_state and self.backups_state != 'ok':
@@ -309,6 +321,8 @@ class database(models.Model):
             overall_state = 'error'
         elif self.update_state and self.update_state not in [
                 'ok', 'optional_update']:
+            overall_state = 'error'
+        elif self.instante_state != 'ok':
             overall_state = 'error'
         self.overall_state = overall_state
 

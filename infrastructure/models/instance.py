@@ -438,7 +438,7 @@ class instance(models.Model):
         )
     odoo_service_state = fields.Selection(
         [('ok', 'Ok'), ('restart_required', 'Restart Required')],
-        'Odoo Service Status',
+        'Instance Status',
         readonly=True,
         )
     databases_state = fields.Selection([
@@ -654,10 +654,29 @@ class instance(models.Model):
     def _get_databases(self):
         self.database_count = len(self.database_ids)
 
+    @api.one
+    def check_instance_and_bds(self):
+        self.write({
+            'odoo_service_state': 'restart_required',
+            })
+        for database in self.database_ids:
+            database.with_context(
+                do_not_raise=True).refresh_update_state()
+        use_from_instances = self.search([
+            ('database_type_id.sources_type', '=', 'use_from'),
+            ('database_type_id.sources_from_id', '=',
+                self.database_type_id.id),
+            ('environment_id', '=', self.environment_id.id),
+            ], limit=1)
+        return use_from_instances.check_instance_and_bds()
+        # print 'use_from_instances', use_from_instances
+        # if use_from_instances:
+
     @api.multi
     def repositories_pull_clone_and_checkout(self):
         self.instance_repository_ids.repository_pull_clone_and_checkout(
             update=True)
+        self.check_instance_and_bds()
 
     @api.multi
     def add_repositories(self):
@@ -1259,10 +1278,32 @@ class instance(models.Model):
                 use_sudo=True)
 
     @api.one
+    def run_all(self):
+        self.run_pg_service()
+        self.run_odoo_service()
+
+    @api.one
+    def restart_all(self):
+        self.start_pg_service()
+        self.start_odoo_service()
+
+    @api.one
+    def remove_all(self):
+        self.remove_odoo_service()
+        self.remove_pg_service()
+
+    @api.one
+    def stop_all(self):
+        self.stop_odoo_service()
+        self.stop_pg_service()
+
+    @api.one
     def run_odoo_service(self):
         self.environment_id.server_id.get_env()
         _logger.info("Running Odoo Service %s " % self.name)
         sudo(self.run_odoo_cmd)
+        if self.odoo_service_state == 'restart_required':
+            self.odoo_service_state = 'ok'
 
     @api.one
     def start_odoo_service(self):

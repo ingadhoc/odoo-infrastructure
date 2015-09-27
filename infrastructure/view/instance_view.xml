@@ -81,7 +81,6 @@
                 </div>
                 <group>
                     <group>
-                        <field name="number"/>
                         <field name="sufix"/>
                         <label for="admin_pass"/>
                         <div>
@@ -94,38 +93,16 @@
                                 type="object"
                                 class="oe_link"/>
                         </div>
-                        <field name="db_filter"/>
-                        <field name="unaccent"/>
-                        <field name="workers"/>
+                        <field name="service_type"/>
                     </group>
                     <group>
-                        <label for="odoo_image_id"/>
-                        <div class="address_format">
-                            <field name="odoo_image_id" options="{'no_create': True}" style="width: 75%" />
-                            <field name="odoo_image_tag_id" options="{'no_create': True}" style="width: 24%" />
-                        </div>
-                        <label for="pg_image_id"/>
-                        <div class="address_format">
-                            <field name="pg_image_id" options="{'no_create': True}" style="width: 75%" />
-                            <field name="pg_image_tag_id" options="{'no_create': True}" style="width: 24%" />
-                        </div>
-                        <label for="odoo_container"/>
+                        <label for="odoo_service_state" string="Odoo and PG containers"/>
                         <div>
-                            <field name="odoo_container" class="oe_inline"/>
-                            <button name="run_odoo_service" string="Run" help="Run docker run" type="object" class="oe_link"/>
-                            <button name="restart_odoo_service" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
-                            <button name="stop_odoo_service" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
-                            <button name="remove_odoo_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
+                            <button name="run_all" string="Run" help="Run docker run" type="object" class="oe_link"/>
+                            <button name="restart_all" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
+                            <button name="stop_all" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
+                            <button name="remove_all" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
                         </div>
-                        <label for="pg_container"/>
-                        <div>
-                            <field name="pg_container" class="oe_inline"/>
-                            <button name="run_pg_service" string="Run" help="Run docker run" type="object" class="oe_link"/>
-                            <button name="restart_pg_service" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
-                            <button name="stop_pg_service" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
-                            <button name="remove_pg_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
-                        </div>
-                        <field name="service_type"/>
                         <field name="odoo_service_state"/>
                         <field name="databases_state"/>
 <!--                         <label for="databases_state"/>
@@ -139,13 +116,11 @@
                                 attrs="{'invisible': ['|', ('databases_state', '=', 'ok'), ('state', '!=', 'active')]}"
                                 class="oe_link"/>
                         </div> -->
-                        <field name="sources_from_id" attrs="{'invisible': [('sources_from_id','=',False)]}" class="oe_inline"/>
                     </group>
                 </group>
                 <notebook>
                     <page string="Configuration">
                         <group>
-                            <field name="addons_path"/>
                             <field name="type"/>
                             <field name="instance_host_ids"/>
                         </group>
@@ -201,6 +176,40 @@
                     <page string="Advanced Conf">
                         <group>
                             <group>
+                                <field name="number"/>
+                                <field name="db_filter"/>
+                                <field name="unaccent"/>
+                                <field name="workers"/>
+                            </group>
+                            <group>
+                                <label for="odoo_image_id"/>
+                                <div class="address_format">
+                                    <field name="odoo_image_id" options="{'no_create': True}" style="width: 75%" />
+                                    <field name="odoo_image_tag_id" options="{'no_create': True}" style="width: 24%" />
+                                </div>
+                                <label for="pg_image_id"/>
+                                <div class="address_format">
+                                    <field name="pg_image_id" options="{'no_create': True}" style="width: 75%" />
+                                    <field name="pg_image_tag_id" options="{'no_create': True}" style="width: 24%" />
+                                </div>
+                                <label for="odoo_container"/>
+                                <div>
+                                    <field name="odoo_container" class="oe_inline"/>
+                                    <button name="run_odoo_service" string="Run" help="Run docker run" type="object" class="oe_link"/>
+                                    <button name="restart_odoo_service" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
+                                    <button name="stop_odoo_service" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
+                                    <button name="remove_odoo_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
+                                </div>
+                                <label for="pg_container"/>
+                                <div>
+                                    <field name="pg_container" class="oe_inline"/>
+                                    <button name="run_pg_service" string="Run" help="Run docker run" type="object" class="oe_link"/>
+                                    <button name="restart_pg_service" string="(Re)Start" help="Run docker restart" type="object" class="oe_link"/>
+                                    <button name="stop_pg_service" string="Stop" help="Run docker stop" type="object" class="oe_link"/>
+                                    <button name="remove_pg_service" string="Remove" help="Stop and then Run docker rm -f" type="object" class="oe_link"/>
+                                </div>
+                            </group>
+                            <group>
                                 <field name="module_load"/>
                                 <field name="xml_rpc_port"/>
                                 <field name="xml_rpcs_port" attrs="{'invisible':[('type','!=','secure')]}"/>
@@ -225,6 +234,9 @@
                                 <field name="logfile"/>
                                 <field name="data_dir"/>
                             </group>
+                        </group>
+                        <group>
+                            <field name="addons_path"/>
                         </group>
                     </page>
                     <page string="Notes">
