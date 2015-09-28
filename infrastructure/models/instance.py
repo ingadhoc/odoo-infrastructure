@@ -1284,8 +1284,8 @@ class instance(models.Model):
 
     @api.one
     def restart_all(self):
-        self.start_pg_service()
-        self.start_odoo_service()
+        self.restart_pg_service()
+        self.restart_odoo_service()
 
     @api.one
     def remove_all(self):
@@ -1305,13 +1305,14 @@ class instance(models.Model):
         if self.odoo_service_state == 'restart_required':
             self.odoo_service_state = 'ok'
 
-    @api.one
-    def start_odoo_service(self):
-        self.environment_id.server_id.get_env()
-        _logger.info("Starting Odoo Service %s " % self.name)
-        sudo(self.start_odoo_cmd)
-        if self.odoo_service_state == 'restart_required':
-            self.odoo_service_state = 'ok'
+    # depreciated, use restart instead
+    # @api.one
+    # def start_odoo_service(self):
+    #     self.environment_id.server_id.get_env()
+    #     _logger.info("Starting Odoo Service %s " % self.name)
+    #     sudo(self.start_odoo_cmd)
+    #     if self.odoo_service_state == 'restart_required':
+    #         self.odoo_service_state = 'ok'
 
     @api.one
     def restart_odoo_service(self):
@@ -1349,11 +1350,12 @@ class instance(models.Model):
         _logger.info("Running Postgresql Service %s" % self.name)
         sudo(self.run_pg_cmd)
 
-    @api.one
-    def start_pg_service(self):
-        self.environment_id.server_id.get_env()
-        _logger.info("Starting Postgresql Service %s" % self.name)
-        sudo(self.start_pg_cmd)
+    # depreciated, use restart instead
+    # @api.one
+    # def start_pg_service(self):
+    #     self.environment_id.server_id.get_env()
+    #     _logger.info("Starting Postgresql Service %s" % self.name)
+    #     sudo(self.start_pg_cmd)
 
     @api.one
     def restart_pg_service(self):
