@@ -322,7 +322,7 @@ class database(models.Model):
         elif self.update_state and self.update_state not in [
                 'ok', 'optional_update']:
             overall_state = 'error'
-        elif self.instante_state != 'ok':
+        elif self.instante_state and self.instante_state != 'ok':
             overall_state = 'error'
         self.overall_state = overall_state
 
