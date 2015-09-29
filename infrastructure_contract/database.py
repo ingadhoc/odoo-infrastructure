@@ -15,6 +15,10 @@ class database(models.Model):
         string='Contract',
         domain="[('partner_id','child_of',partner_id),('state','=','open')]",
     )
+    contract_state = fields.Selection(
+        related='contract_id.state',
+        string='Contact Status',
+        )
 
     @api.one
     def upload_contract_data(self):

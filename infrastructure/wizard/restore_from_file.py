@@ -61,5 +61,5 @@ class infrastructure_restore_from_file_wizard(models.TransientModel):
         if database.backups_enable:
             database.config_backups()
 
-        database.signal_workflow('sgn_to_active')
+        database.action_activate()
         return True

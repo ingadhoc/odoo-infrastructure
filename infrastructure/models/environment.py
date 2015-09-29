@@ -96,7 +96,7 @@ class environment(models.Model):
         'environment_id',
         string='Instances',
         context={'from_environment': True},
-        domain=[('state', '!=', 'cancel')],
+        # domain=[('state', '!=', 'cancel')],
         )
     path = fields.Char(
         string='Path',
@@ -112,7 +112,7 @@ class environment(models.Model):
         'infrastructure.database',
         'environment_id',
         string='Databases',
-        domain=[('state', '!=', 'cancel')],
+        # domain=[('state', '!=', 'cancel')],
         )
     database_count = fields.Integer(
         string='# Databases',
@@ -198,7 +198,7 @@ class environment(models.Model):
     @api.multi
     def create_environment(self):
         self.make_env_paths()
-        self.signal_workflow('sgn_to_active')
+        self.action_activate()
 
     @api.one
     def check_to_inactive(self):
@@ -219,14 +219,36 @@ class environment(models.Model):
         paths = [self.path]
         for path in paths:
             sudo('rm -f -r ' + path)
-        self.signal_workflow('sgn_cancel')
+        self.action_cancel()
 
     @api.multi
-    def action_wfk_set_draft(self):
+    def action_activate(self):
+        for environment in self:
+            if environment.server_id.state == 'inactive':
+                raise Warning(_(
+                    'You can not activate an environment if server is on '
+                    'Inactive state'))
+
+        # send to draft instances that are inactive
+        self.mapped('instance_ids').filtered(
+            lambda x: x.state == 'inactive').action_to_draft()
+
+        self.write({'state': 'active'})
+
+    @api.multi
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
+
+    @api.multi
+    def action_inactive(self):
+        self.check_to_inactive()
+        for environment in self:
+            environment.instance_ids.action_inactive()
+        self.write({'state': 'inactive'})
+
+    @api.multi
+    def action_to_draft(self):
         self.write({'state': 'draft'})
-        self.delete_workflow()
-        self.create_workflow()
-        return True
 
     _sql_constraints = [
         ('name_uniq', 'unique(name, server_id)',
@@ -255,7 +277,7 @@ class environment(models.Model):
             res['context'] = {
                 'default_environment_id': self.id,
                 'search_default_environment_id': self.id,
-                'search_default_not_cancel': 1,
+                'search_default_not_inactive': 1,
                 }
         if not len(instances.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
@@ -283,7 +305,7 @@ class environment(models.Model):
             res['context'] = {
                 'default_server_id': self.id,
                 'search_default_environment_id': self.id,
-                'search_default_not_cancel': 1,
+                'search_default_not_inactive': 1,
                 }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(

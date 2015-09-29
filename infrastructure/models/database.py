@@ -44,7 +44,8 @@ class database(models.Model):
         ('draft', 'Draft'),
         ('maintenance', 'Maintenance'),
         ('active', 'Active'),
-        ('deactivated', 'Deactivated'),
+        ('inactive', 'Inactive'),
+        # ('deactivated', 'Deactivated'),
         ('cancel', 'Cancel'),
     ]
     _mail_post_access = 'read'
@@ -290,7 +291,10 @@ class database(models.Model):
     @api.model
     def cron_check_databases(self):
         databases = self.with_context(
-            do_not_raise=True).search([('check_database', '=', True)])
+            do_not_raise=True).search([
+                ('check_database', '=', True),
+                ('state', '!=', 'inactive'),
+            ])
         for db in databases:
             db.refresh_overall_state()
             db._cr.commit()
@@ -630,6 +634,8 @@ class database(models.Model):
             color = 7
         elif self.state == 'cancel':
             color = 1
+        elif self.state == 'inactive':
+            color = 3
         if self.overall_state != 'ok':
             color = 2
         self.color = color
@@ -808,7 +814,7 @@ class database(models.Model):
         self.install_base_modules()
         # config backups
         self.config_backups()
-        self.signal_workflow('sgn_to_active')
+        self.action_activate()
 
     @api.multi
     def drop_db(self):
@@ -835,7 +841,7 @@ class database(models.Model):
                     _('Unable to drop Database. If you are working in an \
                     instance with "workers" then you can try \
                     restarting service. This is what we get:\n%s') % (e))
-        self.signal_workflow('sgn_cancel')
+        self.action_cancel()
 
     @api.one
     def backup_now(
@@ -981,7 +987,7 @@ class database(models.Model):
                     e))
         client.model('db.database').backups_state(
             new_database_name, backups_enable)
-        new_db.signal_workflow('sgn_to_active')
+        new_db.action_activate()
         if backups_enable:
             new_db.config_backups()
         # devolvemos la accion de la nueva bd creada
@@ -1017,7 +1023,7 @@ class database(models.Model):
     #         raise Warning(_(
     #             'Unable to duplicate Database. This is what we get:\n%s') % (
     #               e))
-    #     new_db.signal_workflow('sgn_to_active')
+    #     new_db.action_activate()
     #     # TODO retornar accion de ventana a la bd creada
 
     @api.multi
@@ -1287,10 +1293,22 @@ class database(models.Model):
         sudo('newaliases')
         sudo('/etc/init.d/postfix restart')
 
-# WORKFLOW
     @api.multi
-    def action_wfk_set_draft(self):
+    def action_to_draft(self):
         self.write({'state': 'draft'})
-        self.delete_workflow()
-        self.create_workflow()
         return True
+
+    @api.multi
+    def action_activate(self):
+        # send to draft dbs that are inactive
+        self.mapped('database_ids').filtered(
+            lambda x: x.state == 'inactive').action_to_draft()
+        self.write({'state': 'active'})
+
+    @api.multi
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
+
+    @api.multi
+    def action_inactive(self):
+        self.write({'state': 'inactive'})

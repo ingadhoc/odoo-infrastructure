@@ -14,7 +14,7 @@
             <field name="partner_id"/>
             <field name="odoo_version_id"/>
             <field name="server_id"/>
-            <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
+            <filter string="Not Inactive" name="not_inactive" domain="[('state', '!=', 'inactive')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Partner" context="{'group_by':'partner_id'}"/>
                 <filter string="Environment Version" context="{'group_by':'odoo_version_id'}"/>
@@ -32,20 +32,23 @@
         <form string="environment">
             <field name="id" invisible="1"/>
             <header>
-                <button name="sgn_to_active"
-                    states="draft,inactive"
+                <button name="action_activate"
+                    type="object"
+                    states="draft, inactive"
                     string="to Active"
                     />
-                <button name="sgn_to_inactive"
+                <button name="action_inactive"
+                    type="object"
                     states="active"
                     string="to Inactive"
                     />
-                <button name="action_wfk_set_draft"
+                <button name="action_to_draft"
                     type="object"
                     states="cancel"
                     string="to Draft"
                     />
-                <button name="sgn_cancel"
+                <button name="action_cancel"
+                    type="object"
                     states="active"
                     string="Cancel"
                     />
@@ -168,7 +171,7 @@
     <field name="view_id" ref="view_environment_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_environment_filter"/>
     <field name="domain">[]</field>
-    <field name="context">{'search_default_not_cancel': 1}</field>
+    <field name="context">{'search_default_not_inactive': 1}</field>
 </record>
 
 <menuitem

@@ -35,6 +35,7 @@
         },
     'data': [
         'wizard/duplicate_db_wizard_view.xml',
+        'wizard/infrastructure_database_email_wizard_view.xml',
         'wizard/change_db_passwd_wizard_view.xml',
         'wizard/restore_database_wizard_view.xml',
         'wizard/rename_db_wizard_view.xml',
@@ -72,10 +73,6 @@
         'view/server_docker_image_view.xml',
         'view/instance_repository_view.xml',
         'data/cron.xml',
-        'workflow/database_workflow.xml',
-        'workflow/environment_workflow.xml',
-        'workflow/instance_workflow.xml',
-        'workflow/server_workflow.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,

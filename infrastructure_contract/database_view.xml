@@ -8,8 +8,11 @@
     <field name="model">infrastructure.database</field>
     <field name="inherit_id" ref="infrastructure.view_infrastructure_database_filter"/>
     <field name="arch" type="xml">
-        <group position="before">
+        <field name="instance_id" position="before">
             <field name="contract_id"/>
+        </field>
+        <group position="before">
+            <field name="contract_state"/>
         </group>
     </field>
 </record>
@@ -32,6 +35,19 @@
                     type="object"
                     class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/>
             </div>
+        </field>
+    </field>
+</record>
+
+<!-- TREEVIEW -->
+<record id="view_infrastructure_database_tree" model="ir.ui.view">
+    <field name="name">infrastructure.database.tree</field>
+    <field name="model">infrastructure.database</field>
+    <field name="inherit_id" ref="infrastructure.view_infrastructure_database_tree"/>
+    <field name="arch" type="xml">
+        <field name="state" position="after">
+            <field name="contract_id"/>
+            <field name="contract_state"/>
         </field>
     </field>
 </record>

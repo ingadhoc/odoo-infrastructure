@@ -17,7 +17,7 @@
             <field name="db_filter"/>
             <field name="server_id"/>
             <field name="environment_id"/>
-            <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
+            <filter string="Not Inactive" name="not_inactive" domain="[('state', '!=', 'inactive')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Server" context="{'group_by':'server_id'}"/>
                 <filter string="Environment" context="{'group_by':'environment_id'}"/>
@@ -39,16 +39,18 @@
             <field name="advance_type" invisible="1"/>
             <field name="sources_type" invisible="1"/>
             <header>
-                <button name="sgn_to_active"
+                <button name="action_activate"
+                    type="object"
                     states="draft"
                     string="to Active"
                     />
-                <button name="action_wfk_set_draft"
+                <button name="action_to_draft"
                     type="object"
                     states="cancel"
                     string="to Draft"
                     />
-                <button name="sgn_cancel"
+                <button name="action_cancel"
+                    type="object"
                     states="active"
                     string="Cancel"
                     />
@@ -312,7 +314,7 @@
     <field name="view_id" ref="view_instance_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_instance_filter"/>
     <field name="domain">[]</field>
-    <field name="context">{'search_default_not_cancel': 1}</field>
+    <field name="context">{'search_default_not_inactive': 1}</field>
 </record>
 
 <menuitem

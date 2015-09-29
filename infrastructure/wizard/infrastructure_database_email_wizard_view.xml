@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_database_email_wizard_view" model="ir.ui.view">
+     <field name="name">Send Email Wizard Form</field>
+     <field name="model">infrastructure.database.email.wizard</field>
+     <field name="arch" type="xml">
+        <form string="Send Email">
+            <group>
+                <!-- <field name="new_passwd" password="True"/> -->
+                <!-- <field name="confirm_passwd" password="True"/> -->
+            </group>
+            <footer>
+                <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
+                or
+                <button string="Cancel" class="oe_link" special="cancel"/>
+            </footer>
+        </form>
+     </field>
+ </record>
+
+<act_window
+    name="Send Email"
+    res_model="infrastructure.database.email.wizard"
+    src_model="infrastructure.database"
+    view_mode="form"
+    target="new"
+    context="{}"
+    key2="client_action_multi"
+    id="action_infrastructure_database_email_wizard"/>
+        
+</data>
+</openerp>

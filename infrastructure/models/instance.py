@@ -25,6 +25,7 @@ class instance(models.Model):
     _states_ = [
         ('draft', 'Draft'),
         ('active', 'Active'),
+        ('inactive', 'Inactive'),
         ('cancel', 'Cancel'),
     ]
 
@@ -215,7 +216,7 @@ class instance(models.Model):
         'instance_id',
         string='Databases',
         context={'from_instance': True},
-        domain=[('state', '!=', 'cancel')],
+        # domain=[('state', '!=', 'cancel')],
         )
     addons_path = fields.Char(
         string='Addons Path',
@@ -482,6 +483,8 @@ class instance(models.Model):
             color = 7
         elif self.state == 'cancel':
             color = 1
+        elif self.state == 'inactive':
+            color = 3
         self.color = color
 
     @api.one
@@ -616,10 +619,22 @@ class instance(models.Model):
         # return self.database_ids.xx
 
     @api.multi
-    def action_wfk_set_draft(self):
+    def action_activate(self):
+        self.write({'state': 'active'})
+
+    @api.multi
+    def action_cancel(self):
+        self.write({'state': 'cancel'})
+
+    @api.multi
+    def action_inactive(self):
+        for instance in self:
+            instance.database_ids.action_inactive()
+        self.write({'state': 'inactive'})
+
+    @api.multi
+    def action_to_draft(self):
         self.write({'state': 'draft'})
-        self.delete_workflow()
-        self.create_workflow()
         return True
 
     @api.one
@@ -836,13 +851,13 @@ class instance(models.Model):
             raise Warning(_(
                 'You can not delete an instance that is of type protected,\
                 you can change type, or drop it manually'))
-        self.database_ids.signal_workflow('sgn_cancel')
+        self.database_ids.action_cancel()
         self.instance_repository_ids.write({'actual_commit': False})
         self.remove_odoo_service()
         self.remove_pg_service()
         self.delete_nginx_site()
         self.delete_paths()
-        self.signal_workflow('sgn_cancel')
+        self.action_cancel()
 
     @api.multi
     def create_instance(self):
@@ -858,7 +873,7 @@ class instance(models.Model):
         self.run_pg_service()
         self.update_conf_file()
         self.run_odoo_service()
-        self.signal_workflow('sgn_to_active')
+        self.action_activate()
 
     @api.one
     def get_commands(self):
@@ -1067,7 +1082,7 @@ class instance(models.Model):
                 'database_type_id': database_type.id,
                 'instance_id': new_instance.id,
                 })
-            new_db.signal_workflow('sgn_to_active')
+            new_db.action_activate()
             # TODO ver si hace falta esto o no, el tema es que esa instancia no
             # la terminamos activando
             # # we run this to deactivate backups
@@ -1131,7 +1146,7 @@ class instance(models.Model):
         # Unlink actual databases
         _logger.info('Unlinking actual databases records')
         for database in self.database_ids:
-            database.signal_workflow('sgn_cancel')
+            database.action_cancel()
             database.unlink()
 
         # Create new databases
@@ -1142,7 +1157,7 @@ class instance(models.Model):
                 'instance_id': self.id,
                 })
             # we run this to deactivate backups
-            new_db.signal_workflow('sgn_to_active')
+            new_db.action_activate()
             # TODO desactivamos esto por problemas en el wait y no
             # configuramos los backups
             # we wait for service start
@@ -1521,7 +1536,7 @@ class instance(models.Model):
             res['context'] = {
                 'default_instance_id': self.id,
                 'search_default_instance_id': self.id,
-                'search_default_not_cancel': 1,
+                'search_default_not_inactive': 1,
                 }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(

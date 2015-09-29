@@ -14,7 +14,7 @@
             <field name="holder_id"/>
             <field name="owner_id"/>
             <field name="used_by_id"/>
-            <filter string="Not Cancel" name="not_cancel" domain="[('state','!=','cancel')]"/>
+            <filter string="Not Inactive" name="not_inactive" domain="[('state', '!=', 'inactive')]"/>
             <group expand="0" string="Group By...">
                 <filter string="Server Configuration" context="{'group_by':'server_configuration_id'}"/>
                 <filter string="Holder" context="{'group_by':'holder_id'}"/>
@@ -33,23 +33,31 @@
         <form string="server">
             <field name="id" invisible="1"/>
             <header>
-                <button name="sgn_to_install"
+                <button name="action_to_install"
+                    type="object"
                     states="draft"
                     string="to Install"
                     class="oe_highlight"
                     />
-                <button name="sgn_to_active"
-                    states="to_install"
+                <button name="action_activate"
+                    type="object"
+                    states="to_install, inactive"
                     string="to Active"
                     class="oe_highlight"
                     />
-                <button name="action_wfk_set_draft"
+                <button name="action_inactive"
+                    type="object"
+                    states="active"
+                    string="to Inactive"
+                    />
+                <button name="action_to_draft"
                     type="object"
                     states="cancel"
                     string="to Draft"
                     />
-                <button name="sgn_cancel"
-                    states="to_install,active"
+                <button name="action_cancel"
+                    type="object"
+                    states="draft,to_install,active"
                     string="Cancel"
                     />
                 <field name="state" widget="statusbar"
@@ -322,7 +330,7 @@
     <field name="view_id" ref="view_server_kanban"/>
     <field name="search_view_id" ref="view_infrastructure_server_filter"/>
     <field name="domain">[]</field>
-    <field name="context">{'search_default_not_cancel': 1}</field>
+    <field name="context">{'search_default_not_inactive': 1}</field>
 </record>
 
 <menuitem

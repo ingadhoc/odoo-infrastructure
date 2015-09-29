@@ -45,6 +45,7 @@ Destiny database must have web_support_client module installed
     'images': [],
     'data': [
         'database_view.xml',
+        'account_analytic_account_view.xml',
     ],
     'demo': [],
     'test': [],
