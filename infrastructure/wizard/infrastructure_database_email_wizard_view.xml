@@ -6,11 +6,12 @@
      <field name="name">Database Send Email Wizard Form</field>
      <field name="model">mail.compose.message</field>
      <!-- <field name="model">infrastructure.database.email.wizard</field> -->
-     <field name="mode">primary</field>
+     <field name="mode">extension</field>
+     <!-- <field name="mode">primary</field> -->
      <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
      <field name="arch" type="xml">
         <field name="notify" position="before">
-            <field name="database_email_cc"/>
+            <field name="database_email_cc" attrs="{'invisible': [('model', '!=', 'infrastructure.database')]}"/>
         </field>
      </field>
  </record>
@@ -24,13 +25,14 @@
     target="new"
     context="{
         'default_composition_mode': 'mass_mail',
+        'default_use_template': True,
+        'default_use_default_to': 1
             }"
     key2="client_action_multi"
     id="action_infrastructure_database_email_wizard"/>
-        
+        <!-- we add use_default_to so when you save tempalte it use that parameter -->
+        <!-- 'default_partner_to': '${object.partner_id.id or \'\'}', -->
     <!-- res_model="infrastructure.database.email.wizard" -->
-        <!-- 'default_use_template': True, -->
-        <!-- 'default_partner_to': '${object.id or \'\'}', -->
         <!-- 'default_template_id': ref('email_template_partner'), -->
 </data>
 </openerp>
