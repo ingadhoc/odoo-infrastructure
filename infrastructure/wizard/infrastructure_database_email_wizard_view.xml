@@ -5,17 +5,20 @@
 <record id="infrastructure_database_email_wizard_view" model="ir.ui.view">
      <field name="name">Send Email Wizard Form</field>
      <field name="model">infrastructure.database.email.wizard</field>
+     <field name="mode">primary</field>
+     <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
      <field name="arch" type="xml">
-        <form string="Send Email">
-            <group>
-                <!-- <field name="new_passwd" password="True"/> -->
+        <form>
+        <!-- <form string="Send Email"> -->
+            <!-- <group> -->
+                <field name="public"/>
                 <!-- <field name="confirm_passwd" password="True"/> -->
-            </group>
-            <footer>
+            <!-- </group> -->
+<!--             <footer>
                 <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
                 or
                 <button string="Cancel" class="oe_link" special="cancel"/>
-            </footer>
+            </footer> -->
         </form>
      </field>
  </record>
@@ -26,9 +29,14 @@
     src_model="infrastructure.database"
     view_mode="form"
     target="new"
-    context="{}"
+    context="{
+        'default_composition_mode': 'mass_mail',
+        'default_partner_to': '${object.id or \'\'}',
+        'default_use_template': True,
+            }"
     key2="client_action_multi"
     id="action_infrastructure_database_email_wizard"/>
         
+        <!-- 'default_template_id': ref('email_template_partner'), -->
 </data>
 </openerp>

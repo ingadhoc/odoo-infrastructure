@@ -49,6 +49,7 @@ class database(models.Model):
         ('cancel', 'Cancel'),
     ]
     _mail_post_access = 'read'
+    _mail_mass_mailing = _('Databases')
 
     database_type_id = fields.Many2one(
         # TODO remove this field as it is no more longer needed
