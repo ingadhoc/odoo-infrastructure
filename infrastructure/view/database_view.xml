@@ -18,6 +18,7 @@
             <field name="instance_id"/>
             <field name="update_state"/>
             <filter string="Not Inactive" name="not_inactive" domain="[('state', '!=', 'inactive')]"/>
+            <separator/>
             <filter string="Check Database" name="check_database" domain="[('check_database', '=', True)]"/>
             <field name="overall_state"/>
             <!-- <filter string="Not Cancel" name="check_database" domain="[('check_database', '=', True)]"/> -->
