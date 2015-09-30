@@ -3,7 +3,7 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields, api, _
+from openerp import models, fields, api
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -11,7 +11,6 @@ _logger = logging.getLogger(__name__)
 class database_user(models.Model):
     _name = "infrastructure.database.user"
     _description = "Infrastructure Database User"
-    _mail_mass_mailing = _('Database Users')
 
     login = fields.Char(
         'Login',

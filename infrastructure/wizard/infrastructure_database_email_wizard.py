@@ -9,32 +9,25 @@ from openerp.exceptions import Warning
 
 
 class infrastructure_database_email_wizard(models.TransientModel):
-    _name = "infrastructure.database.email.wizard"
+    # do not rename so it don gives errror with mass mailing when more fields
+    # are added to view
+    # _name = "infrastructure.database.email.wizard"
     _inherit = "mail.compose.message"
     _description = "Infrastructure Database Email Wizard"
 
-    public = fields.Selection([
-        ('db_followers', 'DB Followers'),
-        ('db_partner', 'DB Partner'),
+    database_email_cc = fields.Selection([
+        # ('db_followers', 'DB Followers'),
+        # ('db_partner', 'DB Partner'),
         ('db_related_contacts', 'DB Related Contacts'),
-        ('contract_followers', 'Contract Followers'),
-        ('contract_followers', 'Contract Followers'),
+        # ('contract_followers', 'Contract Followers'),
+        # ('contract_followers', 'Contract Followers'),
         ],
-        string='Mail Options',
-        required=True
+        string='Database Email CC',
+        required=False,
         )
 
-
-    # def send_mail(self, cr, uid, ids, context=None):
-    #     """ Process the wizard content and proceed with sending the related
-    #         email(s), rendering any template patterns on the fly if needed """
-    #     if context is None:
-    #         context = {}
-
-    #     survey_response_obj = self.pool.get('survey.user_input')
-    #     partner_obj = self.pool.get('res.partner')
-    #     mail_mail_obj = self.pool.get('mail.mail')
-    #     try:
-    #         model, anonymous_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'portal', 'group_anonymous')
-    #     except ValueError:
-    #         anonymous_id = None
+    @api.multi
+    def send_mail(self):
+        self.ensure_one()
+        return super(infrastructure_database_email_wizard, self.with_context(
+            database_email_cc=self.database_email_cc)).send_mail()

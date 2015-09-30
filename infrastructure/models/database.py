@@ -49,7 +49,24 @@ class database(models.Model):
         ('cancel', 'Cancel'),
     ]
     _mail_post_access = 'read'
-    _mail_mass_mailing = _('Databases')
+
+    @api.multi
+    def message_get_default_recipients(self):
+        res = super(database, self).message_get_default_recipients()
+        database_email_cc = self._context.get('database_email_cc', False)
+        if database_email_cc == 'db_related_contacts':
+            for db_id in res.iterkeys():
+                # TODO perhups better to attach as "partner_ids" key
+                db = self.browse(db_id)
+                commercial_partner_id = db.partner_id.commercial_partner_id
+                related_contacts = self.env['res.partner'].search([
+                    ('id', 'child_of', commercial_partner_id.id),
+                    # exclude de partner id
+                    ('id', '!=', db.partner_id.id),
+                    ('email', '!=', False)])
+                res[db_id]['email_cc'] = ','.join(
+                    related_contacts.mapped('email'))
+        return res
 
     database_type_id = fields.Many2one(
         # TODO remove this field as it is no more longer needed
@@ -1301,9 +1318,6 @@ class database(models.Model):
 
     @api.multi
     def action_activate(self):
-        # send to draft dbs that are inactive
-        self.mapped('database_ids').filtered(
-            lambda x: x.state == 'inactive').action_to_draft()
         self.write({'state': 'active'})
 
     @api.multi

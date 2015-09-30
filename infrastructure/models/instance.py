@@ -620,6 +620,9 @@ class instance(models.Model):
 
     @api.multi
     def action_activate(self):
+        # send to draft dbs that are inactive
+        self.mapped('database_ids').filtered(
+            lambda x: x.state == 'inactive').action_to_draft()
         self.write({'state': 'active'})
 
     @api.multi

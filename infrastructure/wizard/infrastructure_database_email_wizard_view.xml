@@ -3,40 +3,34 @@
 <data>
 
 <record id="infrastructure_database_email_wizard_view" model="ir.ui.view">
-     <field name="name">Send Email Wizard Form</field>
-     <field name="model">infrastructure.database.email.wizard</field>
+     <field name="name">Database Send Email Wizard Form</field>
+     <field name="model">mail.compose.message</field>
+     <!-- <field name="model">infrastructure.database.email.wizard</field> -->
      <field name="mode">primary</field>
      <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
      <field name="arch" type="xml">
-        <form>
-        <!-- <form string="Send Email"> -->
-            <!-- <group> -->
-                <field name="public"/>
-                <!-- <field name="confirm_passwd" password="True"/> -->
-            <!-- </group> -->
-<!--             <footer>
-                <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
-                or
-                <button string="Cancel" class="oe_link" special="cancel"/>
-            </footer> -->
-        </form>
+        <field name="notify" position="before">
+            <field name="database_email_cc"/>
+        </field>
      </field>
  </record>
 
 <act_window
     name="Send Email"
-    res_model="infrastructure.database.email.wizard"
+    res_model="mail.compose.message"
     src_model="infrastructure.database"
     view_mode="form"
+    view_id="infrastructure_database_email_wizard_view"
     target="new"
     context="{
         'default_composition_mode': 'mass_mail',
-        'default_partner_to': '${object.id or \'\'}',
-        'default_use_template': True,
             }"
     key2="client_action_multi"
     id="action_infrastructure_database_email_wizard"/>
         
+    <!-- res_model="infrastructure.database.email.wizard" -->
+        <!-- 'default_use_template': True, -->
+        <!-- 'default_partner_to': '${object.id or \'\'}', -->
         <!-- 'default_template_id': ref('email_template_partner'), -->
 </data>
 </openerp>
