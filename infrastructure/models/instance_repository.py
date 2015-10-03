@@ -20,11 +20,16 @@ class instance_repository(models.Model):
 
     _name = 'infrastructure.instance_repository'
     _description = 'instance_repository'
+    _order = 'sequence'
 
     repository_id = fields.Many2one(
         'infrastructure.repository',
         string='Repository',
         required=True
+        )
+    sequence = fields.Integer(
+        related='repository_id.sequence',
+        store=True,
         )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
