@@ -34,7 +34,7 @@
             <header>
                 <button name="action_activate"
                     type="object"
-                    states="draft, inactive"
+                    states="draft,inactive"
                     string="to Active"
                     />
                 <button name="action_inactive"
