@@ -92,7 +92,7 @@ class database_backup(models.Model):
     @api.multi
     def restore(
             self, instance, db_name,
-            backups_enable, database_type, overwrite=False):
+            backups_enable, overwrite=False):
         self.ensure_one()
         source_server = self.database_id.server_id
         target_server = instance.server_id

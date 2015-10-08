@@ -101,7 +101,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         # restore database
         self.database_backup_id.restore(
             instance, db_name,
-            backups_enable, database_type, overwrite=overwrite)
+            backups_enable, overwrite=overwrite)
 
         if self.type == 'overwrite':
             database = self.target_database_id
