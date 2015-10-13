@@ -41,7 +41,7 @@
                     />
                 <button name="action_activate"
                     type="object"
-                    states="to_install, inactive"
+                    states="to_install,inactive"
                     string="to Active"
                     class="oe_highlight"
                     />
