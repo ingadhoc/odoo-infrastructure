@@ -447,14 +447,14 @@ class server(models.Model):
                 'technical support )\n'
                 '* You can try opening port with %s (if not ok then it should '
                 'be a redirection issue of port %s to the server, ask '
-                'customer to check port is open and redirected to server)\n '
+                'customer to check port %s is open and redirected to server)\n '
             ) % (
                 port,
                 self.main_hostname, port,
                 "sudo netstat -plnt |grep :%s" % port,
                 "telnet localhost :%s" % port,
-                port, port,
                 "sudo ufw allow %s/tcp" % port,
+                port, port,
                 ))
         else:
             _logger.info("Connection to port %s successfully established")
