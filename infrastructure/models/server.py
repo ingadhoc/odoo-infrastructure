@@ -439,14 +439,21 @@ class server(models.Model):
             s.close()
         except:
             raise Warning(_(
-                'Could not connect to port %s.\n\
-                * Check connection with: "telnet %s %s"\n\
-                * You can also connect to server and check ports with "%s"\n\
-                * You can try opening port with %s\n\
-                * If still can not connect, contact server admin\n') % (
+                'Could not connect to port %s.\n'
+                '* Check connection with: "telnet %s %s" (if ok then scale '
+                'issue to our technical support)\n'
+                '* You can also connect to server and check ports with "%s" or'
+                ' "%s" (if ok try folowing step, if not ok scale issue to our '
+                'technical support )\n'
+                '* You can try opening port with %s (if not ok then it should '
+                'be a redirection issue of port %s to the server, ask '
+                'customer to check port is open and redirected to server)\n '
+            ) % (
                 port,
                 self.main_hostname, port,
                 "sudo netstat -plnt |grep :%s" % port,
+                "telnet localhost :%s" % port,
+                port, port,
                 "sudo ufw allow %s/tcp" % port,
                 ))
         else:
