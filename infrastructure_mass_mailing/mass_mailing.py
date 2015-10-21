@@ -3,7 +3,7 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from openerp import models, fields
+from openerp import models, fields, api
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -23,3 +23,15 @@ class MassMailing(models.Model):
         ],
         string='Database Email CC',
         )
+
+    @api.multi
+    def send_mail(self):
+        for record in self:
+            if record.database_email_cc:
+                super(MassMailing, self.with_context(
+                    # database_email_cc=record.database_email_cc,
+                    default_database_email_cc=record.database_email_cc,
+                    )).send_mail()
+            else:
+                super(MassMailing, self).send_mail()
+        return True
