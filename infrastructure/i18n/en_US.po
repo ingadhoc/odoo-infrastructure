@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo-infrastructure (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-07 18:09+0000\n"
-"PO-Revision-Date: 2015-09-07 18:09+0000\n"
+"POT-Creation-Date: 2015-10-13 17:21+0000\n"
+"PO-Revision-Date: 2015-10-13 17:21+0000\n"
 "Last-Translator: Juan Jose Scarafia <scarafia.juanjose@gmail.com>\n"
 "Language-Team: English (United States) (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/en_US/)\n"
 "MIME-Version: 1.0\n"
@@ -24,10 +24,10 @@ msgid " - Wildcard"
 msgstr " - Wildcard"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:742
-#: code:addons/infrastructure/models/instance.py:610
-#: code:addons/infrastructure/models/server.py:538
-#: code:addons/infrastructure/models/server.py:546
+#: code:addons/infrastructure/models/database.py:782
+#: code:addons/infrastructure/models/instance.py:613
+#: code:addons/infrastructure/models/server.py:548
+#: code:addons/infrastructure/models/server.py:556
 #, python-format
 msgid "%s"
 msgstr "%s"
@@ -185,6 +185,13 @@ msgid ""
 msgstr "All database data and filestore data will be delete and can not be recovered, are you sure you want to continue?"
 
 #. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid ""
+"All databases on this instance will be run with -u all. This operation can "
+"take some minutes. Do you want to continue?"
+msgstr ""
+
+#. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Amharic / አምሃርኛ"
 msgstr "Amharic / አምሃርኛ"
@@ -314,6 +321,11 @@ msgid "Backups Enable on new DB?"
 msgstr "Backups Enable on new DB?"
 
 #. module: infrastructure
+#: field:infrastructure.database_type,backups_enable:0
+msgid "Backups Enable?"
+msgstr ""
+
+#. module: infrastructure
 #: field:infrastructure.server,backups_path:0
 msgid "Backups Path"
 msgstr "Backups Path"
@@ -383,13 +395,13 @@ msgid "By object"
 msgstr "By object"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:1366
+#: code:addons/infrastructure/models/instance.py:1427
 #, python-format
 msgid "Can Not Configure Nginx if Main Site is not Seted!"
 msgstr "Can Not Configure Nginx if Main Site is not Seted!"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:1189
+#: code:addons/infrastructure/models/instance.py:1226
 #, python-format
 msgid ""
 "Can not create/update configuration file,                this is what we get: \n"
@@ -419,7 +431,7 @@ msgid ""
 msgstr "Can not run command:\n%s\nThis is what we get:\n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:616
+#: code:addons/infrastructure/models/server.py:651
 #, python-format
 msgid ""
 "Can not run upload mailgate file:\n"
@@ -626,7 +638,7 @@ msgid "Connection Security"
 msgstr "Connection Security"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:495
+#: code:addons/infrastructure/models/server.py:505
 #, python-format
 msgid "Connection successful!"
 msgstr "Connection successful!"
@@ -648,7 +660,7 @@ msgid "Copy Data From..."
 msgstr "Copy Data From..."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:595
+#: code:addons/infrastructure/models/server.py:605
 #, python-format
 msgid ""
 "Could Not Reload Nginx! This is what we get: \n"
@@ -656,7 +668,7 @@ msgid ""
 msgstr "Could Not Reload Nginx! This is what we get: \n %s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:585
+#: code:addons/infrastructure/models/server.py:595
 #, python-format
 msgid ""
 "Could Not Restart Nginx! This is what we get: \n"
@@ -664,24 +676,24 @@ msgid ""
 msgstr "Could Not Restart Nginx! This is what we get: \n %s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:491
+#: code:addons/infrastructure/models/server.py:501
 #, python-format
 msgid "Could not connect to host. Please check credentials"
 msgstr "Could not connect to host. Please check credentials"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:438
+#: code:addons/infrastructure/models/server.py:441
 #, python-format
 msgid ""
 "Could not connect to port %s.\n"
-"                * Check connection with: \"telnet %s %s\"\n"
-"                * You can also connect to server and check ports with \"%s\"\n"
-"                * You can try opening port with %s\n"
-"                * If still can not connect, contact server admin\n"
-msgstr "Could not connect to port %s.\n                * Check connection with: \"telnet %s %s\"\n                * You can also connect to server and check ports with \"%s\"\n                * You can try opening port with %s\n                * If still can not connect, contact server admin\n"
+"* Check connection with: \"telnet %s %s\" (if ok then scale issue to our technical support)\n"
+"* You can also connect to server and check ports with \"%s\" or \"%s\" (if ok try folowing step, if not ok scale issue to our technical support )\n"
+"* You can try opening port with %s (if not ok then it should be a redirection issue of port %s to the server, ask customer to check port %s is open and redirected to server)\n"
+" "
+msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:778
+#: code:addons/infrastructure/models/database.py:818
 #, python-format
 msgid "Could not connect to socket '%s'"
 msgstr "Could not connect to socket '%s'"
@@ -693,22 +705,22 @@ msgid "Could not delete backup!                    This is what we get %s"
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:509
+#: code:addons/infrastructure/models/database.py:546
 #, python-format
 msgid "Could not fix db, try it manually and run again"
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:337
+#: code:addons/infrastructure/models/database.py:374
 #, python-format
 msgid "Could not get client"
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:364
-#: code:addons/infrastructure/models/database.py:390
-#: code:addons/infrastructure/models/database.py:425
-#: code:addons/infrastructure/models/database.py:451
+#: code:addons/infrastructure/models/database.py:401
+#: code:addons/infrastructure/models/database.py:427
+#: code:addons/infrastructure/models/database.py:462
+#: code:addons/infrastructure/models/database.py:488
 #, python-format
 msgid ""
 "Could not get state!\n"
@@ -716,20 +728,20 @@ msgid ""
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:405
-#: code:addons/infrastructure/models/database.py:468
+#: code:addons/infrastructure/models/database.py:442
+#: code:addons/infrastructure/models/database.py:505
 #, python-format
 msgid "Could not get state! Unknow error, we could not get state from \"%s\""
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:838
+#: code:addons/infrastructure/models/database.py:880
 #, python-format
 msgid "Could not make backup!                    This is what we get %s"
 msgstr "Could not make backup!                    This is what we get %s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:842
+#: code:addons/infrastructure/models/database.py:884
 #, python-format
 msgid "Could not make backup!                This is what we get %s"
 msgstr "Could not make backup!                This is what we get %s"
@@ -877,6 +889,11 @@ msgid "DB Max connections"
 msgstr "DB Max connections"
 
 #. module: infrastructure
+#: selection:mail.compose.message,database_email_cc:0
+msgid "DB Related Contacts"
+msgstr ""
+
+#. module: infrastructure
 #: selection:infrastructure.database_type,install_lang_id:0
 msgid "Danish / Dansk"
 msgstr "Danish / Dansk"
@@ -924,6 +941,11 @@ msgstr "Database Backups"
 #: view:infrastructure.database.drop.wizard:infrastructure.infrastructure_database_drop_wizard_view
 #: model:ir.actions.act_window,name:infrastructure.action_infrastructure_database_drop_wizard
 msgid "Database Drop"
+msgstr ""
+
+#. module: infrastructure
+#: field:mail.compose.message,database_email_cc:0
+msgid "Database Email CC"
 msgstr ""
 
 #. module: infrastructure
@@ -1021,16 +1043,6 @@ msgstr "Date"
 #: help:infrastructure.server,message_last_post:0
 msgid "Date of the last message posted on the record."
 msgstr "Date of the last message posted on the record."
-
-#. module: infrastructure
-#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
-msgid "Deactivate"
-msgstr "Deactivate"
-
-#. module: infrastructure
-#: selection:infrastructure.database,state:0
-msgid "Deactivated"
-msgstr "Deactivated"
 
 #. module: infrastructure
 #: field:infrastructure.database,deactivation_date:0
@@ -1236,6 +1248,11 @@ msgid "Dutch / Nederlands"
 msgstr "Dutch / Nederlands"
 
 #. module: infrastructure
+#: model:ir.model,name:infrastructure.model_mail_compose_message
+msgid "Email composition wizard"
+msgstr ""
+
+#. module: infrastructure
 #: field:infrastructure.instance,unaccent:0
 msgid "Enable Unaccent"
 msgstr "Enable Unaccent"
@@ -1272,7 +1289,7 @@ msgid "Environment Version"
 msgstr "Environment Version"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:1173
+#: code:addons/infrastructure/models/instance.py:1210
 #, python-format
 msgid ""
 "Environment path '%s' does not exists.                                 "
@@ -1301,7 +1318,7 @@ msgid "Error"
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance_repository.py:111
+#: code:addons/infrastructure/models/instance_repository.py:117
 #, python-format
 msgid ""
 "Error Removing Folder %s. This is what we get:                \n"
@@ -1309,7 +1326,7 @@ msgid ""
 msgstr "Error Removing Folder %s. This is what we get:                \n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance_repository.py:159
+#: code:addons/infrastructure/models/instance_repository.py:191
 #, python-format
 msgid ""
 "Error pulling git repository. This is what we get:                \n"
@@ -1317,10 +1334,10 @@ msgid ""
 msgstr "Error pulling git repository. This is what we get:                \n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1037
-#: code:addons/infrastructure/models/database.py:1058
-#: code:addons/infrastructure/models/database.py:1182
-#: code:addons/infrastructure/models/database.py:1195
+#: code:addons/infrastructure/models/database.py:1079
+#: code:addons/infrastructure/models/database.py:1100
+#: code:addons/infrastructure/models/database.py:1224
+#: code:addons/infrastructure/models/database.py:1237
 #, python-format
 msgid "Error: %s"
 msgstr "Error: %s"
@@ -1629,7 +1646,10 @@ msgid ""
 msgstr "If partner is set, then this mailserver will be only availble        for this partner databases"
 
 #. module: infrastructure
+#: selection:infrastructure.database,state:0
 #: selection:infrastructure.environment,state:0
+#: selection:infrastructure.instance,state:0
+#: selection:infrastructure.server,state:0
 msgid "Inactive"
 msgstr ""
 
@@ -1768,6 +1788,11 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.database_type:infrastructure.view_infrastructure_database_type_form
 msgid "Instance Parameters"
+msgstr ""
+
+#. module: infrastructure
+#: field:infrastructure.instance,odoo_service_state:0
+msgid "Instance Status"
 msgstr ""
 
 #. module: infrastructure
@@ -2036,7 +2061,7 @@ msgid ""
 msgstr "Mailgate File is Copided to Server and Computed when installing        postfix"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1244
+#: code:addons/infrastructure/models/database.py:1286
 #, python-format
 msgid ""
 "Mailgate file was not found on mailgate path '%s' base path                "
@@ -2224,7 +2249,7 @@ msgid "New db Name"
 msgstr "New db Name"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:1444
+#: code:addons/infrastructure/models/instance.py:1505
 #, python-format
 msgid ""
 "Nginx '%s' directory not found!                 Check if Nginx is installed!"
@@ -2241,7 +2266,7 @@ msgid "Nginx Sites Path"
 msgstr "Nginx Sites Path"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:1172
+#: code:addons/infrastructure/models/instance.py:1209
 #, python-format
 msgid "No Environment Path!"
 msgstr "No Environment Path!"
@@ -2291,18 +2316,18 @@ msgid "Norwegian Bokmål / Norsk bokmål"
 msgstr "Norwegian Bokmål / Norsk bokmål"
 
 #. module: infrastructure
-#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
-#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
-#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
-#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
-msgid "Not Cancel"
-msgstr "Not Cancel"
-
-#. module: infrastructure
 #: code:addons/infrastructure/wizard/duplicate_db_wizard.py:52
 #, python-format
 msgid "Not Implemented Yet!"
 msgstr "Not Implemented Yet!"
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_filter
+#: view:infrastructure.environment:infrastructure.view_infrastructure_environment_filter
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_filter
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_filter
+msgid "Not Inactive"
+msgstr ""
 
 #. module: infrastructure
 #: help:infrastructure.repository,default_in_new_env:0
@@ -2346,7 +2371,7 @@ msgid "Number of Processors"
 msgstr "Number of Processors"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:629
+#: code:addons/infrastructure/models/instance.py:647
 #, python-format
 msgid "Number should be between 1 and 9"
 msgstr "Number should be between 1 and 9"
@@ -2386,11 +2411,6 @@ msgid "Odoo Images"
 msgstr "Odoo Images"
 
 #. module: infrastructure
-#: field:infrastructure.instance,odoo_service_state:0
-msgid "Odoo Service Status"
-msgstr ""
-
-#. module: infrastructure
 #: field:infrastructure.instance,odoo_sufix:0
 msgid "Odoo Sufix"
 msgstr "Odoo Sufix"
@@ -2417,6 +2437,11 @@ msgid "Odoo Versions"
 msgstr "Odoo Versions"
 
 #. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Odoo and PG containers"
+msgstr ""
+
+#. module: infrastructure
 #: selection:infrastructure.database,update_state:0
 #: selection:infrastructure.instance,databases_state:0
 #: selection:infrastructure.instance,odoo_service_state:0
@@ -2437,7 +2462,7 @@ msgid "Operador"
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:596
+#: code:addons/infrastructure/models/database.py:633
 #, python-format
 msgid "Operator must be one of: %s"
 msgstr ""
@@ -2544,14 +2569,14 @@ msgid "Password"
 msgstr "Password"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:609
+#: code:addons/infrastructure/models/instance.py:612
 #, python-format
 msgid "Password for user"
 msgstr "Password for user"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:537
-#: code:addons/infrastructure/models/server.py:545
+#: code:addons/infrastructure/models/server.py:547
+#: code:addons/infrastructure/models/server.py:555
 #, python-format
 msgid "Password for user '%s':"
 msgstr "Password for user '%s':"
@@ -2565,14 +2590,14 @@ msgid ""
 msgstr "Password is too short.                       At least 5 characters are required."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:741
+#: code:addons/infrastructure/models/database.py:781
 #, python-format
 msgid "Password:"
 msgstr "Password:"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database_type.py:140
-#: code:addons/infrastructure/models/database_type.py:144
+#: code:addons/infrastructure/models/database_type.py:143
+#: code:addons/infrastructure/models/database_type.py:147
 #, python-format
 msgid "Password: '%s'"
 msgstr "Password: '%s'"
@@ -2605,7 +2630,7 @@ msgid "Pg Custom Commands"
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:565
+#: code:addons/infrastructure/models/server.py:575
 #, python-format
 msgid ""
 "Please log in into the server and run:\n"
@@ -2720,6 +2745,16 @@ msgstr "Pull Name"
 #: view:infrastructure.instance_repository:infrastructure.view_infrastructure_instance_repository_tree
 msgid "Pull Source and Active Repository"
 msgstr "Pull Source and Active Repository"
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Pull from instance:"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Pull, Clone to Inst. and Checkout all Repositoires"
+msgstr ""
 
 #. module: infrastructure
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
@@ -2942,8 +2977,14 @@ msgid "Secure"
 msgstr "Secure"
 
 #. module: infrastructure
+#: model:ir.actions.act_window,name:infrastructure.action_infrastructure_database_email_wizard
+msgid "Send Email"
+msgstr ""
+
+#. module: infrastructure
 #: field:infrastructure.base.module,sequence:0
 #: field:infrastructure.database_type,sequence:0
+#: field:infrastructure.instance_repository,sequence:0
 #: field:infrastructure.odoo_version,sequence:0
 #: field:infrastructure.repository,sequence:0
 #: field:infrastructure.server,sequence:0
@@ -2982,7 +3023,7 @@ msgid "Server"
 msgstr "Server"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:461
+#: code:addons/infrastructure/models/server.py:471
 #, python-format
 msgid ""
 "Server Codename is not the and Server configuration mismatch\n"
@@ -3084,10 +3125,20 @@ msgid "Source Instance"
 msgstr "Source Instance"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance_repository.py:130
+#: code:addons/infrastructure/models/instance_repository.py:163
 #, python-format
-msgid "Source repository not found"
-msgstr "Source repository not found"
+msgid ""
+"Source repository branch and target branch must be the same\n"
+"* Source repository branch: %s\n"
+"* Target repository branch: %s\n"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/instance_repository.py:136
+#: code:addons/infrastructure/models/instance_repository.py:159
+#, python-format
+msgid "Source repository not found for %s on instance %s"
+msgstr ""
 
 #. module: infrastructure
 #: field:infrastructure.database_type,sources_from_id:0
@@ -3313,12 +3364,20 @@ msgid "To configure SSL you need to set ssl certificates and keys"
 msgstr "To configure SSL you need to set ssl certificates and keys"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:553
+#: code:addons/infrastructure/models/server.py:563
 #, python-format
 msgid ""
 "To configure google drive sync you need to set account and                "
 "password"
 msgstr "To configure google drive sync you need to set account and                password"
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/server.py:634
+#, python-format
+msgid ""
+"To set a server as inactive you should set all environments to inactive "
+"first"
+msgstr ""
 
 #. module: infrastructure
 #: code:addons/infrastructure/models/environment.py:207
@@ -3334,7 +3393,7 @@ msgid "Tunnel to Posgres"
 msgstr "Tunnel to Posgres"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:954
+#: code:addons/infrastructure/models/instance.py:991
 #, python-format
 msgid ""
 "Tunneling command to access postgres:\n"
@@ -3384,26 +3443,26 @@ msgid "Ukrainian / українська"
 msgstr "Ukrainian / українська"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1036
-#: code:addons/infrastructure/models/database.py:1057
+#: code:addons/infrastructure/models/database.py:1078
+#: code:addons/infrastructure/models/database.py:1099
 #, python-format
 msgid "Unable to Connect to Database."
 msgstr "Unable to Connect to Database."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1181
+#: code:addons/infrastructure/models/database.py:1223
 #, python-format
 msgid "Unable to Upload SMTP Config."
 msgstr "Unable to Upload SMTP Config."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1194
+#: code:addons/infrastructure/models/database.py:1236
 #, python-format
 msgid "Unable to change password."
 msgstr "Unable to change password."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:818
+#: code:addons/infrastructure/models/database.py:860
 #, python-format
 msgid ""
 "Unable to drop Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n"
@@ -3411,7 +3470,7 @@ msgid ""
 msgstr "Unable to drop Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:963
+#: code:addons/infrastructure/models/database.py:1005
 #, python-format
 msgid ""
 "Unable to duplicate Database. This is what we get:\n"
@@ -3419,7 +3478,7 @@ msgid ""
 msgstr "Unable to duplicate Database. This is what we get:\n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:859
+#: code:addons/infrastructure/models/database.py:901
 #, python-format
 msgid ""
 "Unable to migrate Database. If you are working in an                 instance with \"workers\" then you can try                 restarting service. This is what we get:\n"
@@ -3427,7 +3486,7 @@ msgid ""
 msgstr "Unable to migrate Database. If you are working in an                 instance with \"workers\" then you can try                 restarting service. This is what we get:\n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:879
+#: code:addons/infrastructure/models/database.py:921
 #, python-format
 msgid ""
 "Unable to rename Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n"
@@ -3435,7 +3494,7 @@ msgid ""
 msgstr "Unable to rename Database. If you are working in an                     instance with \"workers\" then you can try                     restarting service. This is what we get:\n%s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:934
+#: code:addons/infrastructure/models/database.py:976
 #, python-format
 msgid ""
 "Unable to restore bd %s, you can try restartin target                    instance. This is what we get: \n"
@@ -3443,7 +3502,7 @@ msgid ""
 msgstr "Unable to restore bd %s, you can try restartin target                    instance. This is what we get: \n %s"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:940
+#: code:addons/infrastructure/models/database.py:982
 #, python-format
 msgid ""
 "Unable to restore bd %s, you can try restartin target                instance. This is what we get: \n"
@@ -3509,6 +3568,11 @@ msgstr ""
 #. module: infrastructure
 #: field:infrastructure.database,update_state_detail:0
 msgid "Update Status Detail"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.instance:infrastructure.view_infrastructure_instance_form
+msgid "Update all modules and databases"
 msgstr ""
 
 #. module: infrastructure
@@ -3625,7 +3689,7 @@ msgid "Workers Number"
 msgstr "Workers Number"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:1384
+#: code:addons/infrastructure/models/instance.py:1445
 #, python-format
 msgid "You Must set at least one instance host!"
 msgstr "You Must set at least one instance host!"
@@ -3638,7 +3702,7 @@ msgid ""
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1069
+#: code:addons/infrastructure/models/database.py:1111
 #, python-format
 msgid ""
 "You can not Update Backups Data if module '%s' is not                    "
@@ -3646,7 +3710,13 @@ msgid ""
 msgstr "You can not Update Backups Data if module '%s' is not                    installed in the database"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1205
+#: code:addons/infrastructure/models/environment.py:228
+#, python-format
+msgid "You can not activate an environment if server is on Inactive state"
+msgstr ""
+
+#. module: infrastructure
+#: code:addons/infrastructure/models/database.py:1247
 #, python-format
 msgid ""
 "You can not configure backups if module '%s' is not                    "
@@ -3654,7 +3724,7 @@ msgid ""
 msgstr "You can not configure backups if module '%s' is not                    installed in the database"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1240
+#: code:addons/infrastructure/models/database.py:1282
 #, python-format
 msgid ""
 "You can not configure catchall if Local Alias is                not set. "
@@ -3662,7 +3732,7 @@ msgid ""
 msgstr "You can not configure catchall if Local Alias is                not set. Probably this is because Mailgate File was not                found"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1237
+#: code:addons/infrastructure/models/database.py:1279
 #, python-format
 msgid ""
 "You can not configure catchall if module '%s'                     is not "
@@ -3676,7 +3746,7 @@ msgid "You can not delete an environment that has instances"
 msgstr "You can not delete an environment that has instances"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:817
+#: code:addons/infrastructure/models/instance.py:854
 #, python-format
 msgid ""
 "You can not delete an instance that is of type protected,                you"
@@ -3684,7 +3754,7 @@ msgid ""
 msgstr "You can not delete an instance that is of type protected,                you can change type, or drop it manually"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:802
+#: code:addons/infrastructure/models/database.py:844
 #, python-format
 msgid ""
 "You can not drop a database protected,                you can change "
@@ -3692,7 +3762,7 @@ msgid ""
 msgstr "You can not drop a database protected,                you can change database type, or drop it manually"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1019
+#: code:addons/infrastructure/models/database.py:1061
 #, python-format
 msgid ""
 "You can not kill connections if module '%s' is not                    "
@@ -3700,7 +3770,7 @@ msgid ""
 msgstr "You can not kill connections if module '%s' is not                    installed in the database"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:376
+#: code:addons/infrastructure/models/database.py:413
 #, python-format
 msgid ""
 "You can not refresh backups state if module '%s' is not installed in the "
@@ -3708,7 +3778,7 @@ msgid ""
 msgstr ""
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:437
+#: code:addons/infrastructure/models/database.py:474
 #, python-format
 msgid ""
 "You can not refresh modules update status if module '%s' is not installed in"
@@ -3731,7 +3801,7 @@ msgid ""
 msgstr "You can only choose smtp servers that has partner = False or partner = this environment partner"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:702
+#: code:addons/infrastructure/models/database.py:741
 #, python-format
 msgid ""
 "You cannot delete a database which is not draft                     or "
@@ -3747,7 +3817,7 @@ msgid ""
 msgstr "You cannot delete a environment which is not                     draft or cancelled."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance_repository.py:92
+#: code:addons/infrastructure/models/instance_repository.py:97
 #, python-format
 msgid ""
 "You cannot delete a repository that has Actual Commit                You "
@@ -3755,13 +3825,13 @@ msgid ""
 msgstr "You cannot delete a repository that has Actual Commit                You should first delete it with the delete button."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/server.py:388
+#: code:addons/infrastructure/models/server.py:389
 #, python-format
 msgid "You cannot delete a server which is not draft or cancelled."
 msgstr "You cannot delete a server which is not draft or cancelled."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance.py:634
+#: code:addons/infrastructure/models/instance.py:652
 #, python-format
 msgid ""
 "You cannot delete an instance which                 is not draft or "
@@ -3769,7 +3839,7 @@ msgid ""
 msgstr "You cannot delete an instance which                 is not draft or cancelled."
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/database.py:1150
+#: code:addons/infrastructure/models/database.py:1192
 #, python-format
 msgid "You must choose an SMTP server config in order to upload it"
 msgstr "You must choose an SMTP server config in order to upload it"
@@ -4017,7 +4087,7 @@ msgid "test"
 msgstr "test"
 
 #. module: infrastructure
-#: code:addons/infrastructure/models/instance_repository.py:120
+#: code:addons/infrastructure/models/instance_repository.py:126
 #, python-format
 msgid ""
 "this method must be call from a repository that                belongs to an"
@@ -4042,6 +4112,7 @@ msgstr "to Draft"
 
 #. module: infrastructure
 #: view:infrastructure.environment:infrastructure.view_infrastructure_environment_form
+#: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "to Inactive"
 msgstr ""
 
@@ -4049,11 +4120,6 @@ msgstr ""
 #: view:infrastructure.server:infrastructure.view_infrastructure_server_form
 msgid "to Install"
 msgstr "to Install"
-
-#. module: infrastructure
-#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
-msgid "to Maintenance"
-msgstr "to Maintenance"
 
 #. module: infrastructure
 #: selection:infrastructure.database_type,instance_log_level:0
@@ -4090,6 +4156,11 @@ msgstr ""
 #. module: infrastructure
 #: view:infrastructure.database:infrastructure.view_infrastructure_database_form
 msgid "⇒ Refresh"
+msgstr ""
+
+#. module: infrastructure
+#: view:infrastructure.database:infrastructure.view_infrastructure_database_form
+msgid "⇒ Start/Restart"
 msgstr ""
 
 #. module: infrastructure
