@@ -12,6 +12,10 @@
                 <field name="database_count" widget="statinfo"/>
             </button>
         </div>
+        <field name="manager_id" position="after">
+            <field name="odoo_version_id"/>
+            <field name="support_validity"/>
+        </field>
     </field>
 </record>
 

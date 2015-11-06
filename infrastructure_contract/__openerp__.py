@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Infrastructure and Contracts Integration',
-    'version': '8.0.1.0.0',
+    'version': '8.0.1.1.0',
     'description': """
 Infrastructure Contract
 =======================
@@ -46,6 +46,7 @@ Destiny database must have web_support_client module installed
     'data': [
         'database_view.xml',
         'account_analytic_account_view.xml',
+        'odoo_version_view.xml',
     ],
     'demo': [],
     'test': [],

@@ -5,3 +5,4 @@
 ##############################################################################
 from . import database
 from . import account_analytic_account
+from . import odoo_version
