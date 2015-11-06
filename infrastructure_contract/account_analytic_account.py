@@ -14,11 +14,18 @@ class account_analytic_account(models.Model):
         'infrastructure.database',
         'contract_id',
         'Databases',
-        )
+    )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases'
-        )
+    )
+    odoo_version_id = fields.Many2one(
+        'infrastructure.odoo_version', string='Odoo Version')
+    support_validity = fields.Date(
+        related='odoo_version_id.support_end_date',
+        string="Support Validity",
+        store=True
+    )
 
     @api.one
     @api.depends('database_ids')
@@ -54,7 +61,7 @@ class account_analytic_account(models.Model):
                 # 'search_default_instance_id': self.id,
                 'search_default_contract_id': self.id,
                 'search_default_not_inactive': 1,
-                }
+            }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_database_form')
