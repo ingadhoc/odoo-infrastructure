@@ -1,39 +1,61 @@
-addons:
-  apt:
-    packages:
-      - expect-dev  # provides unbuffer utility
-      - python-lxml # because pip installation is slow
-
 language: python
-
-# new options suggested by Alexandre Fayolle
 sudo: false
-cache: pip
+cache:
+  apt: true
+  directories:
+    - $HOME/.cache/pip
 
 python:
   - "2.7"
+
+addons:
+  apt:
+# only add the two lines below if you need wkhtmltopdf for your tests
+#    sources:
+#      - pov-wkhtmltopdf
+#    Search your sources alias here:
+#      https://github.com/travis-ci/apt-source-whitelist/blob/master/ubuntu.json
+    packages:
+      - expect-dev  # provides unbuffer utility
+      - python-lxml  # because pip installation is slow
+      - python-simplejson
+      - python-serial
+      - python-yaml
+#     Search your packages here:
+#       https://github.com/travis-ci/apt-package-whitelist/blob/master/ubuntu-precise
+#      - wkhtmltopdf  # only add if needed and check the before_install section below
+
+# set up an X server to run wkhtmltopdf.
+#before_install:
+#  - "export DISPLAY=:99.0"
+#  - "sh -e /etc/init.d/xvfb start"
 
 env:
   global:
   - VERSION="8.0" TESTS="0" LINT_CHECK="0" TRANSIFEX="0"
   - TRANSIFEX_USER='jjscarafia'
   - TRANSIFEX_ORGANIZATION='adhoc'
+  # to get secure, run 'travis encrypt TRANSIFEX_PASSWORD=[transifex_password] -r [github_repo]'
+  # example of github repo 'ingadhoc/odoo-infrastructure'
   - secure: HVeS3fKkXitWuJ78WXhJ7M8WgjxNg8qT+EnPNYSM70Z7UJ3Us9z4yRhb76fLu3UQDU7zSuuujsy6RYkNQA/smux9DQ6jdrPlGVyQscNl2/NjfGm+zh+2MU4XnJZixEuPFHSTJHzHBiSDVasuZcss5IyLE5Ec1w8mV8GuEMsZrZP8WL42lFuB/kVnkes/ugIggqyqJ5xQgCR0dvoT9dAn0k39CHo/dUHMojaan0v810/wUFdbqFo2VagCgRUWw7zvPjLqmElhM6Zxxy+ZlZ2etGDL3HBK3PkwvB/bEwixwJoxoELE30bvyuTjjLzns2khtN2y+6f8p1svhd70pU8KytnjBo480vOz+rK/age3+vhXS5a3+SmrbHwQxoS/zeVXS+ec1PwGzQvJmkd95Bl4ht5FFTAHBJvtWMa5H05aiUquxmIrcdyB5Jk3PGALztv1btjh1s7YVEcdAjjXPLW9lhsBl791FAhzt3/YTd94+uHqX2+E6K3KBcEt6mVbmwR6H7DbJnXmAfizOQMw37B3s+CkzetQAWPnqpGuWrbTNRoV5kw+Y7es06pwWYSoTPiBg226HtdrexkaDi8Y/bI+OLmDgglSJgI6Y+1eCQdJAHm5nYMn134rt/O3TUhxckcapyhHB5jxxwpd0zpWbEJLbyi+ZMMuwrCq9qvhhOuGR2g=
 
   matrix:
-  #- LINT_CHECK="0"
+  # TODO enable lint check
+  #- LINT_CHECK="1"
   - TRANSIFEX="1"
   - TESTS="1" ODOO_REPO="odoo/odoo"
-  - UNIT_TEST="1"
+# either use the two lines above or the two below. Don't change the default if
+# it's not necessary (it is only necessary if modules in your repository can't
+# be installed in the same database. And you get a huge speed penalty in your
+# tests)
+#  - TESTS="1.0" ODOO_REPO="odoo/odoo" UNIT_TEST="1"
+#  - TESTS="1.0" ODOO_REPO="OCA/OCB" UNIT_TEST="1"
 
 virtualenv:
   system_site_packages: true
 
 install:
-  # repository requirements
-  - pip install -r requirements.txt
-
-  - git clone https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
+  - git clone --depth=1 https://github.com/OCA/maintainer-quality-tools.git ${HOME}/maintainer-quality-tools
   - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
   - travis_install_nightly
 
@@ -41,4 +63,4 @@ script:
   - travis_run_tests
 
 after_success:
-  coveralls
+  - travis_after_tests_success
