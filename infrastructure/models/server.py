@@ -571,9 +571,10 @@ class server(models.Model):
             'bu_push_tu_drive',
             '0 4 * * *',
             'root',
-            'drive push -quiet %s' % self.syncked_backups_path)
+            'drive push -quiet -ignore-conflict=true %s' % (
+                self.syncked_backups_path))
         raise Warning(_('Please log in into the server and run:\n\
-            * drive init %s\n\
+            "sudo drive init %s"\n\
             Follow onscreen steps\
             ') % (
             self.syncked_backups_path,
