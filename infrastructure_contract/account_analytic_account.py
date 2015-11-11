@@ -24,7 +24,8 @@ class account_analytic_account(models.Model):
     support_validity = fields.Date(
         related='odoo_version_id.support_end_date',
         string="Support Validity",
-        store=True
+        readonly=True,
+        store=True,
     )
 
     @api.one
