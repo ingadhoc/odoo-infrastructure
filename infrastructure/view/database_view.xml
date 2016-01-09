@@ -209,7 +209,7 @@
                         <group>
                             <label for="smtp_server_id"/>
                             <div class="oe_inline">
-                                <field name="smtp_server_id" domain="['|', ('partner_id','=', False), ('partner_id','=', partner_id)]" context="{'default_partner_id': partner_id}" class="oe_inline"/>
+                                <field name="smtp_server_id" domain="['|', ('partner_id','=', False), ('partner_id','=', partner_id)]" context="{'default_partner_id': partner_id, 'default_sequence': 4}" class="oe_inline"/>
                                 <button class="oe_link oe_inline" type="object" name="upload_mail_server_config" attrs="{'invisible':['|',('state','!=','active'),('smtp_server_id','=',False)]}" string="Upload Config"/>
                             </div>
                             <label for="catchall_enable"/>
