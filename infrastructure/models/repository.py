@@ -61,6 +61,11 @@ class repository(models.Model):
         string='Addons Path',
         compute='_get_addons_path',
     )
+    error_message = fields.Text(
+        string='Error Message',
+        help='If you set a message here, when someone try to pull this '
+        'repository, this message will be displayed and pull will be aborted'
+    )
 
     @api.one
     @api.depends('directory', 'addons_subdirectory')

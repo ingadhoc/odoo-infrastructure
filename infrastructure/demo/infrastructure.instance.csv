@@ -1,0 +1,2 @@
+id,environment_id/id,number,type,database_type_id/id,admin_pass,odoo_image_id/id,pg_image_id/id,odoo_image_tag_id/id,pg_image_tag_id/id,db_filter/id
+inv_env_1_inst_1,infrastructure.inv_env_1,1,none_secure,infrastructure.inf_db_type_test,admin,docker_image_odoo,docker_image_pg,docker_image_odoo_tag_80,docker_image_pg_tag_94,inf_db_filter_no_filter

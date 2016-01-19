@@ -1,0 +1,2 @@
+id,name,server_configuration_id/id,ssh_port,main_hostname,holder_id/id,owner_id/id,used_by_id/id,gdrive_account,gdrive_passw,gdrive_space,user_name,password
+inf_server_srv01,localhost,server_conf_14_04_server,22,localhost,base.partner_root,base.partner_root,base.partner_root,,,,demo,demo

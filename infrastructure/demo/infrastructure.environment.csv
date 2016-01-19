@@ -1,0 +1,2 @@
+id,server_id/id,name,number,partner_id/id,odoo_version_id/id,path
+inv_env_1,infrastructure.inf_server_srv01,yourcompany,10,base.partner_root,infrastructure.odoo_version_80,/opt/odoo/yourcompany

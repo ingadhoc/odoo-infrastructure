@@ -1,7 +1,0 @@
-id,name,supplier
-base.partner_root,Main Company,True
-inf_partner_foo,Foo Provider,True
-inf_partner_bar,Bar Provider,True
-inf_partner_foobar,FooBar Provider,True
-inf_partner_customer02,Customer 02,False
-inf_partner_customer01,Customer 01,False

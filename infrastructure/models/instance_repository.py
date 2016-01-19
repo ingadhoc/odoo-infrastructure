@@ -145,6 +145,8 @@ class instance_repository(models.Model):
     def repository_pull_clone_and_checkout(self, update=True):
         _logger.info("Updateing/getting repository %s with update=%s" % (
             self.repository_id.name, update))
+        if self.repository_id.error_message:
+            raise Warning(self.repository_id.error_message)
         if self.actual_commit and not update:
             return True
         self.instance_id.environment_id.server_id.get_env()

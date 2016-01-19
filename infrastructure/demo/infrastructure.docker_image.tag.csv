@@ -1,0 +1,3 @@
+id,name,docker_image_id/id
+docker_image_pg_tag_94,9.4,docker_image_pg
+docker_image_odoo_tag_80,8.0,docker_image_odoo

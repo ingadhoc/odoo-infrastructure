@@ -1,0 +1,3 @@
+id,name,odoo_image_ids/id,odoo_version_id/id,prefix,pull_name,service
+docker_image_odoo,odoo adhoc 8.0,,odoo_version_80,--link aeroo_docs:aeroo,adhoc/odoo-adhoc,Odoo
+docker_image_pg,postgres 9.4 con odoo user (odoo v8+),docker_image_odoo,,-e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo,postgres,Postgresql

@@ -42,6 +42,7 @@
             <field name="branch_ids"
                     widget="many2many_tags"
                     />
+                <field name="error_message"/>
              </group>
             </sheet>
 

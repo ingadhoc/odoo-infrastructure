@@ -1,0 +1,2 @@
+id,demo_data,instance_id/id,name,partner_id/id,admin_password
+inv_env_1_inst_1_db_1,True,infrastructure.inv_env_1_inst_1,yourcompany,base.partner_root,admin
