@@ -540,7 +540,7 @@ class database(models.Model):
         res = client.model('db.configuration').fix_db([])
         if res.get('error'):
             raise Warning(res.get('error'))
-
+        self.refresh_update_state()
         # if init_and_conf_modules:
         #     # re init modules
         #     self.reinit_modules(init_and_conf_modules)
