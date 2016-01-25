@@ -10,11 +10,13 @@
             <group>
                 <field name="database_id"/>
                 <field name="update_state"/>
-                <field name="init_and_conf_modules"/>
-                <field name="update_modules"/>
+                <field name="update_state_detail"/>
+<!--                 <field name="init_and_conf_modules"/>
+                <field name="update_modules"/> -->
             </group>
             <footer>
-                <button name="confirm" string="Confirm" type="object" class="oe_highlight"/>
+                <button name="confirm" string="Fix DB" attrs="{'invisible': [('update_state', 'in', ['not_installable', 'ok'])]}" type="object" class="oe_highlight"/>
+                <button name="confirm" string="Fix DB (WARNING with 'Not Installable Modules')" attrs="{'invisible': [('update_state', '!=', 'not_installable')]}" confirm="WARNING!! All modules with state 'Not Installable Modules' will be completely deleted and related data will be lost. CHECK if you want them and are some repositories missing. Do you wan to continue?" type="object" class="oe_highlight"/>
                 or
                 <button string="Cancel" class="oe_link" special="cancel"/>
             </footer>

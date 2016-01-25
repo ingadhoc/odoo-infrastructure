@@ -1,4 +1,4 @@
-id,server_hostname_id/id,subdomain,name,instance_id/id
-inf_inst_host_1,inf_server_host_1,,example01.com,inf_inst_customer01-61
-inf_inst_host_2,inf_server_host_2,,example03.com,inf_inst_customer03-70
-inf_inst_host_3,inf_server_host_3,,example02.com,inf_inst_customer02-61
+id,server_hostname_id/id,instance_id/id
+inf_inst_host_1,inf_server_host_1012,inv_env_1_inst_1
+inf_inst_host_2,inf_server_host_8069,inv_env_1_inst_2
+inf_inst_host_3,inf_server_host_9069,inv_env_1_inst_3

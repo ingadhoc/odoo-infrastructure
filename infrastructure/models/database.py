@@ -29,6 +29,8 @@ _update_state_vals = [
     ('modules_on_to_install', 'Modules on To Install'),
     ('modules_on_to_remove', 'Modules on To Remove'),
     ('modules_on_to_upgrade', 'Modules on To Upgrade'),
+    ('unmet_deps', 'Unmet Dependencies'),
+    ('not_installable', 'Not Installable Modules'),
     ('ok', 'Ok'),
     ]
 
@@ -515,45 +517,49 @@ class database(models.Model):
         self.update_state_detail = detail
         return update_state
 
-    @api.one
-    def fix_db_auto(self):
-        """This method is not used yet"""
-        update_state = self.refresh_update_state()
-        detail = update_state.get('detail', False)
-        init_and_conf_modules = detail.get('init_and_conf_modules')
-        update_modules = detail.get('update_modules')
-        optional_update_modules = detail.get('optional_update_modules')
-        return self.fix_db(
-            init_and_conf_modules,
-            update_modules + optional_update_modules,
-            )
+    # @api.one
+    # def fix_db_auto(self):
+    #     """This method is not used yet"""
+    #     update_state = self.refresh_update_state()
+    #     detail = update_state.get('detail', False)
+    #     init_and_conf_modules = detail.get('init_and_conf_modules')
+    #     update_modules = detail.get('update_modules')
+    #     optional_update_modules = detail.get('optional_update_modules')
+    #     return self.fix_db(
+    #         init_and_conf_modules,
+    #         update_modules + optional_update_modules,
+    #         )
 
     @api.one
-    def fix_db(self, init_and_conf_modules, to_update_modules):
+    def fix_db(self):
         """
         Method to be called from wizard or automatic
         """
-        _logger.info('Trying to update db %s' % self.name)
+        _logger.info('Fixing db %s' % self.name)
+        client = self.get_client()
+        res = client.model('db.configuration').fix_db([])
+        if res.get('error'):
+            raise Warning(res.get('error'))
 
-        if init_and_conf_modules:
-            # re init modules
-            self.reinit_modules(init_and_conf_modules)
+        # if init_and_conf_modules:
+        #     # re init modules
+        #     self.reinit_modules(init_and_conf_modules)
 
-            # refresh update state
-            update_state = self.refresh_update_state()
-            detail = update_state.get('detail', False)
-            init_and_conf_modules = detail.get('init_and_conf_modules')
-            if init_and_conf_modules:
-                raise Warning(_(
-                    'Could not fix db, try it manually and run again'))
-            # updated detail if an init have been run
-            update_modules = detail.get('update_modules')
-            optional_update_modules = detail.get('optional_update_modules')
-            to_update_modules = update_modules + optional_update_modules
+        #     # refresh update state
+        #     update_state = self.refresh_update_state()
+        #     detail = update_state.get('detail', False)
+        #     init_and_conf_modules = detail.get('init_and_conf_modules')
+        #     if init_and_conf_modules:
+        #         raise Warning(_(
+        #             'Could not fix db, try it manually and run again'))
+        #     # updated detail if an init have been run
+        #     update_modules = detail.get('update_modules')
+        #     optional_update_modules = detail.get('optional_update_modules')
+        #     to_update_modules = update_modules + optional_update_modules
 
-        if to_update_modules:
-            self.upgrade_modules(to_update_modules)
-            update_state = self.refresh_update_state()
+        # if to_update_modules:
+        #     self.upgrade_modules(to_update_modules)
+        #     update_state = self.refresh_update_state()
         return True
 
     @api.multi

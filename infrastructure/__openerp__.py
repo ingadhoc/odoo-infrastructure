@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Infrastructure',
-    'version': '8.0.0.17.1',
+    'version': '8.0.0.18.1',
     'description': 'Infrastructure Management',
     'category': 'base.module_category_knowledge_management',
     'author': 'ADHOC SA',
@@ -92,7 +92,7 @@
         'demo/infrastructure.db_filter.csv',
         'demo/infrastructure.database_type.csv',
         'demo/infrastructure.instance.csv',
-        # 'demo/infrastructure.instance_host.csv',
+        'demo/infrastructure.instance_host.csv',
         'demo/infrastructure.database.csv'
         ],
     }
