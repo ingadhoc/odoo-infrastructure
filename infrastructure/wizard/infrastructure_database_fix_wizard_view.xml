@@ -10,9 +10,11 @@
             <group>
                 <field name="database_id"/>
                 <field name="update_state"/>
+                <field name="init_and_conf_required"/>
+                <field name="modules_to_install"/>
+                <field name="modules_to_update"/>
+                <field name="modules_to_remove"/>
                 <field name="update_state_detail"/>
-<!--                 <field name="init_and_conf_modules"/>
-                <field name="update_modules"/> -->
             </group>
             <footer>
                 <button name="confirm" string="Fix DB" attrs="{'invisible': [('update_state', 'in', ['not_installable', 'ok'])]}" type="object" class="oe_highlight"/>

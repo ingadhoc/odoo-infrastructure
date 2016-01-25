@@ -23,12 +23,12 @@ import logging
 _logger = logging.getLogger(__name__)
 _update_state_vals = [
     ('unknown', 'Unknown'),
-    ('init_and_conf', 'Init and Config'),
-    ('update', 'Update'),
+    ('init_and_conf_required', 'Init and Config Required'),
+    ('update_required', 'Update Required'),
     ('optional_update', 'Optional Update'),
-    ('modules_on_to_install', 'Modules on To Install'),
-    ('modules_on_to_remove', 'Modules on To Remove'),
-    ('modules_on_to_upgrade', 'Modules on To Upgrade'),
+    ('on_to_install', 'On To Install'),
+    ('on_to_remove', 'On To Remove'),
+    ('on_to_upgrade', 'On To Upgrade'),
     ('unmet_deps', 'Unmet Dependencies'),
     ('not_installable', 'Not Installable Modules'),
     ('ok', 'Ok'),

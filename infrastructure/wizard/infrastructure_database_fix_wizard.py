@@ -29,16 +29,24 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         'Update Status Detail',
         compute='get_data',
         )
-    # init_and_conf_modules = fields.Text(
-    #     string='Modules to Init (Check if they need a manual configuration)',
-    #     compute='get_data',
-    #     help='Sometimes, modules on this state need adittional configurations'
-    #     ' or others modules to be installed manually. Check module changes.'
-    #     )
-    # update_modules = fields.Char(
-    #     string='Modules to Update',
-    #     compute='get_data',
-    #     )
+    init_and_conf_required = fields.Text(
+        string='Init and Config Required Modules',
+        compute='get_data',
+        help='Sometimes, modules on this state need adittional configurations'
+        ' or others modules to be installed manually. Check module changes.'
+        )
+    modules_to_update = fields.Char(
+        string='Modules To Update',
+        compute='get_data',
+        )
+    modules_to_install = fields.Char(
+        string='Modules To Install',
+        compute='get_data',
+        )
+    modules_to_remove = fields.Char(
+        string='Modules To Remove',
+        compute='get_data',
+        )
     database_id = fields.Many2one(
         'infrastructure.database',
         string='Database',
@@ -53,13 +61,23 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         update_state = self.database_id.refresh_update_state()
         state = update_state.get('state', False)
         detail = update_state.get('detail', False)
-        # init_and_conf_modules = detail.get('init_and_conf_modules')
-        # update_modules = detail.get('update_modules')
-        # optional_update_modules = detail.get('optional_update_modules')
-        # self.init_and_conf_modules = init_and_conf_modules
-        # self.update_modules = update_modules + optional_update_modules
         self.update_state = state
         self.update_state_detail = detail
+
+        init_and_conf_required = detail.get('init_and_conf_required')
+        update_required = detail.get('update_required')
+        optional_update = detail.get('optional_update')
+        on_to_install = detail.get('on_to_install')
+        on_to_remove = detail.get('on_to_remove')
+        on_to_upgrade = detail.get('on_to_upgrade')
+        unmet_deps = detail.get('unmet_deps')
+        not_installable = detail.get('not_installable')
+
+        self.init_and_conf_required = init_and_conf_required
+        self.modules_to_update = (
+            update_required + optional_update + on_to_upgrade)
+        self.modules_to_install = on_to_install + unmet_deps
+        self.modules_to_remove = on_to_remove + not_installable
 
     @api.multi
     def confirm(self):
