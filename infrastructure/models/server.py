@@ -591,11 +591,11 @@ class server(models.Model):
     @api.multi
     def restart_nginx(self):
         _logger.info("Restarting nginx")
-        self.get_env()
         try:
             with utils.synchronize_on_config_parameter(
                 self.env, FABRIC_LOCKING_PARAMETER
             ):
+                self.get_env()
                 custom_sudo('service nginx restart')
         except Exception, e:
             raise Warning(
