@@ -594,7 +594,7 @@ class server(models.Model):
         self.get_env()
         try:
             with utils.synchronize_on_config_parameter(
-                FABRIC_LOCKING_PARAMETER
+                self.env, FABRIC_LOCKING_PARAMETER
             ):
                 custom_sudo('service nginx restart')
         except Exception, e:
