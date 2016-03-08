@@ -4,6 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
+from openerp.addons.infrastructure.utils import utils
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, reboot
 from fabric.contrib.files import append, upload_template
@@ -17,6 +18,8 @@ import os
 import logging
 _logger = logging.getLogger(__name__)
 
+
+FABRIC_LOCKING_PARAMETER = 'fabric_lock'
 
 # TODO deberiamos cambiar esto por los metodos propios de fabtools para
 # gestionar errores asi tmb, por ejemplo, lo toma fabtools y otros comandos
@@ -590,7 +593,10 @@ class server(models.Model):
         _logger.info("Restarting nginx")
         self.get_env()
         try:
-            custom_sudo('service nginx restart')
+            with utils.synchronize_on_config_parameter(
+                FABRIC_LOCKING_PARAMETER
+            ):
+                custom_sudo('service nginx restart')
         except Exception, e:
             raise Warning(
                 _('Could Not Restart Nginx! This is what we get: \n %s') % (e))
