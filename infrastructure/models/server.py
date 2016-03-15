@@ -15,7 +15,37 @@ import socket
 import sys
 import os
 import logging
+import psycopg2
 _logger = logging.getLogger(__name__)
+
+
+def synchronize_on_config_parameter(env, parameter, nowait=False):
+    """
+    If some process are to long we can send nowait=True and it will raise the
+    exception to the user
+    """
+    param_model = env['ir.config_parameter']
+    param = param_model.search([('key', '=', parameter)], limit=1)
+    if nowait:
+        nowait_str = "nowait"
+    else:
+        nowait_str = ""
+
+    if param:
+        try:
+            env.cr.execute(
+                """select *
+                    from ir_config_parameter
+                    where id = %s
+                    for update %s""" % (param.id, nowait_str)
+            )
+        except psycopg2.OperationalError, e:
+            raise Warning(
+                'Cannot synchronize access. Another process lock the parameter'
+                'This is what we get: %s' % e
+            )
+
+FABRIC_LOCKING_PARAMETER = 'fabric_lock'
 
 
 # TODO deberiamos cambiar esto por los metodos propios de fabtools para
@@ -422,6 +452,9 @@ class server(models.Model):
     @api.multi
     def get_env(self):
         # TODO ver si usamos env.keepalive = True para timeouts the nginx ()
+        synchronize_on_config_parameter(
+            self.env, FABRIC_LOCKING_PARAMETER
+        )
         self.ensure_one()
         env.user = self.user_name
         env.password = self.password

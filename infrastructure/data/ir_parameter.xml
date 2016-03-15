@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+<data noupdate="0">
+        <record id="ir_parameter_fabric_lock" model="ir.config_parameter">
+            <field name="key">fabric_lock</field>
+            <field name="value">1</field>
+        </record>
+</data>
+</openerp>
