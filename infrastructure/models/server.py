@@ -4,7 +4,6 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-# from openerp.addons.infrastructure.utils import utils
 from openerp.exceptions import except_orm, Warning
 from fabric.api import env, reboot
 from fabric.contrib.files import append, upload_template
@@ -17,24 +16,31 @@ import sys
 import os
 import logging
 import psycopg2
-from openerp import exceptions
 _logger = logging.getLogger(__name__)
 
 
-def synchronize_on_config_parameter(env, parameter):
+def synchronize_on_config_parameter(env, parameter, nowait=False):
+    """
+    If some process are to long we can send nowait=True and it will raise the
+    exception to the user
+    """
     param_model = env['ir.config_parameter']
     param = param_model.search([('key', '=', parameter)], limit=1)
+    if nowait:
+        nowait_str = "nowait"
+    else:
+        nowait_str = ""
+
     if param:
         try:
             env.cr.execute(
                 """select *
                     from ir_config_parameter
                     where id = %s
-                    for update nowait""" %
-                param.id
+                    for update %s""" % (param.id, nowait_str)
             )
         except psycopg2.OperationalError, e:
-            raise exceptions.UserError(
+            raise Warning(
                 'Cannot synchronize access. Another process lock the parameter'
                 'This is what we get: %s' % e
             )
