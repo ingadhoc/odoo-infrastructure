@@ -1,9 +1,6 @@
-import contextlib
-
 from openerp import exceptions
 
 
-@contextlib.contextmanager
 def synchronize_on_config_parameter(env, parameter):
     param_model = env['ir.config_parameter']
     param = param_model.search([('key', '=', parameter)])
@@ -21,4 +18,3 @@ def synchronize_on_config_parameter(env, parameter):
             raise exceptions.UserError(
                 'Cannot synchronize access. Another process lock the parameter'
             )
-    yield

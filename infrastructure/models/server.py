@@ -425,6 +425,9 @@ class server(models.Model):
     @api.multi
     def get_env(self):
         # TODO ver si usamos env.keepalive = True para timeouts the nginx ()
+        utils.synchronize_on_config_parameter(
+            self.env, FABRIC_LOCKING_PARAMETER
+        )
         self.ensure_one()
         env.user = self.user_name
         env.password = self.password
@@ -591,12 +594,9 @@ class server(models.Model):
     @api.multi
     def restart_nginx(self):
         _logger.info("Restarting nginx")
+        self.get_env()
         try:
-            with utils.synchronize_on_config_parameter(
-                self.env, FABRIC_LOCKING_PARAMETER
-            ):
-                self.get_env()
-                custom_sudo('service nginx restart')
+            custom_sudo('service nginx restart')
         except Exception, e:
             raise Warning(
                 _('Could Not Restart Nginx! This is what we get: \n %s') % (e))
