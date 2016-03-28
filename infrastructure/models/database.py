@@ -205,7 +205,7 @@ class database(models.Model):
         'infrastructure.database.user',
         'database_id',
         string='Users',
-        copy=True,
+        # copy=True,
         )
     admin_password = fields.Char(
         string='Admin Password',
