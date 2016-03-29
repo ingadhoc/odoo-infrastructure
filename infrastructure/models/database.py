@@ -1177,6 +1177,7 @@ class database(models.Model):
             if db_user:
                 db_user.write(user_data)
             else:
+                user_data['database_id'] = self.id
                 db_user = db_user.create(user_data)
             update_users += db_user
         _logger.info('Removing old users data for db %s' % self.name)
