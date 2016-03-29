@@ -205,7 +205,7 @@ class database(models.Model):
         'infrastructure.database.user',
         'database_id',
         string='Users',
-        # copy=True,
+        copy=True,
         )
     admin_password = fields.Char(
         string='Admin Password',
@@ -1166,31 +1166,23 @@ class database(models.Model):
 
         _logger.info('Reading users data for db %s' % self.name)
         exp_users_data = client.model('res.users').search_read([], fields)
-
-        imp_users_data = []
-        # construimos y agregamos los identificadores al princio
-        _logger.info('Building users data to import for db %s' % self.name)
-        for exp_user in exp_users_data:
-            # simulamos un modulo con el . para hacer un unlink
-            module_name = 'infra_db_%i_user' % self.id
-            vals = [
-                '%s.%s' % (module_name, exp_user['id']),
-                self.id,
-                exp_user['name'],
-                exp_user['login'],
-                exp_user['email'],
-                ]
-            imp_users_data.append(vals)
-
-        # LOAD data
+        update_users = self.env['infrastructure.database.user']
         _logger.info('Loading users data for db %s' % self.name)
-        self.env['infrastructure.database.user'].load(
-            ['id', 'database_id/.id'] + fields, imp_users_data,
-            )
-
+        for user_data in exp_users_data:
+            # we dont wont or need id
+            user_data.pop('id')
+            db_user = self.user_ids.search([
+                ('login', '=', user_data.get('login')),
+                ('database_id', '=', self.id)], limit=1)
+            if db_user:
+                db_user.write(user_data)
+            else:
+                db_user = db_user.create(user_data)
+            update_users += db_user
         _logger.info('Removing old users data for db %s' % self.name)
-        res = self.env['ir.model.data']._process_end([module_name])
-        return res
+        # remove users that has not been updated (they dont exist anymore)
+        (self.user_ids - update_users).unlink()
+        return True
 
 # MAIL server and catchall configurations
     @api.one

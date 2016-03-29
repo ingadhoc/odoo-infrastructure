@@ -36,7 +36,7 @@ class database_user(models.Model):
         ondelete='cascade',
         )
 
-    @api.model
-    def get_user_from_ext_id(self, database, external_user_id):
-        module_name = 'infra_db_%i_user' % database.id
-        return self.env.ref('%s.%s' % (module_name, external_user_id), False)
+    _sql_constraints = [
+        ('login_uniq', 'unique(login, database_id)',
+            'Login must be unique per database'),
+    ]
