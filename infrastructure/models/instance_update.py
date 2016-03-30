@@ -173,7 +173,8 @@ class infrastructure_instance_update(models.Model):
                     instance.database_type_id.id),
                 ('environment_id', '=', instance.environment_id.id)])
 
-            for inst in (use_from_instances + instance):
+            all_instances = (use_from_instances + instance)
+            for inst in all_instances:
                 try:
                     inst.restart_odoo_service()
                 except Exception, e:
@@ -184,7 +185,7 @@ class infrastructure_instance_update(models.Model):
                     _logger.warning(error_msg)
                     errors.append(error_msg)
             _logger.info('Fixind dbs for instance %s' % instance.id)
-            for database in (use_from_instances + instance).database_ids:
+            for database in all_instances.mapped('database_ids'):
                 try:
                     database.fix_db(uninstall_modules=self.uninstall_modules)
                 except Exception, e:
