@@ -146,8 +146,10 @@ class infrastructure_instance_update(models.Model):
                     except Exception, e:
                         error_msg = error_template % (
                             'pull repository',
-                            'instance %s, repository %s' % (
-                                instance.id, repository.id),
+                            'instance %s (%s), repository %s (%s)' % (
+                                instance.name, instance.id,
+                                repository.name, repository.id
+                                ),
                             e)
                         _logger.warning(error_msg)
                         errors.append(error_msg)
@@ -171,7 +173,7 @@ class infrastructure_instance_update(models.Model):
                 except Exception, e:
                     error_msg = error_template % (
                         'restart instance',
-                        'instance %ss' % (inst.id),
+                        'instance %s (%s)' % (inst.name, inst.id),
                         e)
                     _logger.warning(error_msg)
                     errors.append(error_msg)
@@ -182,7 +184,7 @@ class infrastructure_instance_update(models.Model):
                 except Exception, e:
                     error_msg = error_template % (
                         'fix ',
-                        'database %ss' % (database.id),
+                        'database %s (%s)' % (database.name, database.id),
                         e)
                     _logger.warning(error_msg)
                     errors.append(error_msg)
