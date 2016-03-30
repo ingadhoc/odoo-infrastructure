@@ -15,6 +15,8 @@ class infrastructure_instance_update(models.Model):
     _inherit = ['ir.needaction_mixin', 'mail.thread']
 
     run_after = fields.Datetime(
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     date = fields.Date(
         required=True,
