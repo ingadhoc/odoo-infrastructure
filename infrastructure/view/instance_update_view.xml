@@ -10,10 +10,10 @@
             <header>
                 <!-- confirm="Are you sure you want to update all this repositories and instances? This can not be undone"  -->
                 <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
-                <button name="action_confirm" string="Confirm" type="object" states="to_review"/>
+                <!-- <button name="action_confirm" string="Confirm" type="object" states="to_review"/> -->
                 <button name="action_done" string="Done" type="object" states="to_review,cancel"/>
+                <button name="action_to_draft" string="To Draft" type="object" states="to_review,cancel"/>
                 <button name="action_cancel" string="Cancel" type="object" states="to_run,draft,done,to_review"/>
-                <button name="action_to_draft" string="To Draft" type="object" states="cancel"/>
                 <field name="state" widget="statusbar"/>
             </header>
             <sheet>

@@ -95,6 +95,8 @@ class infrastructure_instance_update(models.Model):
 
     @api.multi
     def action_confirm(self):
+        if not self.detail_ids.filtered(lambda x: x.state == 'to_run'):
+            raise Warning('There are no lines to run')
         self.write({'state': 'to_run'})
 
     @api.multi
@@ -248,7 +250,7 @@ class infrastructure_instance_update_detail(models.Model):
             return False
         res = action.read()[0]
         form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
-            'infrastructure.view_infrastructure_database_form')
+            'infrastructure.view_infrastructure_instance_form')
         res['views'] = [(form_view_id, 'form')]
         res['res_id'] = self.instance_id.id
         return res
