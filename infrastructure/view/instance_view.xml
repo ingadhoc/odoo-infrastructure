@@ -271,6 +271,7 @@
             <field name="server_id"/>
             <field name="environment_id"/>
             <field name="state" />
+            <field name="databases_state" />
         </tree>
     </field>
 </record>

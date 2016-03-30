@@ -17,6 +17,7 @@ from . import environment
 from . import instance
 from . import instance_repository
 from . import instance_host
+from . import instance_update
 from . import mailserver
 from . import server
 from . import server_change

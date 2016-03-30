@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<record id="infrastructure_instance_update_form_view" model="ir.ui.view">
+     <field name="name">Instances Update Form</field>
+     <field name="model">infrastructure.instance.update</field>
+     <field name="arch" type="xml">
+        <form string="Instances Update">
+            <header>
+                <!-- <button name="confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight"/> -->
+                <button name="action_confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight" states="draft"/>
+                <button name="action_cancel" string="Cancel" type="object" states="to_run,draft,done"/>
+                <button name="action_to_draft" string="To Draft" type="object" states="cancel"/>
+                <field name="state" widget="statusbar"/>
+            </header>
+            <sheet>
+                <group>
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="uninstall_modules"/>
+                    <field name="user_id"/>
+                    <field name="notify_email"/>
+                    <field name="instance_ids"/>
+                    <field name="repository_ids"/>
+                </group>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+     </field>
+ </record>
+<record id="infrastructure_instance_update_tree_view" model="ir.ui.view">
+     <field name="name">Instances Update Tree</field>
+     <field name="model">infrastructure.instance.update</field>
+     <field name="arch" type="xml">
+        <tree string="Instances Update">
+            <field name="date"/>
+            <field name="name"/>
+        </tree>
+     </field>
+ </record>
+
+ <record id="action_infrastructure_instance_update" model="ir.actions.act_window">
+    <field name="name">Instances Update</field>
+    <field name="res_model">infrastructure.instance.update</field>
+    <field name="view_type">form</field>
+</record>
+
+<menuitem
+    id="menu_instance_updates"
+    sequence="35"
+    action="action_infrastructure_instance_update"
+    parent="menu_infra_main"
+    groups="group_user"
+    />
+
+</data>
+</openerp>

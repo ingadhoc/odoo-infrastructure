@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Infrastructure',
-    'version': '8.0.0.20.2',
+    'version': '8.0.0.21.2',
     'description': 'Infrastructure Management',
     'category': 'base.module_category_knowledge_management',
     'author': 'ADHOC SA',
@@ -59,6 +59,7 @@
         'view/database_view.xml',
         'view/db_filter_view.xml',
         'view/instance_view.xml',
+        'view/instance_update_view.xml',
         'view/repository_branch_view.xml',
         'view/server_configuration_view.xml',
         'view/server_change_view.xml',

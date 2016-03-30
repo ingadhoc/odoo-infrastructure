@@ -338,7 +338,8 @@ class database(models.Model):
         'backups_state',
         'base_modules_state',
         'update_state',
-        'instante_state')
+        'instante_state'
+        )
     def get_overall_state(self):
         overall_state = 'ok'
         if self.backups_state and self.backups_state != 'ok':
@@ -517,49 +518,28 @@ class database(models.Model):
         self.update_state_detail = detail
         return update_state
 
-    # @api.one
-    # def fix_db_auto(self):
-    #     """This method is not used yet"""
-    #     update_state = self.refresh_update_state()
-    #     detail = update_state.get('detail', False)
-    #     init_and_conf_modules = detail.get('init_and_conf_modules')
-    #     update_modules = detail.get('update_modules')
-    #     optional_update_modules = detail.get('optional_update_modules')
-    #     return self.fix_db(
-    #         init_and_conf_modules,
-    #         update_modules + optional_update_modules,
-    #         )
-
     @api.one
-    def fix_db(self):
+    def fix_db(self, uninstall_modules=True):
         """
         Method to be called from wizard or automatic
         """
+        client = self.get_client_attempts()
+
+        self.refresh_update_state()
+        if self.update_state == 'ok':
+            _logger.info('No need to update db %s' % self.name)
+            return True
+
         _logger.info('Fixing db %s' % self.name)
-        client = self.get_client()
-        res = client.model('db.configuration').fix_db([])
+        # TODO puede dar timeout si no responde la bd, en realidad en cualqueir
+        # lugar de client, deberiamos ver como gestionarlo
+        raise_msg = False
+        restart_if_needed = False
+        res = client.model('db.configuration').fix_db(
+            raise_msg, uninstall_modules, restart_if_needed)
         if res.get('error'):
             raise Warning(res.get('error'))
         self.refresh_update_state()
-        # if init_and_conf_modules:
-        #     # re init modules
-        #     self.reinit_modules(init_and_conf_modules)
-
-        #     # refresh update state
-        #     update_state = self.refresh_update_state()
-        #     detail = update_state.get('detail', False)
-        #     init_and_conf_modules = detail.get('init_and_conf_modules')
-        #     if init_and_conf_modules:
-        #         raise Warning(_(
-        #             'Could not fix db, try it manually and run again'))
-        #     # updated detail if an init have been run
-        #     update_modules = detail.get('update_modules')
-        #     optional_update_modules = detail.get('optional_update_modules')
-        #     to_update_modules = update_modules + optional_update_modules
-
-        # if to_update_modules:
-        #     self.upgrade_modules(to_update_modules)
-        #     update_state = self.refresh_update_state()
         return True
 
     @api.multi
@@ -1074,6 +1054,21 @@ class database(models.Model):
         client.model('db.database').drop_con(self_db_id)
 
 # Database connection helper
+    @api.multi
+    def get_client_attempts(self, not_database=False, attempts=20):
+        self.ensure_one()
+        _logger.info('Getting client with attempts %s' % attempts)
+        # connected = False
+        # remaining = 0
+        try:
+            return self.get_client(not_database)
+        except Exception, e:
+            if attempts:
+                return self.get_client_attempts(
+                    not_database, attempts-1)
+            else:
+                raise Warning('asda %s' % e)
+
     @api.multi
     def get_client(self, not_database=False):
         self.ensure_one()

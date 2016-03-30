@@ -1323,15 +1323,6 @@ class instance(models.Model):
         if self.odoo_service_state == 'restart_required':
             self.odoo_service_state = 'ok'
 
-    # depreciated, use restart instead
-    # @api.one
-    # def start_odoo_service(self):
-    #     self.environment_id.server_id.get_env()
-    #     _logger.info("Starting Odoo Service %s " % self.name)
-    #     sudo(self.start_odoo_cmd)
-    #     if self.odoo_service_state == 'restart_required':
-    #         self.odoo_service_state = 'ok'
-
     @api.one
     def restart_odoo_service(self):
         self.environment_id.server_id.get_env()

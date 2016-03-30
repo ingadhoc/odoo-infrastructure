@@ -14,5 +14,18 @@
             <field eval="1" name="active"/>
             <field eval="1" name="interval_number"/>
         </record>
+        <record id="ir_cron_instances_update" model="ir.cron">
+            <field name="name">Instances Update Databases</field>
+            <field name="model">infrastructure.instance.update</field>
+            <field name="function">cron_instance_update</field>
+            <field name="interval_type">minutes</field>
+            <field name="user_id" ref="base.user_root"/>
+            <!-- <field name="nextcall" eval="datetime.strftime(datetime.today()+timedelta(days=1),'%Y-%m-%d 07:%M:%S')"/> -->
+            <field eval="-1" name="numbercall"/>
+            <field eval="5" name="priority"/>
+            <field eval="0" name="doall"/>
+            <field eval="1" name="active"/>
+            <field eval="10" name="interval_number"/>
+        </record>
 </data>
 </openerp>
