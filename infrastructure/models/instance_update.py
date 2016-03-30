@@ -14,6 +14,8 @@ class infrastructure_instance_update(models.Model):
     _name = "infrastructure.instance.update"
     _inherit = ['ir.needaction_mixin', 'mail.thread']
 
+    run_after = fields.Datetime(
+        )
     date = fields.Date(
         required=True,
         default=fields.Date.context_today,
@@ -110,15 +112,21 @@ class infrastructure_instance_update(models.Model):
 
     @api.model
     def cron_instance_update(self):
+        template = self.env.ref(
+            'infrastructure.email_template_update_instances_result', False)
         instances_to_update = self.search([
                 ('state', '=', 'to_run'),
+                '|', ('run_after', '=', False),
+                ('run_after', '<=', fields.Datetime.now())
             ])
         for record in instances_to_update:
             record.update(True)
             record.state = 'to_review'
-            record.message_post(
-                body=None,
-                subject='Cron run on Instance Update, please review results')
+            # record.message_post(
+            #     body=None,
+            #     subject='Cron run on Instance Update, please review results')
+            if template and record.notify_email:
+                template.send_mail(record.id, force_send=False)
             # TODO send email, tenemos que usar un template y algo tipo
             # template.send_mail(user_id, force_send=True)
             # if self.notify_email:

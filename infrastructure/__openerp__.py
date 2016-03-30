@@ -28,6 +28,7 @@
     'license': 'AGPL-3',
     'depends': [
         'mail',
+        'email_template',
         'web_widget_many2many_tags_multi_selection',
         # 'web_ir_actions_act_window_message',
         ],
@@ -77,6 +78,7 @@
         'view/instance_repository_view.xml',
         'data/cron.xml',
         'data/ir_parameter.xml',
+        'data/email_template.xml',
         'security/ir.model.access.csv',
     ],
     'installable': True,
