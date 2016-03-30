@@ -1055,7 +1055,7 @@ class database(models.Model):
 
 # Database connection helper
     @api.multi
-    def get_client_attempts(self, not_database=False, attempts=40):
+    def get_client_attempts(self, not_database=False, attempts=20):
         self.ensure_one()
         _logger.info('Getting client with attempts %s' % attempts)
         # connected = False
@@ -1064,6 +1064,7 @@ class database(models.Model):
             return self.get_client(not_database)
         except Exception, e:
             if attempts:
+                time.sleep(1)
                 return self.get_client_attempts(
                     not_database, attempts-1)
             else:
