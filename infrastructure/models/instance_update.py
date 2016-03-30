@@ -21,7 +21,9 @@ class infrastructure_instance_update(models.Model):
         states={'draft': [('readonly', False)]},
         )
     pull_source_and_active = fields.Boolean(
-        help='Pool source and active repositories when available?'
+        help='Pool source and active repositories when available?',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     uninstall_modules = fields.Boolean(
         readonly=True,
