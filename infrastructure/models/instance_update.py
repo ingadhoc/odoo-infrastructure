@@ -170,7 +170,8 @@ class infrastructure_instance_update(models.Model):
             use_from_instances = instance.search([
                 ('database_type_id.sources_type', '=', 'use_from'),
                 ('database_type_id.sources_from_id', '=',
-                    instance.database_type_id.id)])
+                    instance.database_type_id.id),
+                ('environment_id', '=', instance.environment_id.id)])
 
             for inst in (use_from_instances + instance):
                 try:
