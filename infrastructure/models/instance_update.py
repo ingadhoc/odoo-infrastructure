@@ -158,22 +158,31 @@ class infrastructure_instance_update(models.Model):
                             e)
                         _logger.warning(error_msg)
                         errors.append(error_msg)
-            _logger.info('Restarting odoo instance %s' % instance.id)
             # TODO tal vez saquemos el restart y el fix y que sean
             # hechos automaticamente por la bd de destino
             # podemos empezar solamente con el fix de ultima aunque si
             # el cron ejecuta el fix sin haber realizado restart no iria bien
-            try:
-                instance.restart_odoo_service()
-            except Exception, e:
-                error_msg = error_template % (
-                    'restart instance',
-                    'instance %ss' % (instance.id),
-                    e)
-                _logger.warning(error_msg)
-                errors.append(error_msg)
+            _logger.info('Restarting odoo instance %s' % instance.id)
+
+            # search for depending instances
+            use_from_instances = instance.search([
+                ('database_type_id.sources_type', '=', 'use_from'),
+                ('database_type_id.sources_from_id', '=',
+                    self.database_type_id.id),
+                ])
+
+            for inst in (use_from_instances + instance):
+                try:
+                    inst.restart_odoo_service()
+                except Exception, e:
+                    error_msg = error_template % (
+                        'restart instance',
+                        'instance %ss' % (inst.id),
+                        e)
+                    _logger.warning(error_msg)
+                    errors.append(error_msg)
             _logger.info('Fixind dbs for instance %s' % instance.id)
-            for database in instance.database_ids:
+            for database in (use_from_instances + instance).database_ids:
                 try:
                     database.fix_db(uninstall_modules=self.uninstall_modules)
                 except Exception, e:
