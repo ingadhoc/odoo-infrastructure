@@ -9,8 +9,9 @@
         <form string="Instances Update">
             <header>
                 <!-- <button name="confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight"/> -->
-                <button name="action_confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight" states="draft"/>
-                <button name="action_cancel" string="Cancel" type="object" states="to_run,draft,done"/>
+                <button name="action_confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight" states="draft,to_review"/>
+                <button name="action_done" string="Done" type="object" states="to_review,cancel"/>
+                <button name="action_cancel" string="Cancel" type="object" states="to_run,draft,done,to_review"/>
                 <button name="action_to_draft" string="To Draft" type="object" states="cancel"/>
                 <field name="state" widget="statusbar"/>
             </header>
@@ -19,6 +20,7 @@
                     <group>
                         <field name="name"/>
                         <field name="uninstall_modules"/>
+                        <field name="repository_ids" widget="many2many_tags"/>
                     </group>
                     <group>
                         <field name="date"/>
@@ -32,7 +34,6 @@
                         </page>
                     </notebook> -->
                     </group>
-                    <field name="repository_ids" widget="many2many_tags"/>
                 </group>
                 <button name="%(action_instance_update_add_instances)d" string="Add Repositories" type="action"/>
                 <field name="detail_ids">

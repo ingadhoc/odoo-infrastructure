@@ -71,7 +71,7 @@ class infrastructure_instance_update(models.Model):
         readonly=True,
         )
     state = fields.Selection([
-        ('draft', 'Draft'), ('to_run', 'To Run'),
+        ('draft', 'Draft'), ('to_run', 'To Run'), ('to_review', 'To Review'),
         ('done', 'Done'), ('cancel', 'Cancel')],
         readonly=True,
         required=True,
@@ -94,6 +94,10 @@ class infrastructure_instance_update(models.Model):
     def action_confirm(self):
         self.write({'state': 'to_run'})
 
+    @api.multi
+    def action_done(self):
+        self.write({'state': 'done'})
+
     @api.model
     def cron_instance_update(self):
         instances_to_update = self.search([
@@ -101,7 +105,7 @@ class infrastructure_instance_update(models.Model):
             ])
         for record in instances_to_update:
             record.update(True)
-            record.state = 'done'
+            record.state = 'to_review'
             # TODO send email, tenemos que usar un template y algo tipo
             # template.send_mail(user_id, force_send=True)
             # if self.notify_email:
