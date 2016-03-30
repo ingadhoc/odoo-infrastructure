@@ -20,6 +20,9 @@ class infrastructure_instance_update(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
+    pull_source_and_active = fields.Boolean(
+        help='Pool source and active repositories when available?'
+        )
     uninstall_modules = fields.Boolean(
         readonly=True,
         states={'draft': [('readonly', False)]},
@@ -106,6 +109,9 @@ class infrastructure_instance_update(models.Model):
         for record in instances_to_update:
             record.update(True)
             record.state = 'to_review'
+            record.message_post(
+                body=None,
+                subject='Cron run on Instance Update, please review results')
             # TODO send email, tenemos que usar un template y algo tipo
             # template.send_mail(user_id, force_send=True)
             # if self.notify_email:
@@ -135,7 +141,9 @@ class infrastructure_instance_update(models.Model):
                         ], limit=1)
                 if instance_repo:
                     try:
-                        if instance_repo.sources_from_id:
+                        if (
+                                instance_repo.sources_from_id and
+                                self.pull_source_and_active):
                             instance_repo.action_pull_source_and_active()
                         else:
                             instance_repo.repository_pull_clone_and_checkout()
@@ -230,6 +238,20 @@ class infrastructure_instance_update_detail(models.Model):
     def view_result(self):
         self.ensure_one()
         raise Warning(self.result)
+
+    @api.multi
+    def action_open_instance(self):
+        self.ensure_one()
+        action = self.env['ir.model.data'].xmlid_to_object(
+            'infrastructure.action_infrastructure_instance_instances')
+        if not action:
+            return False
+        res = action.read()[0]
+        form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
+            'infrastructure.view_infrastructure_database_form')
+        res['views'] = [(form_view_id, 'form')]
+        res['res_id'] = self.instance_id.id
+        return res
 
     _sql_constraints = [
         ('instance_uniq', 'unique(update_id, instance_id)',

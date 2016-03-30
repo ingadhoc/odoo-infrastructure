@@ -25,7 +25,7 @@
             <field eval="5" name="priority"/>
             <field eval="0" name="doall"/>
             <field eval="1" name="active"/>
-            <field eval="10" name="interval_number"/>
+            <field eval="5" name="interval_number"/>
         </record>
 </data>
 </openerp>

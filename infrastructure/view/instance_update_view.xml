@@ -8,8 +8,9 @@
      <field name="arch" type="xml">
         <form string="Instances Update">
             <header>
-                <!-- <button name="confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight"/> -->
-                <button name="action_confirm" confirm="Are you sure you want to update all this repositories and instances? This can not be undone" string="Confirm" type="object" class="oe_highlight" states="draft,to_review"/>
+                <!-- confirm="Are you sure you want to update all this repositories and instances? This can not be undone"  -->
+                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" states="draft"/>
+                <button name="action_confirm" string="Confirm" type="object" states="to_review"/>
                 <button name="action_done" string="Done" type="object" states="to_review,cancel"/>
                 <button name="action_cancel" string="Cancel" type="object" states="to_run,draft,done,to_review"/>
                 <button name="action_to_draft" string="To Draft" type="object" states="cancel"/>
@@ -20,6 +21,7 @@
                     <group>
                         <field name="name"/>
                         <field name="uninstall_modules"/>
+                        <field name="pull_source_and_active"/>
                         <field name="repository_ids" widget="many2many_tags"/>
                     </group>
                     <group>
@@ -35,13 +37,14 @@
                     </notebook> -->
                     </group>
                 </group>
-                <button name="%(action_instance_update_add_instances)d" string="Add Repositories" type="action"/>
+                <button name="%(action_instance_update_add_instances)d" string="Add Repositories" type="action" states="draft"/>
                 <field name="detail_ids">
                     <tree editable="bottom">
                         <field name="instance_id"/>
                         <field name="server_id"/>
                         <field name="state"/>
                         <button string="View Result" name="view_result" type="object"/>
+                        <button string="Open" name="action_open_instance" type="object"/>
                     </tree>
                 </field>
             </sheet>
