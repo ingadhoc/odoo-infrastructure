@@ -28,6 +28,7 @@
     'license': 'AGPL-3',
     'depends': [
         'mail',
+        'web_widget_many2many_tags_multi_selection',
         # 'web_ir_actions_act_window_message',
         ],
     'external_dependencies': {
@@ -47,6 +48,7 @@
         'wizard/infrastructure_instance_delete_wizard_view.xml',
         'wizard/infrastructure_database_fix_wizard_view.xml',
         'wizard/infrastructure_check_module_version_view.xml',
+        'wizard/instance_update_add_instances_view.xml',
         'security/infrastructure_group.xml',
         'view/infrastructure_menuitem.xml',
         'view/base_module_view.xml',

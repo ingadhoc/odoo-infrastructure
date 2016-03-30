@@ -16,3 +16,4 @@ from . import infrastructure_instance_delete_wizard
 from . import infrastructure_database_fix_wizard
 from . import infrastructure_check_module_version
 from . import infrastructure_database_email_wizard
+from . import instance_update_add_instances

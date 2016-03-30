@@ -16,14 +16,32 @@
             </header>
             <sheet>
                 <group>
-                    <field name="date"/>
-                    <field name="name"/>
-                    <field name="uninstall_modules"/>
-                    <field name="user_id"/>
-                    <field name="notify_email"/>
-                    <field name="instance_ids"/>
-                    <field name="repository_ids"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="uninstall_modules"/>
+                    </group>
+                    <group>
+                        <field name="date"/>
+                        <field name="user_id"/>
+                        <field name="notify_email"/>
+                    <!-- <field name="instance_ids"/> -->
+<!--                     <notebook>
+                        <page string="Instances">
+                        </page>
+                        <page string="repositories">
+                        </page>
+                    </notebook> -->
+                    </group>
+                    <field name="repository_ids" widget="many2many_tags"/>
                 </group>
+                <button name="%(action_instance_update_add_instances)d" string="Add Repositories" type="action"/>
+                <field name="detail_ids">
+                    <tree editable="bottom">
+                        <field name="instance_id"/>
+                        <field name="state"/>
+                        <button string="View Result" name="view_result" type="object"/>
+                    </tree>
+                </field>
             </sheet>
             <div class="oe_chatter">
                 <field name="message_follower_ids" widget="mail_followers"/>
@@ -39,6 +57,7 @@
         <tree string="Instances Update">
             <field name="date"/>
             <field name="name"/>
+            <field name="state"/>
         </tree>
      </field>
  </record>

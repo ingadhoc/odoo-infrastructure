@@ -23,13 +23,18 @@ class infrastructure_instance_update(models.Model):
     name = fields.Char(
         required=True,
         )
-    instance_ids = fields.Many2many(
-        'infrastructure.instance',
-        'infrastructure_instance_update_instance_rel',
-        'update_id', 'instance_id',
+    detail_ids = fields.One2many(
+        'infrastructure.instance.update.detail',
+        'update_id',
         'Instances',
-        required=True,
         )
+    # instance_ids = fields.Many2many(
+    #     'infrastructure.instance',
+    #     'infrastructure_instance_update_instance_rel',
+    #     'update_id', 'instance_id',
+    #     'Instances',
+    #     required=True,
+    #     )
     user_id = fields.Many2one(
         'res.users',
         string='User',
@@ -90,10 +95,14 @@ class infrastructure_instance_update(models.Model):
     @api.multi
     def update(self, commit=False):
         self.ensure_one()
-        instances = self.instance_ids
+        # instances = self.instance_ids
+        # for instance in instances:
+        to_update = self.detail_ids.filtered(lambda x: x.state == 'to_run')
         _logger.info('Updating repositories %s on instance ids %s' % (
-            ', '.join(self.repository_ids.mapped('name')), instances.ids))
-        for instance in instances:
+            ', '.join(self.repository_ids.mapped('name')),
+            to_update.mapped('instance_id').ids))
+        for detail in to_update:
+            instance = detail.instance_id
             errors = []
             _logger.info(
                 'Pulling repositories for instance %s' % instance.id)
@@ -146,13 +155,55 @@ class infrastructure_instance_update(models.Model):
                     _logger.warning(error_msg)
                     errors.append(error_msg)
 
-            self.message_post(
-                body='<p>Updated repositories: %s</p><p>%s</p>' % (
+            result = '<p>Updated repositories: %s</p><p>%s</p>' % (
                     ', '.join(updated_repositories.mapped('name')),
-                    errors),
-                subject='Result for instance %s (id: %s)' % (
-                    instance.name,
-                    instance.id))
+                    errors)
+            # self.message_post(
+            #     body='result,
+            #     subject='Result for instance %s (id: %s)' % (
+            #         instance.name,
+            #         instance.id))
+            # if errors:
+            #     state = 'error'
+            #     result = 'error'
+            # else:
+            #     detail.state = 'done'
+            detail.write({
+                'state': errors and 'error' or 'done',
+                'result': result,
+                })
             if commit:
                 self._cr.commit()
         return True
+
+
+class infrastructure_instance_update_detail(models.Model):
+    _name = "infrastructure.instance.update.detail"
+
+    update_id = fields.Many2one(
+        'infrastructure.instance.update',
+        'Update',
+        required=True,
+        ondelte='cascade'
+        )
+    instance_id = fields.Many2one(
+        'infrastructure.instance',
+        'Instance',
+        required=True,
+        ondelte='cascade'
+        )
+    state = fields.Selection([
+        ('to_run', 'To Run'),
+        ('done', 'Done'),
+        ('error', 'Error')],
+        required=True,
+        default='to_run',
+        )
+    result = fields.Html(
+        readonly=True,
+        )
+
+    @api.multi
+    def view_result(self):
+        self.ensure_one()
+        raise Warning(self.result)
