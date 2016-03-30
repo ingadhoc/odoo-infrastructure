@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-    <data noupdate="1">
+    <data noupdate="0">
         <!--Email template -->
         <record id="email_template_update_instances_result" model="email.template">
             <field name="name">Instances Update Result</field>
@@ -15,7 +15,16 @@
 <div style="font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; ">
 
     <p>Hello,</p>
-    <p>This is the result of the instances update: </p>
+    <p>This is are the results result: </p>
+    % for line in ctx.get('to_update', []):
+    <ul>
+        <li>Instance: ${line.instance_id.name}</li>
+        <ul>
+            <li>Estado: ${line.state}</li>
+            <li>Resultado: ${line.result}</li>
+        </ul>
+    </ul>
+    % endfor
             ]]></field>
         </record>
     </data>

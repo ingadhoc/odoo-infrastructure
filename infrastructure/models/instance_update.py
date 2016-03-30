@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 
-from openerp import fields, api, _, models
+from openerp import fields, api, models
 from openerp.exceptions import Warning
 import logging
 _logger = logging.getLogger(__name__)
@@ -48,13 +48,6 @@ class infrastructure_instance_update(models.Model):
             'to_review': [('readonly', False)],
             },
         )
-    # instance_ids = fields.Many2many(
-    #     'infrastructure.instance',
-    #     'infrastructure_instance_update_instance_rel',
-    #     'update_id', 'instance_id',
-    #     'Instances',
-    #     required=True,
-    #     )
     user_id = fields.Many2one(
         'res.users',
         string='User',
@@ -78,9 +71,6 @@ class infrastructure_instance_update(models.Model):
         string='Repositories',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
-    result = fields.Text(
-        readonly=True,
         )
     state = fields.Selection([
         ('draft', 'Draft'), ('to_run', 'To Run'), ('to_review', 'To Review'),
@@ -114,8 +104,6 @@ class infrastructure_instance_update(models.Model):
 
     @api.model
     def cron_instance_update(self):
-        template = self.env.ref(
-            'infrastructure.email_template_update_instances_result', False)
         instances_to_update = self.search([
                 ('state', '=', 'to_run'),
                 '|', ('run_after', '=', False),
@@ -124,21 +112,11 @@ class infrastructure_instance_update(models.Model):
         for record in instances_to_update:
             record.update(True)
             record.state = 'to_review'
-            # record.message_post(
-            #     body=None,
-            #     subject='Cron run on Instance Update, please review results')
-            if template and record.notify_email:
-                template.send_mail(record.id, force_send=False)
-            # TODO send email, tenemos que usar un template y algo tipo
-            # template.send_mail(user_id, force_send=True)
-            # if self.notify_email:
         return True
 
     @api.multi
     def update(self, commit=False):
         self.ensure_one()
-        # instances = self.instance_ids
-        # for instance in instances:
         to_update = self.detail_ids.filtered(lambda x: x.state == 'to_run')
         _logger.info('Updating repositories %s on instance ids %s' % (
             ', '.join(self.repository_ids.mapped('name')),
@@ -209,25 +187,34 @@ class infrastructure_instance_update(models.Model):
                     _logger.warning(error_msg)
                     errors.append(error_msg)
 
-            result = '<p>Updated repositories: %s</p><p>%s</p>' % (
-                    ', '.join(updated_repositories.mapped('name')),
-                    errors)
+            result = (
+                "* Updated repositories: %s\n"
+                "* Depending instances updated: %s\n"
+                "* Databases updated: %s\n"
+                "* Errors: %s\n" % (
+                    updated_repositories.mapped('name'),
+                    use_from_instances.mapped('name'),
+                    all_instances.mapped('database_ids.name'),
+                    errors
+                    ))
             # self.message_post(
             #     body='result,
             #     subject='Result for instance %s (id: %s)' % (
             #         instance.name,
             #         instance.id))
-            # if errors:
-            #     state = 'error'
-            #     result = 'error'
-            # else:
-            #     detail.state = 'done'
             detail.write({
                 'state': errors and 'error' or 'done',
                 'result': result,
                 })
+
             if commit:
                 self._cr.commit()
+        template = self.env.ref(
+            'infrastructure.email_template_update_instances_result', False)
+        if template and self.notify_email:
+            # context['to_update'] = to_update
+            template.with_context(to_update=to_update).send_mail(
+                self.id, force_send=False)
         return True
 
 
