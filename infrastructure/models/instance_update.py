@@ -17,16 +17,24 @@ class infrastructure_instance_update(models.Model):
     date = fields.Date(
         required=True,
         default=fields.Date.context_today,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     uninstall_modules = fields.Boolean(
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     name = fields.Char(
         required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     detail_ids = fields.One2many(
         'infrastructure.instance.update.detail',
         'update_id',
         'Instances',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     # instance_ids = fields.Many2many(
     #     'infrastructure.instance',
@@ -40,8 +48,12 @@ class infrastructure_instance_update(models.Model):
         string='User',
         required=True,
         default=lambda self: self.env.user,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     notify_email = fields.Char(
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     # TODO agregar funcionalidad
     # update_odoo_docker_image = fields.Boolean(
@@ -52,6 +64,8 @@ class infrastructure_instance_update(models.Model):
         'infrastructure_instance_update_repository_rel',
         'update_id', 'repository_id',
         string='Repositories',
+        readonly=True,
+        states={'draft': [('readonly', False)]},
         )
     result = fields.Text(
         readonly=True,
@@ -59,6 +73,7 @@ class infrastructure_instance_update(models.Model):
     state = fields.Selection([
         ('draft', 'Draft'), ('to_run', 'To Run'),
         ('done', 'Done'), ('cancel', 'Cancel')],
+        readonly=True,
         required=True,
         default='draft',
         )
@@ -186,6 +201,10 @@ class infrastructure_instance_update_detail(models.Model):
         required=True,
         ondelte='cascade'
         )
+    server_id = fields.Many2one(
+        related='instance_id.server_id',
+        readonly=True,
+        )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         'Instance',
@@ -207,3 +226,8 @@ class infrastructure_instance_update_detail(models.Model):
     def view_result(self):
         self.ensure_one()
         raise Warning(self.result)
+
+    _sql_constraints = [
+        ('instance_uniq', 'unique(update_id, instance_id)',
+            'Instance must be unique per instance update'),
+    ]

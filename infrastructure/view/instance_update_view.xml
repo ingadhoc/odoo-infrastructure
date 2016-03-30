@@ -38,6 +38,7 @@
                 <field name="detail_ids">
                     <tree editable="bottom">
                         <field name="instance_id"/>
+                        <field name="server_id"/>
                         <field name="state"/>
                         <button string="View Result" name="view_result" type="object"/>
                     </tree>

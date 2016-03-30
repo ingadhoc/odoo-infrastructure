@@ -9,22 +9,38 @@ from openerp import models, fields, api
 class instance_update_add_instances(models.TransientModel):
     _name = 'instance.update.add_instances'
 
-    quantity = fields.Float('Quantity',
-                            default='1.0')
+    @api.model
+    def get_update(self):
+        return self.env['infrastructure.instance.update'].browse(
+            self.env.context.get('active_id', False))
+
+    update_id = fields.Many2one(
+        'infrastructure.instance.update',
+        'Update',
+        default=get_update,
+        required=True,
+        )
+    actual_instance_ids = fields.Many2many(
+        'infrastructure.instance',
+        compute='get_actual_instances',
+        )
     instance_ids = fields.Many2many(
         'infrastructure.instance',
         string='Instances',
-        domain=[('state', '=', 'active')],
-        # context="{'search_default"
     )
 
     @api.one
+    @api.depends('update_id')
+    def get_actual_instances(self):
+        self.actual_instance_ids = self.update_id.detail_ids.mapped(
+            'instance_id')
+
+    @api.multi
     def confirm(self):
-        active_id = self._context['active_id']
-        update = self.env['infrastructure.instance.update'].browse(active_id)
+        self.ensure_one()
         for instance in self.instance_ids:
             vals = {
                 'instance_id': instance.id,
-                'update_id': update.id,
+                'update_id': self.update_id.id,
             }
-            update.detail_ids.create(vals)
+            self.update_id.detail_ids.create(vals)

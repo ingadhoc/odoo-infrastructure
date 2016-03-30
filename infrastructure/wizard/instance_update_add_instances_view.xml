@@ -7,7 +7,9 @@
             <field name="arch" type="xml">
                 <form string="Add Instances">
                     <group>
-                        <field name="instance_ids"/>
+                        <field name="update_id"/>
+                        <field name="actual_instance_ids"/>
+                        <field name="instance_ids" domain="[('state', '=', 'active'), ('id', 'not in', actual_instance_ids)]"/>
                     </group>
                 <footer>
                     <button name="confirm" type="object" class="oe_highlight" string="Confirm"/>
