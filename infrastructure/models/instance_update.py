@@ -39,7 +39,10 @@ class infrastructure_instance_update(models.Model):
         'update_id',
         'Instances',
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        states={
+            'draft': [('readonly', False)],
+            'to_review': [('readonly', False)],
+            },
         )
     # instance_ids = fields.Many2many(
     #     'infrastructure.instance',
