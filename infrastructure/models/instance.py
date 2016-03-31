@@ -1158,6 +1158,7 @@ class instance(models.Model):
             new_db = database.copy({
                 'database_type_id': self.database_type_id.id,
                 'instance_id': self.id,
+                'check_database': self.database_type_id.check_database,
                 })
             # we run this to deactivate backups
             new_db.action_activate()
