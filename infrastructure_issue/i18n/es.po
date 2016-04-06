@@ -1,0 +1,73 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * infrastructure_issue
+# 
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: odoo-infrastructure (8.0)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-03-31 12:08+0000\n"
+"PO-Revision-Date: 2015-08-12 13:24+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: infrastructure_issue
+#: help:project.issue,db_company:0
+msgid "Company user is using when having the issue"
+msgstr ""
+
+#. module: infrastructure_issue
+#: field:project.issue,db_company:0
+msgid "DB Company"
+msgstr ""
+
+#. module: infrastructure_issue
+#: view:project.issue:infrastructure_issue.project_issue_form_view
+msgid "DB Company..."
+msgstr ""
+
+#. module: infrastructure_issue
+#: field:project.issue,db_user:0
+msgid "DB User"
+msgstr ""
+
+#. module: infrastructure_issue
+#: view:project.issue:infrastructure_issue.project_issue_form_view
+msgid "DB User..."
+msgstr ""
+
+#. module: infrastructure_issue
+#: field:project.issue,database_id:0
+msgid "Database"
+msgstr ""
+
+#. module: infrastructure_issue
+#: view:project.issue:infrastructure_issue.project_issue_form_view
+msgid "Database..."
+msgstr ""
+
+#. module: infrastructure_issue
+#: field:infrastructure.database,issue_ids:0
+msgid "Issues"
+msgstr ""
+
+#. module: infrastructure_issue
+#: model:ir.model,name:infrastructure_issue.model_project_issue
+msgid "Project Issue"
+msgstr ""
+
+#. module: infrastructure_issue
+#: help:project.issue,db_user:0
+msgid "User that has the issue"
+msgstr ""
+
+#. module: infrastructure_issue
+#: model:ir.model,name:infrastructure_issue.model_infrastructure_database
+msgid "database"
+msgstr "database"
