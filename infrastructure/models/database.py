@@ -1160,7 +1160,7 @@ class database(models.Model):
             if partner and user.login:
                 if not partner.support_uuid:
                     partner.support_uuid = str(uuid.uuid1())
-                remote_user_id = client.model('res.users').searc(
+                remote_user_id = client.model('res.users').search(
                     [('login', '=', user.login)], limit=1)
                 client.model('res.users').write(remote_user_id, {
                     'remote_partner_uuid': partner.support_uuid})
