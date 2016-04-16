@@ -229,6 +229,7 @@
                     </page>
                     <page string="Users" states="active">
                         <button name="update_users_data" string="Update" type="object"/>
+                        <button name="upload_partners_uuid" string="Upload Partners UUID" type="object"/>
                         <field name="user_ids"/>
                     </page>
                     <page string="Errors">
