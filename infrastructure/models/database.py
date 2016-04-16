@@ -10,6 +10,7 @@ import xmlrpclib
 import operator
 import socket
 import time
+import uuid
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from .server import custom_sudo as sudo
@@ -1150,6 +1151,20 @@ class database(models.Model):
         self.backup_ids.search([('name', 'in', removed_backups)]).unlink()
 
 # Modules management
+    @api.multi
+    def upload_partners_uuid(self):
+        self.ensure_one()
+        client = self.get_client()
+        for user in self.user_ids:
+            partner = user.partner_id
+            if partner and user.login:
+                if not partner.support_uuid:
+                    partner.support_uuid = str(uuid.uuid1())
+                remote_user_id = client.model('res.users').searc(
+                    [('login', '=', user.login)], limit=1)
+                client.model('res.users').write(remote_user_id, {
+                    'remote_partner_uuid': partner.support_uuid})
+
     @api.multi
     def update_users_data(self):
         self.ensure_one()
