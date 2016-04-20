@@ -1161,7 +1161,7 @@ class database(models.Model):
             "support.server.talkusID", False)
         talkus_image_url = self.env['ir.config_parameter'].get_param(
             "support.server.talkus_image_url", False)
-        client.remote_contract.write(remote_contract.search([]), {
+        remote_contract.write(remote_contract.search([]), {
             'talkusID': talkusID,
             'talkus_image_url': talkus_image_url,
         })
