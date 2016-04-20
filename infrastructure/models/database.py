@@ -1155,6 +1155,16 @@ class database(models.Model):
     def upload_partners_uuid(self):
         self.ensure_one()
         client = self.get_client()
+        # TODO we should update this in other place
+        remote_contract = client.model('support.contract')
+        talkusID = self.env['ir.config_parameter'].get_param(
+            "support.server.talkusID", False)
+        talkus_image_url = self.env['ir.config_parameter'].get_param(
+            "support.server.talkus_image_url", False)
+        client.remote_contract.write(remote_contract.search([]), {
+            'talkusID': talkusID,
+            'talkus_image_url': talkus_image_url,
+        })
         for user in self.user_ids:
             partner = user.partner_id
             if partner and user.login:
