@@ -189,6 +189,7 @@ class instance_repository(models.Model):
                 branch=self.branch_id.name,
                 update=update,
                 )
+            self._cr.commit()
         except Exception, e:
             raise Warning(_('Error pulling git repository. This is what we get:\
                 \n%s' % e))
