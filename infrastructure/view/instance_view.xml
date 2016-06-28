@@ -131,6 +131,7 @@
                         <group string="Odoo">
                             <field name="odoo_log_cmd"/>
                             <field name="odoo_sufix"/>
+                            <field name="odoo_custom_commands"/>
                             <field name="start_odoo_cmd"/>
                             <field name="restart_odoo_cmd"/>
                             <field name="stop_odoo_cmd"/>
