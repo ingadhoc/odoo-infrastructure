@@ -57,6 +57,8 @@
                         </div>
                         <field name="db_filter"/>
                         <field name="server_mode_value"/>
+                        <field name="odoo_run_prefix"/>
+                        <field name="postgres_run_prefix"/>
                     </group>
                     <group string="Database Parameters">
                         <field name="backups_enable"/>

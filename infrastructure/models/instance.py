@@ -916,15 +916,22 @@ class instance(models.Model):
         if self.module_load:
             odoo_sufix += ' --load=%s' % (self.module_load or '')
 
+        # odoo run prefix commands
+        odoo_run_prefix = "%s %s %s" % (
+            self.odoo_image_id.prefix or '',
+            self.odoo_custom_commands or '',
+            self.database_type_id.odoo_run_prefix or '',
+        )
+
         # odoo run base command
-        run_odoo_d_cmd = 'docker run %s %s %s %s %s %s --name %s %s' % (
-            prefix, self.odoo_image_id.prefix or '',
+        run_odoo_d_cmd = 'docker run %s %s %s %s %s --name %s %s' % (
+            prefix, odoo_run_prefix,
             odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_custom_commands or '', self.odoo_container, odoo_image_name)
-        run_odoo_rm_cmd = 'docker run %s %s %s %s %s %s --name %s %s' % (
-            '--rm -ti', self.odoo_image_id.prefix or '',
+            self.odoo_container, odoo_image_name)
+        run_odoo_rm_cmd = 'docker run %s %s %s %s %s --name %s %s' % (
+            '--rm -ti', odoo_run_prefix,
             odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_custom_commands or '', self.odoo_container, odoo_image_name)
+            self.odoo_container, odoo_image_name)
 
         # odoo start commands
         self.run_odoo_cmd = '%s -- %s' % (run_odoo_d_cmd, odoo_sufix)
@@ -943,10 +950,9 @@ class instance(models.Model):
 
         # run attached commands
         self.run_attach_odoo_cmd = (
-            'docker run %s %s %s %s %s %s --name %s %s %s' % (
-                '-ti --rm -u root', self.odoo_image_id.prefix or '',
+            'docker run %s %s %s %s %s --name %s %s %s' % (
+                '-ti --rm -u root', odoo_run_prefix,
                 odoo_port_links, odoo_volume_links, odoo_pg_link,
-                self.odoo_custom_commands or '',
                 self.odoo_container, odoo_image_name, '/bin/bash'))
 
         user = 'odoo'
@@ -958,10 +964,16 @@ class instance(models.Model):
             --logfile=False %s' % (
                 user, odoo_sufix))
 
+        postgres_run_prefix = "%s %s %s" % (
+            self.pg_image_id.prefix or '',
+            self.pg_custom_commands or '',
+            self.database_type_id.postgres_run_prefix or '',
+        )
+
         # pg start command
-        self.run_pg_cmd = 'docker run %s %s %s %s --name %s %s' % (
-            prefix, self.pg_image_id.prefix or '', pg_volume_links,
-            self.pg_custom_commands or '', self.pg_container, pg_image_name)
+        self.run_pg_cmd = 'docker run %s %s %s --name %s %s' % (
+            prefix, postgres_run_prefix, pg_volume_links,
+            self.pg_container, pg_image_name)
 
         # kill commands
         self.remove_odoo_cmd = 'docker rm -f %s' % self.odoo_container
