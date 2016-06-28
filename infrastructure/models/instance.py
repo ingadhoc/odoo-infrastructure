@@ -919,8 +919,8 @@ class instance(models.Model):
         # odoo run prefix commands
         odoo_run_prefix = "%s %s %s" % (
             self.odoo_image_id.prefix or '',
-            self.odoo_custom_commands or '',
             self.database_type_id.odoo_run_prefix or '',
+            self.odoo_custom_commands or '',
         )
 
         # odoo run base command
@@ -966,8 +966,8 @@ class instance(models.Model):
 
         postgres_run_prefix = "%s %s %s" % (
             self.pg_image_id.prefix or '',
-            self.pg_custom_commands or '',
             self.database_type_id.postgres_run_prefix or '',
+            self.pg_custom_commands or '',
         )
 
         # pg start command
