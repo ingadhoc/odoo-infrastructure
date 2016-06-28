@@ -920,11 +920,11 @@ class instance(models.Model):
         run_odoo_d_cmd = 'docker run %s %s %s %s %s %s --name %s %s' % (
             prefix, self.odoo_image_id.prefix or '',
             odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_custom_commands, self.odoo_container, odoo_image_name)
+            self.odoo_custom_commands or '', self.odoo_container, odoo_image_name)
         run_odoo_rm_cmd = 'docker run %s %s %s %s %s %s --name %s %s' % (
             '--rm -ti', self.odoo_image_id.prefix or '',
             odoo_port_links, odoo_volume_links, odoo_pg_link,
-            self.odoo_custom_commands, self.odoo_container, odoo_image_name)
+            self.odoo_custom_commands or '', self.odoo_container, odoo_image_name)
 
         # odoo start commands
         self.run_odoo_cmd = '%s -- %s' % (run_odoo_d_cmd, odoo_sufix)
@@ -946,7 +946,7 @@ class instance(models.Model):
             'docker run %s %s %s %s %s %s --name %s %s %s' % (
                 '-ti --rm -u root', self.odoo_image_id.prefix or '',
                 odoo_port_links, odoo_volume_links, odoo_pg_link,
-                self.odoo_custom_commands,
+                self.odoo_custom_commands or '',
                 self.odoo_container, odoo_image_name, '/bin/bash'))
 
         user = 'odoo'
