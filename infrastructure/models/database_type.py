@@ -41,6 +41,16 @@ class database_type(models.Model):
         required=True,
         size=8
         )
+    odoo_run_prefix = fields.Char(
+        string='Odoo Run Prefix',
+        required=True,
+        help='For eg. used for resources limitation'
+        )
+    postgres_run_prefix = fields.Char(
+        string='Postgres Run Prefix',
+        required=True,
+        help='For eg. used for resources limitation'
+        )
     url_prefix = fields.Char(
         string='URL Prefix'
         )
