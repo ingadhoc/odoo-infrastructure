@@ -227,7 +227,7 @@ class infrastructure_instance_update_detail(models.Model):
         'infrastructure.instance.update',
         'Update',
         required=True,
-        ondelte='cascade'
+        ondelete='cascade'
         )
     server_id = fields.Many2one(
         related='instance_id.server_id',
@@ -237,7 +237,7 @@ class infrastructure_instance_update_detail(models.Model):
         'infrastructure.instance',
         'Instance',
         required=True,
-        ondelte='cascade'
+        ondelete='cascade'
         )
     state = fields.Selection([
         ('to_run', 'To Run'),
