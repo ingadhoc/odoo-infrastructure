@@ -1503,14 +1503,13 @@ class instance(models.Model):
                 )
 
         # add redirection with specific redirect page
-        redirect_server_names = [
-            "%s/%s" % (x.name, x.redirect_page) for x in self.instance_host_ids if (
-                x.type == 'redirect_to_main' and x.redirect_page)]
-        for redirect_server_name in redirect_server_names:
+        redirect_servers = self.instance_host_ids.filtered(
+            lambda x: x.type == 'redirect_to_main' and x.redirect_page)
+        for redirect_server in redirect_servers:
             nginx_site_file = "%s\n%s" % (
                 nginx_redirect_template % (
-                    redirect_server_name,
-                    self.main_hostname,
+                    redirect_server.name,
+                    "%s/%s" % (self.main_hostname, redirect_server.redirect_page),
                     ),
                 nginx_site_file,
                 )
