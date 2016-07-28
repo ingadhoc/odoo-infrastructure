@@ -1505,6 +1505,7 @@ class instance(models.Model):
         # add redirection with specific redirect page
         redirect_servers = self.instance_host_ids.filtered(
             lambda x: x.type == 'redirect_to_main' and x.redirect_page)
+        # TODO we should group those with same redirect_page
         for redirect_server in redirect_servers:
             nginx_site_file = "%s\n%s" % (
                 nginx_redirect_template % (
