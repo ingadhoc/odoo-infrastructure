@@ -27,6 +27,9 @@ class instance_host(models.Model):
         ondelete='cascade',
         required=True
         )
+    redirect_page = fields.Char(
+        'Redirect Page'
+    )
     prefix = fields.Char(
         'Prefix',
         required=False,

@@ -32,6 +32,7 @@
                 <field name="prefix" attrs="{'invisible':[('wildcard','!=',True)]}"/>
                 <field name="type"/>
                 <field name="name"/>
+                <field name="redirect_page" attrs="{'invisible':[('type','!=','redirect_to_main')]}"/>
                 <field name="partner_id"/>
              </group>
             </sheet>

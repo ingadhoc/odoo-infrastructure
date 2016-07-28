@@ -313,6 +313,8 @@ class database(models.Model):
 
     @api.model
     def cron_check_databases(self):
+        # TODO mejorar y solo verificar las que no fueron verificadas en el
+        # ultimo intervalo de cron
         databases = self.with_context(
             do_not_raise=True).search([
                 ('check_database', '=', True),

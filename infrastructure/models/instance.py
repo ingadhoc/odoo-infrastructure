@@ -1441,15 +1441,6 @@ class instance(models.Model):
         server_names = [
             x.name for x in self.instance_host_ids if (
                 x.type != 'redirect_to_main')]
-        # TODO ver si dejamos esto o lo borramos, queremos que sea flexible
-        # desde el usuario. aunque
-        # vimos que preferentemente se va a configurar www como principal
-        redirect_server_names = []
-        # redirect_server_names = ['www.' + x for x in server_names]
-        redirect_server_names += [
-            x.name for x in self.instance_host_ids if (
-                x.type == 'redirect_to_main')]
-
         if not server_names:
             raise Warning(_('You Must set at least one instance host!'))
 
@@ -1497,15 +1488,33 @@ class instance(models.Model):
                 nginx_long_polling
                 )
 
+        default_redirect_server_names = [
+            x.name for x in self.instance_host_ids if (
+                x.type == 'redirect_to_main' and not x.redirect_page)]
+
         # Add redirections if exists
-        if redirect_server_names:
+        if default_redirect_server_names:
             nginx_site_file = "%s\n%s" % (
                 nginx_redirect_template % (
-                    ' '.join(redirect_server_names),
+                    ' '.join(default_redirect_server_names),
                     self.main_hostname,
                     ),
                 nginx_site_file,
                 )
+
+        # add redirection with specific redirect page
+        redirect_server_names = [
+            "%s/%s" % (x.name, x.redirect_page) for x in self.instance_host_ids if (
+                x.type == 'redirect_to_main' and x.redirect_page)]
+        for redirect_server_name in redirect_server_names:
+            nginx_site_file = "%s\n%s" % (
+                nginx_redirect_template % (
+                    redirect_server_name,
+                    self.main_hostname,
+                    ),
+                nginx_site_file,
+                )
+
 
         # Check nginx sites-enabled directory exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
