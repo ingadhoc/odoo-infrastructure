@@ -85,8 +85,8 @@ class instance(models.Model):
         string='Limit Time Real',
         required=True,
         default=240,
-        help='Maximum allowed Real time per request. The default odoo value is\
-        120 but sometimes we use 240 to avoid some workers timeout error',
+        help='Maximum allowed Real time per request. The default odoo value is'
+        ' 120 but sometimes we use 240 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -94,8 +94,8 @@ class instance(models.Model):
         string='Limit Time CPU',
         required=True,
         default=120,
-        help='Maximum allowed CPU time per request. The default odoo value is\
-        60 but sometimes we use 120 to avoid some workers timeout error',
+        help='Maximum allowed CPU time per request. The default odoo value is'
+        ' 60 but sometimes we use 120 to avoid some workers timeout error',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -103,8 +103,8 @@ class instance(models.Model):
         string='DB Max connections',
         required=True,
         default=32,
-        help='Specify the the maximum number of physical connections to\
-        posgresql. Default odoo config is 64, we use 32.',
+        help='Specify the the maximum number of physical connections to'
+        ' posgresql. Default odoo config is 64, we use 32.',
         readonly=True,
         states={'draft': [('readonly', False)]},
         )
@@ -307,8 +307,8 @@ class instance(models.Model):
         string='Odoo Image',
         required=True,
         readonly=True,
-        domain="[('id', 'in', docker_image_ids[0][2]),\
-        ('service', '=', 'odoo')]",
+        domain="[('id', 'in', docker_image_ids[0][2]),"
+        "('service', '=', 'odoo')]",
         states={'draft': [('readonly', False)]}
         )
     odoo_image_tag_id = fields.Many2one(
@@ -373,9 +373,9 @@ class instance(models.Model):
     update_all_cmd = fields.Char(
         string='Update All',
         compute='get_commands',
-        help='If you use this command on terminal you should add\
-        -d [database_name] to get it works. You can also add "--logfile=False"\
-        if you run it on the terminal to see the log'
+        help='If you use this command on terminal you should add'
+        ' -d [database_name] to get it works. You can also add '
+        '"--logfile=False" if you run it on the terminal to see the log'
         )
     odoo_log_cmd = fields.Char(
         string='Odoo Log',
@@ -654,8 +654,8 @@ class instance(models.Model):
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
             raise Warning(_(
-                'You cannot delete an instance which \
-                is not draft or cancelled.'))
+                'You cannot delete an instance which '
+                'is not draft or cancelled.'))
         return super(instance, self).unlink()
 
 # Calculated fields
@@ -856,8 +856,8 @@ class instance(models.Model):
         by_pass_protection = self._context.get('by_pass_protection', False)
         if self.advance_type == 'protected' and not by_pass_protection:
             raise Warning(_(
-                'You can not delete an instance that is of type protected,\
-                you can change type, or drop it manually'))
+                'You can not delete an instance that is of type protected,'
+                ' you can change type, or drop it manually'))
         self.database_ids.action_cancel()
         self.instance_repository_ids.write({'actual_commit': False})
         self.remove_odoo_service()
@@ -891,8 +891,8 @@ class instance(models.Model):
             '-p 127.0.0.1:%i:8069 -p 127.0.0.1:%i:8072') % (
             self.xml_rpc_port, self.longpolling_port)
         odoo_volume_links = (
-            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo\
-            -v %s:%s') % (
+            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo'
+            '-v %s:%s') % (
             self.conf_path, self.sources_path, self.data_dir,
             self.server_id.backups_path, self.server_id.backups_path)
 
@@ -960,8 +960,8 @@ class instance(models.Model):
             user = 'openerp'
 
         self.start_attached_odoo_cmd = (
-            'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf\
-            --logfile=False %s' % (
+            'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf'
+            '--logfile=False %s' % (
                 user, odoo_sufix))
 
         postgres_run_prefix = "%s %s %s" % (
@@ -1005,12 +1005,12 @@ class instance(models.Model):
                 self.pg_container))
         tunnel_to_pg = "ssh -L 5499:%s:5432 %s@%s -p %i" % (
             ip, server.user_name, server.main_hostname, server.ssh_port)
-        raise Warning(_('Tunneling command to access postgres:\n%s\n\
-            Password: %s\n\
-            In your pgadmin you should enter:\n\
-            *Host: localhost\n\
-            *Port: 5499\n\
-            *Usarname and pass: odoo') % (tunnel_to_pg, server.password))
+        raise Warning(_('Tunneling command to access postgres:\n%s\n'
+            'Password: %s\n'
+            'In your pgadmin you should enter:\n'
+            '*Host: localhost\n'
+            '*Port: 5499\n'
+            '*Usarname and pass: odoo') % (tunnel_to_pg, server.password))
 
     @api.multi
     def get_update_conf_command_sufix(self):
@@ -1128,8 +1128,9 @@ class instance(models.Model):
     def copy_databases_from(self, instance):
         # TODO implement overwrite
         if self.database_type_id.type == 'protected':
-            raise Warning('You can not replace data in a instance of type\
-                protected, you should do it manually or change type.')
+            raise Warning(
+                'You can not replace data in a instance of type'
+                ' protected, you should do it manually or change type.')
         self.server_id.get_env()
         _logger.info('Copying database data from %s to %s' % (
             instance.name, self.name))
@@ -1224,10 +1225,9 @@ class instance(models.Model):
         self.remove_odoo_service()
 
         if not exists(self.environment_id.path, use_sudo=True):
-            raise except_orm(_('No Environment Path!'),
-                             _("Environment path '%s' does not exists. \
-                                Please create it first!")
-                             % (self.environment_id.path))
+            raise except_orm(_('No Environment Path!'), _(
+                "Environment path '%s' does not exists. Please create it "
+                "first!") % (self.environment_id.path))
 
         # Remove file if it already exists, we do it so we can put back some
         # booelan values as unaccent
@@ -1242,8 +1242,8 @@ class instance(models.Model):
             sudo(self.update_conf_cmd)
         except Exception, e:
             raise Warning(_(
-                "Can not create/update configuration file,\
-                this is what we get: \n %s") % (
+                "Can not create/update configuration file, "
+                "this is what we get: \n %s") % (
                 e))
         sed(self.conf_file_path,
             '(admin_passwd).*', 'admin_passwd = ' + self.admin_pass,
@@ -1425,8 +1425,8 @@ class instance(models.Model):
             sudo('rm -f %s' % nginx_site_file_path)
         except Exception, e:
             _logger.warning((
-                "Could remove nginx site file '%s',\
-                this is what we get: \n %s") % (
+                "Could remove nginx site file '%s', "
+                "this is what we get: \n %s") % (
                 self.service_file, e))
 
     @api.one
@@ -1462,8 +1462,9 @@ class instance(models.Model):
         if self.type == 'secure':
             server_hostname_id = self.main_hostname_id.server_hostname_id
             if not self.main_hostname_id.server_hostname_id.ssl_available:
-                raise Warning('To use Secure you nead a host with SSL enable.\
-                    \nCustom certificate is not implemented yet!')
+                raise Warning(
+                    'To use Secure you nead a host with SSL enable. '
+                    '\nCustom certificate is not implemented yet!')
             nginx_site_file = nginx_ssl_site_template % (
                 self.name,
                 xmlrpc_port,
@@ -1519,10 +1520,9 @@ class instance(models.Model):
         # Check nginx sites-enabled directory exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         if not exists(nginx_sites_path):
-            raise Warning(
-                _("Nginx '%s' directory not found! \
-                Check if Nginx is installed!") % nginx_sites_path
-            )
+            raise Warning(_(
+                "Nginx '%s' directory not found! "
+                "Check if Nginx is installed!") % nginx_sites_path)
 
         # Check if file already exists and delete it
         nginx_site_file_path = os.path.join(
