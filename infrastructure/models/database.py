@@ -12,6 +12,7 @@ import socket
 import time
 import uuid
 from dateutil.relativedelta import relativedelta
+from openerp.addons.server_mode.mode import get_mode
 from datetime import datetime
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
@@ -315,6 +316,12 @@ class database(models.Model):
     def cron_check_databases(self):
         # TODO mejorar y solo verificar las que no fueron verificadas en el
         # ultimo intervalo de cron
+        if get_mode():
+            _logger.info(
+                'Check databases cron is disable by server_mode. '
+                'If you want to enable it you should remove develop or test '
+                'value for server_mode key on openerp server config file')
+            return False
         databases = self.with_context(
             do_not_raise=True).search([
                 ('check_database', '=', True),
