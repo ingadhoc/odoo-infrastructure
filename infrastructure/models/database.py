@@ -33,8 +33,11 @@ _update_state_vals = [
     ('on_to_upgrade', 'On To Upgrade'),
     ('unmet_deps', 'Unmet Dependencies'),
     ('not_installable', 'Not Installable Modules'),
+    ('installed_uninstallable', 'Installed Uninstallable'),
+    ('installed_uncontracted', 'Installed Uncontracted'),
+    ('uninstalled_auto_install', 'Uninstalled Auto Install'),
     ('ok', 'Ok'),
-    ]
+]
 
 
 class database(models.Model):
