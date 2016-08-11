@@ -69,15 +69,19 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         optional_update = detail.get('optional_update')
         on_to_install = detail.get('on_to_install')
         on_to_remove = detail.get('on_to_remove')
+        installed_uninstallable = detail.get('installed_uninstallable')
         on_to_upgrade = detail.get('on_to_upgrade')
         unmet_deps = detail.get('unmet_deps')
+        uninstalled_auto_install = detail.get('uninstalled_auto_install')
         not_installable = detail.get('not_installable')
 
         self.init_and_conf_required = init_and_conf_required
         self.modules_to_update = (
             update_required + optional_update + on_to_upgrade)
-        self.modules_to_install = on_to_install + unmet_deps
-        self.modules_to_remove = on_to_remove + not_installable
+        self.modules_to_install = (
+            on_to_install + unmet_deps + uninstalled_auto_install)
+        self.modules_to_remove = (
+            on_to_remove + not_installable + installed_uninstallable)
 
     @api.multi
     def confirm(self):

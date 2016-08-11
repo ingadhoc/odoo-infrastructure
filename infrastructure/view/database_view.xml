@@ -121,7 +121,7 @@
                                 class="oe_link"/>
                             <button name="%(action_infrastructure_database_fix_wizard)d"
                                 string="⇒ Fix Database"
-                                attrs="{'invisible': ['|', ('update_state', 'in', ['ok', 'installed_uninstallable', 'installed_uncontracted', 'uninstalled_auto_install']), ('state', '!=', 'active')]}"
+                                attrs="{'invisible': ['|', ('update_state', 'in', ['ok', 'installed_uncontracted']), ('state', '!=', 'active')]}"
                                 type="action"
                                 help='Some states are not yet fixable from here, you should log in into database in those cases'
                                 class="oe_link"/>
