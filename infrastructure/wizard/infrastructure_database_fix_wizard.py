@@ -64,16 +64,16 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         self.update_state = state
         self.update_state_detail = detail
 
-        init_and_conf_required = detail.get('init_and_conf_required')
-        update_required = detail.get('update_required')
-        optional_update = detail.get('optional_update')
-        on_to_install = detail.get('on_to_install')
-        on_to_remove = detail.get('on_to_remove')
-        installed_uninstallable = detail.get('installed_uninstallable')
-        on_to_upgrade = detail.get('on_to_upgrade')
-        unmet_deps = detail.get('unmet_deps')
-        uninstalled_auto_install = detail.get('uninstalled_auto_install')
-        not_installable = detail.get('not_installable')
+        init_and_conf_required = detail.get('init_and_conf_required', [])
+        update_required = detail.get('update_required', [])
+        optional_update = detail.get('optional_update', [])
+        on_to_install = detail.get('on_to_install', [])
+        on_to_remove = detail.get('on_to_remove', [])
+        installed_uninstallable = detail.get('installed_uninstallable', [])
+        on_to_upgrade = detail.get('on_to_upgrade', [])
+        unmet_deps = detail.get('unmet_deps', [])
+        uninstalled_auto_install = detail.get('uninstalled_auto_install', [])
+        not_installable = detail.get('not_installable', [])
 
         self.init_and_conf_required = init_and_conf_required
         self.modules_to_update = (
