@@ -891,7 +891,7 @@ class instance(models.Model):
             '-p 127.0.0.1:%i:8069 -p 127.0.0.1:%i:8072') % (
             self.xml_rpc_port, self.longpolling_port)
         odoo_volume_links = (
-            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo'
+            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo '
             '-v %s:%s') % (
             self.conf_path, self.sources_path, self.data_dir,
             self.server_id.backups_path, self.server_id.backups_path)
@@ -960,7 +960,7 @@ class instance(models.Model):
             user = 'openerp'
 
         self.start_attached_odoo_cmd = (
-            'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf'
+            'runuser -u %s openerp-server -- -c /etc/odoo/openerp-server.conf '
             '--logfile=False %s' % (
                 user, odoo_sufix))
 
