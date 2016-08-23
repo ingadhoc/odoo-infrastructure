@@ -2,7 +2,7 @@
 
 {
     'name': 'Infrastructure Mass Mailing Integration',
-    'version': '8.0.1.0.0',
+    'version': '9.0.1.0.0',
     'description': u'Infrastructure Mass Mailing Integration',
     'category': u'base.module_category_knowledge_management',
     'author': u'ADHOC SA',
@@ -14,7 +14,7 @@
     ],
     'sequence': 14,
     'summary': '',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'application': False,
     'images': [],

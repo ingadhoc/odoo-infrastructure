@@ -20,7 +20,7 @@
 ##############################################################################
 {
     'name': 'Infrastructure and Contracts Integration',
-    'version': '8.0.1.1.0',
+    'version': '9.0.1.0.0',
     'description': """
 Infrastructure Contract
 =======================
@@ -39,7 +39,7 @@ Destiny database must have web_support_client module installed
     ],
     'sequence': 14,
     'summary': '',
-    'installable': True,
+    'installable': False,
     'auto_install': True,
     'application': False,
     'images': [],
