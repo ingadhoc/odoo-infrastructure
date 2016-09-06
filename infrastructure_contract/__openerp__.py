@@ -46,12 +46,12 @@ Destiny database must have web_support_client module installed
     'application': False,
     'images': [],
     'data': [
-        'database_view.xml',
-        'account_analytic_account_view.xml',
-        'odoo_version_view.xml',
-        'product_template_view.xml',
-        'account_analytic_invoice_line_view.xml',
-        'database_type_view.xml',
+        'views/database_view.xml',
+        'views/account_analytic_account_view.xml',
+        'views/odoo_version_view.xml',
+        'views/product_template_view.xml',
+        'views/account_analytic_invoice_line_view.xml',
+        'views/database_type_view.xml',
     ],
     'demo': [
         'product_template_demo.xml',
