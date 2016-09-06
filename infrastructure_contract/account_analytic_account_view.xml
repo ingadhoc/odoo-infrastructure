@@ -5,8 +5,13 @@
 <record id="view_account_analytic_account_form" model="ir.ui.view">
     <field name="name">account.analytic.account.form</field>
     <field name="model">account.analytic.account</field>
-    <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/>
+    <field name="inherit_id" ref="account_analytic_analysis.account_analytic_account_form_form"/>
+    <!-- <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/> -->
     <field name="arch" type="xml">
+        <button name="recurring_create_invoice" position="after">
+            <button class="oe_link" name="update_lines_data_from_database" attrs="{'invisible': [('recurring_invoices','!=',True)]}" string="⇒ Update from database" type="object" groups="base.group_no_one"/>
+        </button>
+
         <div name="buttons">
             <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                 <field name="database_count" widget="statinfo"/>

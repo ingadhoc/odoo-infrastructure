@@ -36,6 +36,8 @@ Destiny database must have web_support_client module installed
     'depends': [
         'infrastructure',
         'account_analytic_analysis',
+        # modulo requerido para obtener data de que productos contrataron
+        'adhoc_modules_server',
     ],
     'sequence': 14,
     'summary': '',
@@ -47,7 +49,12 @@ Destiny database must have web_support_client module installed
         'database_view.xml',
         'account_analytic_account_view.xml',
         'odoo_version_view.xml',
+        'product_template_view.xml',
+        'account_analytic_invoice_line_view.xml',
+        'database_type_view.xml',
     ],
-    'demo': [],
+    'demo': [
+        'product_template_demo.xml',
+    ],
     'test': [],
 }

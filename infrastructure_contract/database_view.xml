@@ -34,6 +34,10 @@
                     string="⇒ Upload Contract"
                     type="object"
                     class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/>
+                <button name="update_contract_data_from_database"
+                    string="⇒ Update Contract Data"
+                    type="object"
+                    class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/>
             </div>
         </field>
     </field>

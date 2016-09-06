@@ -3,9 +3,14 @@
 # For copyright and license notices, see __openerp__.py file in module root
 # directory
 ##############################################################################
-from . import database
-from . import database_type
-from . import account_analytic_account
-from . import odoo_version
-from . import product_template
-from . import account_analytic_invoice_line
+from openerp import models, fields
+
+
+class DatabaseType(models.Model):
+
+    _inherit = 'infrastructure.database_type'
+
+    is_production = fields.Boolean(
+        help='Databases of this type are used to get data to invoice on '
+        'contracts'
+    )

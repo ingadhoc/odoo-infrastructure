@@ -5,6 +5,7 @@
 ##############################################################################
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
+from openerp.tools.safe_eval import safe_eval as eval
 
 
 class database(models.Model):
@@ -18,7 +19,24 @@ class database(models.Model):
     contract_state = fields.Selection(
         related='contract_id.state',
         string='Contact Status',
-        )
+    )
+
+    @api.one
+    def update_contract_data_from_database(self):
+        client = self.get_client()
+        localdict = {'client': client}
+        for line in self.contract_id.recurring_invoice_line_ids:
+            expression = line.product_id.contracted_quantity_expression
+            if not expression:
+                continue
+            eval(
+                expression,
+                localdict,
+                mode="exec",
+                nocopy=True)
+            result = localdict.get('result', False)
+            if result:
+                line.db_quantity = result
 
     @api.one
     def upload_contract_data(self):
