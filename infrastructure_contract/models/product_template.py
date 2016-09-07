@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 class ProductTempalte(models.Model):
     _inherit = 'product.template'
 
-    contracted_quantity_expression = fields.Char(
+    contracted_quantity_expression = fields.Text(
         help='Expression to evaluate quantity on a contract for a customer '
         'database. It must return a float',
     )
