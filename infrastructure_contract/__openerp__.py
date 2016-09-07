@@ -52,9 +52,11 @@ Destiny database must have web_support_client module installed
         'views/product_template_view.xml',
         'views/account_analytic_invoice_line_view.xml',
         'views/database_type_view.xml',
+        'data/account_analytic_account_data.xml',
     ],
     'demo': [
-        'product_template_demo.xml',
+        'demo/product_template_demo.xml',
+        'demo/database_demo.xml',
     ],
     'test': [],
 }

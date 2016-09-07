@@ -9,7 +9,7 @@
     <!-- <field name="inherit_id" ref="analytic.view_account_analytic_account_form"/> -->
     <field name="arch" type="xml">
         <button name="recurring_create_invoice" position="after">
-            <button class="oe_link" name="update_lines_data_from_database" attrs="{'invisible': [('recurring_invoices','!=',True)]}" string="⇒ Update from database" type="object" groups="base.group_no_one"/>
+            <button class="oe_link" name="update_lines_data_from_database" attrs="{'invisible': [('recurring_invoices','!=',True)]}" string="⇒ Update quantity from database" type="object" groups="base.group_no_one"/>
         </button>
 
         <div name="buttons">

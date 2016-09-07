@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+<data>
+
+        <record id="ir_parameter_talkusID" model="ir.config_parameter">
+            <field name="key">support.server.talkusID</field>
+            <field name="value">get it from talkus</field>
+        </record>
+<!--         <record id="ir_parameter_talkus_image_url" model="ir.config_parameter">
+            <field name="key">support.server.talkus_image_url</field>
+            <field name="value">1</field>
+        </record> -->
+
+</data>
+</openerp>
