@@ -11,6 +11,7 @@
             <field name="contracted_quantity_expression">result = len(client.model('res.users').search([('share','=',False)]))</field>
             <field name="uom_id" ref="product.product_uom_unit"/>
             <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="contract_type">requirement</field>
         </record>
 
         <record id="product_subscription_companies" model="product.product">
@@ -22,6 +23,7 @@
             <field name="type">service</field>
             <field name="uom_id" ref="product.product_uom_unit"/>
             <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="contract_type">requirement</field>
         </record>
 
         <!-- contrato interno de misma bd -->
