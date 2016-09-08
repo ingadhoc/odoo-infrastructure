@@ -58,6 +58,11 @@ class account_analytic_account(models.Model):
         return prod_dbs
 
     @api.multi
+    def update_remote_contracted_products(self):
+        for contract in self:
+            contract.get_main_database().update_remote_contracted_products()
+
+    @api.multi
     def update_lines_data_from_database(self):
         for contract in self:
             contract.get_main_database().update_contract_data_from_database()

@@ -30,14 +30,17 @@
                     name="contract_id"
                     class="oe_inline"
                     options="{'no_create': True}"/>
-                <button name="upload_contract_data"
+                <button
+                    name="upload_contract_data"
                     string="⇒ Upload Contract"
                     type="object"
-                    class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/>
-                <button name="update_contract_data_from_database"
+                    class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"
+                    />
+                <!-- no lo agregamos para no confundir -->
+<!--                 <button name="update_contract_data_from_database"
                     string="⇒ Update Contract Data"
                     type="object"
-                    class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/>
+                    class="oe_link oe_read_only" attrs="{'invisible':['|',('state','!=','active'), ('contract_id','=',False)]}"/> -->
             </div>
         </field>
     </field>

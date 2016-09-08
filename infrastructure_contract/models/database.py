@@ -39,14 +39,25 @@ class database(models.Model):
                 line.db_quantity = result
 
     @api.one
+    def update_remote_contracted_products(self):
+        client = self.get_client()
+        modules = ['adhoc_modules']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(_(
+                    "You can not Upload a Contract if module '%s' is not "
+                    "installed in the database") % (module))
+        client.model('support.contract').remote_update_modules_data(True)
+
+    @api.one
     def upload_contract_data(self):
         client = self.get_client()
         modules = ['web_support_client']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(
-                    _("You can not Upload a Contract if module '%s' is not\
-                    installed in the database") % (module))
+                raise Warning(_(
+                    "You can not Upload a Contract if module '%s' is not "
+                    "installed in the database") % (module))
         if not self.contract_id:
             raise Warning(
                 _("You can not Upload a Contract if not contracted is linked"))
@@ -69,9 +80,9 @@ class database(models.Model):
             user = user.search([(
                 'partner_id', 'child_of', commercial_partner.id)], limit=1)
         if not user:
-            raise Warning(
-                _("You can not Upload a Contract if there is not user related\
-                 to the contract Partner"))
+            raise Warning(_(
+                "You can not Upload a Contract if there is not user related "
+                "to the contract Partner"))
         rows = [[
             'infrastructure_contract.contract_id_%i' % self.contract_id.id,
             self.contract_id.name,
