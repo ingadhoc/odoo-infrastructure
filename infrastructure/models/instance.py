@@ -1452,11 +1452,6 @@ class instance(models.Model):
             'error_' + re.sub('[-]', '_', self.name))
         xmlrpc_port = self.xml_rpc_port
 
-        nginx_long_polling = ''
-
-        if self.longpolling_port:
-            nginx_long_polling = nginx_long_polling_template % (
-                self.longpolling_port)
         # TODO modify template in order to give posibility to not use
         # longpolling
         if self.type == 'secure':
@@ -1479,15 +1474,30 @@ class instance(models.Model):
                 self.name,
                 self.name,
                 self.name,
-                )
+            )
         else:
             nginx_site_file = nginx_site_template % (
+                self.name,
+                xmlrpc_port,
+                self.name,
+                self.longpolling_port,
+                # ' '.join(server_names), no redirect from http to https
+                ' '.join(server_names),
+                # server_hostname_id.ssl_certificate_path,
+                # server_hostname_id.ssl_certificate_key_path,
+                acces_log,
+                error_log,
+                self.name,
+                self.name,
+                self.name,
+
+
                 ' '.join(server_names),
                 acces_log,
                 error_log,
                 xmlrpc_port,
-                nginx_long_polling
-                )
+                self.name,
+            )
 
         default_redirect_server_names = [
             x.name for x in self.instance_host_ids if (
@@ -1575,33 +1585,67 @@ server   {
     rewrite  ^/(.*)$  %s/$1 permanent;
 }
 """
-nginx_long_polling_template = """
-    location /longpolling {
-        proxy_pass   http://127.0.0.1:%i;
-    }
-"""
+
 nginx_site_template = """
+upstream %s {
+    server 127.0.0.1:%i weight=1 fail_timeout=300s;
+}
+upstream %s-im {
+    server 127.0.0.1:%i weight=1 fail_timeout=300s;
+}
 server {
     listen 80;
     server_name %s;
-    access_log %s;
-    error_log %s;
 
-    location / {
-            proxy_pass              http://127.0.0.1:%i;
-            proxy_set_header        X-Forwarded-Host $host;
+    # proxy header and settings
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-Host $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+
+    # odoo log files
+    access_log %s;
+    error_log  %s;
+
+    # increase proxy buffer size
+    proxy_buffers 16 64k;
+    proxy_buffer_size 128k;
+
+    # force timeouts if the backend dies
+    proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+
+    # enable data compression
+    gzip on;
+    gzip_min_length 1100;
+    gzip_buffers 4 32k;
+    gzip_types text/plain application/x-javascript text/xml text/css;
+    gzip_vary on;
+
+    # cache some static data in memory for 60mins.
+    # under heavy load this should relieve stress on the OpenERP web interface a bit.
+    location ~* /web/static/ {
+        proxy_cache_valid 200 60m;
+        proxy_buffering    on;
+        expires 864000;
+        proxy_pass http://%s;
     }
 
-%s
+    location / {
+        proxy_pass http://%s;
+    }
 
+    location /longpolling {
+        proxy_pass http://%s-im;
+    }
 }
 """
+
 nginx_ssl_site_template = """
 upstream %s {
     server 127.0.0.1:%i weight=1 fail_timeout=300s;
 }
 upstream %s-im {
-    server 127.0.0.1:%s weight=1 fail_timeout=300s;
+    server 127.0.0.1:%i weight=1 fail_timeout=300s;
 }
 server {
     listen 80;
@@ -1627,7 +1671,7 @@ server {
     # proxy header and settings
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forward-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $proxy_add_x_forwarded_for;
     proxy_redirect off;
 
     # Let the OpenERP web service know that we're using HTTPS, otherwise
