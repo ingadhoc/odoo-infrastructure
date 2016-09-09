@@ -1593,7 +1593,8 @@ server {
     # proxy header and settings
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-Host $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_redirect off;
 
     # odoo log files
@@ -1664,7 +1665,8 @@ server {
     # proxy header and settings
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Forwarded-Host $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_redirect off;
 
     # Let the OpenERP web service know that we're using HTTPS, otherwise
