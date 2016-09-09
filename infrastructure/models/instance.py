@@ -1490,13 +1490,6 @@ class instance(models.Model):
                 self.name,
                 self.name,
                 self.name,
-
-
-                ' '.join(server_names),
-                acces_log,
-                error_log,
-                xmlrpc_port,
-                self.name,
             )
 
         default_redirect_server_names = [
