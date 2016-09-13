@@ -44,6 +44,30 @@ class account_analytic_account(models.Model):
                 '* DBS: %s') % not_inactive_dbs.ids)
 
     @api.multi
+    def get_main_database(self):
+        prod_dbs = self.database_ids.filtered(
+            lambda x: x.instance_type_id.is_production)
+        if len(prod_dbs) > 1:
+            raise Warning(_(
+                'More than one production database linked to contract %s!') % (
+                self.name))
+        elif len(prod_dbs) == 0:
+            raise Warning(_(
+                'No production database linked to contract %s!') % (
+                self.name))
+        return prod_dbs
+
+    @api.multi
+    def update_remote_contracted_products(self):
+        for contract in self:
+            contract.get_main_database().update_remote_contracted_products()
+
+    @api.multi
+    def update_lines_data_from_database(self):
+        for contract in self:
+            contract.get_main_database().update_contract_data_from_database()
+
+    @api.multi
     def action_view_databases(self):
         '''
         This function returns an action that display a form or tree view
