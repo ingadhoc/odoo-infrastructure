@@ -5,6 +5,7 @@
 ##############################################################################
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
+from openerp.tools.safe_eval import safe_eval as eval
 
 
 class database(models.Model):
@@ -18,7 +19,35 @@ class database(models.Model):
     contract_state = fields.Selection(
         related='contract_id.state',
         string='Contact Status',
-        )
+    )
+
+    @api.one
+    def update_contract_data_from_database(self):
+        client = self.get_client()
+        localdict = {'client': client}
+        for line in self.contract_id.recurring_invoice_line_ids:
+            expression = line.product_id.contracted_quantity_expression
+            if not expression:
+                continue
+            eval(
+                expression,
+                localdict,
+                mode="exec",
+                nocopy=True)
+            result = localdict.get('result', False)
+            if result:
+                line.db_quantity = result
+
+    @api.one
+    def update_remote_contracted_products(self):
+        client = self.get_client()
+        modules = ['adhoc_modules']
+        for module in modules:
+            if client.modules(name=module, installed=True) is None:
+                raise Warning(_(
+                    "You can not Upload a Contract if module '%s' is not "
+                    "installed in the database") % (module))
+        client.model('support.contract').remote_update_modules_data(True)
 
     @api.one
     def upload_contract_data(self):
@@ -26,9 +55,9 @@ class database(models.Model):
         modules = ['web_support_client']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(
-                    _("You can not Upload a Contract if module '%s' is not\
-                    installed in the database") % (module))
+                raise Warning(_(
+                    "You can not Upload a Contract if module '%s' is not "
+                    "installed in the database") % (module))
         if not self.contract_id:
             raise Warning(
                 _("You can not Upload a Contract if not contracted is linked"))
@@ -51,9 +80,9 @@ class database(models.Model):
             user = user.search([(
                 'partner_id', 'child_of', commercial_partner.id)], limit=1)
         if not user:
-            raise Warning(
-                _("You can not Upload a Contract if there is not user related\
-                 to the contract Partner"))
+            raise Warning(_(
+                "You can not Upload a Contract if there is not user related "
+                "to the contract Partner"))
         rows = [[
             'infrastructure_contract.contract_id_%i' % self.contract_id.id,
             self.contract_id.name,

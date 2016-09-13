@@ -100,6 +100,7 @@
         'demo/infrastructure.database_type.csv',
         'demo/infrastructure.instance.csv',
         'demo/infrastructure.instance_host.csv',
-        'demo/infrastructure.database.csv'
+        'demo/infrastructure.database.csv',
+        'demo/ir_parameter_demo.xml',
     ],
 }
