@@ -18,7 +18,7 @@ class database(models.Model):
         string='Product',
         domain=[('type', '=', 'odoo_pack')],
         context={'default_type': 'odoo_pack'},
-        )
+    )
 
     @api.one
     def install_product_modules(self):

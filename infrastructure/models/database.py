@@ -85,90 +85,90 @@ class database(models.Model):
         states={'draft': [('readonly', False)]},
         # track_visibility='onchange',
         copy=False,
-        )
+    )
     instance_type_id = fields.Many2one(
         # 'infrastructure.database_type',
         string='Instance Type',
         store=True,
         related='instance_id.database_type_id',
-        )
+    )
     display_name = fields.Char(
         compute='_get_display_name',
         store=True,
-        )
+    )
     name = fields.Char(
         string='Name',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         track_visibility='onchange'
-        )
+    )
     color = fields.Integer(
         string='Color Index',
         compute='get_color',
-        )
+    )
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
         required=True,
-        )
+    )
     demo_data = fields.Boolean(
         string='Demo Data?',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     note = fields.Html(
         string='Note'
-        )
+    )
     smtp_server_id = fields.Many2one(
         'infrastructure.mailserver',
         string='SMTP Server',
-        )
+    )
     domain_alias = fields.Char(
         string='Domain Alias',
         compute='get_domain_alias',
-        )
+    )
     attachment_loc_type = fields.Selection(
         [(u'filesystem', 'filesystem'), (u'database', 'database')],
         string='Attachment Location Type',
         default='filesystem',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     attachment_location = fields.Char(
         string='Attachment Location',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     issue_date = fields.Date(
         string='Issue Data',
         copy=False,
         default=fields.Date.context_today,
-        )
+    )
     deactivation_date = fields.Date(
         string='Deactivation Date',
         copy=False,
-        help='Depending on type it could be onl informative or could be\
-        automatically deactivated on this date',
-        )
+        help='Depending on type it could be onl informative or could be '
+        'automatically deactivated on this date',
+    )
     drop_date = fields.Date(
         string='Drop Date',
         copy=False,
-        help='Depending on type it could be onl informative or could be\
-        automatically dropped on this date',
-        )
+        help='Depending on type it could be onl informative or could be '
+        'automatically dropped on this date',
+    )
     advance_type = fields.Selection(
         related='instance_type_id.type',
         # related='database_type_id.type',
         string='Type',
         readonly=True,
         # store=True,
-        )
+    )
     state = fields.Selection(
         _states_,
         'State',
         default='draft'
-        )
+    )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
@@ -176,31 +176,31 @@ class database(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         required=True,
-        )
+    )
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
         related='instance_id.environment_id',
         store=True,
         readonly=True,
-        )
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         related='instance_id.environment_id.server_id',
         store=True,
         readonly=True,
-        )
+    )
     main_hostname = fields.Char(
         string='Main Hostname',
         compute='get_main_hostname',
-        )
+    )
     backup_ids = fields.One2many(
         'infrastructure.database.backup',
         'database_id',
         string='Backups',
         readonly=True,
-        )
+    )
     # module_ids = fields.One2many(
     #     'infrastructure.database.module',
     #     'database_id',
@@ -211,46 +211,46 @@ class database(models.Model):
         'database_id',
         string='Users',
         copy=True,
-        )
+    )
     admin_password = fields.Char(
         string='Admin Password',
-        help='When trying to connect to the database first we are going to\
-        try by using the instance password and then with thisone.',
+        help='When trying to connect to the database first we are going to '
+        'try by using the instance password and then with thisone.',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     virtual_alias = fields.Char(
         string='Virtual Alias',
         compute='get_aliases',
-        )
+    )
     local_alias = fields.Char(
         string='Local Alias',
         compute='get_aliases',
-        )
+    )
     mailgate_path = fields.Char(
         string='Mailgate Path',
         compute='get_mailgate_path',
-        )
+    )
     alias_prefix = fields.Char(
         'Alias Prefix',
         copy=False,
-        )
+    )
     alias_hostname_id = fields.Many2one(
         'infrastructure.server_hostname',
         string='Alias Hostname',
         copy=False,
-        )
+    )
     alias_hostname_wildcard = fields.Boolean(
         related='alias_hostname_id.wildcard',
         string='Wildcard?',
         readonly=True,
         copy=False,
-        )
+    )
     backups_enable = fields.Boolean(
         'Backups Enable',
         copy=False,
-        )
+    )
     backup_format = fields.Selection([
         ('zip', 'zip (With Filestore)'),
         ('pg_dump', 'pg_dump (Without Filestore)')],
@@ -258,56 +258,56 @@ class database(models.Model):
         default='zip',
         required=True,
         copy=False,
-        )
+    )
     catchall_enable = fields.Boolean(
         'Catchall Enable',
         copy=False,
-        )
+    )
     update_state = fields.Selection(
         _update_state_vals,
         'Update Status',
         readonly=True,
-        )
+    )
     last_overall_check_date = fields.Datetime(
         'Last Overall Check',
         readonly=True,
-        )
+    )
     instante_state = fields.Selection(
         related='instance_id.odoo_service_state',
         string='Instance Status'
-        )
+    )
     update_state_detail = fields.Text(
         'Update Status Detail',
         readonly=True,
-        )
+    )
     base_modules_state = fields.Selection(
         [('ok', 'OK'), ('error', 'Error'), ('unknown', 'Unknown')],
         'Base Modules Status',
         readonly=True,
-        )
+    )
     base_modules_state_detail = fields.Text(
         'Base Modules Detail',
         readonly=True,
-        )
+    )
     backups_state = fields.Selection(
         [('ok', 'OK'), ('error', 'Error'), ('unknown', 'Unknown')],
         'Backups Status',
         readonly=True,
-        )
+    )
     backups_state_detail = fields.Text(
         'Backups Detail',
         readonly=True,
-        )
+    )
     check_database = fields.Boolean(
         'Check Databse with cron',
         copy=False,
-        )
+    )
     overall_state = fields.Selection(
         [('ok', 'OK'), ('error', 'Error')],
         'Overall State',
         compute='get_overall_state',
         store=True,
-        )
+    )
 
     @api.one
     @api.depends('name', 'instance_type_id.prefix')
@@ -352,7 +352,7 @@ class database(models.Model):
         'base_modules_state',
         'update_state',
         'instante_state'
-        )
+    )
     def get_overall_state(self):
         overall_state = 'ok'
         if self.backups_state and self.backups_state != 'ok':
@@ -372,7 +372,7 @@ class database(models.Model):
             'base_modules_state': False,
             'backups_state': False,
             'update_state': False,
-            })
+        })
 
     # TODO mejorar el codigo este de do_not_raise, hacerlo mucho mas siemple
     # se repite lo mismo en tres funciones distintas en distintos momentos
@@ -502,16 +502,16 @@ class database(models.Model):
             update_state = client.model(
                 'ir.module.module').get_overall_update_state()
         except Exception, e:
-                msg = (_(
-                    'Could not get state!\n'
-                    'This is what we get %s' % e))
-                if do_not_raise:
-                    _logger.warning(msg)
-                    self.update_state = 'unknown'
-                    self.update_state_detail = msg
-                    return True
-                else:
-                    raise Warning(msg)
+            msg = (_(
+                'Could not get state!\n'
+                'This is what we get %s' % e))
+            if do_not_raise:
+                _logger.warning(msg)
+                self.update_state = 'unknown'
+                self.update_state_detail = msg
+                return True
+            else:
+                raise Warning(msg)
         state = update_state.get('state', False)
         detail = update_state.get('detail', False)
         update_state_keys = [x[0] for x in _update_state_vals]
@@ -627,7 +627,7 @@ class database(models.Model):
             "=": operator.eq,
             "<": operator.lt,
             '<=': operator.le
-            }
+        }
         op = operators_dic.get(operator_string)
         if not op:
             raise Warning(_('Operator must be one of: %s') % (
@@ -673,14 +673,14 @@ class database(models.Model):
     @api.depends(
         'instance_id.main_hostname',
         'instance_id.db_filter.add_bd_name_to_host'
-        )
+    )
     def get_main_hostname(self):
         main_hostname = self.instance_id.main_hostname
         if self.instance_id.db_filter.add_bd_name_to_host:
             main_hostname = "%s.%s" % (
                 self.name,
                 self.instance_id.main_hostname_id.name
-                )
+            )
         self.main_hostname = main_hostname
 
     @api.one
@@ -737,9 +737,9 @@ class database(models.Model):
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(
-                _('You cannot delete a database which is not draft \
-                    or cancelled.'))
+            raise Warning(_(
+                'You cannot delete a database which is not draft or cancelled')
+            )
         return super(database, self).unlink()
 
     # @api.onchange('database_type_id', 'instance_id')
@@ -751,7 +751,7 @@ class database(models.Model):
             self.name = ('%s') % (
                 # self.instance_type_id.prefix,
                 self.instance_id.environment_id.name.replace('-', '_')
-                )
+            )
             self.demo_data = self.instance_type_id.demo_data
             self.check_database = self.instance_type_id.check_database
             self.backups_enable = self.instance_type_id.backups_enable
@@ -780,7 +780,7 @@ class database(models.Model):
         raise except_orm(
             _("Password:"),
             _("%s") % self.admin_password
-            )
+        )
 
 # DATABASE CRUD
 
@@ -841,8 +841,9 @@ class database(models.Model):
         self.ensure_one()
         by_pass_protection = self._context.get('by_pass_protection', False)
         if self.advance_type == 'protected' and not by_pass_protection:
-            raise Warning(_('You can not drop a database protected,\
-                you can change database type, or drop it manually'))
+            raise Warning(_(
+                'You can not drop a database protected, '
+                'you can change database type, or drop it manually'))
         _logger.info("Dropping db '%s'" % (self.name))
         sock = self.get_sock()
         try:
@@ -856,10 +857,10 @@ class database(models.Model):
                 sock = self.get_sock(max_attempts=1000)
                 sock.drop(self.instance_id.admin_pass, self.name)
             except Exception, e:
-                raise Warning(
-                    _('Unable to drop Database. If you are working in an \
-                    instance with "workers" then you can try \
-                    restarting service. This is what we get:\n%s') % (e))
+                raise Warning(_(
+                    'Unable to drop Database. If you are working in an '
+                    'instance with "workers" then you can try '
+                    'restarting service. This is what we get:\n%s') % (e))
         self.action_cancel()
 
     @api.one
@@ -875,18 +876,19 @@ class database(models.Model):
                 backup_format,
                 name,
                 keep_till_date,
-                )
+            )
         except Exception, e:
-                raise Warning(_('Could not make backup!\
-                    This is what we get %s' % e))
+            raise Warning(_(
+                'Could not make backup! This is what we get %s' % e))
         if not bd_result.get('backup_name', False):
-            raise Warning(_('Could not make backup!\
-                This is what we get %s' % bd_result.get('error', '')))
+            raise Warning(_(
+                'Could not make backup! This is what we get %s' % (
+                    bd_result.get('error', ''))))
         # TODO log message or do something (do not raise warning because it
         # dont close wizard)
         # else:
             # raise Warning(_(
-                # 'Backup %s succesfully created!' % bd_result['backup_name']))
+            # 'Backup %s succesfully created!' % bd_result['backup_name']))
 
     @api.one
     def migrate_db(self):
@@ -897,10 +899,10 @@ class database(models.Model):
             return sock.migrate_databases(
                 self.instance_id.admin_pass, [self.name])
         except Exception, e:
-            raise Warning(
-                _('Unable to migrate Database. If you are working in an \
-                instance with "workers" then you can try \
-                restarting service. This is what we get:\n%s') % (e))
+            raise Warning(_(
+                'Unable to migrate Database. If you are working in an '
+                'instance with "workers" then you can try '
+                'restarting service. This is what we get:\n%s') % (e))
 
     @api.one
     def rename_db(self, new_name):
@@ -917,10 +919,10 @@ class database(models.Model):
                 sock = self.get_sock(max_attempts=1000)
                 sock.rename(self.instance_id.admin_pass, self.name, new_name)
             except Exception, e:
-                raise Warning(
-                    _('Unable to rename Database. If you are working in an \
-                    instance with "workers" then you can try \
-                    restarting service. This is what we get:\n%s') % (e))
+                raise Warning(_(
+                    'Unable to rename Database. If you are working in an '
+                    'instance with "workers" then you can try '
+                    'restarting service. This is what we get:\n%s') % (e))
         self.name = new_name
         # reconfigure catchall
         if self.catchall_enable:
@@ -956,11 +958,11 @@ class database(models.Model):
                     'backups_state': backups_enable,
                     'remote_server': remote_server,
                     'overwrite': overwrite,
-                    },
+                },
             }
             _logger.info(
-                'Restoring backup %s, you can also watch target\
-                instance log' % db_name)
+                'Restoring backup %s, you can also watch target '
+                'instance log' % db_name)
             response = requests.post(
                 url,
                 data=simplejson.dumps(data),
@@ -970,18 +972,18 @@ class database(models.Model):
                 # with certificates aca se explica le error
                 # http://docs.python-requests.org/en/latest/community/faq/
                 # what-are-hostname-doesn-t-match-errors
-                ).json()
+            ).json()
             _logger.info('Restored complete, result: %s' % response)
             if response['result'].get('error', False):
                 raise Warning(_(
-                    'Unable to restore bd %s, you can try restartin target\
-                    instance. This is what we get: \n %s') % (
+                    'Unable to restore bd %s, you can try restartin target '
+                    'instance. This is what we get: \n %s') % (
                     db_name, response['result'].get('error')))
             _logger.info('Back Up %s Restored Succesfully' % db_name)
         except Exception, e:
             raise Warning(_(
-                'Unable to restore bd %s, you can try restartin target\
-                instance. This is what we get: \n %s') % (
+                'Unable to restore bd %s, you can try restartin target '
+                'instance. This is what we get: \n %s') % (
                 db_name, e))
         return True
 
@@ -996,7 +998,7 @@ class database(models.Model):
             'backups_enable': backups_enable,
             'issue_date': fields.Date.today(),
             # 'database_type_id': database_type.id,
-            })
+        })
         try:
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
@@ -1059,8 +1061,8 @@ class database(models.Model):
         for module in modules:
             if client.modules(name=module, installed=True) is None:
                 raise Warning(_(
-                    "You can not kill connections if module '%s' is not\
-                    installed in the database") % (module))
+                    "You can not kill connections if module '%s' is not "
+                    "installed in the database") % (module))
 
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
@@ -1079,7 +1081,7 @@ class database(models.Model):
             if attempts:
                 time.sleep(1)
                 return self.get_client_attempts(
-                    not_database, attempts-1)
+                    not_database, attempts - 1)
             else:
                 raise Warning('asda %s' % e)
 
@@ -1093,7 +1095,7 @@ class database(models.Model):
             raise except_orm(
                 _("Unable to Connect to Database."),
                 _('Error: %s') % e
-                )
+            )
         # First try to connect using instance pass
         try:
             return Client(
@@ -1114,7 +1116,7 @@ class database(models.Model):
                 raise except_orm(
                     _("Unable to Connect to Database."),
                     _('Error: %s') % e
-                    )
+                )
 
 # Backups management
 
@@ -1125,8 +1127,8 @@ class database(models.Model):
         for module in modules:
             if client.modules(name=module, installed=True) is None:
                 raise Warning(_(
-                    "You can not Update Backups Data if module '%s' is not\
-                    installed in the database") % (module))
+                    "You can not Update Backups Data if module '%s' is not "
+                    "installed in the database") % (module))
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
             'database_tools.db_self_database')
         _logger.info('Updating remote backups data')
@@ -1142,7 +1144,7 @@ class database(models.Model):
             'path',
             'type',
             'keep_till_date',
-            ]
+        ]
         rows = []
         for backup in backups_data:
             row = [
@@ -1195,7 +1197,7 @@ class database(models.Model):
             'name',
             'login',
             'email',
-            ]
+        ]
 
         _logger.info('Reading users data for db %s' % self.name)
         exp_users_data = client.model('res.users').search_read([], fields)
@@ -1255,7 +1257,7 @@ class database(models.Model):
             raise except_orm(
                 _("Unable to Upload SMTP Config."),
                 _('Error: %s') % e
-                )
+            )
 
     @api.one
     def change_admin_passwd(self, current_passwd, new_passwd):
@@ -1278,8 +1280,8 @@ class database(models.Model):
         for module in modules:
             if client.modules(name=module, installed=True) is None:
                 raise Warning(_(
-                    "You can not configure backups if module '%s' is not\
-                    installed in the database") % (module))
+                    "You can not configure backups if module '%s' is not "
+                    "installed in the database") % (module))
 
         # TODO habriq ue chequear que exista self_db_id
         # Configure backups
@@ -1289,7 +1291,7 @@ class database(models.Model):
             vals = {
                 # we set next backup at a night
                 'backup_next_date': datetime.strftime(
-                    datetime.today()+relativedelta(days=1),
+                    datetime.today() + relativedelta(days=1),
                     '%Y-%m-%d 05:%M:%S'),
                 'backups_path': os.path.join(
                     self.instance_id.backups_path, self.name),
@@ -1309,16 +1311,18 @@ class database(models.Model):
         modules = ['auth_server_admin_passwd_passkey', 'mail']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_("You can not configure catchall if module '%s'\
-                     is not installed in the database") % (module))
+                raise Warning(_(
+                    "You can not configure catchall if module '%s'"
+                    " is not installed in the database") % (module))
         if not self.local_alias:
-            raise Warning(_("You can not configure catchall if Local Alias is\
-                not set. Probably this is because Mailgate File was not\
-                found"))
+            raise Warning(_(
+                "You can not configure catchall if Local Alias is "
+                "not set. Probably this is because Mailgate File was not "
+                "found"))
         if not exists(self.mailgate_path, use_sudo=True):
             raise Warning(_(
-                "Mailgate file was not found on mailgate path '%s' base path\
-                found for mail module") % (
+                "Mailgate file was not found on mailgate path '%s' base path "
+                "found for mail module") % (
                 self.mailgate_path))
         # Configure domain_alias on databas
         client.model('ir.config_parameter').set_param(

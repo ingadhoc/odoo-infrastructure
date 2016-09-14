@@ -90,5 +90,5 @@ class database(models.Model):
             self._cr.dbname,
             server_host,
             self.contract_id.id,
-            ]]
+        ]]
         client.model('support.contract').load(imp_fields, rows)

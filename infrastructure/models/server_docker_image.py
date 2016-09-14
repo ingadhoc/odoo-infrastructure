@@ -20,13 +20,13 @@ class server_docker_image(models.Model):
         'infrastructure.docker_image',
         'Docker Image',
         required=True,
-        )
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         'Server',
         required=True,
         ondelete='cascade',
-        )
+    )
 
     _sql_constraints = [
         ('image_uniq', 'unique(docker_image_id, server_id)',

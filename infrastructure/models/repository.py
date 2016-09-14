@@ -74,4 +74,4 @@ class repository(models.Model):
             '/mnt/extra-addons',
             self.directory,
             self.addons_subdirectory and self.addons_subdirectory or '',
-            )
+        )

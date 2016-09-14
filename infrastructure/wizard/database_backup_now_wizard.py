@@ -25,17 +25,17 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
         'Backup Format',
         default='zip',
         required=True,
-        )
+    )
     name = fields.Char(
         string='Name',
         required=True,
-        )
+    )
     keep_till_date = fields.Date(
         'Keep Till Date',
         help="Only for manual backups, if not date is configured then backup "
         "won't be deleted.",
         default=get_default_keep_till_date,
-        )
+    )
 
     @api.multi
     def confirm(self):
@@ -50,4 +50,4 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
             name=name,
             keep_till_date=self.keep_till_date,
             backup_format=self.backup_format
-            )
+        )

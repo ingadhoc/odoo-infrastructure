@@ -17,11 +17,11 @@ class database(models.Model):
         'project.issue',
         'database_id',
         string='Issues',
-        )
+    )
     issue_count = fields.Integer(
         string='# Issues',
         compute='_get_issues',
-        )
+    )
 
     @api.one
     @api.depends('issue_ids')

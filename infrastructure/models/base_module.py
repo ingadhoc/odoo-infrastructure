@@ -15,14 +15,14 @@ class base_module(models.Model):
     name = fields.Char(
         'Name',
         required=True,
-        )
+    )
     shortdesc = fields.Char(
         'Module Name',
-        )
+    )
     author = fields.Char(
         'Author',
-        )
+    )
     sequence = fields.Integer(
         'Sequence',
         default=10,
-        )
+    )

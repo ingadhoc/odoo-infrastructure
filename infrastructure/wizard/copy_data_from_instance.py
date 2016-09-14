@@ -20,21 +20,21 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
         'infrastructure.instance',
         'Source Instance',
         required=True,
-        domain="[('server_id','=',server_id),\
-        ('id','!=',target_instance_id),('state', '=', 'active')]",
-        )
+        domain="[('server_id','=',server_id),"
+        "('id','!=',target_instance_id),('state', '=', 'active')]",
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         'Server',
         compute='get_server_and_source_instance',
-        )
+    )
     target_instance_id = fields.Many2one(
         'infrastructure.instance',
         'Target Instance',
         readonly=True,
         required=True,
         default=get_target_instance,
-        )
+    )
 
     @api.one
     @api.depends('target_instance_id')

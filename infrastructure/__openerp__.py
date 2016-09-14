@@ -19,9 +19,8 @@
 #
 ##############################################################################
 {
-    'name': 'Infrastructure',
+    'name': 'Odoo Infrastructure Management',
     'version': '8.0.0.25.0',
-    'description': 'Infrastructure Management',
     'category': 'base.module_category_knowledge_management',
     'author': 'ADHOC SA',
     'website': 'www.adhoc.com.ar',

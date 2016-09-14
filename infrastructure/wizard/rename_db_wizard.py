@@ -26,7 +26,7 @@ class infrastructure_rename_db_name(models.TransientModel):
     # def onchange_database_type_id(self):
     #     if self.database_type_id:
     #         self.name = self.database_type_id.prefix + '_'
-            # TODO send suggested backup data
+    # TODO send suggested backup data
 
     @api.multi
     def action_confirm(self):

@@ -17,51 +17,51 @@ class instance_host(models.Model):
         'infrastructure.server_hostname',
         string='Server Hostname',
         required=True
-        )
+    )
     subdomain = fields.Char(
         string='Subdomain'
-        )
+    )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='instance_id',
         ondelete='cascade',
         required=True
-        )
+    )
     redirect_page = fields.Char(
         'Redirect Page'
     )
     prefix = fields.Char(
         'Prefix',
         required=False,
-        )
+    )
     name = fields.Char(
         'Name',
         compute='get_name',
         store=True,
-        )
+    )
     partner_id = fields.Many2one(
         'res.partner',
         related='instance_id.environment_id.partner_id',
         readonly=True,
-        )
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
         related='instance_id.environment_id.server_id',
         store=True,
         readonly=True
-        )
+    )
     type = fields.Selection(
         [('main', 'Main'),
          ('redirect_to_main', 'Redirect To Main'),
          ('other', 'Other')],
         string='Main?',
         default='main',
-        )
+    )
     wildcard = fields.Boolean(
         string='Wildcard',
         related='server_hostname_id.wildcard'
-        )
+    )
 
     _sql_constraints = [
         ('name_uniq', 'unique(name, server_id)',
@@ -98,7 +98,7 @@ class instance_host(models.Model):
                 'infrastructure.server_hostname'].search([
                     ('server_id', '=', self.server_id.id),
                     ('partner_id', '=', self.partner_id.id),
-                    ],
+                ],
                     limit=1)
             if not server_hostname:
                 server_hostname = self.env[

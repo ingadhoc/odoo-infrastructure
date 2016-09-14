@@ -17,17 +17,17 @@ class odoo_version(models.Model):
         # _odoo_versions_,
         string='Name',
         required=True
-        )
+    )
     sequence = fields.Integer(
         string='Sequence',
         default=10,
-        )
+    )
     default_branch_id = fields.Many2one(
         'infrastructure.repository_branch',
         string='Default Branch',
         required=True
-        )
+    )
     sufix = fields.Char(
         string='Sufix',
         required=True
-        )
+    )

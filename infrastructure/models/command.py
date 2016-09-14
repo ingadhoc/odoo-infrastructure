@@ -18,12 +18,12 @@ class command(models.Model):
     sequence = fields.Integer(
         string='sequence',
         default=10,
-        )
+    )
     name = fields.Char(
         string='Name',
         required=True
-        )
+    )
     command = fields.Text(
         string='Command',
         required=True
-        )
+    )
