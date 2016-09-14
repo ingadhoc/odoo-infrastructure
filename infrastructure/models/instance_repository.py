@@ -26,48 +26,48 @@ class instance_repository(models.Model):
         'infrastructure.repository',
         string='Repository',
         required=True
-        )
+    )
     sequence = fields.Integer(
         related='repository_id.sequence',
         store=True,
-        )
+    )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
         related='instance_id.sources_from_id',
         string='Source Instance',
-        )
+    )
     branch_id = fields.Many2one(
         'infrastructure.repository_branch',
         string='Specific Branch',
         required=True
-        )
+    )
     branch_ids = fields.Many2one(
         'infrastructure.repository_branch',
         string='branch_ids',
         readonly=True
-        )
+    )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
         ondelete='cascade',
         required=True
-        )
+    )
     branch_ids = fields.Many2many(
         'infrastructure.repository_branch',
         string='Branches',
         related='repository_id.branch_ids',
         readonly=True
-        )
+    )
     actual_commit = fields.Char(
         string='Actual Commit',
         readonly=True,
         # copy=False, # lo desactivamos porque en el unico caso en que se copia
         # es en el duplicate de instance y queremos que se copie
-        )
+    )
     path = fields.Char(
         string='Path',
         compute='get_path'
-        )
+    )
 
     _sql_constraints = [
         ('repository_uniq', 'unique(repository_id, instance_id)',
@@ -78,9 +78,9 @@ class instance_repository(models.Model):
     @api.depends('instance_id.sources_path', 'repository_id.directory')
     def get_path(self):
         self.path = os.path.join(
-                self.instance_id.sources_path,
-                self.repository_id.directory
-                )
+            self.instance_id.sources_path,
+            self.repository_id.directory
+        )
 
     @api.onchange('repository_id')
     def change_repository(self):
@@ -95,8 +95,8 @@ class instance_repository(models.Model):
     def unlink(self):
         if self.actual_commit:
             raise Warning(_(
-                'You cannot delete a repository that has Actual Commit\
-                You should first delete it with the delete button.'))
+                'You cannot delete a repository that has Actual Commit '
+                'You should first delete it with the delete button.'))
         return super(instance_repository, self).unlink()
 
     @api.multi
@@ -113,8 +113,9 @@ class instance_repository(models.Model):
                 self.path, recursive=True, use_sudo=True)
             self.actual_commit = False
         except Exception, e:
-            raise Warning(_('Error Removing Folder %s. This is what we get:\
-                \n%s' % (self.path, e)))
+            raise Warning(_(
+                'Error Removing Folder %s. This is what we get:\n'
+                '%s' % (self.path, e)))
 
     @api.multi
     def action_pull_source_and_active(self):
@@ -123,15 +124,16 @@ class instance_repository(models.Model):
         active one."""
         self.ensure_one()
         if not self.sources_from_id:
-            raise Warning(_('this method must be call from a repository that\
-                belongs to an instance with Other Instance Repositories'))
+            raise Warning(_(
+                'this method must be call from a repository that '
+                'belongs to an instance with Other Instance Repositories'))
         _logger.info(
             "Searching source repository for repo %s and instance %s" % (
                 self.repository_id.name, self.instance_id.name))
         source_repository = self.search([
             ('repository_id', '=', self.repository_id.id),
             ('instance_id', '=', self.sources_from_id.id),
-            ], limit=1)
+        ], limit=1)
         if not source_repository:
             raise Warning(_(
                 'Source repository not found for %s on instance %s') % (
@@ -156,7 +158,7 @@ class instance_repository(models.Model):
             source_repository = self.search([
                 ('repository_id', '=', self.repository_id.id),
                 ('instance_id', '=', self.sources_from_id.id),
-                ], limit=1)
+            ], limit=1)
             if not source_repository:
                 raise Warning(_(
                     'Source repository not found for %s on instance %s') % (
@@ -175,7 +177,7 @@ class instance_repository(models.Model):
             remote_url = os.path.join(
                 self.sources_from_id.sources_path,
                 self.repository_id.directory
-                )
+            )
         else:
             remote_url = self.repository_id.url
             actual_commit = fields.Datetime.to_string(
@@ -188,11 +190,12 @@ class instance_repository(models.Model):
                 path=path,
                 branch=self.branch_id.name,
                 update=update,
-                )
+            )
             self._cr.commit()
         except Exception, e:
-            raise Warning(_('Error pulling git repository. This is what we get:\
-                \n%s' % e))
+            raise Warning(_(
+                'Error pulling git repository. This is what we get:\n'
+                '%s' % e))
 
         # por ahora lo usamos para chequear que ya se descargo
         self.actual_commit = actual_commit

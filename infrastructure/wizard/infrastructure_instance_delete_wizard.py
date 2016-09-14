@@ -23,14 +23,14 @@ class infrastructure_instance_delete_wizard(models.TransientModel):
         readonly=True,
         required=True,
         ondelete='cascade',
-        )
+    )
     advance_type = fields.Selection(
         related='instance_id.database_type_id.type',
         readonly=True,
-        )
+    )
     instance_name_check = fields.Char(
         'Instance full name',
-        )
+    )
 
     @api.multi
     def confirm(self):

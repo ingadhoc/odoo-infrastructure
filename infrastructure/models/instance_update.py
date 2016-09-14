@@ -17,27 +17,27 @@ class infrastructure_instance_update(models.Model):
     run_after = fields.Datetime(
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     date = fields.Date(
         required=True,
         default=fields.Date.context_today,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     pull_source_and_active = fields.Boolean(
         help='Pool source and active repositories when available?',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     uninstall_modules = fields.Boolean(
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     name = fields.Char(
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     detail_ids = fields.One2many(
         'infrastructure.instance.update.detail',
         'update_id',
@@ -46,8 +46,8 @@ class infrastructure_instance_update(models.Model):
         states={
             'draft': [('readonly', False)],
             'to_review': [('readonly', False)],
-            },
-        )
+        },
+    )
     user_id = fields.Many2one(
         'res.users',
         string='User',
@@ -55,11 +55,11 @@ class infrastructure_instance_update(models.Model):
         default=lambda self: self.env.user,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     notify_email = fields.Char(
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     # TODO agregar funcionalidad
     # update_odoo_docker_image = fields.Boolean(
     #     'Update Odoo Docker Image?'
@@ -71,14 +71,14 @@ class infrastructure_instance_update(models.Model):
         string='Repositories',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     state = fields.Selection([
         ('draft', 'Draft'), ('to_run', 'To Run'), ('to_review', 'To Review'),
         ('done', 'Done'), ('cancel', 'Cancel')],
         readonly=True,
         required=True,
         default='draft',
-        )
+    )
 
     @api.onchange('user_id')
     def change_user(self):
@@ -105,10 +105,10 @@ class infrastructure_instance_update(models.Model):
     @api.model
     def cron_instance_update(self):
         instances_to_update = self.search([
-                ('state', '=', 'to_run'),
-                '|', ('run_after', '=', False),
-                ('run_after', '<=', fields.Datetime.now())
-            ])
+            ('state', '=', 'to_run'),
+            '|', ('run_after', '=', False),
+            ('run_after', '<=', fields.Datetime.now())
+        ])
         for record in instances_to_update:
             record.update(True)
             record.state = 'to_review'
@@ -133,7 +133,7 @@ class infrastructure_instance_update(models.Model):
                     'infrastructure.instance_repository'].search([
                         ('repository_id', '=', repository.id),
                         ('instance_id', '=', instance.id),
-                        ], limit=1)
+                    ], limit=1)
                 if instance_repo:
                     try:
                         if (
@@ -149,7 +149,7 @@ class infrastructure_instance_update(models.Model):
                             'instance %s (%s), repository %s (%s)' % (
                                 instance.name, instance.id,
                                 repository.name, repository.id
-                                ),
+                            ),
                             e)
                         _logger.warning(error_msg)
                         errors.append(error_msg)
@@ -198,7 +198,7 @@ class infrastructure_instance_update(models.Model):
                     use_from_instances.mapped('name'),
                     all_instances.mapped('database_ids.name'),
                     errors
-                    ))
+                ))
             # self.message_post(
             #     body='result,
             #     subject='Result for instance %s (id: %s)' % (
@@ -207,7 +207,7 @@ class infrastructure_instance_update(models.Model):
             detail.write({
                 'state': errors and 'error' or 'done',
                 'result': result,
-                })
+            })
 
             if commit:
                 self._cr.commit()
@@ -228,27 +228,27 @@ class infrastructure_instance_update_detail(models.Model):
         'Update',
         required=True,
         ondelete='cascade'
-        )
+    )
     server_id = fields.Many2one(
         related='instance_id.server_id',
         readonly=True,
-        )
+    )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         'Instance',
         required=True,
         ondelete='cascade'
-        )
+    )
     state = fields.Selection([
         ('to_run', 'To Run'),
         ('done', 'Done'),
         ('error', 'Error')],
         required=True,
         default='to_run',
-        )
+    )
     result = fields.Html(
         readonly=True,
-        )
+    )
 
     @api.multi
     def view_result(self):

@@ -45,7 +45,7 @@ class database_backup(models.Model):
         compute='get_backup_cmd',
         string='Get Backup',
         help='Command to run on terminal and get backup to local path',
-        )
+    )
     full_path = fields.Char(
         string='Path',
         compute='get_full_path',
@@ -68,17 +68,16 @@ class database_backup(models.Model):
                     self.name))
             client.model('db.database.backup').unlink(remote_ids)
         except Exception, e:
-                raise Warning(_('Could not delete backup!\
-                    This is what we get %s' % e))
+            raise Warning(_(
+                'Could not delete backup! This is what we get %s' % e))
         # return self.database_id.update_backups_data()
         # # return self.unlink()
 
     @api.multi
     def get_backup_msg(self):
         self.ensure_one()
-        raise Warning(_('Run on your terminal:\n\
-            %s\n\
-            Password: %s') % (
+        raise Warning(_(
+            'Run on your terminal:\n%s\nPassword: %s') % (
             self.backup_cmd,
             self.database_id.server_id.password))
 
@@ -115,6 +114,6 @@ class database_backup(models.Model):
             backups_enable,
             remote_server=remote_server,
             overwrite=overwrite,
-            )
+        )
         _logger.info('Database restored succesfully!')
         return True
