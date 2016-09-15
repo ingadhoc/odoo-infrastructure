@@ -2,7 +2,7 @@
 <openerp>
     <data noupdate="0">
         <!--Email template -->
-        <record id="email_template_update_instances_result" model="email.template">
+        <record id="email_template_update_instances_result" model="mail.template">
             <field name="name">Instances Update Result</field>
             <field name="email_from">noreply@localhost</field>
             <field name="subject">Actualizacion de instancias terminada: ${object.name|safe}</field>

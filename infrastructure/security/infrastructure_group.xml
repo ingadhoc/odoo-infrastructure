@@ -6,7 +6,6 @@
     <field name="name">Infrastructure</field>
     <field name="description">Infrastructure</field>
     <field name="sequence">1</field>
-    <field name="parent_id" ref="base.module_category_knowledge_management"/>
 </record>
 
 <record id="group_user" model="res.groups">

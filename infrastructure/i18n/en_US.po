@@ -28,7 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: infrastructure
-#: model:email.template,body_html:infrastructure.email_template_update_instances_result
+#: model:mail.template,body_html:infrastructure.email_template_update_instances_result
 msgid ""
 "\n"
 "<div style=\"font-family: 'Lucica Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; color: rgb(34, 34, 34); background-color: #FFF; \">\n"
@@ -163,7 +163,7 @@ msgid "Actual instance ids"
 msgstr ""
 
 #. module: infrastructure
-#: model:email.template,subject:infrastructure.email_template_update_instances_result
+#: model:mail.template,subject:infrastructure.email_template_update_instances_result
 msgid "Actualizacion de instancias terminada: ${object.name|safe}"
 msgstr ""
 

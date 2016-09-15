@@ -367,6 +367,7 @@ class server(models.Model):
         'infrastructure.server_configuration_command',
         string='Installation Commands',
         related="server_configuration_id.install_command_ids",
+        readonly=True,
     )
     environment_count = fields.Integer(
         string='# Environment',
