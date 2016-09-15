@@ -1,3 +1,3 @@
 id,name,sequence,default_branch_id/id,sufix
-odoo_version_80,8.0,10,inf_rep_branch_80,80
-odoo_version_90,9.0,20,inf_rep_branch_90,90
+odoo_version_80,8.0,20,inf_rep_branch_80,80
+odoo_version_90,9.0,10,inf_rep_branch_90,90
