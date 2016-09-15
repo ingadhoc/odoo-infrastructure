@@ -21,23 +21,27 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
         readonly=True,
         required=True,
         default=get_source_instance,
+        ondelete='cascade',
     )
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
         required=True,
         domain=[('state', '=', 'active')],
+        ondelete='cascade',
     )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Environment',
         required=True,
         compute='get_server',
+        ondelete='cascade',
     )
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
         string='Database Type',
         required=True,
+        ondelete='cascade',
     )
     sufix = fields.Char(
         string='Sufix',
