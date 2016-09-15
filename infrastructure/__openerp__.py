@@ -88,7 +88,7 @@
         'demo/infrastructure.repository_branch.csv',
         'demo/infrastructure.repository.csv',
         'demo/infrastructure.server_configuration.csv',
-        # 'demo/infrastructure.server_configuration_command.csv',
+        'demo/infrastructure.server_configuration_command.csv',
         'demo/infrastructure.server.csv',
         'demo/infrastructure.server_hostname.csv',
         'demo/infrastructure.odoo_version.csv',
@@ -100,6 +100,7 @@
         'demo/infrastructure.instance.csv',
         'demo/infrastructure.instance_host.csv',
         'demo/infrastructure.database.csv',
+        'demo/infrastructure.base.module.csv',
         'demo/ir_parameter_demo.xml',
     ],
 }

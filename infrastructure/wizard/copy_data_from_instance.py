@@ -20,6 +20,7 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
         'infrastructure.instance',
         'Source Instance',
         required=True,
+        ondelete='cascade',
         domain="[('server_id','=',server_id),"
         "('id','!=',target_instance_id),('state', '=', 'active')]",
     )
@@ -33,6 +34,7 @@ class infrastructure_copy_data_from_instance(osv.osv_memory):
         'Target Instance',
         readonly=True,
         required=True,
+        ondelete='cascade',
         default=get_target_instance,
     )
 
