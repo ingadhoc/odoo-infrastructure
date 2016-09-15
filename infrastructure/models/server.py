@@ -16,6 +16,7 @@ import sys
 import os
 import logging
 import psycopg2
+FABRIC_LOCKING_PARAMETER = 'fabric_lock'
 _logger = logging.getLogger(__name__)
 
 
@@ -44,8 +45,6 @@ def synchronize_on_config_parameter(env, parameter, nowait=False):
                 'Cannot synchronize access. Another process lock the parameter'
                 'This is what we get: %s' % e
             )
-
-FABRIC_LOCKING_PARAMETER = 'fabric_lock'
 
 
 # TODO deberiamos cambiar esto por los metodos propios de fabtools para
@@ -94,15 +93,15 @@ class server(models.Model):
     sequence = fields.Integer(
         'Sequence',
         default=10,
-        )
+    )
     name = fields.Char(
         string='Name',
         required=True,
-        )
+    )
     ip_address = fields.Char(
         string='IP Address',
         readonly=True,
-        )
+    )
     ssh_port = fields.Integer(
         string='SSH Port',
         required=True,
@@ -110,7 +109,7 @@ class server(models.Model):
         default=22,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     smtp_port = fields.Integer(
         string='SMTP Port',
         help='Port used for incoming emails',
@@ -118,7 +117,7 @@ class server(models.Model):
         default=25,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     http_port = fields.Integer(
         string='HTTP Port',
         required=True,
@@ -126,7 +125,7 @@ class server(models.Model):
         help='Port used to access odoo via web browser',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     https_port = fields.Integer(
         string='HTTPS Port',
         required=True,
@@ -134,35 +133,35 @@ class server(models.Model):
         help='Port used to access odoo via web browser over ssl',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     main_hostname = fields.Char(
         string='Main Hostname',
         required=True,
-        )
+    )
     user_name = fields.Char(
         string='User Name',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     number_of_processors = fields.Integer(
         string='Number of Processors',
         readonly=True,
-        help="This is used to suggest instance workers qty, you can get this\
-        information with: grep processor /proc/cpuinfo | wc -l",
-        )
+        help="This is used to suggest instance workers qty, you can get this "
+        "information with: grep processor /proc/cpuinfo | wc -l",
+    )
     password = fields.Char(
         string='Password',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     server_use_type = fields.Selection(
         [('customer', 'Customer'), ('own', 'Own')],
         'Server Type',
         default='customer',
         required=True,
-        )
+    )
     holder_id = fields.Many2one(
         'res.partner',
         string='Holder',
@@ -170,209 +169,209 @@ class server(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
         help='Partner that you should contact related to server service.',
-        )
+    )
     owner_id = fields.Many2one(
         'res.partner',
         string='Owner',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        help='Owner of the server, the one you should contacto to make\
-        changes on, for example, hardware.'
-        )
+        help='Owner of the server, the one you should contacto to make '
+        'changes on, for example, hardware.'
+    )
     used_by_id = fields.Many2one(
         'res.partner',
         string='Used By',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        help='Partner that can contact you and ask for changes on server\
-        configuration'
-        )
+        help='Partner that can contact you and ask for changes on server '
+        'configuration'
+    )
     database_ids = fields.One2many(
         'infrastructure.database',
         'server_id',
         string='Databases',
         # domain=[('state', '!=', 'cancel')],
-        )
+    )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases',
-        )
+    )
     instance_ids = fields.One2many(
         'infrastructure.instance',
         'server_id',
         string='Databases',
         # domain=[('state', '!=', 'cancel')],
-        )
+    )
     instance_count = fields.Integer(
         string='# Instances',
         compute='_get_instances',
-        )
+    )
     note = fields.Html(
         string='Note',
-        )
+    )
     base_path = fields.Char(
         string='Base path',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo',
-        )
+    )
     ssl_path = fields.Char(
         string='SSL path',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/ssl',
-        )
+    )
     afip_homo_pkey_file = fields.Char(
         string='AFIP homo pkey file',
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/backups/homo.pkey',
-        )
+    )
     afip_prod_pkey_file = fields.Char(
         string='AFIP prod pkey file',
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/backups/prod.pkey',
-        )
+    )
     afip_homo_cert_file = fields.Char(
         string='AFIP homo cert file',
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/backups/homo.cert',
-        )
+    )
     afip_prod_cert_file = fields.Char(
         string='AFIP prod cert file',
         readonly=True,
         states={'draft': [('readonly', False)]},
         default='/opt/odoo/backups/prod.cert',
-        )
+    )
     afip_prod_cert_content = fields.Text(
         string='AFIP prod cert Content',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     afip_homo_cert_content = fields.Text(
         string='AFIP homo cert Content',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     afip_prod_pkey_content = fields.Text(
         string='AFIP prod pkey Content',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     afip_homo_pkey_content = fields.Text(
         string='AFIP homo pkey Content',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     backups_path = fields.Char(
         string='Backups Path',
         readonly=True,
         required=True,
         default='/opt/odoo/backups',
         states={'draft': [('readonly', False)]},
-        )
+    )
     syncked_backups_path = fields.Char(
         string='Syncked Backups Path',
         readonly=True,
         required=True,
         default='/opt/odoo/backups/syncked',
         states={'draft': [('readonly', False)]},
-        )
+    )
     mailgate_file = fields.Char(
         string='Mailgate File',
         readonly=True,
-        help='Mailgate File is Copided to Server and Computed when installing\
-        postfix'
-        )
+        help='Mailgate File is Copided to Server and Computed when installing '
+        'postfix'
+    )
     color = fields.Integer(
         string='Color Index',
         compute='get_color',
-        )
+    )
     nginx_log_path = fields.Char(
         string='Nginx Log Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/var/log/nginx',
-        )
+    )
     nginx_sites_path = fields.Char(
         string='Nginx Sites Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/sites-enabled',
-        )
+    )
     nginx_sites_path = fields.Char(
         string='Nginx Sites Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/nginx/sites-enabled',
-        )
+    )
     gdrive_account = fields.Char(
         string='Gdrive Account',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     gdrive_passw = fields.Char(
         string='Gdrive Password',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     gdrive_space = fields.Char(
         string='Gdrive Space',
-        )
+    )
     requires_vpn = fields.Boolean(
         string='Requires VPN?',
-        )
+    )
     state = fields.Selection(
         _states_,
         string="State",
         default='draft',
-        )
+    )
     server_docker_image_ids = fields.One2many(
         'infrastructure.server_docker_image',
         'server_id',
         string='Docker Images',
-        )
+    )
     hostname_ids = fields.One2many(
         'infrastructure.server_hostname',
         'server_id',
         string='Hostnames',
-        )
+    )
     change_ids = fields.One2many(
         'infrastructure.server_change',
         'server_id',
         string='Changes',
-        )
+    )
     environment_ids = fields.One2many(
         'infrastructure.environment',
         'server_id',
         string='Environments',
         # domain=[('state', '!=', 'cancel')],
         context={'from_server': True},
-        )
+    )
     server_configuration_id = fields.Many2one(
         'infrastructure.server_configuration',
         string='Server Config.',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     install_command_ids = fields.One2many(
         'infrastructure.server_configuration_command',
         string='Installation Commands',
         related="server_configuration_id.install_command_ids",
-        )
+    )
     environment_count = fields.Integer(
         string='# Environment',
         compute='_get_environments',
-        )
+    )
     local_alias_path = fields.Char(
         string='Local Aliases Path',
         help='Local Alias Path For Catch All Configuration',
@@ -380,7 +379,7 @@ class server(models.Model):
         required=True,
         states={'draft': [('readonly', False)]},
         default='/etc/aliases',
-        )
+    )
     virtual_alias_path = fields.Char(
         string='Virtual Aliases Path',
         readonly=True,
@@ -388,7 +387,7 @@ class server(models.Model):
         help='Virtual Alias Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
         default='/etc/postfix/virtual_aliases',
-        )
+    )
     virtual_domains_regex_path = fields.Char(
         string='Virtual Domain Regex Path',
         readonly=True,
@@ -396,12 +395,12 @@ class server(models.Model):
         help='Virtual Domain Regex Path For Postfix Catch All Configuration',
         states={'draft': [('readonly', False)]},
         default='/etc/postfix/virtual_domains_regex',
-        )
+    )
     postfix_hostname = fields.Char(
         string='Postfix Hostname',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
 
     _sql_constraints = [
         ('name_uniq', 'unique(name)',
@@ -480,7 +479,7 @@ class server(models.Model):
                 'technical support )\n'
                 '* You can try opening port with %s (if not ok then it should '
                 'be a redirection issue of port %s to the server, ask '
-                'customer to check port %s is open and redirected to server)\n '
+                'customer to check port %s is open and redirected to server)\n'
             ) % (
                 port,
                 self.main_hostname, port,
@@ -488,7 +487,7 @@ class server(models.Model):
                 "telnet localhost :%s" % port,
                 "sudo ufw allow %s/tcp" % port,
                 port, port,
-                ))
+            ))
         else:
             _logger.info("Connection to port %s successfully established")
         return True
@@ -501,10 +500,12 @@ class server(models.Model):
         server_conf_codename = self.server_configuration_id.distrib_codename
         self.ip_address = socket.gethostbyname(self.main_hostname)
         if server_codename != server_conf_codename:
-            raise Warning(_("Server Codename is not the and Server configuration mismatch\n\
-                * Server Codename: %s\n\
-                * Server Configuration Codename: %s\n\
-                ") % (server_codename, server_conf_codename))
+            raise Warning(_(
+                "Server Codename is not the and Server configuration "
+                "mismatch\n"
+                "* Server Codename: %s\n"
+                "* Server Configuration Codename: %s") % (
+                server_codename, server_conf_codename))
         self.number_of_processors = fabtools.system.cpus()
         self.add_images()
         self.action_to_install()
@@ -544,7 +545,7 @@ class server(models.Model):
             x.docker_image_id.id for x in self.server_docker_image_ids]
         images = self.env['infrastructure.docker_image'].search([
             ('id', 'not in', actual_docker_images),
-            ])
+        ])
         for image in images:
             vals = {
                 'docker_image_id': image.id,
@@ -579,7 +580,7 @@ class server(models.Model):
         raise except_orm(
             _("Password for user '%s':") % self.user_name,
             _("%s") % self.password
-            )
+        )
 
     @api.multi
     def show_gdrive_passwd(self):
@@ -587,15 +588,15 @@ class server(models.Model):
         raise except_orm(
             _("Password for user '%s':") % self.gdrive_account,
             _("%s") % self.gdrive_passw
-            )
+        )
 
     @api.multi
     def configure_gdrive_sync(self):
         self.get_env()
         if not self.gdrive_account or not self.gdrive_passw:
             raise Warning(_(
-                'To configure google drive sync you need to set account and\
-                password'))
+                'To configure google drive sync you need to set account and '
+                'password'))
         fabtools.require.deb.ppa('ppa:twodopeshaggy/drive')
         fabtools.require.deb.package('drive')
         fabtools.require.files.directory(
@@ -606,12 +607,12 @@ class server(models.Model):
             'root',
             'drive push -quiet -ignore-conflict=true %s' % (
                 self.syncked_backups_path))
-        raise Warning(_('Please log in into the server and run:\n\
-            "sudo drive init %s"\n\
-            Follow onscreen steps\
-            ') % (
+        raise Warning(_(
+            'Please log in into the server and run:\n'
+            'sudo drive init %s\n'
+            'Follow onscreen steps') % (
             self.syncked_backups_path,
-            ))
+        ))
 
     @api.multi
     def reboot_server(self):
@@ -683,8 +684,8 @@ class server(models.Model):
                 mode=0777)
         except Exception, e:
             raise Warning(_(
-                "Can not run upload mailgate file:\n\
-                This is what we get:\n%s") % e)
+                "Can not run upload mailgate file:\n"
+                "This is what we get:\n%s") % e)
         self.mailgate_file = res and res[0] or False
 
     @api.model
@@ -759,7 +760,7 @@ class server(models.Model):
                 'default_server_id': self.id,
                 'search_default_server_id': self.id,
                 'search_default_not_inactive': 1,
-                }
+            }
         if not len(environments.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_environment_form')

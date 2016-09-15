@@ -36,33 +36,33 @@ class environment(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     name = fields.Char(
         string='Name',
         readonly=True,
         required=True,
         size=16,
         states={'draft': [('readonly', False)]},
-        )
+    )
     type = fields.Selection([
         (u'docker', u'Docker'),
-        ],
+    ],
         string='Type',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
         default='docker'
-        )
+    )
     description = fields.Char(
         string='Description'
-        )
+    )
     partner_id = fields.Many2one(
         'res.partner',
         string='Partner',
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     odoo_version_id = fields.Many2one(
         'infrastructure.odoo_version',
         string='Odoo Version',
@@ -70,19 +70,19 @@ class environment(models.Model):
         readonly=True,
         default=get_odoo_version,
         states={'draft': [('readonly', False)]},
-        )
+    )
     note = fields.Html(
         string='Note'
-        )
+    )
     color = fields.Integer(
         string='Color Index',
         compute='get_color',
-        )
+    )
     state = fields.Selection(
         _states_,
         string="State",
         default='draft',
-        )
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
@@ -90,34 +90,34 @@ class environment(models.Model):
         required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     instance_ids = fields.One2many(
         'infrastructure.instance',
         'environment_id',
         string='Instances',
         context={'from_environment': True},
         # domain=[('state', '!=', 'cancel')],
-        )
+    )
     path = fields.Char(
         string='Path',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
-        )
+    )
     instance_count = fields.Integer(
         string='# Instances',
         compute='_get_instances'
-        )
+    )
     database_ids = fields.One2many(
         'infrastructure.database',
         'environment_id',
         string='Databases',
         # domain=[('state', '!=', 'cancel')],
-        )
+    )
     database_count = fields.Integer(
         string='# Databases',
         compute='_get_databases'
-        )
+    )
 
     @api.one
     @api.depends('state')
@@ -150,9 +150,9 @@ class environment(models.Model):
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(
-                _('You cannot delete a environment which is not \
-                    draft or cancelled.'))
+            raise Warning(_(
+                'You cannot delete a environment which is not draft or '
+                'cancelled.'))
         return super(environment, self).unlink()
 
     @api.onchange('server_id')
@@ -278,7 +278,7 @@ class environment(models.Model):
                 'default_environment_id': self.id,
                 'search_default_environment_id': self.id,
                 'search_default_not_inactive': 1,
-                }
+            }
         if not len(instances.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_instance_form')
@@ -306,7 +306,7 @@ class environment(models.Model):
                 'default_server_id': self.id,
                 'search_default_environment_id': self.id,
                 'search_default_not_inactive': 1,
-                }
+            }
         if not len(databases.ids) > 1:
             form_view_id = self.env['ir.model.data'].xmlid_to_res_id(
                 'infrastructure.view_infrastructure_database_form')

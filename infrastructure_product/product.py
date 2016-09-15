@@ -17,7 +17,7 @@ class product_template(models.Model):
         'product.template.module',
         'template_id',
         'Modules',
-        )
+    )
 
 
 class product_module(models.Model):

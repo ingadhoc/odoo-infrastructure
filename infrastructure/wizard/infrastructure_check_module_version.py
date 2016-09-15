@@ -15,17 +15,17 @@ class infrastructure_check_module_version_wizard(models.TransientModel):
     name = fields.Char(
         'Name',
         required=True,
-        )
+    )
     version = fields.Char(
         'Version',
         required=True,
         default='8.0.0.0.0',
-        )
+    )
     operador = fields.Char(
         'Operador',
         required=True,
         default='<',
-        )
+    )
 
     @api.multi
     def test(self):

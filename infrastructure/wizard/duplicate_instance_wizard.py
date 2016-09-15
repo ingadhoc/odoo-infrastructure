@@ -21,31 +21,35 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
         readonly=True,
         required=True,
         default=get_source_instance,
-        )
+        ondelete='cascade',
+    )
     environment_id = fields.Many2one(
         'infrastructure.environment',
         string='Environment',
         required=True,
         domain=[('state', '=', 'active')],
-        )
+        ondelete='cascade',
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Environment',
         required=True,
         compute='get_server',
-        )
+        ondelete='cascade',
+    )
     database_type_id = fields.Many2one(
         'infrastructure.database_type',
         string='Database Type',
         required=True,
-        )
+        ondelete='cascade',
+    )
     sufix = fields.Char(
         string='Sufix',
-        )
+    )
     number = fields.Integer(
         string='Number',
         required=True
-        )
+    )
 
     @api.depends('source_instance_id')
     def get_server(self):
@@ -54,14 +58,14 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
         instances = self.env['infrastructure.instance'].search(
             [('environment_id', '=', self.environment_id.id)],
             order='number desc',
-            )
+        )
         actual_db_type_ids = [x.database_type_id.id for x in instances]
         self.number = instances and instances[0].number + 1 or 1
         self.database_type_id = self.env[
             'infrastructure.database_type'].search(
                 [('id', 'not in', actual_db_type_ids)],
                 limit=1
-                )
+        )
 
     @api.multi
     def action_confirm(self):

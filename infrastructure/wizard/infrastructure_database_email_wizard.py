@@ -4,8 +4,8 @@
 # directory
 ##############################################################################
 
-from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp import fields, api, models
+# from openerp.exceptions import Warning
 
 
 class infrastructure_database_email_wizard(models.TransientModel):
@@ -21,10 +21,10 @@ class infrastructure_database_email_wizard(models.TransientModel):
         ('db_related_contacts', 'DB Related Contacts'),
         # ('contract_followers', 'Contract Followers'),
         # ('contract_followers', 'Contract Followers'),
-        ],
+    ],
         string='Database Email CC',
         required=False,
-        )
+    )
 
     @api.multi
     def send_mail(self):

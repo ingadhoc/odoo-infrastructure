@@ -23,14 +23,14 @@ class infrastructure_database_drop_wizard(models.TransientModel):
         readonly=True,
         required=True,
         ondelete='cascade',
-        )
+    )
     advance_type = fields.Selection(
         related='database_id.advance_type',
         readonly=True,
-        )
+    )
     db_name_check = fields.Char(
         'Database full name',
-        )
+    )
 
     @api.multi
     def confirm(self):

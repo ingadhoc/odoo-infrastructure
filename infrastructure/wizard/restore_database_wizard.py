@@ -29,15 +29,15 @@ class infrastructure_restore_database_wizard(models.TransientModel):
         [('overwrite', 'Overwrite Database'), ('new', 'New Database')],
         required=True,
         default='new',
-        )
+    )
     target_db_name_check = fields.Char(
         'Database full name',
-        )
+    )
     target_advance_type = fields.Selection(
         related='target_database_id.advance_type',
         string='Type',
         readonly=True,
-        )
+    )
     database_backup_id = fields.Many2one(
         'infrastructure.database.backup',
         string='Dump File',
@@ -67,7 +67,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
     new_db_name = fields.Char(
         string='New db Name',
         # required=True
-        )
+    )
     backups_enable = fields.Boolean(
         'Backups Enable on new DB?'
     )
@@ -113,7 +113,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
                 'issue_date': fields.Date.today(),
                 # 'database_type_id': database_type.id,
                 'instance_id': instance.id,
-                })
+            })
         database.action_activate()
 
         # we run it because it is not enaught what database_tools does with

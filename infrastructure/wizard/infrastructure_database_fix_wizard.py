@@ -4,10 +4,10 @@
 # directory
 ##############################################################################
 
-from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp import fields, api, models
+# from openerp.exceptions import Warning
 from openerp.addons.infrastructure.models.database import _update_state_vals
-from ast import literal_eval
+# from ast import literal_eval
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -24,29 +24,29 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         _update_state_vals,
         'Update Status',
         compute='get_data',
-        )
+    )
     update_state_detail = fields.Text(
         'Update Status Detail',
         compute='get_data',
-        )
+    )
     init_and_conf_required = fields.Text(
         string='Init and Config Required Modules',
         compute='get_data',
         help='Sometimes, modules on this state need adittional configurations'
         ' or others modules to be installed manually. Check module changes.'
-        )
+    )
     modules_to_update = fields.Char(
         string='Modules To Update',
         compute='get_data',
-        )
+    )
     modules_to_install = fields.Char(
         string='Modules To Install',
         compute='get_data',
-        )
+    )
     modules_to_remove = fields.Char(
         string='Modules To Remove',
         compute='get_data',
-        )
+    )
     database_id = fields.Many2one(
         'infrastructure.database',
         string='Database',
@@ -54,7 +54,7 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         readonly=True,
         ondelete='cascade',
         required=True,
-        )
+    )
 
     @api.onchange('database_id')
     def get_data(self):

@@ -19,11 +19,12 @@ class instance_update_add_instances(models.TransientModel):
         'Update',
         default=get_update,
         required=True,
-        )
+        ondelete='cascade',
+    )
     actual_instance_ids = fields.Many2many(
         'infrastructure.instance',
         compute='get_actual_instances',
-        )
+    )
     instance_ids = fields.Many2many(
         'infrastructure.instance',
         string='Instances',

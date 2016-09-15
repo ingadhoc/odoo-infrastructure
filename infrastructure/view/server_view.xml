@@ -100,7 +100,7 @@
                             <button name="action_test_connection"
                                 string="⇒ Test Connection"
                                 type="object"
-                                class="oe_link oe_read_only"/>
+                                class="oe_link"/>
                         </div>
                         <field name="user_name"/>
                         <label for="password"/>

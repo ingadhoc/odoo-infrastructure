@@ -16,22 +16,22 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
     new_db_name = fields.Char(
         string='New db Name',
         required=True
-        )
+    )
     change_user = fields.Boolean(
         string='Change Instance?'
-        )
+    )
     server_id = fields.Many2one(
         'infrastructure.server',
         string='Server',
-        )
+    )
     instance_id = fields.Many2one(
         'infrastructure.instance',
         string='Instance',
         domain=[('state', '=', 'active')],
-        )
+    )
     backups_enable = fields.Boolean(
         'Backups Enable on new DB?'
-        )
+    )
     # database_type_id = fields.Many2one(
     #     'infrastructure.database_type',
     #     string='Database Type',
@@ -43,7 +43,7 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
     # def onchange_database_type_id(self):
     #     if self.database_type_id:
     #         self.new_db_name = self.database_type_id.prefix + '_'
-            # TODO send suggested backup data
+    # TODO send suggested backup data
 
     @api.one
     def duplicate_db(self):

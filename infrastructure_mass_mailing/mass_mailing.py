@@ -20,9 +20,9 @@ class MassMailing(models.Model):
         ('db_related_contacts', 'DB Related Contacts'),
         # ('contract_followers', 'Contract Followers'),
         # ('contract_followers', 'Contract Followers'),
-        ],
+    ],
         string='Database Email CC',
-        )
+    )
 
     @api.multi
     def send_mail(self):
@@ -31,7 +31,7 @@ class MassMailing(models.Model):
                 super(MassMailing, self.with_context(
                     # database_email_cc=record.database_email_cc,
                     default_database_email_cc=record.database_email_cc,
-                    )).send_mail()
+                )).send_mail()
             else:
                 super(MassMailing, self).send_mail()
         return True

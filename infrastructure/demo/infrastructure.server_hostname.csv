@@ -1,4 +1,8 @@
 id,name,server_id/id,wildcard,domain_regex
-inf_server_host_1012,localhost:1012,inf_server_srv01,False,/[@.]localhost:1012$/
 inf_server_host_8069,localhost:8069,inf_server_srv01,False,/[@.]localhost:8069$/
-inf_server_host_9069,localhost:9069,inf_server_srv01,False,/[@.]localhost:9069$/
+inf_server_host1_test,local1-test,inf_server_srv01,False,/(.*)local1-test$/
+inf_server_host1_prod,local1-prod,inf_server_srv01,False,/(.*)local1-prod$/
+inf_server_host1_train,local1-train,inf_server_srv01,False,/(.*)local1-train$/
+inf_server_host2_test,local2-test,inf_server_srv01,False,/(.*)local2-test$/
+inf_server_host2_prod,local2-prod,inf_server_srv01,False,/(.*)local2-prod$/
+inf_server_host2_train,local2-train,inf_server_srv01,False,/(.*)local2-train$/
