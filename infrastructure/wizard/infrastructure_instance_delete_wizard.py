@@ -35,10 +35,11 @@ class infrastructure_instance_delete_wizard(models.TransientModel):
     @api.multi
     def confirm(self):
         self.ensure_one()
-        if (
-                self.advance_type == 'protected' and
-                self.instance_id.name != self.instance_name_check):
-            raise Warning(_('Instance name mismatch'))
-        else:
-            self = self.with_context(by_pass_protection=True)
+        # if instances is protected we can force, if db is protected it will
+        # raise and error
+        if self.advance_type == 'protected':
+            if self.instance_id.name != self.instance_name_check:
+                raise Warning(_('Instance name mismatch'))
+            else:
+                self = self.with_context(by_pass_protection=True)
         return self.instance_id.delete()

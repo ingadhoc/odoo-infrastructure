@@ -285,6 +285,7 @@
         <kanban class="oe_background_grey">
             <field name="name"/>
             <field name="main_hostname"/>
+            <field name="environment_id"/>
             <field name="color"/>
             <field name="state"/>
             <field name="database_count"/>

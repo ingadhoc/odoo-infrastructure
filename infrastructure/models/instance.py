@@ -7,6 +7,8 @@ from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, Warning
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
+import random
+import string
 import os
 import re
 import logging
@@ -598,7 +600,11 @@ class instance(models.Model):
             if self.server_id.server_use_type == 'own' and instance_admin_pass:
                 admin_pass = instance_admin_pass or self.name
             else:
-                admin_pass = self.name
+                # use random pass
+                chars = string.ascii_letters + string.digits + '!@#$%^&*()'
+                random.seed = (os.urandom(1024))
+                admin_pass = ''.join(random.choice(chars) for i in range(20))
+                # admin_pass = self.name
             self.admin_pass = admin_pass
             self.db_filter = self.database_type_id.db_filter
             self.service_type = self.database_type_id.service_type
@@ -850,14 +856,28 @@ class instance(models.Model):
         self.data_dir = data_dir
 
 # Actions
+    @api.one
+    def check_protection(self):
+        """
+        Generic function used to ask if we can delete or overwrite an instance
+        if by_pass_protection is sent in context, then, no checks are done
+        """
+        if self._context.get('by_pass_protection', False):
+            return True
+        if self.advance_type == 'protected':
+            raise Warning(_(
+                'Action Forbiden! Instance is protected! '
+                'You can change type.'))
+        protected_dbs = self.database_ids.filtered('protected')
+        if protected_dbs:
+            raise Warning(_(
+                'Action Forbiden! Databases %s are protected!' % (
+                    protected_dbs.ids)))
+
     @api.multi
     def delete(self):
         _logger.info("Deleting Instance")
-        by_pass_protection = self._context.get('by_pass_protection', False)
-        if self.advance_type == 'protected' and not by_pass_protection:
-            raise Warning(_(
-                'You can not delete an instance that is of type protected,'
-                ' you can change type, or drop it manually'))
+        self.check_protection()
         self.database_ids.action_cancel()
         self.instance_repository_ids.write({'actual_commit': False})
         self.remove_odoo_service()
@@ -1127,10 +1147,7 @@ class instance(models.Model):
     @api.one
     def copy_databases_from(self, instance):
         # TODO implement overwrite
-        if self.database_type_id.type == 'protected':
-            raise Warning(
-                'You can not replace data in a instance of type'
-                ' protected, you should do it manually or change type.')
+        self.check_protection()
         self.server_id.get_env()
         _logger.info('Copying database data from %s to %s' % (
             instance.name, self.name))
