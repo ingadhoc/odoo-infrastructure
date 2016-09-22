@@ -154,6 +154,10 @@ class server(models.Model):
         # required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
+        help='This file must be owned by adhoc-server and with 400 perm.\n'
+        'To do that, run:\n'
+        '* sudo chown syslog.netdev [file path]\n'
+        '* sudo chmod 400  [file path]\n'
     )
     password = fields.Char(
         string='Password',
