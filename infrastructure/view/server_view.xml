@@ -113,8 +113,8 @@
                                 string="⇒ View Password"
                                 type="object"
                                 class="oe_link"/>
-                        <field name="key_filename"/>
                         </div>
+                        <field name="key_filename"/>
                     </group>
                     <group>
                         <field name="server_use_type"/>
