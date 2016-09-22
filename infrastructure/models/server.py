@@ -150,6 +150,11 @@ class server(models.Model):
         help="This is used to suggest instance workers qty, you can get this "
         "information with: grep processor /proc/cpuinfo | wc -l",
     )
+    key_filename = fields.Char(
+        required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+    )
     password = fields.Char(
         string='Password',
         required=True,
@@ -459,6 +464,7 @@ class server(models.Model):
         env.password = self.password
         env.host_string = self.main_hostname
         env.port = self.ssh_port
+        env.key_filename = self.key_filename
         env.timeout = 4     # by default is 10
         return env
 
