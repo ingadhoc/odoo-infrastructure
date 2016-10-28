@@ -1204,13 +1204,18 @@ class database(models.Model):
         })
         for user in self.user_ids:
             partner = user.partner_id
-            if partner and user.login:
-                if not partner.support_uuid:
-                    partner.support_uuid = str(uuid.uuid1())
+            if user.login:
+                if partner:
+                    if not partner.support_uuid:
+                        partner.support_uuid = str(uuid.uuid1())
+                    support_uuid = partner.support_uuid
+                # if no partner we overwrite with false
+                else:
+                    support_uuid = False
                 remote_user_id = client.model('res.users').search(
                     [('login', '=', user.login)], limit=1)
                 client.model('res.users').write(remote_user_id, {
-                    'remote_partner_uuid': partner.support_uuid})
+                    'remote_partner_uuid': support_uuid})
 
     @api.multi
     def update_users_data(self):
