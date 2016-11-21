@@ -1,2 +1,2 @@
-oca-web https://github.com/OCA/web.git
+web
 ingadhoc-support https://github.com/ingadhoc/odoo-support.git
