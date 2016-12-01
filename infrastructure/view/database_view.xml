@@ -332,19 +332,25 @@
 </record>
 
 <menuitem
-    name="Databases"
     id="menu_databases"
-    sequence="40"
-    action="action_infrastructure_database_databases"
-    parent="menu_infra_main"
+    sequence="5"
+    parent="menu_infrastructure"
     groups="group_user"
     />
 
 <menuitem
     id="menu_databases_to_correct"
-    sequence="5"
+    sequence="10"
     action="action_infrastructure_databases_to_correct"
-    parent="menu_infra_main"
+    parent="menu_databases"
+    />
+
+<menuitem
+    name="All Databases"
+    id="menu_all_databases"
+    sequence="20"
+    action="action_infrastructure_database_databases"
+    parent="menu_databases"
     />
 
 <menuitem

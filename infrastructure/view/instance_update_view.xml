@@ -76,9 +76,9 @@
 
 <menuitem
     id="menu_instance_updates"
-    sequence="35"
+    sequence="50"
     action="action_infrastructure_instance_update"
-    parent="menu_infra_main"
+    parent="menu_infrastructure"
     groups="group_user"
     />
 

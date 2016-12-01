@@ -180,9 +180,9 @@
 <menuitem
     name="Environments"
     id="menu_environments"
-    sequence="20"
+    sequence="30"
     action="action_infrastructure_environment_environments"
-    parent="menu_infra_main"
+    parent="menu_infrastructure"
     groups="group_user"
     />
 

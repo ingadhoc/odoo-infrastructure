@@ -18,22 +18,6 @@
     />
 
 <menuitem
-    name="Data"
-    id="menu_data"
-    sequence="20"
-    parent="menu_infrastructure"
-    groups="group_user"
-    />
-
-<menuitem
-    name="Main"
-    id="menu_infra_main"
-    sequence="10"
-    parent="menu_infrastructure"
-    groups="group_user"
-    />
-
-<menuitem
     name="Miscellaneous"
     id="menu_miscellaneous"
     sequence="40"

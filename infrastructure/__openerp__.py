@@ -54,7 +54,6 @@
         'view/base_module_view.xml',
         'view/server_hostname_view.xml',
         'view/instance_host_view.xml',
-        'view/partner_view.xml',
         'view/mailserver_view.xml',
         'view/repository_view.xml',
         'view/odoo_version_view.xml',
