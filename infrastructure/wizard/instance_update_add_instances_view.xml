@@ -9,7 +9,7 @@
                     <group>
                         <field name="update_id" invisible="1"/>
                         <field name="actual_instance_ids" invisible="1"/>
-                        <field name="instance_ids" domain="[('state', '=', 'active'), ('id', 'not in', actual_instance_ids[0][2]), ('database_type_id.sources_type', '!=', 'use_from')]"/>
+                        <field name="instance_ids" domain="[('state', '=', 'active'), ('id', 'not in', actual_instance_ids and actual_instance_ids[0][2] or []), ('database_type_id.sources_type', '!=', 'use_from')]"/>
                     </group>
                 <footer>
                     <button name="confirm" type="object" class="oe_highlight" string="Confirm"/>

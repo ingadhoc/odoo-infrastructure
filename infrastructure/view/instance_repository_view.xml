@@ -26,7 +26,7 @@
              <group>
                 <field name="repository_id"/>
                 <field name="branch_id"
-                    domain="[('id','in',branch_ids[0][2])]"
+                    domain="[('id','in',branch_ids and branch_ids[0][2] or [])]"
                     options="{'no_create': True}"
                     />
                 <field name="branch_ids"
@@ -56,7 +56,7 @@
                 confirm="Are you sure you want to force an update of source repository and actual repository?"
                 name="action_pull_source_and_active"/>
             <field name="repository_id"/>
-            <field name="branch_id" domain="[('id','in',branch_ids[0][2])]"/>
+            <field name="branch_id" domain="[('id','in',branch_ids and branch_ids[0][2] or [])]"/>
             <field name="branch_ids" invisible="1"/>
             <field name="actual_commit"/>
             <field name="sources_from_id" invisible="1"/>
