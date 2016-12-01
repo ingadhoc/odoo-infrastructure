@@ -59,21 +59,10 @@
                     />
             </header>
             <sheet>
-                <div class="col-md-6">
-                    <h2 class="oe_inline">
-                        <field name="server_id" class="oe_inline"/> / <field name="environment_id" options="{'no_create': True}" class="oe_inline"/>
-                    </h2>
-                    <h1>
-                        <field name="database_type_id" options="{'no_create': True}" default_focus="1" placeholder="Type..."/>
-                        <field name="main_hostname" widget="url"/>
-                    </h1>
-                </div>
-                <div class="oe_right oe_button_box" name="buttons">
+                <div class="oe_button_box" name="buttons">
                     <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                         <field name="database_count" widget="statinfo"/>
                     </button>
-                </div>
-                <div class="oe_right oe_button_box" name="action_buttons">
                     <button icon="fa-sun-o" type="object" string="Create / Update" class="oe_stat_button" help="Create or update User, Config File, Service File, Start Service and add to System Start Up" name="create_instance" states="draft"/>
                     <button icon="fa-file-text-o" type="object" string="Update Conf" class="oe_stat_button" help="Update Odoo Config File" name="update_conf_file" states="draft"/>
                     <button icon="fa-link" type="object" string="Update Nginx" class="oe_stat_button" help="Update Nginx Configuration" name="update_nginx_site" states="draft"/>
@@ -81,6 +70,14 @@
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_instance_wizard)d" states="active"/>
                     <button icon="fa-trash-o" type="action" string="Delete" class="oe_stat_button" name="%(action_infrastructure_instance_delete_wizard)d" states="draft,active"/>
                 </div>
+                <h2 class="oe_inline">
+                    <field name="server_id" class="oe_inline"/> / <field name="environment_id" options="{'no_create': True}" class="oe_inline"/>
+                </h2>
+                <h1>
+                    <field name="database_type_id" options="{'no_create': True}" default_focus="1" placeholder="Type..."/>
+                    <br/>
+                    <field name="main_hostname" widget="url"/>
+                </h1>
                 <group>
                     <group>
                         <field name="sufix"/>

@@ -65,16 +65,7 @@
                     />
             </header>
             <sheet string="server">
-                <div class="col-md-6">
-                    <h1>
-                        <field name="name" placeholder="Name..."/>
-                    </h1>
-                    <h2>
-                        <field name="main_hostname" widget="url" placeholder="Main Hostname..."/>
-                        <field name="server_configuration_id" options="{'no_create': True}" placeholder="Server Configuration..."/>
-                    </h2>
-                </div>
-                <div class="oe_right oe_button_box" name="buttons">
+                <div class="oe_button_box" name="buttons">
                     <button name="action_view_environments" icon="fa-th-large" type="object" class="oe_stat_button">
                         <field name="environment_count" widget="statinfo"/>
                     </button>
@@ -84,12 +75,18 @@
                     <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                         <field name="database_count" widget="statinfo"/>
                     </button>
-                </div>
-                <div class="oe_right oe_button_box" name="action_buttons">
                     <button icon="fa-sun-o " type="object" string="Activate" class="oe_stat_button" help="Test connection, check distribution, get processors data and activate" name="get_data_and_activate" states="draft"/>
                     <button name="reboot_server" icon="fa-refresh" string="Reboot Server" class="oe_stat_button" help="Reboot Server" confirm="Are you sure you want to reboot the server?" states="to_install,active"/>
                     <button name="restart_nginx" icon="fa-refresh" string="Restart Nginx" class="oe_stat_button" help="Restart Nginx" confirm="Are you sure you want to restart nxginx?" states="to_install,active"/>
                 </div>
+                <h1>
+                    <field name="name" placeholder="Name..."/>
+                </h1>
+                <h2>
+                    <field name="main_hostname" widget="url" placeholder="Main Hostname..."/>
+                    <br/>
+                    <field name="server_configuration_id" options="{'no_create': True}" placeholder="Server Configuration..."/>
+                </h2>
                 <group>
                     <group>
                         <label for="ssh_port"/>

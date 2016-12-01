@@ -58,27 +58,24 @@
                     />
             </header>
             <sheet string="environment">
-                <div class="col-md-6">
-                    <h2 class="oe_inline">
-                        <field name="server_id" options="{'no_create': True}" class="oe_inline"/>
-                    </h2>
-                    <h1>
-                        <field name="partner_id" default_focus="1" placeholder="Partner..."/>
-                        <field name="odoo_version_id" options="{'no_create': True}" placeholder="Odoo Version..."/>
-                    </h1>
-                </div>
-                <div class="oe_right oe_button_box" name="buttons">
+                <div class="oe_button_box" name="buttons">
                     <button name="action_view_instances" icon="fa-th" type="object" class="oe_stat_button">
                         <field name="instance_count" widget="statinfo"/>
                     </button>
                     <button name="action_view_databases" icon="fa-th-list" type="object" class="oe_stat_button">
                         <field name="database_count" widget="statinfo"/>
                     </button>
-                </div>
-                <div class="oe_right oe_button_box" name="buttons_action">
                     <button icon="fa-sun-o " type="object" string="Create Environment" class="oe_stat_button" help="Create Environment" name="create_environment" states="draft"/>
                     <button icon="fa-trash-o" type="object" string="Delete" class="oe_stat_button" name="delete" states="active" confirm="Environment will be delated from server and will be unrecoverable, are you sure you want to continue?"/>
                 </div>
+                <h2 class="oe_inline">
+                    <field name="server_id" options="{'no_create': True}" class="oe_inline"/>
+                </h2>
+                <h1>
+                    <field name="partner_id" default_focus="1" placeholder="Partner..."/>
+                    <br/>
+                    <field name="odoo_version_id" options="{'no_create': True}" placeholder="Odoo Version..."/>
+                </h1>
                 <group>
                     <group>
                         <field name="name"/>

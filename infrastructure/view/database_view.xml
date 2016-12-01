@@ -74,6 +74,15 @@
                     />
             </header>
             <sheet string="database">
+                <div class="oe_button_box" name="buttons">
+                    <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
+                    <button icon="fa-download" type="action" string="Backup Now" class="oe_inline oe_stat_button" name="%(action_infrastructure_backup_now_wizard)d" states="active"/>
+                    <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
+                    <button icon="fa-trash-o" type="action" string="Drop" class="oe_stat_button" name="%(action_infrastructure_database_drop_wizard)d" states="active"/>
+                    <button icon="fa-pencil" type="action" string="Rename" class="oe_stat_button" name="%(action_infrastructure_rename_database_wizard)d" states="active"/>
+                    <button icon="fa-key" type="action" string="Change Pass" class="oe_stat_button" name="%(action_infrastructure_change_db_passwd_wizard)d" states="active"/>
+                    <button icon="fa-arrow-circle-up" type="action" string="Restore" class="oe_stat_button" name="%(action_infrastructure_restore_from_file_wizard)d" states="draft"/>
+                </div>
                 <div class="col-md-6">
                     <h2>
                         <field name="server_id" class="oe_inline"/> / <field name="environment_id" class="oe_inline"/> / <field name="instance_id" options="{'no_create': True}" class="oe_inline"/>
@@ -82,17 +91,6 @@
                     <h1>
                         <field name="name" placeholder="Name..."/>
                     </h1>
-                </div>
-                <div class="oe_right oe_button_box" name="buttons">
-                </div>
-                <div class="oe_right oe_button_box" name="buttons_action">
-                    <button icon="fa-sun-o" type="object" string="Create" class="oe_inline oe_stat_button" name="create_db" states="draft"/>
-                    <button icon="fa-download" type="action" string="Backup Now" class="oe_inline oe_stat_button" name="%(action_infrastructure_backup_now_wizard)d" states="active"/>
-                    <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_db_wizard)d" states="active"/>
-                    <button icon="fa-trash-o" type="action" string="Drop" class="oe_stat_button" name="%(action_infrastructure_database_drop_wizard)d" states="active"/>
-                    <button icon="fa-pencil" type="action" string="Rename" class="oe_stat_button" name="%(action_infrastructure_rename_database_wizard)d" states="active"/>
-                    <button icon="fa-key" type="action" string="Change Pass" class="oe_stat_button" name="%(action_infrastructure_change_db_passwd_wizard)d" states="active"/>
-                    <button icon="fa-arrow-circle-up" type="action" string="Restore" class="oe_stat_button" name="%(action_infrastructure_restore_from_file_wizard)d" states="draft"/>
                 </div>
                  <group>
                     <group>
