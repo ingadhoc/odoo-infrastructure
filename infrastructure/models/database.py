@@ -401,7 +401,7 @@ class database(models.Model):
                 return True
             else:
                 raise ValidationError(_('Could not get client'))
-        # TODO extend do_not_raise to following ValidationErrors
+        # TODO extend do_not_raise to following warnings
         base_modules_state = 'ok'
         base_modules = self.env[
             'infrastructure.base.module'].search([]).mapped('name')
@@ -907,8 +907,8 @@ class database(models.Model):
             raise ValidationError(_(
                 'Could not make backup! This is what we get %s' % (
                     bd_result.get('error', ''))))
-        # TODO log message or do something (do not raise ValidationError because it
-        # dont close wizard)
+        # TODO log message or do something (do not raise ValidationError
+        # because it dont close wizard)
         # else:
             # raise ValidationError(_(
             # 'Backup %s succesfully created!' % bd_result['backup_name']))
