@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, models
-# from openerp.exceptions import Warning
+# from openerp.exceptions import ValidationError
 
 
 class infrastructure_database_email_wizard(models.TransientModel):

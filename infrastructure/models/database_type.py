@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, tools, api, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class database_type(models.Model):
@@ -147,11 +147,11 @@ class database_type(models.Model):
 
     @api.multi
     def show_instance_admin_pass(self):
-        raise Warning(_("Password: '%s'") % self.instance_admin_pass)
+        raise ValidationError(_("Password: '%s'") % self.instance_admin_pass)
 
     @api.multi
     def show_db_admin_pass(self):
-        raise Warning(_("Password: '%s'") % self.db_admin_pass)
+        raise ValidationError(_("Password: '%s'") % self.db_admin_pass)
 
     @api.onchange('service_type')
     def change_service_type(self):

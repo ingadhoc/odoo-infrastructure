@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class infrastructure_instance_delete_wizard(models.TransientModel):
@@ -39,7 +39,7 @@ class infrastructure_instance_delete_wizard(models.TransientModel):
         # raise and error
         if self.advance_type == 'protected':
             if self.instance_id.name != self.instance_name_check:
-                raise Warning(_('Instance name mismatch'))
+                raise ValidationError(_('Instance name mismatch'))
             else:
                 self = self.with_context(by_pass_protection=True)
         return self.instance_id.delete()

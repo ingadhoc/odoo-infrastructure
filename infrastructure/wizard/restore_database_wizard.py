@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import fields, api, models, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -94,7 +94,7 @@ class infrastructure_restore_database_wizard(models.TransientModel):
             if (
                     self.target_advance_type == 'protected' and
                     self.target_database_id.name != self.target_db_name_check):
-                raise Warning(_('Target db name mismatch'))
+                raise ValidationError(_('Target db name mismatch'))
             overwrite = True
             db_name = self.target_database_id.name
 

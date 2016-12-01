@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 import os
 import logging
 _logger = logging.getLogger(__name__)
@@ -64,11 +64,11 @@ class database_backup(models.Model):
             remote_ids = client.model('db.database.backup').search([
                 ('name', '=', self.name)])
             if not remote_ids:
-                raise Warning(_('No backup found on remote with name "%s"') % (
+                raise ValidationError(_('No backup found on remote with name "%s"') % (
                     self.name))
             client.model('db.database.backup').unlink(remote_ids)
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Could not delete backup! This is what we get %s' % e))
         # return self.database_id.update_backups_data()
         # # return self.unlink()
@@ -76,7 +76,7 @@ class database_backup(models.Model):
     @api.multi
     def get_backup_msg(self):
         self.ensure_one()
-        raise Warning(_(
+        raise ValidationError(_(
             'Run on your terminal:\n%s\nPassword: %s') % (
             self.backup_cmd,
             self.database_id.server_id.password))

@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 from datetime import datetime
 import os
 from fabtools.require.git import working_copy
@@ -94,7 +94,7 @@ class instance_repository(models.Model):
     @api.one
     def unlink(self):
         if self.actual_commit:
-            raise Warning(_(
+            raise ValidationError(_(
                 'You cannot delete a repository that has Actual Commit '
                 'You should first delete it with the delete button.'))
         return super(instance_repository, self).unlink()
@@ -113,7 +113,7 @@ class instance_repository(models.Model):
                 self.path, recursive=True, use_sudo=True)
             self.actual_commit = False
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Error Removing Folder %s. This is what we get:\n'
                 '%s' % (self.path, e)))
 
@@ -124,7 +124,7 @@ class instance_repository(models.Model):
         active one."""
         self.ensure_one()
         if not self.sources_from_id:
-            raise Warning(_(
+            raise ValidationError(_(
                 'this method must be call from a repository that '
                 'belongs to an instance with Other Instance Repositories'))
         _logger.info(
@@ -135,7 +135,7 @@ class instance_repository(models.Model):
             ('instance_id', '=', self.sources_from_id.id),
         ], limit=1)
         if not source_repository:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Source repository not found for %s on instance %s') % (
                 self.repository_id.name, self.sources_from_id.name))
         source_repository.repository_pull_clone_and_checkout()
@@ -148,7 +148,7 @@ class instance_repository(models.Model):
         _logger.info("Updateing/getting repository %s with update=%s" % (
             self.repository_id.name, update))
         if self.repository_id.error_message:
-            raise Warning(self.repository_id.error_message)
+            raise ValidationError(self.repository_id.error_message)
         if self.actual_commit and not update:
             return True
         self.instance_id.environment_id.server_id.get_env()
@@ -160,11 +160,11 @@ class instance_repository(models.Model):
                 ('instance_id', '=', self.sources_from_id.id),
             ], limit=1)
             if not source_repository:
-                raise Warning(_(
+                raise ValidationError(_(
                     'Source repository not found for %s on instance %s') % (
                     self.repository_id.name, self.sources_from_id.name))
             if source_repository.branch_id != self.branch_id:
-                raise Warning(_(
+                raise ValidationError(_(
                     'Source repository branch and target branch must be the '
                     'same\n'
                     '* Source repository branch: %s\n'
@@ -193,7 +193,7 @@ class instance_repository(models.Model):
             )
             self._cr.commit()
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Error pulling git repository. This is what we get:\n'
                 '%s' % e))
 

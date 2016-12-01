@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class infrastructure_database_drop_wizard(models.TransientModel):
@@ -39,7 +39,7 @@ class infrastructure_database_drop_wizard(models.TransientModel):
         if (
                 self.protected and
                 self.database_id.name != self.db_name_check):
-            raise Warning(_('Database name mismatch'))
+            raise ValidationError(_('Database name mismatch'))
         else:
             self = self.with_context(by_pass_protection=True)
         return self.database_id.drop_db()

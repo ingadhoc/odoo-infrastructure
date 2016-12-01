@@ -5,7 +5,7 @@
 ##############################################################################
 import string
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists
 import os
@@ -158,12 +158,12 @@ class environment(models.Model):
     @api.constrains('number')
     def _check_number(self):
         if not self.number or self.number < 10 or self.number > 99:
-            raise Warning(_('Number should be between 10 and 99'))
+            raise ValidationError(_('Number should be between 10 and 99'))
 
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(_(
+            raise ValidationError(_(
                 'You cannot delete a environment which is not draft or '
                 'cancelled.'))
         return super(environment, self).unlink()
@@ -204,7 +204,7 @@ class environment(models.Model):
     def make_env_paths(self):
         self.server_id.get_env()
         if exists(self.path, use_sudo=True):
-            raise Warning(_("Folder '%s' already exists") %
+            raise ValidationError(_("Folder '%s' already exists") %
                           (self.path))
         sudo('mkdir -p ' + self.path)
 
@@ -217,7 +217,7 @@ class environment(models.Model):
     def check_to_inactive(self):
         for instance in self.instance_ids:
             if instance.service_type != 'no_service':
-                raise Warning(_(
+                raise ValidationError(_(
                     'To set and environment as inactive you should set all '
                     'env instances with Service Type "No Service" and better'
                     ' if you stop all of them'))
@@ -226,7 +226,7 @@ class environment(models.Model):
     @api.multi
     def delete(self):
         if self.instance_ids:
-            raise Warning(_(
+            raise ValidationError(_(
                 'You can not delete an environment that has instances'))
         self.server_id.get_env()
         paths = [self.path]
@@ -238,7 +238,7 @@ class environment(models.Model):
     def action_activate(self):
         for environment in self:
             if environment.server_id.state == 'inactive':
-                raise Warning(_(
+                raise ValidationError(_(
                     'You can not activate an environment if server is on '
                     'Inactive state'))
 

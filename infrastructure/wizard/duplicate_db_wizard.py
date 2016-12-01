@@ -6,7 +6,7 @@
 
 from openerp import fields, api, _
 from openerp.osv import osv
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class infrastructure_duplicate_db_wizard(osv.osv_memory):
@@ -49,10 +49,10 @@ class infrastructure_duplicate_db_wizard(osv.osv_memory):
     def duplicate_db(self):
         # TODO implementar si hay cambio de usuario
         if self.change_user:
-            raise Warning(_("Not Implemented Yet!"))
+            raise ValidationError(_("Not Implemented Yet!"))
         active_ids = self.env.context.get('active_ids', False)
         if not active_ids:
-            raise Warning(
+            raise ValidationError(
                 _("Can not duplicate database, no active_ids on context"))
         databases = self.env['infrastructure.database'].search(
             [('id', 'in', active_ids)])

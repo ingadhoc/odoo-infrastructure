@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 from fabtools import require
 import os
 
@@ -113,7 +113,7 @@ class server_hostname(models.Model):
         if not self.ssl_available:
             return False
         if not self.ssl_certificate or not self.ssl_certificate_key:
-            raise Warning(_(
+            raise ValidationError(_(
                 'To configure SSL you need to set ssl certificates and keys'))
         # TODO add ssl path in server data
         certificate = self.ssl_certificate

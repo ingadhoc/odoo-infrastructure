@@ -6,7 +6,7 @@
 
 from openerp import fields, api, _
 from openerp.osv import osv
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 from datetime import date
 
@@ -42,7 +42,7 @@ class infrastructure_database_backup_now_wizard(osv.osv_memory):
         self.ensure_one()
         active_id = self.env.context.get('active_id', False)
         if not active_id:
-            raise Warning(
+            raise ValidationError(
                 _("Can not run backup now, no active_id on context"))
         database = self.env['infrastructure.database'].browse(active_id)
         name = "%s.%s" % (self.name, self.backup_format)

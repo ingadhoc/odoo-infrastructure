@@ -6,7 +6,7 @@
 from openerp import models, fields, _
 from openerp.tools.safe_eval import safe_eval as eval
 from fabric.api import run, cd, env
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 import errno
@@ -37,7 +37,7 @@ class server_configuration_command(models.Model):
         result = []
         server_id = context.get('server_id', False)
         if not server_id:
-            raise Warning(_('No server in context'))
+            raise ValidationError(_('No server in context'))
         server = self.pool['infrastructure.server'].browse(
             cr, uid, server_id, context=context)
         for command in self.browse(cr, uid, ids, context=context):

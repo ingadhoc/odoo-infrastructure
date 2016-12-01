@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, models
-# from openerp.exceptions import Warning
+# from openerp.exceptions import ValidationError
 from openerp.addons.infrastructure.models.database import _update_state_vals
 # from ast import literal_eval
 import logging
@@ -88,7 +88,7 @@ class infrastructure_database_fix_wizard(models.TransientModel):
         self.ensure_one()
         # if self.update_state not in [
         #         'init_and_conf', 'update', 'optional_update']:
-        #     raise Warning(_(
+        #     raise ValidationError(_(
         #         'Fix form state "%s" not implemented yet. You should fix it '
         #         'manually') % (self.update_state))
         # return self.database_id.fix_db(

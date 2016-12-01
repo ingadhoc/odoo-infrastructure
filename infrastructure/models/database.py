@@ -18,7 +18,7 @@ from datetime import date
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from erppeek import Client
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 import os
 import requests
 import simplejson
@@ -400,8 +400,8 @@ class database(models.Model):
                 self.base_modules_state_detail
                 return True
             else:
-                raise Warning(_('Could not get client'))
-        # TODO extend do_not_raise to following warnings
+                raise ValidationError(_('Could not get client'))
+        # TODO extend do_not_raise to following ValidationErrors
         base_modules_state = 'ok'
         base_modules = self.env[
             'infrastructure.base.module'].search([]).mapped('name')
@@ -435,7 +435,7 @@ class database(models.Model):
                 self.backups_state_detail = msg
                 return True
             else:
-                raise Warning(msg)
+                raise ValidationError(msg)
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
@@ -443,12 +443,12 @@ class database(models.Model):
                     "You can not refresh backups state if module '%s' is not "
                     "installed in the database") % (module)
                 if do_not_raise:
-                    _logger.warning(msg)
+                    _logger.ValidationError(msg)
                     self.backups_state = ''
                     self.backups_state_detail = msg
                     return True
                 else:
-                    raise Warning(msg)
+                    raise ValidationError(msg)
         try:
             backups_state = client.model(
                 'db.database').get_overall_backups_state()
@@ -461,7 +461,7 @@ class database(models.Model):
                 self.backups_state_detail = msg
                 return True
             else:
-                raise Warning(msg)
+                raise ValidationError(msg)
         state = backups_state.get('state', False)
         detail = backups_state.get('detail', False)
 
@@ -470,12 +470,12 @@ class database(models.Model):
                 'Could not get state! Unknow error, we could not get state '
                 'from "%s"' % (backups_state))
             if do_not_raise:
-                _logger.warning(msg)
+                _logger.ValidationError(msg)
                 self.backups_state = ''
                 self.backups_state_detail = msg
                 return True
             else:
-                raise Warning(msg)
+                raise ValidationError(msg)
         self.backups_state = state
         self.backups_state_detail = detail
         return backups_state
@@ -496,7 +496,7 @@ class database(models.Model):
                 self.update_state_detail = msg
                 return True
             else:
-                raise Warning(msg)
+                raise ValidationError(msg)
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
@@ -504,12 +504,12 @@ class database(models.Model):
                     "You can not refresh modules update status if module '%s' "
                     "is not installed in the database") % (module))
                 if do_not_raise:
-                    _logger.warning(msg)
+                    _logger.ValidationError(msg)
                     self.update_state = 'unknown'
                     self.update_state_detail = msg
                     return True
                 else:
-                    raise Warning(msg)
+                    raise ValidationError(msg)
         try:
             update_state = client.model(
                 'ir.module.module').get_overall_update_state()
@@ -518,12 +518,12 @@ class database(models.Model):
                 'Could not get state!\n'
                 'This is what we get %s' % e))
             if do_not_raise:
-                _logger.warning(msg)
+                _logger.ValidationError(msg)
                 self.update_state = 'unknown'
                 self.update_state_detail = msg
                 return True
             else:
-                raise Warning(msg)
+                raise ValidationError(msg)
         state = update_state.get('state', False)
         detail = update_state.get('detail', False)
         update_state_keys = [x[0] for x in _update_state_vals]
@@ -533,12 +533,12 @@ class database(models.Model):
                 'Could not get state! Unknow error, we could not get state '
                 'from "%s"' % (update_state)))
             if do_not_raise:
-                _logger.warning(msg)
+                _logger.ValidationError(msg)
                 self.update_state = 'unknown'
                 self.update_state_detail = msg
                 return True
             else:
-                raise Warning(msg)
+                raise ValidationError(msg)
         self.update_state = state
         self.update_state_detail = detail
         return update_state
@@ -563,7 +563,7 @@ class database(models.Model):
         res = client.model('db.configuration').fix_db(
             raise_msg, uninstall_modules, restart_if_needed)
         if res.get('error'):
-            raise Warning(res.get('error'))
+            raise ValidationError(res.get('error'))
         self.refresh_update_state()
         return True
 
@@ -642,7 +642,7 @@ class database(models.Model):
         }
         op = operators_dic.get(operator_string)
         if not op:
-            raise Warning(_('Operator must be one of: %s') % (
+            raise ValidationError(_('Operator must be one of: %s') % (
                 ', '.join(operators_dic.keys())))
         for database in self:
             client = database.get_client()
@@ -749,7 +749,7 @@ class database(models.Model):
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(_(
+            raise ValidationError(_(
                 'You cannot delete a database which is not draft or cancelled')
             )
         return super(database, self).unlink()
@@ -827,7 +827,7 @@ class database(models.Model):
                 _logger.info("Connecting3")
                 pass
         if not connected:
-            raise Warning(_("Could not connect to socket '%s'") % (rpc_db_url))
+            raise ValidationError(_("Could not connect to socket '%s'") % (rpc_db_url))
         return sock
 
     @api.one
@@ -864,7 +864,7 @@ class database(models.Model):
         self.ensure_one()
         by_pass_protection = self._context.get('by_pass_protection', False)
         if self.protected and not by_pass_protection:
-            raise Warning(_(
+            raise ValidationError(_(
                 'You can not drop a database protected, '
                 'you can change database type, or drop it manually'))
         _logger.info("Dropping db '%s'" % (self.name))
@@ -880,7 +880,7 @@ class database(models.Model):
                 sock = self.get_sock(max_attempts=1000)
                 sock.drop(self.instance_id.admin_pass, self.name)
             except Exception, e:
-                raise Warning(_(
+                raise ValidationError(_(
                     'Unable to drop Database. If you are working in an '
                     'instance with "workers" then you can try '
                     'restarting service. This is what we get:\n%s') % (e))
@@ -901,16 +901,16 @@ class database(models.Model):
                 keep_till_date,
             )
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Could not make backup! This is what we get %s' % e))
         if not bd_result.get('backup_name', False):
-            raise Warning(_(
+            raise ValidationError(_(
                 'Could not make backup! This is what we get %s' % (
                     bd_result.get('error', ''))))
-        # TODO log message or do something (do not raise warning because it
+        # TODO log message or do something (do not raise ValidationError because it
         # dont close wizard)
         # else:
-            # raise Warning(_(
+            # raise ValidationError(_(
             # 'Backup %s succesfully created!' % bd_result['backup_name']))
 
     @api.one
@@ -922,7 +922,7 @@ class database(models.Model):
             return sock.migrate_databases(
                 self.instance_id.admin_pass, [self.name])
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Unable to migrate Database. If you are working in an '
                 'instance with "workers" then you can try '
                 'restarting service. This is what we get:\n%s') % (e))
@@ -942,7 +942,7 @@ class database(models.Model):
                 sock = self.get_sock(max_attempts=1000)
                 sock.rename(self.instance_id.admin_pass, self.name, new_name)
             except Exception, e:
-                raise Warning(_(
+                raise ValidationError(_(
                     'Unable to rename Database. If you are working in an '
                     'instance with "workers" then you can try '
                     'restarting service. This is what we get:\n%s') % (e))
@@ -998,13 +998,13 @@ class database(models.Model):
             ).json()
             _logger.info('Restored complete, result: %s' % response)
             if response['result'].get('error', False):
-                raise Warning(_(
+                raise ValidationError(_(
                     'Unable to restore bd %s, you can try restartin target '
                     'instance. This is what we get: \n %s') % (
                     db_name, response['result'].get('error')))
             _logger.info('Back Up %s Restored Succesfully' % db_name)
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Unable to restore bd %s, you can try restartin target '
                 'instance. This is what we get: \n %s') % (
                 db_name, e))
@@ -1026,7 +1026,7 @@ class database(models.Model):
             sock.duplicate_database(
                 self.instance_id.admin_pass, self.name, new_database_name)
         except Exception, e:
-            raise Warning(
+            raise ValidationError(
                 _('Unable to duplicate Database. This is what we get:\n%s') % (
                     e))
         client.model('db.database').backups_state(
@@ -1064,7 +1064,7 @@ class database(models.Model):
     #         client.model('db.database').backups_state(
     #             new_database_name, backups_enable)
     #     except Exception, e:
-    #         raise Warning(_(
+    #         raise ValidationError(_(
     #             'Unable to duplicate Database. This is what we get:\n%s') % (
     #               e))
     #     new_db.action_activate()
@@ -1083,7 +1083,7 @@ class database(models.Model):
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_(
+                raise ValidationError(_(
                     "You can not kill connections if module '%s' is not "
                     "installed in the database") % (module))
 
@@ -1106,7 +1106,7 @@ class database(models.Model):
                 return self.get_client_attempts(
                     not_database, attempts - 1)
             else:
-                raise Warning('asda %s' % e)
+                raise ValidationError('asda %s' % e)
 
     @api.multi
     def get_client(self, not_database=False):
@@ -1149,7 +1149,7 @@ class database(models.Model):
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_(
+                raise ValidationError(_(
                     "You can not Update Backups Data if module '%s' is not "
                     "installed in the database") % (module))
         self_db_id = client.model('ir.model.data').xmlid_to_res_id(
@@ -1252,7 +1252,7 @@ class database(models.Model):
     @api.one
     def upload_mail_server_config(self):
         if not self.smtp_server_id:
-            raise Warning(_(
+            raise ValidationError(_(
                 'You must choose an SMTP server config in order to upload it'))
         rows = [[
             self.smtp_server_id.external_id,
@@ -1307,7 +1307,7 @@ class database(models.Model):
         modules = ['database_tools']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_(
+                raise ValidationError(_(
                     "You can not configure backups if module '%s' is not "
                     "installed in the database") % (module))
 
@@ -1339,16 +1339,16 @@ class database(models.Model):
         modules = ['auth_server_admin_passwd_passkey', 'mail']
         for module in modules:
             if client.modules(name=module, installed=True) is None:
-                raise Warning(_(
+                raise ValidationError(_(
                     "You can not configure catchall if module '%s'"
                     " is not installed in the database") % (module))
         if not self.local_alias:
-            raise Warning(_(
+            raise ValidationError(_(
                 "You can not configure catchall if Local Alias is "
                 "not set. Probably this is because Mailgate File was not "
                 "found"))
         if not exists(self.mailgate_path, use_sudo=True):
-            raise Warning(_(
+            raise ValidationError(_(
                 "Mailgate file was not found on mailgate path '%s' base path "
                 "found for mail module") % (
                 self.mailgate_path))

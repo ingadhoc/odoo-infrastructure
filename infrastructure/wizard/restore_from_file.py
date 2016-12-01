@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import fields, api, models, _
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 from fabric.contrib.files import exists
 import os
 
@@ -42,7 +42,7 @@ class infrastructure_restore_from_file_wizard(models.TransientModel):
         if not exists(
                 os.path.join(self.file_path, self.file_name),
                 use_sudo=True):
-            raise Warning(_("File was not found on path '%s'") % (
+            raise ValidationError(_("File was not found on path '%s'") % (
                 self.file_path))
         database = self.database_id
         instance = database.instance_id

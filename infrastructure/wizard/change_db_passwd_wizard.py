@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class infrastructure_change_db_passwd_wizard(models.TransientModel):
@@ -21,11 +21,11 @@ class infrastructure_change_db_passwd_wizard(models.TransientModel):
         databases = self.env['infrastructure.database'].browse(active_ids)
         for database in databases:
             if len(self.new_passwd) < 5:
-                raise Warning(_(
+                raise ValidationError(_(
                     "Password is too short. "
                     "At least 5 characters are required."))
             if self.new_passwd != self.confirm_passwd:
-                raise Warning(
+                raise ValidationError(
                     _("Passwords mismatch!"))
             res = database.change_admin_passwd(
                 database.admin_password,

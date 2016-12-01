@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, _, models
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 
 
 class infrastructure_check_module_version_wizard(models.TransientModel):
@@ -29,14 +29,14 @@ class infrastructure_check_module_version_wizard(models.TransientModel):
 
     @api.multi
     def test(self):
-        raise Warning(_('Databases: %s') % (
+        raise ValidationError(_('Databases: %s') % (
             ', '.join(self.get_databases().mapped('name'))))
 
     @api.multi
     def confirm(self):
         databases = self.get_databases()
         if not databases:
-            raise Warning(_('No databases found for the requested data'))
+            raise ValidationError(_('No databases found for the requested data'))
         action = self.env['ir.model.data'].xmlid_to_object(
             'infrastructure.action_infrastructure_database_databases')
         if not action:

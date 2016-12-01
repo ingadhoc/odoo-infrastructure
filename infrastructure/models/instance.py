@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import except_orm, Warning
+from openerp.exceptions import except_orm, ValidationError
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 import random
@@ -625,7 +625,7 @@ class instance(models.Model):
 
     @api.multi
     def action_check_databases(self):
-        raise Warning('Not implemented yet')
+        raise ValidationError('Not implemented yet')
         # return self.database_ids.xx
 
     @api.multi
@@ -654,12 +654,12 @@ class instance(models.Model):
     @api.constrains('number')
     def _check_number(self):
         if not self.number or self.number < 1 or self.number > 9:
-            raise Warning(_('Number should be between 1 and 9'))
+            raise ValidationError(_('Number should be between 1 and 9'))
 
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(_(
+            raise ValidationError(_(
                 'You cannot delete an instance which '
                 'is not draft or cancelled.'))
         return super(instance, self).unlink()
@@ -865,12 +865,12 @@ class instance(models.Model):
         if self._context.get('by_pass_protection', False):
             return True
         if self.advance_type == 'protected':
-            raise Warning(_(
+            raise ValidationError(_(
                 'Action Forbiden! Instance is protected! '
                 'You can change type.'))
         protected_dbs = self.database_ids.filtered('protected')
         if protected_dbs:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Action Forbiden! Databases %s are protected!' % (
                     protected_dbs.ids)))
 
@@ -1025,7 +1025,7 @@ class instance(models.Model):
                 self.pg_container))
         tunnel_to_pg = "ssh -L 5499:%s:5432 %s@%s -p %i" % (
             ip, server.user_name, server.main_hostname, server.ssh_port)
-        raise Warning(_('Tunneling command to access postgres:\n%s\n'
+        raise ValidationError(_('Tunneling command to access postgres:\n%s\n'
             'Password: %s\n'
             'In your pgadmin you should enter:\n'
             '*Host: localhost\n'
@@ -1228,7 +1228,7 @@ class instance(models.Model):
             ]
         for path in paths:
             if exists(path, use_sudo=True):
-                _logger.warning(("Folder '%s' already exists") % (path))
+                _logger.ValidationError(("Folder '%s' already exists") % (path))
                 continue
             _logger.info(("Creating path '%s'") % (path))
             sudo('mkdir -m 777 -p ' + path)
@@ -1258,7 +1258,7 @@ class instance(models.Model):
                 "Running update conf command: '%s'" % self.update_conf_cmd)
             sudo(self.update_conf_cmd)
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 "Can not create/update configuration file, "
                 "this is what we get: \n %s") % (
                 e))
@@ -1375,7 +1375,7 @@ class instance(models.Model):
         try:
             sudo(self.remove_odoo_cmd)
         except:
-            _logger.warning(("Could remove container '%s'") % (
+            _logger.ValidationError(("Could remove container '%s'") % (
                 self.name))
 
     @api.one
@@ -1385,7 +1385,7 @@ class instance(models.Model):
         try:
             sudo(self.stop_odoo_cmd)
         except:
-            _logger.warning(("Could stop container '%s'") % (
+            _logger.ValidationError(("Could stop container '%s'") % (
                 self.stop_odoo_cmd))
 
     @api.one
@@ -1416,7 +1416,7 @@ class instance(models.Model):
         try:
             sudo(self.remove_pg_cmd)
         except:
-            _logger.warning(("Could remove container '%s'") % (
+            _logger.ValidationError(("Could remove container '%s'") % (
                 self.name))
 
     @api.one
@@ -1426,7 +1426,7 @@ class instance(models.Model):
         try:
             sudo(self.stop_pg_cmd)
         except:
-            _logger.warning(("Could stop container '%s'") % (
+            _logger.ValidationError(("Could stop container '%s'") % (
                 self.stop_pg_cmd))
 
     @api.one
@@ -1441,7 +1441,7 @@ class instance(models.Model):
         try:
             sudo('rm -f %s' % nginx_site_file_path)
         except Exception, e:
-            _logger.warning((
+            _logger.ValidationError((
                 "Could remove nginx site file '%s', "
                 "this is what we get: \n %s") % (
                 self.service_file, e))
@@ -1450,7 +1450,7 @@ class instance(models.Model):
     def update_nginx_site(self):
         _logger.info("Updating nginx site")
         if not self.main_hostname:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Can Not Configure Nginx if Main Site is not Seted!'))
 
         self.environment_id.server_id.get_env()
@@ -1459,7 +1459,7 @@ class instance(models.Model):
             x.name for x in self.instance_host_ids if (
                 x.type != 'redirect_to_main')]
         if not server_names:
-            raise Warning(_('You Must set at least one instance host!'))
+            raise ValidationError(_('You Must set at least one instance host!'))
 
         acces_log = os.path.join(
             self.environment_id.server_id.nginx_log_path,
@@ -1474,7 +1474,7 @@ class instance(models.Model):
         if self.type == 'secure':
             server_hostname_id = self.main_hostname_id.server_hostname_id
             if not self.main_hostname_id.server_hostname_id.ssl_available:
-                raise Warning(
+                raise ValidationError(
                     'To use Secure you nead a host with SSL enable. '
                     '\nCustom certificate is not implemented yet!')
             nginx_site_file = nginx_ssl_site_template % (
@@ -1540,7 +1540,7 @@ class instance(models.Model):
         # Check nginx sites-enabled directory exists
         nginx_sites_path = self.environment_id.server_id.nginx_sites_path
         if not exists(nginx_sites_path):
-            raise Warning(_(
+            raise ValidationError(_(
                 "Nginx '%s' directory not found! "
                 "Check if Nginx is installed!") % nginx_sites_path)
 

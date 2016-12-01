@@ -4,7 +4,7 @@
 # directory
 ##############################################################################
 from openerp import models, fields, api, _
-from openerp.exceptions import except_orm, Warning
+from openerp.exceptions import except_orm, ValidationError
 from fabric.api import env, reboot
 from fabric.contrib.files import append, upload_template
 from fabric.api import sudo
@@ -41,7 +41,7 @@ def synchronize_on_config_parameter(env, parameter, nowait=False):
                     for update %s""" % (param.id, nowait_str)
             )
         except psycopg2.OperationalError, e:
-            raise Warning(
+            raise ValidationError(
                 'Cannot synchronize access. Another process lock the parameter'
                 'This is what we get: %s' % e
             )
@@ -62,11 +62,11 @@ def custom_sudo(command, user=False, group=False, dont_raise=False):
         res = sudo(command)
     if res.failed:
         if dont_raise:
-            _logger.warning((
+            _logger.ValidationError((
                 "Can not run command:\n%s\nThis is what we get:\n%s") % (
                 res.real_command, unicode(res.stdout, 'utf-8')))
         else:
-            raise Warning(_(
+            raise ValidationError(_(
                 "Can not run command:\n%s\nThis is what we get:\n%s") % (
                 res.real_command, unicode(res.stdout, 'utf-8')))
     env.warn_only = False
@@ -421,7 +421,7 @@ class server(models.Model):
     @api.constrains('key_filename', 'password')
     def check_key_or_pass(self):
         if not self.key_filename and not self.password:
-            raise Warning(_('You must set a Key filename or a password'))
+            raise ValidationError(_('You must set a Key filename or a password'))
 
     @api.onchange('main_hostname')
     def change_main_hostname(self):
@@ -431,7 +431,7 @@ class server(models.Model):
     @api.one
     def unlink(self):
         if self.state not in ('draft', 'cancel'):
-            raise Warning(_(
+            raise ValidationError(_(
                 'You cannot delete a server which is not draft or cancelled.'))
         return super(server, self).unlink()
 
@@ -487,7 +487,7 @@ class server(models.Model):
             s.connect((self.main_hostname, port))
             s.close()
         except:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Could not connect to port %s.\n'
                 '* Check connection with: "telnet %s %s" (if ok then scale '
                 'issue to our technical support)\n'
@@ -517,7 +517,7 @@ class server(models.Model):
         server_conf_codename = self.server_configuration_id.distrib_codename
         self.ip_address = socket.gethostbyname(self.main_hostname)
         if server_codename != server_conf_codename:
-            raise Warning(_(
+            raise ValidationError(_(
                 "Server Codename is not the and Server configuration "
                 "mismatch\n"
                 "* Server Codename: %s\n"
@@ -549,11 +549,11 @@ class server(models.Model):
         try:
             sudo('ls')
         except:
-            raise Warning(_(
+            raise ValidationError(_(
                 'Could not connect to host. Please check credentials'))
         if no_prompt:
             return True
-        raise Warning(_(
+        raise ValidationError(_(
             'Connection successful!'))
 
     @api.multi
@@ -611,7 +611,7 @@ class server(models.Model):
     def configure_gdrive_sync(self):
         self.get_env()
         if not self.gdrive_account or not self.gdrive_passw:
-            raise Warning(_(
+            raise ValidationError(_(
                 'To configure google drive sync you need to set account and '
                 'password'))
         fabtools.require.deb.ppa('ppa:twodopeshaggy/drive')
@@ -624,7 +624,7 @@ class server(models.Model):
             'root',
             'drive push -quiet -ignore-conflict=true %s' % (
                 self.syncked_backups_path))
-        raise Warning(_(
+        raise ValidationError(_(
             'Please log in into the server and run:\n'
             'sudo drive init %s\n'
             'Follow onscreen steps') % (
@@ -643,7 +643,7 @@ class server(models.Model):
         try:
             custom_sudo('service nginx restart')
         except Exception, e:
-            raise Warning(
+            raise ValidationError(
                 _('Could Not Restart Nginx! This is what we get: \n %s') % (e))
 
     @api.multi
@@ -653,7 +653,7 @@ class server(models.Model):
         try:
             custom_sudo('nginx -s reload')
         except Exception, e:
-            raise Warning(
+            raise ValidationError(
                 _('Could Not Reload Nginx! This is what we get: \n %s') % (e))
 
     @api.multi
@@ -683,7 +683,7 @@ class server(models.Model):
         not_inactive_envs = self.environment_ids.filtered(
             lambda x: x.state != 'inactive')
         if not_inactive_envs:
-            raise Warning(_(
+            raise ValidationError(_(
                 'To set a server as inactive you should set all '
                 'environments to inactive first'))
         return True
@@ -700,7 +700,7 @@ class server(models.Model):
                 use_sudo=True,
                 mode=0777)
         except Exception, e:
-            raise Warning(_(
+            raise ValidationError(_(
                 "Can not run upload mailgate file:\n"
                 "This is what we get:\n%s") % e)
         self.mailgate_file = res and res[0] or False

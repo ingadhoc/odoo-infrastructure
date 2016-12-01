@@ -5,7 +5,7 @@
 ##############################################################################
 
 from openerp import fields, api, models
-from openerp.exceptions import Warning
+from openerp.exceptions import ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -95,7 +95,7 @@ class infrastructure_instance_update(models.Model):
     @api.multi
     def action_confirm(self):
         if not self.detail_ids.filtered(lambda x: x.state == 'to_run'):
-            raise Warning('There are no lines to run')
+            raise ValidationError('There are no lines to run')
         self.write({'state': 'to_run'})
 
     @api.multi
@@ -151,7 +151,7 @@ class infrastructure_instance_update(models.Model):
                                 repository.name, repository.id
                             ),
                             e)
-                        _logger.warning(error_msg)
+                        _logger.ValidationError(error_msg)
                         errors.append(error_msg)
             # TODO tal vez saquemos el restart y el fix y que sean
             # hechos automaticamente por la bd de destino
@@ -175,7 +175,7 @@ class infrastructure_instance_update(models.Model):
                         'restart instance',
                         'instance %s (%s)' % (inst.name, inst.id),
                         e)
-                    _logger.warning(error_msg)
+                    _logger.ValidationError(error_msg)
                     errors.append(error_msg)
             _logger.info('Fixind dbs for instance %s' % instance.id)
             for database in all_instances.mapped('database_ids'):
@@ -186,7 +186,7 @@ class infrastructure_instance_update(models.Model):
                         'fix ',
                         'database %s (%s)' % (database.name, database.id),
                         e)
-                    _logger.warning(error_msg)
+                    _logger.ValidationError(error_msg)
                     errors.append(error_msg)
 
             result = (
@@ -253,7 +253,7 @@ class infrastructure_instance_update_detail(models.Model):
     @api.multi
     def view_result(self):
         self.ensure_one()
-        raise Warning(self.result)
+        raise ValidationError(self.result)
 
     @api.multi
     def action_open_instance(self):
