@@ -14,7 +14,7 @@
     ],
     'sequence': 14,
     'summary': '',
-    'installable': False,
+    'installable': True,
     'auto_install': True,
     'application': False,
     'images': [],
