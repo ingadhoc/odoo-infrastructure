@@ -18,6 +18,7 @@ class environment(models.Model):
     _description = 'environment'
     _order = 'number'
     _inherit = ['ir.needaction_mixin', 'mail.thread']
+    _rec_name = 'display_name'
 
     _states_ = [
         # State machine: untitle
@@ -118,6 +119,18 @@ class environment(models.Model):
         string='# Databases',
         compute='_get_databases'
     )
+    display_name = fields.Char(
+        compute='_compute_display_name',
+        store=True,
+    )
+
+    @api.one
+    @api.depends('name', 'description')
+    def _compute_display_name(self):
+        display_name = self.name
+        if self.description:
+            display_name += ' - %s' % self.description
+        self.display_name = display_name
 
     @api.one
     @api.depends('state')

@@ -24,8 +24,8 @@ class infrastructure_database_drop_wizard(models.TransientModel):
         required=True,
         ondelete='cascade',
     )
-    advance_type = fields.Selection(
-        related='database_id.advance_type',
+    protected = fields.Boolean(
+        related='database_id.protected',
         readonly=True,
     )
     db_name_check = fields.Char(
@@ -35,8 +35,9 @@ class infrastructure_database_drop_wizard(models.TransientModel):
     @api.multi
     def confirm(self):
         self.ensure_one()
+        # if instance or db protected we can force with name check
         if (
-                self.advance_type == 'protected' and
+                self.protected and
                 self.database_id.name != self.db_name_check):
             raise Warning(_('Database name mismatch'))
         else:

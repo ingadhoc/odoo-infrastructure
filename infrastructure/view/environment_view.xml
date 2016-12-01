@@ -8,6 +8,7 @@
     <field name="model">infrastructure.environment</field>
     <field name="arch" type="xml">
         <search string="environment">
+            <field name="display_name"/>
             <field name="number"/>
             <field name="name"/>
             <field name="description"/>
@@ -118,8 +119,9 @@
                 <field name="message_unread" invisible="1"/>
                 <field name="number"/>
                 <field name="odoo_version_id"/>
-                <field name="name"/>
-                <field name="description"/>
+                <field name="display_name"/>
+                <!-- <field name="name"/> -->
+                <!-- <field name="description"/> -->
                 <field name="partner_id"/>
                 <field name="server_id"/>
                 <field name="state"/>
@@ -133,7 +135,8 @@
     <field name="model">infrastructure.environment</field>
     <field name="arch" type="xml">
         <kanban class="oe_background_grey">
-            <field name="name"/>
+            <field name="display_name"/>
+            <!-- <field name="description"/> -->
             <field name="partner_id"/>
             <field name="color"/>
             <field name="state"/>
@@ -143,7 +146,7 @@
                 <t t-name="kanban-box">
                     <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card">
                         <div class="oe_kanban_content" style="width: 150px; height: 70px; margin: 0 auto;">
-                            <h4 class="text-center"><a type="open"><field name="name"/></a></h4>
+                            <h4 class="text-center"><a type="open"><field name="display_name"/></a></h4>
                             <div class="oe_kanban_instances_list">
                                 <a name="action_view_instances" type="object" style="margin-right: 10px">
                                     <t t-raw="record.instance_count.raw_value"/> Instances

@@ -186,6 +186,9 @@
                     <group>
                         <field name="demo_data"/>
                         <field name="advance_type"/>
+                        <field name="protect_till_date" attrs="{'invisible': [('advance_type', '=', 'protected')]}"/>
+                        <field name="protect_reason" attrs="{'invisible': [('advance_type', '=', 'protected')], 'required': [('advance_type', '!=', 'protected'), ('protect_till_date', '!=', False)]}"/>
+                        <field name="protected"/>
                         <field name="issue_date"/>
                         <field name="deactivation_date"/>
                         <field name="drop_date"/>

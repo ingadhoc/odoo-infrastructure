@@ -14,6 +14,7 @@ import uuid
 from dateutil.relativedelta import relativedelta
 from openerp.addons.server_mode.mode import get_mode
 from datetime import datetime
+from datetime import date
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
 from erppeek import Client
@@ -156,6 +157,17 @@ class database(models.Model):
         copy=False,
         help='Depending on type it could be onl informative or could be '
         'automatically dropped on this date',
+    )
+    protected = fields.Boolean(
+        compute='_compute_database_protected'
+    )
+    protect_till_date = fields.Date(
+        copy=False,
+        help='This database can not be deleted before this date',
+    )
+    protect_reason = fields.Char(
+        copy=False,
+        help='Reason of why this database is protected',
     )
     advance_type = fields.Selection(
         related='instance_type_id.type',
@@ -835,12 +847,23 @@ class database(models.Model):
         self.config_backups()
         self.action_activate()
 
+    @api.one
+    @api.depends('advance_type', 'protect_till_date')
+    def _compute_database_protected(self):
+        protected = False
+        if (
+                self.advance_type == 'protected' or self.protect_till_date and
+                (date.today() <=
+                    fields.Date.from_string(self.protect_till_date))):
+                protected = True
+        self.protected = protected
+
     @api.multi
     def drop_db(self):
         """Funcion que utiliza ws nativos de odoo para eliminar db"""
         self.ensure_one()
         by_pass_protection = self._context.get('by_pass_protection', False)
-        if self.advance_type == 'protected' and not by_pass_protection:
+        if self.protected and not by_pass_protection:
             raise Warning(_(
                 'You can not drop a database protected, '
                 'you can change database type, or drop it manually'))
@@ -1181,13 +1204,18 @@ class database(models.Model):
         })
         for user in self.user_ids:
             partner = user.partner_id
-            if partner and user.login:
-                if not partner.support_uuid:
-                    partner.support_uuid = str(uuid.uuid1())
+            if user.login:
+                if partner:
+                    if not partner.support_uuid:
+                        partner.support_uuid = str(uuid.uuid1())
+                    support_uuid = partner.support_uuid
+                # if no partner we overwrite with false
+                else:
+                    support_uuid = False
                 remote_user_id = client.model('res.users').search(
                     [('login', '=', user.login)], limit=1)
                 client.model('res.users').write(remote_user_id, {
-                    'remote_partner_uuid': partner.support_uuid})
+                    'remote_partner_uuid': support_uuid})
 
     @api.multi
     def update_users_data(self):

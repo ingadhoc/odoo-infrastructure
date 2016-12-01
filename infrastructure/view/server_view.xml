@@ -114,6 +114,7 @@
                                 type="object"
                                 class="oe_link"/>
                         </div>
+                        <field name="key_filename"/>
                     </group>
                     <group>
                         <field name="server_use_type"/>

@@ -33,6 +33,7 @@ class account_analytic_account(models.Model):
     def _get_databases(self):
         self.database_count = len(self.database_ids)
 
+    @api.one
     @api.constrains('state', 'database_ids')
     def check_databases_state(self):
         not_inactive_dbs = self.database_ids.filtered(
@@ -46,7 +47,7 @@ class account_analytic_account(models.Model):
     @api.multi
     def get_main_database(self):
         prod_dbs = self.database_ids.filtered(
-            lambda x: x.instance_type_id.is_production)
+            lambda x: x.instance_type_id.is_production and x.state == 'active')
         if len(prod_dbs) > 1:
             raise Warning(_(
                 'More than one production database linked to contract %s!') % (

@@ -8,9 +8,9 @@
      <field name="arch" type="xml">
         <form string="Database Drop">
             <group>
-                <field name="advance_type" invisible="True"/>
+                <field name="protected" invisible="True"/>
                 <field name="database_id"/>
-                <field name="db_name_check" attrs="{'invisible': [('advance_type', '!=', 'protected')], 'required': [('advance_type', '=', 'protected')]}"/>
+                <field name="db_name_check" attrs="{'invisible': [('protected', '=', False)], 'required': [('protected', '=', True)]}"/>
             </group>
             <footer>
                 <button name="confirm" confirm="Are you sure you want to drop this database? This can not be undone" string="Confirm" type="object" class="oe_highlight"/>

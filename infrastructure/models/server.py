@@ -150,9 +150,18 @@ class server(models.Model):
         help="This is used to suggest instance workers qty, you can get this "
         "information with: grep processor /proc/cpuinfo | wc -l",
     )
+    key_filename = fields.Char(
+        # required=True,
+        readonly=True,
+        states={'draft': [('readonly', False)]},
+        help='This file must be owned by adhoc-server and with 400 perm.\n'
+        'To do that, run:\n'
+        '* sudo chown syslog.netdev [file path]\n'
+        '* sudo chmod 400  [file path]\n'
+    )
     password = fields.Char(
         string='Password',
-        required=True,
+        # required=True,
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
@@ -408,6 +417,12 @@ class server(models.Model):
             'Server Name must be unique!'),
     ]
 
+    @api.one
+    @api.constrains('key_filename', 'password')
+    def check_key_or_pass(self):
+        if not self.key_filename and not self.password:
+            raise Warning(_('You must set a Key filename or a password'))
+
     @api.onchange('main_hostname')
     def change_main_hostname(self):
         if not self.postfix_hostname:
@@ -457,9 +472,10 @@ class server(models.Model):
         )
         self.ensure_one()
         env.user = self.user_name
-        env.password = self.password
+        env.password = self.password or ''
         env.host_string = self.main_hostname
         env.port = self.ssh_port
+        env.key_filename = self.key_filename or ''
         env.timeout = 4     # by default is 10
         return env
 
