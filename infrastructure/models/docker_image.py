@@ -52,6 +52,14 @@ class infrastructure_docker_image(models.Model):
         domain=[('service', '=', 'odoo')],
         help='Compatible Odoo Images',
     )
+    odoo_data_dir = fields.Char(
+    )
+    odoo_extra_addons_dir = fields.Char(
+    )
+    odoo_etc_dir = fields.Char(
+    )
+    odoo_server_wide_modules = fields.Char(
+    )
 
 
 class infrastructure_docker_image_tag(models.Model):
