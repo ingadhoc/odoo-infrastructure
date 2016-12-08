@@ -671,15 +671,16 @@ class instance(models.Model):
     @api.depends('environment_id', 'odoo_image_id.odoo_server_wide_modules')
     def _get_module_load(self):
         if self.sources_type == 'use_from':
-            module_load = self.sources_from_id.module_load
-        module_load = ','.join(
-            [x.repository_id.server_wide_modules for x in (
-                self.instance_repository_ids) if (
-                    x.repository_id.server_wide_modules)])
-        # if module_load:
-        self.module_load = (
-            self.odoo_image_id.odoo_server_wide_modules or '' +
-            module_load or '')
+            self.module_load = self.sources_from_id.module_load
+        else:
+            module_load = ','.join(
+                [x.repository_id.server_wide_modules for x in (
+                    self.instance_repository_ids) if (
+                        x.repository_id.server_wide_modules)])
+            # if module_load:
+            self.module_load = (
+                (self.odoo_image_id.odoo_server_wide_modules or '') +
+                (module_load or ''))
 
     @api.one
     @api.depends('database_ids')
