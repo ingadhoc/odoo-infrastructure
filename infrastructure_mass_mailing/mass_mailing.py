@@ -25,13 +25,13 @@ class MassMailing(models.Model):
     )
 
     @api.multi
-    def send_mail(self):
+    def send_mail(self, auto_commit=False):
         for record in self:
             if record.database_email_cc:
                 super(MassMailing, self.with_context(
                     # database_email_cc=record.database_email_cc,
                     default_database_email_cc=record.database_email_cc,
-                )).send_mail()
+                )).send_mail(auto_commit=auto_commit)
             else:
                 super(MassMailing, self).send_mail()
         return True

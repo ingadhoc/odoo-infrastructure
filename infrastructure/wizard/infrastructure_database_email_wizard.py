@@ -27,7 +27,8 @@ class infrastructure_database_email_wizard(models.TransientModel):
     )
 
     @api.multi
-    def send_mail(self):
+    def send_mail(self, auto_commit=False):
         self.ensure_one()
         return super(infrastructure_database_email_wizard, self.with_context(
-            database_email_cc=self.database_email_cc)).send_mail()
+            database_email_cc=self.database_email_cc)).send_mail(
+            auto_commit=auto_commit)
