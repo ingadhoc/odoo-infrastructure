@@ -443,7 +443,7 @@ class database(models.Model):
                     "You can not refresh backups state if module '%s' is not "
                     "installed in the database") % (module)
                 if do_not_raise:
-                    _logger.ValidationError(msg)
+                    _logger.warning(msg)
                     self.backups_state = ''
                     self.backups_state_detail = msg
                     return True
@@ -470,7 +470,7 @@ class database(models.Model):
                 'Could not get state! Unknow error, we could not get state '
                 'from "%s"' % (backups_state))
             if do_not_raise:
-                _logger.ValidationError(msg)
+                _logger.warning(msg)
                 self.backups_state = ''
                 self.backups_state_detail = msg
                 return True
@@ -504,7 +504,7 @@ class database(models.Model):
                     "You can not refresh modules update status if module '%s' "
                     "is not installed in the database") % (module))
                 if do_not_raise:
-                    _logger.ValidationError(msg)
+                    _logger.warning(msg)
                     self.update_state = 'unknown'
                     self.update_state_detail = msg
                     return True
@@ -518,7 +518,7 @@ class database(models.Model):
                 'Could not get state!\n'
                 'This is what we get %s' % e))
             if do_not_raise:
-                _logger.ValidationError(msg)
+                _logger.warning(msg)
                 self.update_state = 'unknown'
                 self.update_state_detail = msg
                 return True
@@ -533,7 +533,7 @@ class database(models.Model):
                 'Could not get state! Unknow error, we could not get state '
                 'from "%s"' % (update_state)))
             if do_not_raise:
-                _logger.ValidationError(msg)
+                _logger.warning(msg)
                 self.update_state = 'unknown'
                 self.update_state_detail = msg
                 return True

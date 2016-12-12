@@ -62,7 +62,7 @@ def custom_sudo(command, user=False, group=False, dont_raise=False):
         res = sudo(command)
     if res.failed:
         if dont_raise:
-            _logger.ValidationError((
+            _logger.warning((
                 "Can not run command:\n%s\nThis is what we get:\n%s") % (
                 res.real_command, unicode(res.stdout, 'utf-8')))
         else:

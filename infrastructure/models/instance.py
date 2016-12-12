@@ -1254,7 +1254,7 @@ class instance(models.Model):
             ]
         for path in paths:
             if exists(path, use_sudo=True):
-                _logger.ValidationError(("Folder '%s' already exists") % (path))
+                _logger.warning(("Folder '%s' already exists") % (path))
                 continue
             _logger.info(("Creating path '%s'") % (path))
             sudo('mkdir -m 777 -p ' + path)
@@ -1401,7 +1401,7 @@ class instance(models.Model):
         try:
             sudo(self.remove_odoo_cmd)
         except:
-            _logger.ValidationError(("Could remove container '%s'") % (
+            _logger.warning(("Could remove container '%s'") % (
                 self.name))
 
     @api.one
@@ -1411,7 +1411,7 @@ class instance(models.Model):
         try:
             sudo(self.stop_odoo_cmd)
         except:
-            _logger.ValidationError(("Could stop container '%s'") % (
+            _logger.warning(("Could stop container '%s'") % (
                 self.stop_odoo_cmd))
 
     @api.one
@@ -1442,7 +1442,7 @@ class instance(models.Model):
         try:
             sudo(self.remove_pg_cmd)
         except:
-            _logger.ValidationError(("Could remove container '%s'") % (
+            _logger.warning(("Could remove container '%s'") % (
                 self.name))
 
     @api.one
@@ -1452,7 +1452,7 @@ class instance(models.Model):
         try:
             sudo(self.stop_pg_cmd)
         except:
-            _logger.ValidationError(("Could stop container '%s'") % (
+            _logger.warning(("Could stop container '%s'") % (
                 self.stop_pg_cmd))
 
     @api.one
@@ -1467,7 +1467,7 @@ class instance(models.Model):
         try:
             sudo('rm -f %s' % nginx_site_file_path)
         except Exception, e:
-            _logger.ValidationError((
+            _logger.warning((
                 "Could remove nginx site file '%s', "
                 "this is what we get: \n %s") % (
                 self.service_file, e))

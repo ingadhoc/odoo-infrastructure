@@ -151,7 +151,7 @@ class infrastructure_instance_update(models.Model):
                                 repository.name, repository.id
                             ),
                             e)
-                        _logger.ValidationError(error_msg)
+                        _logger.warning(error_msg)
                         errors.append(error_msg)
             # TODO tal vez saquemos el restart y el fix y que sean
             # hechos automaticamente por la bd de destino
@@ -175,7 +175,7 @@ class infrastructure_instance_update(models.Model):
                         'restart instance',
                         'instance %s (%s)' % (inst.name, inst.id),
                         e)
-                    _logger.ValidationError(error_msg)
+                    _logger.warning(error_msg)
                     errors.append(error_msg)
             _logger.info('Fixind dbs for instance %s' % instance.id)
             for database in all_instances.mapped('database_ids'):
@@ -186,7 +186,7 @@ class infrastructure_instance_update(models.Model):
                         'fix ',
                         'database %s (%s)' % (database.name, database.id),
                         e)
-                    _logger.ValidationError(error_msg)
+                    _logger.warning(error_msg)
                     errors.append(error_msg)
 
             result = (
