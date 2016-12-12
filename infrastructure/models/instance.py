@@ -601,7 +601,9 @@ class instance(models.Model):
                 admin_pass = instance_admin_pass or self.name
             else:
                 # use random pass
-                chars = string.ascii_letters + string.digits + '!@#$%^&*()'
+                chars = string.ascii_letters + string.digits
+                # no usamos estas porque nos dan error con docker
+                # + '!@#$%^&*()'
                 random.seed = (os.urandom(1024))
                 admin_pass = ''.join(random.choice(chars) for i in range(20))
                 # admin_pass = self.name
@@ -666,16 +668,19 @@ class instance(models.Model):
 
 # Calculated fields
     @api.one
-    @api.depends('environment_id')
+    @api.depends('environment_id', 'odoo_image_id.odoo_server_wide_modules')
     def _get_module_load(self):
         if self.sources_type == 'use_from':
-            module_load = self.sources_from_id.module_load
-        module_load = ','.join(
-            [x.repository_id.server_wide_modules for x in (
-                self.instance_repository_ids) if (
-                    x.repository_id.server_wide_modules)])
-        if module_load:
-            self.module_load = 'web,web_kanban,' + module_load
+            self.module_load = self.sources_from_id.module_load
+        else:
+            module_load = ','.join(
+                [x.repository_id.server_wide_modules for x in (
+                    self.instance_repository_ids) if (
+                        x.repository_id.server_wide_modules)])
+            # if module_load:
+            self.module_load = (
+                (self.odoo_image_id.odoo_server_wide_modules or '') +
+                (module_load or ''))
 
     @api.one
     @api.depends('database_ids')
@@ -891,14 +896,18 @@ class instance(models.Model):
         _logger.info("Creating Instance")
         self.make_paths()
         self.update_nginx_site()
-        self.add_repositories()
-        self.instance_repository_ids.repository_pull_clone_and_checkout(
-            update=False)
+        # we only pull repositories if image has an extra addons dir set
+        if self.odoo_image_id.odoo_extra_addons_dir:
+            self.add_repositories()
+            self.instance_repository_ids.repository_pull_clone_and_checkout(
+                update=False)
         # remove containers if the exists
         self.remove_odoo_service()
         self.remove_pg_service()
         self.run_pg_service()
-        self.update_conf_file()
+        # we only pull repositories if image has an etc dir set
+        if self.odoo_image_id.odoo_etc_dir:
+            self.update_conf_file()
         self.run_odoo_service()
         self.action_activate()
 
@@ -910,11 +919,28 @@ class instance(models.Model):
         odoo_port_links = (
             '-p 127.0.0.1:%i:8069 -p 127.0.0.1:%i:8072') % (
             self.xml_rpc_port, self.longpolling_port)
-        odoo_volume_links = (
-            '-v %s:/etc/odoo -v %s:/mnt/extra-addons -v %s:/var/lib/odoo '
-            '-v %s:%s') % (
-            self.conf_path, self.sources_path, self.data_dir,
+        odoo_volume_links = '-v %s:%s ' % (
+            self.data_dir, self.odoo_image_id.odoo_data_dir)
+
+        if self.odoo_image_id.odoo_etc_dir:
+            odoo_volume_links += '-v %s:%s ' % (
+                self.conf_path, self.odoo_image_id.odoo_etc_dir)
+
+        if self.odoo_image_id.odoo_extra_addons_dir:
+            odoo_volume_links += '-v %s:%s ' % (
+                self.sources_path, self.odoo_image_id.odoo_extra_addons_dir)
+
+        odoo_volume_links += '-v %s:%s ' % (
             self.server_id.backups_path, self.server_id.backups_path)
+
+        odoo_volume_links += '-e WORKERS=%s ' % self.workers
+        odoo_volume_links += '-e ADMIN_PASSWORD=%s ' % self.admin_pass
+        server_mode_value = self.database_type_id.server_mode_value
+        odoo_volume_links += '-e SERVER_MODE=%s ' % (
+            server_mode_value or '')
+        if self.module_load:
+            odoo_volume_links += '-e SERVER_WIDE_MODULES=%s ' % (
+                self.module_load)
 
         odoo_pg_link = '--link %s:db' % self.pg_container
 
