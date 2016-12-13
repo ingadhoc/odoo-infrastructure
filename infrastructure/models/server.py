@@ -294,6 +294,7 @@ class server(models.Model):
     mailgate_file = fields.Char(
         string='Mailgate File',
         readonly=True,
+        states={'draft': [('readonly', False)]},
         help='Mailgate File is Copided to Server and Computed when installing '
         'postfix'
     )
