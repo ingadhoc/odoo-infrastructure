@@ -1495,8 +1495,10 @@ class instance(models.Model):
             'error_' + re.sub('[-]', '_', self.name))
         xmlrpc_port = self.xml_rpc_port
 
-        # TODO modify template in order to give posibility to not use
-        # longpolling
+        # we only use longpolling if workers is set
+        longpolling = (
+            self.workers and nginx_longpolling_template % self.name or '')
+
         if self.type == 'secure':
             server_hostname_id = self.main_hostname_id.server_hostname_id
             if not self.main_hostname_id.server_hostname_id.ssl_available:
@@ -1516,7 +1518,7 @@ class instance(models.Model):
                 error_log,
                 self.name,
                 self.name,
-                self.name,
+                longpolling,
             )
         else:
             nginx_site_file = nginx_site_template % (
@@ -1532,7 +1534,7 @@ class instance(models.Model):
                 error_log,
                 self.name,
                 self.name,
-                self.name,
+                longpolling,
             )
 
         default_redirect_server_names = [
@@ -1615,11 +1617,19 @@ class instance(models.Model):
 
 # TODO llevar esto a un archivo y leerlo de alli
     # rewrite  ^/(.*)$  http://%s/$1 permanent;
+
+
 nginx_redirect_template = """
 server   {
     server_name %s;
     rewrite  ^/(.*)$  %s/$1 permanent;
 }
+"""
+
+nginx_longpolling_template = """
+    location /longpolling {
+        proxy_pass http://%s-im;
+    }
 """
 
 nginx_site_template = """
@@ -1671,9 +1681,7 @@ server {
         proxy_pass http://%s;
     }
 
-    location /longpolling {
-        proxy_pass http://%s-im;
-    }
+%s
 }
 """
 
@@ -1747,9 +1755,7 @@ server {
         proxy_pass http://%s;
     }
 
-    location /longpolling {
-        proxy_pass http://%s-im;
-    }
+%s
 }
 """
 # odoo_upstar = template_upstar_file % ()
