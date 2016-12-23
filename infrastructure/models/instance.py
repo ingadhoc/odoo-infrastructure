@@ -935,6 +935,9 @@ class instance(models.Model):
 
         odoo_volume_links += '-e WORKERS=%s ' % self.workers
         odoo_volume_links += '-e ADMIN_PASSWORD=%s ' % self.admin_pass
+        odoo_volume_links += '-e DB_MAXCONN=%s ' % self.db_maxconn
+        odoo_volume_links += '-e LIMIT_TIME_CPU=%s ' % self.limit_time_cpu
+        odoo_volume_links += '-e LIMIT_TIME_REAL=%s ' % self.limit_time_real
         server_mode_value = self.database_type_id.server_mode_value
         odoo_volume_links += '-e SERVER_MODE=%s ' % (
             server_mode_value or '')
