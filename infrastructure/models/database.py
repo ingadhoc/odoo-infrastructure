@@ -1394,3 +1394,9 @@ class database(models.Model):
     @api.multi
     def action_inactive(self):
         self.write({'state': 'inactive'})
+
+    @api.multi
+    def init_dbuuid(self):
+        for rec in self:
+            client = rec.get_client()
+            client.model('ir.config_parameter').init(force=True)
