@@ -1398,5 +1398,9 @@ class database(models.Model):
     @api.multi
     def init_dbuuid(self):
         for rec in self:
-            client = rec.get_client()
-            client.model('ir.config_parameter').init(force=True)
+            client = rec.get_client_attempts()
+            # till erppeek fix allow_none, we use try pass
+            try:
+                client.model('ir.config_parameter').init(force=True)
+            except:
+                pass
