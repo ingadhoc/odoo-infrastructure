@@ -668,7 +668,11 @@ class instance(models.Model):
 
 # Calculated fields
     @api.one
-    @api.depends('environment_id', 'odoo_image_id.odoo_server_wide_modules')
+    @api.depends(
+        'environment_id',
+        'odoo_image_id.odoo_server_wide_modules',
+        'sources_from_id.module_load',
+    )
     def _get_module_load(self):
         if self.sources_type == 'use_from':
             self.module_load = self.sources_from_id.module_load
