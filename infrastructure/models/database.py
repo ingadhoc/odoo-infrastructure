@@ -836,12 +836,24 @@ class database(models.Model):
         _logger.info("Creating db '%s'" % (self.name))
         client = self.get_client(not_database=True)
         lang = self.instance_type_id.install_lang_id or 'en_US'
-        client.create_database(
-            self.instance_id.admin_pass,
-            self.name,
-            demo=self.demo_data,
-            lang=lang,
-            user_password=self.admin_password or 'admin')
+        if self.environment_id.odoo_version_id.name == '9.0':
+            # improove this and make country code a parameter
+            client.db.create_database(
+                self.instance_id.admin_pass,
+                self.name,
+                self.demo_data,
+                lang,
+                self.admin_password or 'admin',
+                'admin',
+                'AR')
+        else:
+            # before v9 country_code was not a parameter
+            client.create_database(
+                self.instance_id.admin_pass,
+                self.name,
+                demo=self.demo_data,
+                lang=lang,
+                user_password=self.admin_password or 'admin')
         self.install_base_modules()
         # config backups
         self.config_backups()
