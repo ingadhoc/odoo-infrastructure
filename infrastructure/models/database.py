@@ -827,7 +827,8 @@ class database(models.Model):
                 _logger.info("Connecting3")
                 pass
         if not connected:
-            raise ValidationError(_("Could not connect to socket '%s'") % (rpc_db_url))
+            raise ValidationError(
+                _("Could not connect to socket '%s'") % (rpc_db_url))
         return sock
 
     @api.one
@@ -867,7 +868,7 @@ class database(models.Model):
                 self.advance_type == 'protected' or self.protect_till_date and
                 (date.today() <=
                     fields.Date.from_string(self.protect_till_date))):
-                protected = True
+            protected = True
         self.protected = protected
 
     @api.multi
@@ -1240,7 +1241,9 @@ class database(models.Model):
         ]
 
         _logger.info('Reading users data for db %s' % self.name)
-        exp_users_data = client.model('res.users').search_read([], fields)
+        # we only get none share users (employees)
+        exp_users_data = client.model('res.users').search_read(
+            [('share', '=', False)], fields)
         update_users = self.env['infrastructure.database.user']
         _logger.info('Loading users data for db %s' % self.name)
         for user_data in exp_users_data:
