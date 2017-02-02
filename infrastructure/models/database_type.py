@@ -41,6 +41,12 @@ class database_type(models.Model):
         required=True,
         size=8
     )
+    max_dbs_per_contract = fields.Integer(
+        string='Max. Dbs per contract',
+        # TODO we should use contracts instead of environment
+        # TODO we should use max dbs instead of instance
+        help='Maximum instances of this type that can exist per environment',
+    )
     odoo_run_prefix = fields.Char(
         string='Odoo Run Prefix',
         help='For eg. used for resources limitation'

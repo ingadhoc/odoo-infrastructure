@@ -66,7 +66,8 @@ class instance(models.Model):
         )
     advance_type = fields.Selection(
         related='database_type_id.type',
-        string='Advance Type'
+        string='Advance Type',
+        readonly=True,
         )
     type = fields.Selection(
         [(u'secure', u'Secure'), (u'none_secure', u'None Secure')],
@@ -125,6 +126,7 @@ class instance(models.Model):
         )
     sources_type = fields.Selection(
         related='database_type_id.sources_type',
+        readonly=True,
         )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
@@ -1109,13 +1111,55 @@ class instance(models.Model):
         sudo('rm -r %s' % self.base_path, dont_raise=True)
 
     @api.multi
-    def duplicate(self, environment, database_type, sufix, number):
+    def add_hostname(self):
+        """
+        Try to find a wildcard domain and add it. If exist, return true, else
+        return false
+        """
+        self.ensure_one()
+        wildcard_host = self.env['infrastructure.server_hostname'].search([
+            ('server_id', '=', self.server_id.id),
+            ('wildcard', '=', True),
+            '|',
+            ('partner_id', '=', self.environment_id.partner_id.id),
+            ('partner_id', '=', False),
+        ], limit=1)
+        if wildcard_host:
+            host = self.instance_host_ids.new({
+                'server_hostname_id': wildcard_host.id,
+                'instance_id': self.id,
+            })
+            host._get_name()
+            self.instance_host_ids.create(host._convert_to_write(
+                host._cache))
+            if wildcard_host.ssl_available:
+                self.type = 'secure'
+            else:
+                self.type = 'none_secure'
+            return True
+        return False
+
+    @api.multi
+    def duplicate(self, environment, database_type, sufix=False):
         self.ensure_one()
         _logger.info('Duplicating Intance')
+        max_dbs = database_type.max_dbs_per_contract
+        number = environment.get_new_instance_number()
+        if not number:
+            # TODO return warning
+            return True
+        instances = self.search([
+            ('environment_id', '=', environment.id),
+            ('database_type_id', '=', database_type.id),])
+        if max_dbs and len(instances) >= max_dbs:
+            # TODO return an error
+            # TODO we should check max debs against contract and not
+            # environment
+            return True
         new_instance = self.copy({
                 'environment_id': environment.id,
                 'database_type_id': database_type.id,
-                'sufix': sufix,
+                'sufix': sufix or str(number),
                 'number': number,
                 })
 
@@ -1148,7 +1192,7 @@ class instance(models.Model):
             recursive=True, use_sudo=True)
         sudo('chmod 777 -R ' + new_instance.conf_path)
 
-        # Create new databases
+        # # Create new databases
         _logger.info('Duplicating surce instance database info')
         for database in self.database_ids:
             new_db = database.copy({
@@ -1164,6 +1208,8 @@ class instance(models.Model):
             #     self.database_type_id.prefix, new_db.name))
             # new_db.config_backups()
 
+        if self.add_hostname():
+            self.create_instance()
         # return new instance view
         action = self.env['ir.model.data'].xmlid_to_object(
             'infrastructure.action_infrastructure_instance_instances')

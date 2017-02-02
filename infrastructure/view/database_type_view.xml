@@ -38,6 +38,7 @@
                 <group>
                     <group string="Instance Parameters">
                         <field name="url_prefix"/>
+                        <field name="max_dbs_per_contract"/>
                         <field name="service_type"/>
                         <field name="sources_type"/>
                         <field name="sources_from_id" attrs="{'invisible': [('sources_type', '=', 'own')], 'required': [('sources_type', '!=', 'own')]}"/>

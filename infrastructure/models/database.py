@@ -92,6 +92,7 @@ class database(models.Model):
         string='Instance Type',
         store=True,
         related='instance_id.database_type_id',
+        readonly=True,
     )
     display_name = fields.Char(
         compute='_get_display_name',
@@ -145,6 +146,7 @@ class database(models.Model):
         string='Issue Data',
         copy=False,
         default=fields.Date.context_today,
+        required=True,
     )
     deactivation_date = fields.Date(
         string='Deactivation Date',
@@ -286,7 +288,8 @@ class database(models.Model):
     )
     instante_state = fields.Selection(
         related='instance_id.odoo_service_state',
-        string='Instance Status'
+        string='Instance Status',
+        readonly=True,
     )
     update_state_detail = fields.Text(
         'Update Status Detail',
@@ -770,20 +773,27 @@ class database(models.Model):
             self.admin_password = self.instance_type_id.db_admin_pass or \
                 self.instance_id.name
 
-    # @api.onchange('database_type_id', 'issue_date')
+    @api.model
+    def create(self, vals):
+        db = super(database, self).create(vals)
+        drop_days = db.instance_type_id.auto_drop_days
+        if drop_days and not db.drop_date:
+            db.drop_date = (datetime.strptime(
+                db.issue_date, '%Y-%m-%d') + relativedelta(drop_days))
+        return db
+
     @api.onchange('instance_type_id', 'issue_date')
     def get_deact_date(self):
         deactivation_date = False
         drop_date = False
-        if self.issue_date:
-            if self.instance_type_id.auto_deactivation_days:
-                deactivation_date = (datetime.strptime(
-                    self.issue_date, '%Y-%m-%d') + relativedelta(
-                    days=self.instance_type_id.auto_deactivation_days))
-            if self.instance_type_id.auto_drop_days:
-                drop_date = (datetime.strptime(
-                    self.issue_date, '%Y-%m-%d') + relativedelta(
-                    days=self.instance_type_id.auto_drop_days))
+        if self.instance_type_id.auto_deactivation_days:
+            deactivation_date = (datetime.strptime(
+                self.issue_date, '%Y-%m-%d') + relativedelta(
+                days=self.instance_type_id.auto_deactivation_days))
+        if self.instance_type_id.auto_drop_days:
+            drop_date = (datetime.strptime(
+                self.issue_date, '%Y-%m-%d') + relativedelta(
+                days=self.instance_type_id.auto_drop_days))
         self.deactivation_date = deactivation_date
         self.drop_date = drop_date
 

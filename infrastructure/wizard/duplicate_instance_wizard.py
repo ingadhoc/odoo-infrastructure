@@ -46,10 +46,10 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
     sufix = fields.Char(
         string='Sufix',
     )
-    number = fields.Integer(
-        string='Number',
-        required=True
-    )
+    # number = fields.Integer(
+    #     string='Number',
+    #     required=True
+    # )
 
     @api.depends('source_instance_id')
     def get_server(self):
@@ -60,7 +60,7 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
             order='number desc',
         )
         actual_db_type_ids = [x.database_type_id.id for x in instances]
-        self.number = instances and instances[0].number + 1 or 1
+        # self.number = instances and instances[0].number + 1 or 1
         self.database_type_id = self.env[
             'infrastructure.database_type'].search(
                 [('id', 'not in', actual_db_type_ids)],
@@ -72,4 +72,4 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
         self.ensure_one()
         return self.source_instance_id.duplicate(
             self.environment_id, self.database_type_id,
-            self.sufix, self.number)
+            self.sufix)

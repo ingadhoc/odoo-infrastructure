@@ -177,6 +177,17 @@ class environment(models.Model):
             self.partner_id = self.server_id.used_by_id
         self.number = environments and environments[0].number + 1 or 10
 
+    @api.multi
+    def get_new_instance_number(self):
+        # TODO estos numbers es por una limitacion de que usamos puertos ahora
+        # pero que vamos a depreciar mas adelante
+        self.ensure_one()
+        numbers = list(
+            set(range(1, 10)) - set(self.instance_ids.mapped('number')))
+        if numbers:
+            return numbers[0]
+        return False
+
     # TODO si no vamos a usar el sufijo entonces borrar lo comentado aca
     @api.onchange('partner_id')
     # @api.onchange('partner_id', 'odoo_version_id')
