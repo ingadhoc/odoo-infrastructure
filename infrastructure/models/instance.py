@@ -225,34 +225,42 @@ class instance(models.Model):
     addons_path = fields.Char(
         string='Addons Path',
         compute='_get_addons_path',
+        compute_sudo=True,
         )
     base_path = fields.Char(
         string='Base Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
        )
     conf_path = fields.Char(
         string='Config. Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     pg_data_path = fields.Char(
         string='Pg Data Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     conf_file_path = fields.Char(
         string='Config. File Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
        )
     backups_path = fields.Char(
         string='Backups Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     syncked_backup_path = fields.Char(
         string='Sincked Backup Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     data_dir = fields.Char(
         string='Data Dir',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     logrotate = fields.Boolean(
         string='Logrotate',
@@ -269,26 +277,32 @@ class instance(models.Model):
     logfile = fields.Char(
         string='Log File Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     container_logfile = fields.Char(
         string='Log File Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     xml_rpc_port = fields.Integer(
         string='XML-RPC Port',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     xml_rpcs_port = fields.Integer(
         string='XML-RPCS Port',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     longpolling_port = fields.Integer(
         string='Longpolling Port',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     sources_path = fields.Char(
         string='Sources Path',
         compute='_get_ports_and_paths',
+        compute_sudo=True,
         )
     database_count = fields.Integer(
         string='# Databases',

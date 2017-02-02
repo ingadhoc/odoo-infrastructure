@@ -780,6 +780,10 @@ class database(models.Model):
         if drop_days and not db.drop_date:
             db.drop_date = (datetime.strptime(
                 db.issue_date, '%Y-%m-%d') + relativedelta(drop_days))
+        deactivation_date = db.instance_type_id.auto_deactivation_days
+        if deactivation_date and not db.deactivation_date:
+            db.deactivation_date = (datetime.strptime(
+                db.issue_date, '%Y-%m-%d') + relativedelta(deactivation_date))
         return db
 
     @api.onchange('instance_type_id', 'issue_date')
