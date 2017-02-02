@@ -82,7 +82,10 @@ class instance_host(models.Model):
         if self.subdomain:
             prefix = self.subdomain
         if self.instance_id.database_type_id.url_prefix:
-            url_prefix = self.instance_id.database_type_id.url_prefix
+            sufix = self.instance_id.sufix or ''
+            url_prefix = self.instance_id.database_type_id.url_prefix + sufix
+            if sufix:
+                url_prefix
             if prefix:
                 prefix = url_prefix + '_' + prefix
             else:
