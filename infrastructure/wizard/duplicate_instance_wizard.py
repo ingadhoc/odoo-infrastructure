@@ -55,17 +55,21 @@ class infrastructure_duplicate_instance_wizard(models.TransientModel):
     def get_server(self):
         self.server_id = self.source_instance_id.server_id
         self.environment_id = self.source_instance_id.environment_id
-        instances = self.env['infrastructure.instance'].search(
-            [('environment_id', '=', self.environment_id.id)],
-            order='number desc',
-        )
-        actual_db_type_ids = [x.database_type_id.id for x in instances]
+        # instances = self.env['infrastructure.instance'].search(
+        #     [('environment_id', '=', self.environment_id.id)],
+        #     order='number desc',
+        # )
+        # actual_db_type_ids = [x.database_type_id.id for x in instances]
         # self.number = instances and instances[0].number + 1 or 1
+        # get first database typ not production
         self.database_type_id = self.env[
             'infrastructure.database_type'].search(
-                [('id', 'not in', actual_db_type_ids)],
-                limit=1
-        )
+            [('is_production', '=', False)], limit=1)
+        # self.database_type_id = self.env[
+        #     'infrastructure.database_type'].search(
+        #         [('id', 'not in', actual_db_type_ids)],
+        #         limit=1
+        # )
 
     @api.multi
     def action_confirm(self):

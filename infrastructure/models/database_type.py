@@ -24,6 +24,10 @@ class database_type(models.Model):
     description = fields.Text(
         string='Description',
     )
+    is_production = fields.Boolean(
+        help='Databases of this type are used to get data to invoice on '
+        'contracts and also used to get priority when duplicating'
+    )
     backups_enable = fields.Boolean(
         'Backups Enable?',
     )

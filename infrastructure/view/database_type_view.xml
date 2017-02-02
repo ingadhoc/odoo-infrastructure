@@ -29,6 +29,7 @@
                     <group>
                         <field name="name"/>
                         <field name="type"/>
+                        <field name="is_production"/>
                         <field name="prefix"/>
                     </group>
                     <group>
