@@ -1208,8 +1208,15 @@ class instance(models.Model):
             #     self.database_type_id.prefix, new_db.name))
             # new_db.config_backups()
 
-        if self.add_hostname():
-            self.create_instance()
+        # we use try in case some error is found, we still want to creat
+        # instance but it wont be accesible
+        # this could happend, for eg, if another hostname already
+        # exist in same server
+        try:
+            if new_instance.add_hostname():
+                new_instance.create_instance()
+        except:
+            pass
         # return new instance view
         action = self.env['ir.model.data'].xmlid_to_object(
             'infrastructure.action_infrastructure_instance_instances')
