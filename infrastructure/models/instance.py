@@ -646,7 +646,11 @@ class instance(models.Model):
     @api.multi
     def action_inactive(self):
         for instance in self:
+            # borramos los containers
+            instance.remove_all()
+            # marcamos desactivadas las bds
             instance.database_ids.action_inactive()
+        # marcamos desactivada la instancia
         self.write({'state': 'inactive'})
 
     @api.multi

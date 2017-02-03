@@ -27,5 +27,31 @@
             <field eval="1" name="active"/>
             <field eval="5" name="interval_number"/>
         </record>
+        <record id="ir_cron_delete_databases" model="ir.cron">
+            <field name="name">Cron delete databases</field>
+            <field name="model">infrastructure.database</field>
+            <field name="function">_cron_delete_databases</field>
+            <field name="interval_type">days</field>
+            <field name="user_id" ref="base.user_root"/>
+            <!-- <field name="nextcall" eval="datetime.strftime(datetime.today()+timedelta(days=1),'%Y-%m-%d 07:%M:%S')"/> -->
+            <field eval="-1" name="numbercall"/>
+            <field eval="5" name="priority"/>
+            <field eval="0" name="doall"/>
+            <field eval="1" name="active"/>
+            <field eval="1" name="interval_number"/>
+        </record>
+        <record id="ir_cron_deactivate_databases" model="ir.cron">
+            <field name="name">Cron Deactivate databases</field>
+            <field name="model">infrastructure.database</field>
+            <field name="function">_cron_deactivate_databases</field>
+            <field name="interval_type">days</field>
+            <field name="user_id" ref="base.user_root"/>
+            <!-- <field name="nextcall" eval="datetime.strftime(datetime.today()+timedelta(days=1),'%Y-%m-%d 07:%M:%S')"/> -->
+            <field eval="-1" name="numbercall"/>
+            <field eval="5" name="priority"/>
+            <field eval="0" name="doall"/>
+            <field eval="1" name="active"/>
+            <field eval="1" name="interval_number"/>
+        </record>
 </data>
 </openerp>

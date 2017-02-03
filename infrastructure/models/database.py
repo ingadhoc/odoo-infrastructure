@@ -1435,3 +1435,21 @@ class database(models.Model):
                 client.model('ir.config_parameter').init(force=True)
             except:
                 pass
+
+    @api.model
+    def _cron_delete_databases(self):
+        databases = self.search([('drop_date', '<=', fields.Date.today())])
+        for rec in databases:
+            # we only remove instance if one database per instance
+            if len(rec.instance_id.database_ids) == 1:
+                rec.instance_id.delete()
+                rec.instance_id.unlink()
+
+    @api.model
+    def _cron_deactivate_databases(self):
+        databases = self.search(
+            [('deactivation_date', '<=', fields.Date.today())])
+        for rec in databases:
+            # we only deactivate instance if one database per instance
+            if len(rec.instance_id.database_ids) == 1:
+                rec.instance_id.action_inactive()
