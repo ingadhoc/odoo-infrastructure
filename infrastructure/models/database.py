@@ -1441,7 +1441,7 @@ class database(models.Model):
         databases = self.search([('drop_date', '<=', fields.Date.today())])
         for rec in databases:
             # we only remove instance if one database per instance
-            if len(rec.instance_id.database_ids) == 1:
+            if not rec.protected and len(rec.instance_id.database_ids) == 1:
                 rec.instance_id.delete()
                 rec.instance_id.unlink()
 
@@ -1451,5 +1451,5 @@ class database(models.Model):
             [('deactivation_date', '<=', fields.Date.today())])
         for rec in databases:
             # we only deactivate instance if one database per instance
-            if len(rec.instance_id.database_ids) == 1:
+            if not rec.protected and len(rec.instance_id.database_ids) == 1:
                 rec.instance_id.action_inactive()
