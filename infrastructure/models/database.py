@@ -1366,7 +1366,8 @@ class database(models.Model):
         self.server_id.get_env()
         client = self.get_client()
 
-        modules = ['crm', 'mail']
+        modules = ['mail']
+        # modules = ['crm', 'mail']
         # modules = ['auth_server_admin_passwd_passkey', 'mail']
         for module in modules:
             if client.modules(name=module, installed=True) is None:

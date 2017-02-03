@@ -107,8 +107,10 @@ class EmailParser(object):
                 self.model_id = int(model)
                 self.model = str(model)
             except:
-                self.model_id = self.rpc(
-                    'ir.model', 'search', [('model', '=', model)])[0]
+                model_ids = self.rpc(
+                    'ir.model', 'search', [('model', '=', model)])
+                if model_ids:
+                    self.model_id = model_ids[0]
                 self.model = str(model)
             self.email_default = email_default
 
