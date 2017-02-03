@@ -1447,8 +1447,9 @@ class database(models.Model):
 
     @api.model
     def _cron_deactivate_databases(self):
-        databases = self.search(
-            [('deactivation_date', '<=', fields.Date.today())])
+        databases = self.search([
+            ('deactivation_date', '<=', fields.Date.today()),
+            ('state', '!=', 'inactive')])
         for rec in databases:
             # we only deactivate instance if one database per instance
             if not rec.protected and len(rec.instance_id.database_ids) == 1:
