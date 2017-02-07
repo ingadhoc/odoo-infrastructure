@@ -29,11 +29,13 @@ class instance_repository(models.Model):
     )
     sequence = fields.Integer(
         related='repository_id.sequence',
+        readonly=True,
         store=True,
     )
     sources_from_id = fields.Many2one(
         'infrastructure.instance',
         related='instance_id.sources_from_id',
+        readonly=True,
         string='Source Instance',
     )
     branch_id = fields.Many2one(

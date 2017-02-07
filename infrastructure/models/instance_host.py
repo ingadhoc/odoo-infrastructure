@@ -60,7 +60,8 @@ class instance_host(models.Model):
     )
     wildcard = fields.Boolean(
         string='Wildcard',
-        related='server_hostname_id.wildcard'
+        related='server_hostname_id.wildcard',
+        readonly=True,
     )
 
     _sql_constraints = [
