@@ -8,11 +8,15 @@
     <field name="inherit_id" ref="project_issue.project_issue_form_view"/>
     <field name="arch" type="xml">
         <field name="user_id" position="before">
-            <field name="database_id" placeholder="Database..." class="oe_inline"/>
+            <label for="database_id"/>
+            <div>
+                <field name="database_id" placeholder="Database..." class="oe_inline"/>
+                <button name="open_signup_url" type="object" string="⇒ Login" help="Login with admin" class="oe_link" attrs="{'invisible': [('database_id','=',False)]}" context="{'with_admin': 1}"/>
+            </div>
             <label for="db_user"/>
             <div>
                 <field name="db_user" placeholder="DB User..." class="oe_inline"/>
-                <button name="open_signup_url" type="object" icon="gtk-go-forward" attrs="{'invisible': ['|',('db_user','=',False),('database_id','=',False)]}"/>
+                <button name="open_signup_url" type="object" string="⇒ Login" class="oe_link" attrs="{'invisible': ['|',('db_user','=',False),('database_id','=',False)]}"/>
             </div>
             <field name="db_company" placeholder="DB Company..." class="oe_inline"/>
         </field>

@@ -27,9 +27,13 @@ class project_issue(models.Model):
     @api.multi
     def open_signup_url(self):
         self.ensure_one()
+        if self._context.get('with_admin'):
+            login = 'admin'
+        else:
+            login = self.db_user
         return {
             'type': 'ir.actions.act_url',
             'name': "Signup URL",
             'target': 'new',
-            'url': self.database_id._get_signup_url(self.db_user),
+            'url': self.database_id._get_signup_url(login),
         }
