@@ -9,7 +9,11 @@
     <field name="arch" type="xml">
         <field name="user_id" position="before">
             <field name="database_id" placeholder="Database..." class="oe_inline"/>
-            <field name="db_user" placeholder="DB User..." class="oe_inline"/>
+            <label for="db_user"/>
+            <div>
+                <field name="db_user" placeholder="DB User..." class="oe_inline"/>
+                <button name="open_signup_url" type="object" icon="gtk-go-forward" attrs="{'invisible': ['|',('db_user','=',False),('database_id','=',False)]}"/>
+            </div>
             <field name="db_company" placeholder="DB Company..." class="oe_inline"/>
         </field>
     </field>

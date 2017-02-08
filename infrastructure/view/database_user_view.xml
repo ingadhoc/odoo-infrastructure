@@ -12,6 +12,7 @@
             <field name="login"/>
             <field name="name"/>
             <field name="partner_id"/>
+            <button name="open_signup_url" type="object" icon="gtk-go-forward"/>
         </tree>
     </field>
 </record>

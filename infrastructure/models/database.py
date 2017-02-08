@@ -9,6 +9,8 @@ from openerp.tools.parse_version import parse_version
 import xmlrpclib
 import operator
 import socket
+import urlparse
+import urllib
 import time
 import uuid
 from dateutil.relativedelta import relativedelta
@@ -549,6 +551,19 @@ class database(models.Model):
         self.update_state = state
         self.update_state_detail = detail
         return update_state
+
+    @api.multi
+    def _get_signup_url(self, login):
+        self.ensure_one()
+        params = {
+            'login': login,
+            'db': self.name,
+            'key': self.admin_password,
+        }
+
+        signup_url = urlparse.urljoin(
+            self.instance_id.main_hostname, 'login')
+        return signup_url + '?' + urllib.urlencode(params)
 
     @api.one
     def fix_db(self, uninstall_modules=True):
