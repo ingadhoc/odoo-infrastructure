@@ -94,6 +94,10 @@ class database(models.Model):
         related='instance_id.database_type_id',
         readonly=True,
     )
+    is_production = fields.Boolean(
+        related='instance_type_id.is_production',
+        readonly=True,
+    )
     display_name = fields.Char(
         compute='_get_display_name',
         store=True,

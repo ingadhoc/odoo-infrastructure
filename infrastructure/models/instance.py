@@ -614,6 +614,15 @@ class instance(models.Model):
             self.service_type = self.database_type_id.service_type
             self.log_level = self.database_type_id.instance_log_level
 
+            # Set workers
+            if self.database_type_id.workers == 'clasic_rule':
+                number_of_processors = (
+                    self.environment_id.server_id.number_of_processors)
+                self.workers = (number_of_processors * 2) + 1
+            else:
+                self.workers = self.database_type_id.workers_number
+
+
     @api.one
     @api.depends('name')
     def get_container_names(self):
@@ -778,13 +787,6 @@ class instance(models.Model):
                 [('id', 'not in', actual_db_type_ids)],
                 limit=1
                 )
-
-        # Set workers
-        if self.database_type_id.workers == 'clasic_rule':
-            number_of_processors = environment.server_id.number_of_processors
-            self.workers = (number_of_processors * 2) + 1
-        else:
-            self.workers = self.database_type_id.workers_number
 
         # get docker images
         docker_image_ids = [
@@ -1166,6 +1168,9 @@ class instance(models.Model):
                 'sufix': sufix or str(number),
                 'number': number,
                 })
+
+        # call onchange to set workers and other vals
+        new_instance.onchange_database_type_id()
 
         self.server_id.get_env()
 
