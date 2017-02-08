@@ -43,6 +43,7 @@
     <field name="arch" type="xml">
         <form string="database">
             <field name="id" invisible="1"/>
+            <field name="is_production" invisible="1"/>
             <header>
                 <button name="action_to_draft"
                     type="object"
