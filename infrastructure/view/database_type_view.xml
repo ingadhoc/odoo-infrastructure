@@ -46,17 +46,6 @@
                         <field name="workers"/>
                         <field name="workers_number" attrs="{'invisible':[('workers','=','clasic_rule')],'required':[('workers','!=','clasic_rule')]}"/>
                         <field name="instance_log_level"/>
-                        <label for="instance_admin_pass"/>
-                        <div>
-                            <field
-                                name="instance_admin_pass"
-                                password="True"
-                                class="oe_inline"/>
-                            <button name="show_instance_admin_pass"
-                                string="⇒ View Password"
-                                type="object"
-                                class="oe_link oe_read_only"/>
-                        </div>
                         <field name="db_filter"/>
                         <field name="server_mode_value"/>
                         <field name="odoo_run_prefix"/>
@@ -69,17 +58,6 @@
                         <field name="auto_drop_days"/>
                         <field name="install_lang_id"/>
                         <field name="demo_data"/>
-                        <label for="db_admin_pass"/>
-                        <div>
-                            <field
-                                name="db_admin_pass"
-                                password="True"
-                                class="oe_inline"/>
-                            <button name="show_db_admin_pass"
-                                string="⇒ View Password"
-                                type="object"
-                                class="oe_link oe_read_only"/>
-                        </div>
                     </group>
                 </group>
             </sheet>

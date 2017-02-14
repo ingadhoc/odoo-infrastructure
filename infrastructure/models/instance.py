@@ -7,6 +7,7 @@ from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, ValidationError
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
+from erppeek import Client
 import os
 import re
 import logging
@@ -515,6 +516,16 @@ class instance(models.Model):
     #     for database in self.database_ids:
     #         database.refresh_update_state()
     #     self.refresh_instance_update_state()
+
+    @api.multi
+    def action_change_password(self):
+        for rec in self:
+            client = Client(rec.main_hostname)
+            # client = self.get_client(not_database=True)
+            # lang = self.instance_type_id.install_lang_id or 'en_US'
+            new_pass = rec.database_type_id.get_password()
+            client.db.change_admin_password(rec.admin_pass, new_pass)
+            rec.admin_pass = new_pass
 
     @api.one
     @api.depends('database_ids.update_state')

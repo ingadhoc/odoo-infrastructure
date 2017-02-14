@@ -1335,6 +1335,15 @@ class database(models.Model):
                 _('Error: %s') % e
             )
 
+    @api.multi
+    def action_change_admin_passwd(self):
+        for rec in self:
+            new_passwd = rec.instance_type_id.get_password()
+            rec.change_admin_passwd(rec.admin_password, new_passwd)
+            rec.admin_password = new_passwd
+            if rec.catchall_enable:
+                rec.config_catchall()
+
     @api.one
     def change_admin_passwd(self, current_passwd, new_passwd):
         client = self.get_client()

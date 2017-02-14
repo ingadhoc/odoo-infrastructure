@@ -119,17 +119,6 @@ class database_type(models.Model):
         tools.scan_languages(),
         string='Install Language',
     )
-    instance_admin_pass = fields.Char(
-        'Instance Admin Password',
-        help='It will be used on OWN SERVERS as default on Instance Admin '
-        'Password, if not value defined instance name will be suggested',
-    )
-    db_admin_pass = fields.Char(
-        'DB Admin Password',
-        # esta si la usamos siempre porque total va encriptada
-        help='It will be used as default on Database Admin Password, '
-        'if not value defined instance name will be suggested',
-    )
     db_filter = fields.Many2one(
         'infrastructure.db_filter',
         string='DB Filter',
@@ -158,14 +147,6 @@ class database_type(models.Model):
         required=True,
     )
 
-    @api.multi
-    def show_instance_admin_pass(self):
-        raise ValidationError(_("Password: '%s'") % self.instance_admin_pass)
-
-    @api.multi
-    def show_db_admin_pass(self):
-        raise ValidationError(_("Password: '%s'") % self.db_admin_pass)
-
     @api.onchange('service_type')
     def change_service_type(self):
         if self.service_type != 'no_service':
@@ -174,14 +155,10 @@ class database_type(models.Model):
             self.check_database = False
 
     @api.multi
-    def get_password(self, model=None):
+    def get_password(self):
         self.ensure_one()
         # TODO depreciar db_admin_pass e instance_admin_pass que ya no los
         # usamos
-        if model == 'infrastructure.database' and self.db_admin_pass:
-            return self.db_admin_pass
-        elif model == 'infrastructure.instance' and self.instance_admin_pass:
-            return self.instance_admin_pass
         chars = string.ascii_letters + string.digits
         # no usamos estas porque nos dan error con docker
         # + '!@#$%^&*()'
