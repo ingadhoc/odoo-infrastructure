@@ -234,9 +234,8 @@ class database(models.Model):
     )
     admin_password = fields.Char(
         string='Admin Password',
-        # TODO borrar este mensaje ya que ahora no seria así
-        # help='When trying to connect to the database first we are going to '
-        # 'try by using the instance password and then with thisone.',
+        help='When trying to connect to the database first we are going to '
+        'try by using the instance password and then with thisone.',
         readonly=True,
         required=True,
         states={'draft': [('readonly', False)]},
@@ -761,7 +760,7 @@ class database(models.Model):
                 '%s: "| %s  --host=localhost --port=%i -u %i -p %s -d %s' % (
                     self.domain_alias, self.mailgate_path,
                     self.instance_id.xml_rpc_port,
-                    SUPERUSER_ID, self.admin_password, self.name))
+                    SUPERUSER_ID, self.instance_id.admin_pass, self.name))
         return local_alias
 
     _sql_constraints = [
@@ -1166,28 +1165,27 @@ class database(models.Model):
                 _("Unable to Connect to Database."),
                 _('Error: %s') % e
             )
-        # TODO borrar, ya no usariamos mas esta clave de instancia
         # First try to connect using instance pass
-        # try:
-        #     return Client(
-        #         self.instance_id.main_hostname,
-        #         db=self.name,
-        #         user='admin',
-        #         password=self.instance_id.admin_pass)
-        # # then try to connect using database pass
-        # except:
         try:
             return Client(
                 self.instance_id.main_hostname,
-                # 'http://%s' % (self.instance_id.main_hostname),
                 db=self.name,
                 user='admin',
-                password=self.admin_password)
-        except Exception, e:
-            raise except_orm(
-                _("Unable to Connect to Database."),
-                _('Error: %s') % e
-            )
+                password=self.instance_id.admin_pass)
+        # then try to connect using database pass
+        except:
+            try:
+                return Client(
+                    self.instance_id.main_hostname,
+                    # 'http://%s' % (self.instance_id.main_hostname),
+                    db=self.name,
+                    user='admin',
+                    password=self.admin_password)
+            except Exception, e:
+                raise except_orm(
+                    _("Unable to Connect to Database."),
+                    _('Error: %s') % e
+                )
 
 # Backups management
 
