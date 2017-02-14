@@ -1341,8 +1341,10 @@ class database(models.Model):
             new_passwd = rec.instance_type_id.get_password()
             rec.change_admin_passwd(rec.admin_password, new_passwd)
             rec.admin_password = new_passwd
-            if rec.catchall_enable:
-                rec.config_catchall()
+            # como es la clave de la instancia la que usamos, lo hacemos
+            # al cambiar esto en la isntancia
+            # if rec.catchall_enable:
+            #     rec.config_catchall()
 
     @api.one
     def change_admin_passwd(self, current_passwd, new_passwd):

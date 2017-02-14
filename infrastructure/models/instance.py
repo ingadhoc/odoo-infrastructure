@@ -526,6 +526,8 @@ class instance(models.Model):
             new_pass = rec.database_type_id.get_password()
             client.db.change_admin_password(rec.admin_pass, new_pass)
             rec.admin_pass = new_pass
+            for db in rec.database_ids.filtered(lambda x: x.catchall_enable):
+                db.config_catchall()
 
     @api.one
     @api.depends('database_ids.update_state')
