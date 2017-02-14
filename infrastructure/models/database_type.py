@@ -5,6 +5,9 @@
 ##############################################################################
 from openerp import models, fields, tools, api, _
 from openerp.exceptions import ValidationError
+import random
+import string
+import os
 
 
 class database_type(models.Model):
@@ -169,3 +172,18 @@ class database_type(models.Model):
             self.check_database = True
         else:
             self.check_database = False
+
+    @api.multi
+    def get_password(self, model=None):
+        self.ensure_one()
+        # TODO depreciar db_admin_pass e instance_admin_pass que ya no los
+        # usamos
+        if model == 'infrastructure.database' and self.db_admin_pass:
+            return self.db_admin_pass
+        elif model == 'infrastructure.instance' and self.instance_admin_pass:
+            return self.instance_admin_pass
+        chars = string.ascii_letters + string.digits
+        # no usamos estas porque nos dan error con docker
+        # + '!@#$%^&*()'
+        random.seed = (os.urandom(1024))
+        return ''.join(random.choice(chars) for i in range(20))

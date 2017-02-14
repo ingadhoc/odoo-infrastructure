@@ -7,8 +7,6 @@ from openerp import models, fields, api, _
 from openerp.exceptions import except_orm, ValidationError
 from .server import custom_sudo as sudo
 from fabric.contrib.files import exists, append, sed
-import random
-import string
 import os
 import re
 import logging
@@ -86,8 +84,8 @@ class instance(models.Model):
         )
     limit_time_real = fields.Integer(
         string='Limit Time Real',
-        required=True,
-        default=240,
+        # required=True,
+        # default=240,
         help='Maximum allowed Real time per request. The default odoo value is'
         ' 120 but sometimes we use 240 to avoid some workers timeout error',
         readonly=True,
@@ -95,8 +93,8 @@ class instance(models.Model):
         )
     limit_time_cpu = fields.Integer(
         string='Limit Time CPU',
-        required=True,
-        default=120,
+        # required=True,
+        # default=120,
         help='Maximum allowed CPU time per request. The default odoo value is'
         ' 60 but sometimes we use 120 to avoid some workers timeout error',
         readonly=True,
@@ -104,8 +102,8 @@ class instance(models.Model):
         )
     db_maxconn = fields.Integer(
         string='DB Max connections',
-        required=True,
-        default=32,
+        # required=True,
+        # default=32,
         help='Specify the the maximum number of physical connections to'
         ' posgresql. Default odoo config is 64, we use 32.',
         readonly=True,
@@ -598,18 +596,7 @@ class instance(models.Model):
     @api.onchange('database_type_id')
     def onchange_database_type_id(self):
         if self.database_type_id:
-            instance_admin_pass = self.database_type_id.instance_admin_pass
-            if self.server_id.server_use_type == 'own' and instance_admin_pass:
-                admin_pass = instance_admin_pass or self.name
-            else:
-                # use random pass
-                chars = string.ascii_letters + string.digits
-                # no usamos estas porque nos dan error con docker
-                # + '!@#$%^&*()'
-                random.seed = (os.urandom(1024))
-                admin_pass = ''.join(random.choice(chars) for i in range(20))
-                # admin_pass = self.name
-            self.admin_pass = admin_pass
+            self.admin_pass = self.database_type_id.get_password()
             self.db_filter = self.database_type_id.db_filter
             self.service_type = self.database_type_id.service_type
             self.log_level = self.database_type_id.instance_log_level
@@ -621,7 +608,6 @@ class instance(models.Model):
                 self.workers = (number_of_processors * 2) + 1
             else:
                 self.workers = self.database_type_id.workers_number
-
 
     @api.one
     @api.depends('name')
@@ -947,9 +933,12 @@ class instance(models.Model):
 
         odoo_volume_links += '-e WORKERS=%s ' % self.workers
         odoo_volume_links += '-e ADMIN_PASSWORD=%s ' % self.admin_pass
-        odoo_volume_links += '-e DB_MAXCONN=%s ' % self.db_maxconn
-        odoo_volume_links += '-e LIMIT_TIME_CPU=%s ' % self.limit_time_cpu
-        odoo_volume_links += '-e LIMIT_TIME_REAL=%s ' % self.limit_time_real
+        if self.db_maxconn:
+            odoo_volume_links += '-e DB_MAXCONN=%s ' % self.db_maxconn
+        if self.limit_time_cpu:
+            odoo_volume_links += '-e LIMIT_TIME_CPU=%s ' % self.limit_time_cpu
+        if self.limit_time_real:
+            odoo_volume_links += '-e LIMIT_TIME_REAL=%s ' % self.limit_time_real
         server_mode_value = self.database_type_id.server_mode_value
         odoo_volume_links += '-e SERVER_MODE=%s ' % (
             server_mode_value or '')

@@ -789,8 +789,7 @@ class database(models.Model):
             self.demo_data = self.instance_type_id.demo_data
             self.check_database = self.instance_type_id.check_database
             self.backups_enable = self.instance_type_id.backups_enable
-            self.admin_password = self.instance_type_id.db_admin_pass or \
-                self.instance_id.name
+            self.admin_password = self.instance_type_id.get_password()
 
     @api.model
     def create(self, vals):
