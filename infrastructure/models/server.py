@@ -473,10 +473,10 @@ class server(models.Model):
         )
         self.ensure_one()
         env.user = self.user_name
-        env.password = self.password
+        env.password = self.password or ''
         env.host_string = self.main_hostname
         env.port = self.ssh_port
-        env.key_filename = self.key_filename
+        env.key_filename = self.key_filename or ''
         env.timeout = 4     # by default is 10
         return env
 
