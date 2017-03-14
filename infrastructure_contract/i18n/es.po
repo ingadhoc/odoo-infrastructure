@@ -8,6 +8,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2016
 # Hotellook, 2014
 # Juan José Scarafía <scarafia.juanjose@gmail.com>, 2015
+# Juan José Scarafía <scarafia.juanjose@gmail.com>, 2015
 # Justin Delmas <jdelmas@alkemics.com>, 2016
 # Nicolas Mac Rouillon <nmr@ingadhoc.com>, 2015
 # Tech Alkemics <tech@alkemics.com>, 2016
@@ -15,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: odoo-infrastructure (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 12:08+0000\n"
-"PO-Revision-Date: 2015-11-06 17:44+0000\n"
+"POT-Creation-Date: 2016-12-13 19:13+0000\n"
+"PO-Revision-Date: 2016-09-08 19:09+0000\n"
 "Last-Translator: Juan José Scarafía <scarafia.juanjose@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -26,9 +27,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: infrastructure_contract
+#: field:account.analytic.account,database_count:0
+msgid "# Databases"
+msgstr ""
+
+#. module: infrastructure_contract
 #: model:ir.model,name:infrastructure_contract.model_account_analytic_account
 msgid "Analytic Account"
 msgstr "Cuenta Analítica"
+
+#. module: infrastructure_contract
+#: field:infrastructure.database,contract_state:0
+msgid "Contact Status"
+msgstr ""
 
 #. module: infrastructure_contract
 #: field:infrastructure.database,contract_id:0
@@ -36,15 +47,74 @@ msgid "Contract"
 msgstr "Contrato"
 
 #. module: infrastructure_contract
+#: field:product.template,contracted_quantity_expression:0
+msgid "Contracted quantity expression"
+msgstr ""
+
+#. module: infrastructure_contract
 #: field:account.analytic.account,database_ids:0
 msgid "Databases"
 msgstr "Databases"
+
+#. module: infrastructure_contract
+#: help:infrastructure.database_type,is_production:0
+msgid "Databases of this type are used to get data to invoice on contracts"
+msgstr ""
+
+#. module: infrastructure_contract
+#: field:account.analytic.invoice.line,db_quantity:0
+msgid "Db Qty"
+msgstr ""
+
+#. module: infrastructure_contract
+#: help:product.template,contracted_quantity_expression:0
+msgid ""
+"Expression to evaluate quantity on a contract for a customer database. It "
+"must return a float"
+msgstr ""
+
+#. module: infrastructure_contract
+#: field:infrastructure.database_type,is_production:0
+msgid "Is production"
+msgstr ""
+
+#. module: infrastructure_contract
+#: code:addons/infrastructure_contract/models/account_analytic_account.py:52
+#, python-format
+msgid "More than one production database linked to contract %s!"
+msgstr ""
+
+#. module: infrastructure_contract
+#: code:addons/infrastructure_contract/models/account_analytic_account.py:56
+#, python-format
+msgid "No production database linked to contract %s!"
+msgstr ""
 
 #. module: infrastructure_contract
 #: field:account.analytic.account,odoo_version_id:0
 #: model:ir.model,name:infrastructure_contract.model_infrastructure_odoo_version
 msgid "Odoo Version"
 msgstr "Odoo Version"
+
+#. module: infrastructure_contract
+#: model:ir.model,name:infrastructure_contract.model_product_template
+msgid "Product Template"
+msgstr ""
+
+#. module: infrastructure_contract
+#: help:account.analytic.invoice.line,db_quantity:0
+msgid "Quantity readed on remote database"
+msgstr ""
+
+#. module: infrastructure_contract
+#: model:product.template,name:infrastructure_contract.product_subscription_companies_product_template
+msgid "Subscription - Companies"
+msgstr ""
+
+#. module: infrastructure_contract
+#: model:product.template,name:infrastructure_contract.product_subscription_users_product_template
+msgid "Subscription - Users"
+msgstr ""
 
 #. module: infrastructure_contract
 #: field:infrastructure.odoo_version,support_end_date:0
@@ -67,29 +137,49 @@ msgid "Support Validity"
 msgstr "Support Validity"
 
 #. module: infrastructure_contract
-#: code:addons/infrastructure_contract/database.py:30
-#, python-format
-msgid ""
-"You can not Upload a Contract if module '%s' is not                    "
-"installed in the database"
-msgstr "You can not Upload a Contract if module '%s' is not                    installed in the database"
+#: model:ir.actions.server,name:infrastructure_contract.action_update_lines_quantities_from_dbs
+msgid "Update Lines Qtys from dbs"
+msgstr ""
 
 #. module: infrastructure_contract
-#: code:addons/infrastructure_contract/database.py:34
+#: view:account.analytic.account:infrastructure_contract.view_account_analytic_account_form
+msgid ""
+"Update contracted products on remote database (a production database linked "
+"to this contract)"
+msgstr ""
+
+#. module: infrastructure_contract
+#: view:account.analytic.account:infrastructure_contract.view_account_analytic_account_form
+msgid ""
+"Update lines from remote database (a production database linked to this "
+"contract)"
+msgstr ""
+
+#. module: infrastructure_contract
+#: code:addons/infrastructure_contract/models/database.py:47
+#: code:addons/infrastructure_contract/models/database.py:58
+#, python-format
+msgid ""
+"You can not Upload a Contract if module '%s' is not installed in the "
+"database"
+msgstr ""
+
+#. module: infrastructure_contract
+#: code:addons/infrastructure_contract/models/database.py:63
 #, python-format
 msgid "You can not Upload a Contract if not contracted is linked"
 msgstr "You can not Upload a Contract if not contracted is linked"
 
 #. module: infrastructure_contract
-#: code:addons/infrastructure_contract/database.py:55
+#: code:addons/infrastructure_contract/models/database.py:83
 #, python-format
 msgid ""
-"You can not Upload a Contract if there is not user related                 "
-"to the contract Partner"
-msgstr "You can not Upload a Contract if there is not user related                 to the contract Partner"
+"You can not Upload a Contract if there is not user related to the contract "
+"Partner"
+msgstr ""
 
 #. module: infrastructure_contract
-#: code:addons/infrastructure_contract/account_analytic_account.py:41
+#: code:addons/infrastructure_contract/models/account_analytic_account.py:42
 #, python-format
 msgid ""
 "You can not close a contract if there are related dbs in other state than \"inactive\".\n"
@@ -100,6 +190,21 @@ msgstr "You can not close a contract if there are related dbs in other state tha
 #: model:ir.model,name:infrastructure_contract.model_infrastructure_database
 msgid "database"
 msgstr "database"
+
+#. module: infrastructure_contract
+#: model:ir.model,name:infrastructure_contract.model_infrastructure_database_type
+msgid "database_type"
+msgstr ""
+
+#. module: infrastructure_contract
+#: view:account.analytic.account:infrastructure_contract.view_account_analytic_account_form
+msgid "⇒ Update from remote DB"
+msgstr ""
+
+#. module: infrastructure_contract
+#: view:account.analytic.account:infrastructure_contract.view_account_analytic_account_form
+msgid "⇒ Update remote DB"
+msgstr ""
 
 #. module: infrastructure_contract
 #: view:infrastructure.database:infrastructure_contract.view_infrastructure_database_form
