@@ -3,13 +3,14 @@
 # * infrastructure_product
 # 
 # Translators:
+# Nicolas Mac Rouillon <nmr@ingadhoc.com>, 2017
 msgid ""
 msgstr ""
 "Project-Id-Version: odoo-infrastructure (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-31 12:08+0000\n"
-"PO-Revision-Date: 2015-08-12 13:24+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2017-03-14 17:49+0000\n"
+"PO-Revision-Date: 2017-03-21 12:54+0000\n"
+"Last-Translator: Nicolas Mac Rouillon <nmr@ingadhoc.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/adhoc/ingadhoc-odoo-infrastructure-8-0/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +21,7 @@ msgstr ""
 #. module: infrastructure_product
 #: field:product.template.module,create_uid:0
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: infrastructure_product
 #: field:product.template.module,create_date:0
@@ -28,8 +29,18 @@ msgid "Created on"
 msgstr ""
 
 #. module: infrastructure_product
+#: field:product.template.module,display_name:0
+msgid "Display Name"
+msgstr ""
+
+#. module: infrastructure_product
 #: field:product.template.module,id:0
 msgid "ID"
+msgstr ""
+
+#. module: infrastructure_product
+#: field:product.template.module,__last_update:0
+msgid "Last Modified on"
 msgstr ""
 
 #. module: infrastructure_product
