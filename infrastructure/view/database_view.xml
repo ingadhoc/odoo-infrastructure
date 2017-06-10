@@ -98,10 +98,12 @@
                         <field name="partner_id"/>
                         <label for="admin_password"/>
                         <div>
-                            <field
+                            <!-- lo sacamos porque por mas que este invisible lo actualiza -->
+                            <!-- <field
                                 name="admin_password"
                                 password="True"
-                                class="oe_inline"/>
+                                class="oe_inline"
+                                groups="base.group_no_one"/> -->
                             <button name="show_passwd"
                                 string="⇒ View Password"
                                 type="object"

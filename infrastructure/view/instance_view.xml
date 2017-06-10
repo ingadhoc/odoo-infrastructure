@@ -41,7 +41,7 @@
             <header>
                 <button name="action_activate"
                     type="object"
-                    states="draft"
+                    states="draft,inactive"
                     string="to Active"
                     />
                 <button name="action_to_draft"
@@ -68,7 +68,7 @@
                     <button icon="fa-link" type="object" string="Update Nginx" class="oe_stat_button" help="Update Nginx Configuration" name="update_nginx_site" states="draft"/>
                     <button icon="fa-repeat" type="action" string="Copy Data From..." class="oe_stat_button" name="%(action_infrastructure_copy_data_from_instance_wizard)d" states="active"/>
                     <button icon="fa-copy" type="action" string="Duplicate" class="oe_stat_button" name="%(action_infrastructure_duplicate_instance_wizard)d" states="active"/>
-                    <button icon="fa-trash-o" type="action" string="Delete" class="oe_stat_button" name="%(action_infrastructure_instance_delete_wizard)d" states="draft,active"/>
+                    <button icon="fa-trash-o" type="action" string="Delete" class="oe_stat_button" name="%(action_infrastructure_instance_delete_wizard)d" states="draft,active,inactive"/>
                 </div>
                 <h2 class="oe_inline">
                     <field name="server_id" class="oe_inline"/> / <field name="environment_id" options="{'no_create': True}" class="oe_inline"/>
@@ -83,10 +83,12 @@
                         <field name="sufix"/>
                         <label for="admin_pass"/>
                         <div>
-                            <field
+                            <!-- lo sacamos porque por mas que este invisible lo actualiza -->
+                            <!-- <field
                                 name="admin_pass"
                                 password="True"
-                                class="oe_inline"/>
+                                class="oe_inline"
+                                groups="base.group_no_one"/> -->
                             <button name="show_passwd"
                                 string="⇒ View Password"
                                 type="object"
