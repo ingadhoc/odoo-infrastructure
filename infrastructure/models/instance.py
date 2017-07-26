@@ -1295,8 +1295,10 @@ class instance(models.Model):
                 'instance_id': self.id,
                 'check_database': self.database_type_id.check_database,
                 })
+            # lo sacamos por ahora ya que va a estar todo en nube y para v8
+            # nos molesta mas que otra cosa
             # we run this because of possible enterprise contract errors
-            new_db.init_dbuuid()
+            # new_db.init_dbuuid()
             # we run this to deactivate backups
             new_db.action_activate()
             # TODO desactivamos esto por problemas en el wait y no
