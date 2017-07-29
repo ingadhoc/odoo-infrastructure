@@ -1741,10 +1741,11 @@ server {
 
     # enable data compression
     gzip on;
-    gzip_min_length 1100;
-    gzip_buffers 4 32k;
-    gzip_types text/plain application/x-javascript text/xml text/css;
-    gzip_vary on;
+    # gzip_min_length 1100;
+    # gzip_buffers 4 32k;
+    # gzip_types text/plain application/x-javascript text/xml text/css;
+    gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
+    # gzip_vary on;
 
     # cache some static data in memory for 60mins.
     # under heavy load this should relieve stress on the OpenERP web interface a bit.
@@ -1815,10 +1816,11 @@ server {
 
     # enable data compression
     gzip on;
-    gzip_min_length 1100;
-    gzip_buffers 4 32k;
-    gzip_types text/plain application/x-javascript text/xml text/css;
-    gzip_vary on;
+    # gzip_min_length 1100;
+    # gzip_buffers 4 32k;
+    # gzip_types text/plain application/x-javascript text/xml text/css;
+    gzip_types text/css text/less text/plain text/xml application/xml application/json application/javascript;
+    # gzip_vary on;
 
     # cache some static data in memory for 60mins.
     # under heavy load this should relieve stress on the OpenERP web interface a bit.
